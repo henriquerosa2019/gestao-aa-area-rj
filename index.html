@@ -1650,6 +1650,122 @@ p, .card-desc, .doc-summary {
   }
 }
 
+
+/* ==============================================================================
+   CHECKLIST INTERATIVO DE TAREFAS (CARD & MODAL)
+   ============================================================================== */
+.card-checklist-items {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: var(--surface-alt);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule-light);
+  max-height: 140px;
+  overflow-y: auto;
+}
+.checklist-item-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+.checklist-item-row:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.checklist-item-row input[type="checkbox"] {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent-emerald);
+  flex-shrink: 0;
+}
+.checklist-item-row.done .checklist-item-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.checklist-item-title {
+  flex: 1;
+  word-break: break-word;
+  line-height: 1.3;
+}
+.btn-add-subtask-quick {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 3px 5px;
+  text-align: left;
+  margin-top: 4px;
+  display: inline-block;
+  border-radius: 4px;
+}
+.btn-add-subtask-quick:hover {
+  background: var(--accent-blue-bg);
+  text-decoration: underline;
+}
+
+/* Modal Checklist */
+.modal-subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-alt);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule-light);
+  margin-bottom: 6px;
+}
+.modal-subtask-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-emerald);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.modal-subtask-input {
+  flex: 1;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 13px;
+  font-family: var(--sans);
+  color: var(--ink);
+  padding: 4px 6px;
+}
+.modal-subtask-input:focus {
+  outline: none;
+  border-color: var(--rule);
+  background: #fff;
+  border-radius: 4px;
+}
+.modal-subtask-item.done .modal-subtask-input {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.btn-del-subtask {
+  background: transparent;
+  border: none;
+  color: var(--accent-rose);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.btn-del-subtask:hover {
+  background: #FFE4E6;
+}
+
 </style>
   </head>
 <body>
@@ -2367,6 +2483,27 @@ p, .card-desc, .doc-summary {
         <select id="taskInputDoc" class="form-control">
           <option value="">(Nenhum documento vinculado)</option>
         </select>
+      </div>
+
+      <!-- Editor de Checklist de Subtarefas -->
+      <div class="form-group" style="margin-top: 14px; border-top: 1px solid var(--rule-light); padding-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label style="font-weight: 600; font-size: 13px; margin: 0; color: var(--navy);">
+            📋 Checklist de Subtarefas
+          </label>
+          <span id="modalChecklistCount" style="font-size: 11.5px; color: var(--muted); font-family: var(--mono);">(0 itens)</span>
+        </div>
+        
+        <div id="modalChecklistContainer" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; max-height: 180px; overflow-y: auto;">
+          <!-- Itens do checklist renderizados dinamicamente -->
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="modalNewSubtaskInput" class="form-control" placeholder="Adicionar novo item ao checklist..." style="font-size: 13px;" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); addSubtaskFromModalInput(); }">
+          <button type="button" class="btn-secondary" style="font-size: 12px; white-space: nowrap; padding: 6px 14px;" onclick="addSubtaskFromModalInput()">
+            + Adicionar
+          </button>
+        </div>
       </div>
 
       <div class="modal-footer">
@@ -4634,15 +4771,26 @@ function createKanbanCardElement(task) {
 
     ${totalSub > 0 ? `
       <div class="card-checklist-bar">
-        <div class="checklist-text">
-          <span>Checklist</span>
-          <span>${doneSub}/${totalSub} (${pctSub}%)</span>
+        <div class="checklist-text" style="cursor:pointer;" onclick="toggleCardChecklistVisibility('${task.id}')" title="Clique para expandir/recolher itens">
+          <span style="font-weight:600;">📋 Checklist</span>
+          <span>${doneSub}/${totalSub} (${pctSub}%) ▾</span>
         </div>
         <div class="progress-bg">
           <div class="progress-fill" style="width: ${pctSub}%;"></div>
         </div>
+        <div class="card-checklist-items" id="card-subtasks-${task.id}">
+          ${task.subtarefas.map((sub, idx) => `
+            <label class="checklist-item-row ${sub.feito ? 'done' : ''}" onclick="event.stopPropagation();">
+              <input type="checkbox" ${sub.feito ? 'checked' : ''} onchange="toggleSubtask('${task.id}', ${idx}, this.checked)">
+              <span class="checklist-item-title">${sub.titulo}</span>
+            </label>
+          `).join('')}
+        </div>
+        <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtask('${task.id}')">+ Adicionar Item</button>
       </div>
-    ` : ''}
+    ` : `
+      <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtask('${task.id}')">+ Criar Checklist</button>
+    `}
 
     <div class="card-footer">
       <div class="card-assignee" title="${actor.papel} - ${actor.area || ''}">
@@ -4679,6 +4827,108 @@ function openLinkedDoc(relPath, docId) {
 }
 
 // Modal Tarefas (Criar / Editar)
+
+// ==============================================================================
+// GESTÃO E EDIÇÃO DE CHECKLIST DE SUBTAREFAS
+// ==============================================================================
+let tempEditingSubtasks = [];
+
+// Alternar item do checklist diretamente pelo Card do Kanban
+function toggleSubtask(taskId, subtaskIdx, isChecked) {
+  const task = kanbanTasks.find(t => t.id === taskId);
+  if (!task || !task.subtarefas || !task.subtarefas[subtaskIdx]) return;
+
+  task.subtarefas[subtaskIdx].feito = isChecked;
+  saveKanbanToStorage();
+  renderKanban();
+
+  const total = task.subtarefas.length;
+  const done = task.subtarefas.filter(s => s.feito).length;
+  if (done === total && total > 0) {
+    showToast('🎉 Todos os itens do checklist da tarefa "' + task.titulo + '" foram concluídos!');
+  }
+}
+
+// Alternar visualização (expandir/recolher) dos itens no card
+function toggleCardChecklistVisibility(taskId) {
+  const container = document.getElementById('card-subtasks-' + taskId);
+  if (container) {
+    container.style.display = container.style.display === 'none' ? 'flex' : 'none';
+  }
+}
+
+// Adição Rápida de Item ao Checklist via Prompt no Card
+function promptAddSubtask(taskId) {
+  const task = kanbanTasks.find(t => t.id === taskId);
+  if (!task) return;
+  const text = prompt('Digite o novo item para o checklist da tarefa:');
+  if (text && text.trim()) {
+    if (!task.subtarefas) task.subtarefas = [];
+    task.subtarefas.push({ titulo: text.trim(), feito: false });
+    saveKanbanToStorage();
+    renderKanban();
+    showToast('Item adicionado ao checklist!');
+  }
+}
+
+// Funções do Modal de Edição de Checklist
+function renderModalChecklist() {
+  const container = document.getElementById('modalChecklistContainer');
+  const countEl = document.getElementById('modalChecklistCount');
+  if (!container || !countEl) return;
+
+  container.innerHTML = '';
+  const total = tempEditingSubtasks.length;
+  const done = tempEditingSubtasks.filter(s => s.feito).length;
+  countEl.innerText = '(' + done + '/' + total + ' concluídos)';
+
+  if (tempEditingSubtasks.length === 0) {
+    container.innerHTML = '<div style="font-size:12px; color:var(--muted); font-style:italic; padding:6px 0;">Nenhum item no checklist ainda. Adicione itens abaixo.</div>';
+    return;
+  }
+
+  tempEditingSubtasks.forEach((sub, idx) => {
+    const row = document.createElement('div');
+    row.className = 'modal-subtask-item' + (sub.feito ? ' done' : '');
+    row.innerHTML = `
+      <input type="checkbox" ${sub.feito ? 'checked' : ''} onchange="toggleModalSubtask(${idx}, this.checked)">
+      <input type="text" class="modal-subtask-input" value="${sub.titulo.replace(/"/g, '&quot;')}" oninput="updateModalSubtaskText(${idx}, this.value)" placeholder="Descrição do item...">
+      <button type="button" class="btn-del-subtask" onclick="removeModalSubtask(${idx})" title="Remover item">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function addSubtaskFromModalInput() {
+  const input = document.getElementById('modalNewSubtaskInput');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+
+  tempEditingSubtasks.push({ titulo: val, feito: false });
+  input.value = '';
+  renderModalChecklist();
+  input.focus();
+}
+
+function toggleModalSubtask(idx, isChecked) {
+  if (tempEditingSubtasks[idx]) {
+    tempEditingSubtasks[idx].feito = isChecked;
+    renderModalChecklist();
+  }
+}
+
+function updateModalSubtaskText(idx, newText) {
+  if (tempEditingSubtasks[idx]) {
+    tempEditingSubtasks[idx].titulo = newText;
+  }
+}
+
+function removeModalSubtask(idx) {
+  tempEditingSubtasks.splice(idx, 1);
+  renderModalChecklist();
+}
+
 function openNewTaskModal() {
   const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
   if (currentActor.permissoes && !currentActor.permissoes.criarTarefas) {
@@ -4711,6 +4961,9 @@ function openEditTaskModal(taskId) {
   document.getElementById("taskInputActor").value = task.atorId;
   document.getElementById("taskInputDueDate").value = task.dataLimite || "";
   document.getElementById("taskInputDoc").value = task.docId || "";
+  tempEditingSubtasks = JSON.parse(JSON.stringify(task.subtarefas || []));
+  renderModalChecklist();
+  const subInput = document.getElementById("modalNewSubtaskInput"); if (subInput) subInput.value = "";
   document.getElementById("taskModal").classList.add("open");
 }
 
@@ -4739,6 +4992,7 @@ function saveTask(e) {
       task.atorId = atorId;
       task.dataLimite = dataLimite;
       task.docId = docId;
+      task.subtarefas = tempEditingSubtasks;
       showToast("Tarefa atualizada com sucesso!");
     }
   } else {
@@ -4751,7 +5005,7 @@ function saveTask(e) {
       atorId,
       dataLimite,
       docId,
-      subtarefas: []
+      subtarefas: tempEditingSubtasks
     };
     kanbanTasks.push(newTask);
     showToast("Nova tarefa criada no Kanban!");
