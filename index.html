@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Plataforma de Gestão Documental & Administrativa — Delegado AA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1300,6 +1300,354 @@ main.app-main {
 }
 .audit-table tr:hover td {
   background: var(--surface-hover);
+}
+
+
+/* ==============================================================================
+   DESIGN SYSTEM RESPONSIVO & KANBAN STICKY HEADER
+   CELULAR, TABLET E NOTEBOOK/PC
+   ============================================================================== */
+
+/* Viewport Dinâmico e Touch Targets Acessíveis */
+:root {
+  --target-size: 38px;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
+  button, select, input, a.btn-open-doc, .nav-tab-btn, .btn-icon-secondary {
+    min-height: var(--target-size);
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  overflow-x: hidden;
+}
+
+/* Headings e Textos Fluidos */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+p, .card-desc, .doc-summary {
+  text-wrap: pretty;
+}
+
+/* ==============================================================================
+   TÍTULOS DOS QUADROS KANBAN ESTÁTICOS / FIXOS AO ROLAR (DESKTOP E MOBILE)
+   ============================================================================== */
+.kanban-col {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.kanban-col-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10;
+  background: #F1F5F9 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 10px !important;
+  border-bottom: 2px solid var(--rule);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.kanban-col-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding: 12px 14px 14px !important;
+  min-height: 120px;
+  flex: 1;
+}
+
+/* Tabelas e Wrappers com rolagem horizontal suave */
+.docs-table-wrapper, .matrix-card, .table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* ==============================================================================
+   BREAKPOINT: TABLET & NOTEBOOK COMPACTO (max-width: 1199px)
+   ============================================================================== */
+@media (max-width: 1199px) {
+  .header-inner {
+    padding: 12px 18px;
+  }
+  .brand-text h1 {
+    font-size: 17px;
+  }
+  .stats-banner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .docs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .kanban-board {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kanban-col {
+    flex: 0 0 310px;
+    scroll-snap-align: start;
+    max-height: 80vh;
+  }
+  .rbac-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* ==============================================================================
+   BREAKPOINT: SMARTPHONES E TABLETS VERTICAIS (max-width: 768px)
+   ============================================================================== */
+@media (max-width: 768px) {
+  /* Header em Camadas */
+  header.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .brand {
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+  .brand-text h1 {
+    font-size: 15px;
+    line-height: 1.2;
+  }
+  .brand-text p {
+    font-size: 9.5px;
+  }
+  .header-actions {
+    margin-left: auto;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .role-box {
+    padding: 3px 8px;
+  }
+  .role-select {
+    font-size: 11.5px;
+    max-width: 110px;
+  }
+  .header-center {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 4px 0 2px;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-tab-btn {
+    padding: 7px 12px;
+    font-size: 12.5px;
+    flex-shrink: 0;
+  }
+
+  /* Área Principal */
+  main.app-main {
+    padding: 12px 10px 60px;
+  }
+
+  /* Cards de Estatísticas */
+  .stats-banner {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .stat-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+  .stat-details h4 {
+    font-size: 9.5px;
+  }
+  .stat-val {
+    font-size: 17px;
+  }
+
+  /* Barra de Busca e Filtros */
+  .search-hero {
+    padding: 14px 12px;
+    margin-bottom: 14px;
+  }
+  .main-search-input {
+    font-size: 16px !important; /* Previne auto-zoom no Safari iOS */
+    padding: 10px 12px 10px 42px;
+  }
+  .search-icon {
+    left: 14px;
+    font-size: 16px;
+  }
+  .search-suggestions {
+    gap: 5px;
+  }
+  .sugg-pill {
+    padding: 4px 9px;
+    font-size: 11px;
+  }
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+  }
+  .filter-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .filter-select {
+    width: 100%;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  #clearFiltersBtn {
+    grid-column: span 2;
+    justify-content: center;
+    width: 100%;
+  }
+  .view-mode-toggle {
+    align-self: flex-start;
+  }
+
+  /* Grid de Documentos (1 coluna fluida) */
+  .docs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .doc-card {
+    padding: 14px;
+  }
+  .doc-card-top {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .doc-card-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .btn-open-doc {
+    flex: 1 1 100%;
+    order: 1;
+    padding: 9px 12px;
+    justify-content: center;
+  }
+  .btn-icon-secondary {
+    flex: 1 1 auto;
+    justify-content: center;
+    order: 2;
+    padding: 8px 10px;
+  }
+
+  /* Tabela de Documentos */
+  .docs-table {
+    min-width: 600px;
+  }
+
+  /* Kanban Adaptado com Scroll Snap tipo Trello Mobile */
+  .kanban-board {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding: 4px 2px 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kanban-col {
+    flex: 0 0 calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    scroll-snap-align: center;
+    max-height: 72dvh;
+    padding: 0 !important;
+  }
+
+  /* Modais Estilo Bottom Sheet no Mobile */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal-box, .modal-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 85dvh;
+    padding: 18px 14px 28px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* Ferramentas e Dashboards */
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Matriz RACI / RBAC */
+  .raci-table {
+    min-width: 480px;
+  }
+}
+
+/* ==============================================================================
+   BREAKPOINT: CELULARES PEQUENOS (max-width: 420px)
+   ============================================================================== */
+@media (max-width: 420px) {
+  .stats-banner {
+    grid-template-columns: 1fr;
+  }
+  .filter-groups {
+    grid-template-columns: 1fr;
+  }
+  #clearFiltersBtn {
+    grid-column: span 1;
+  }
+  .brand-text p {
+    display: none;
+  }
 }
 
 </style>
@@ -4214,6 +4562,24 @@ function getColLabel(colKey) {
 }
 
 // Criação do Card de Tarefa (Mantido e Integrado)
+
+// Movimentação Direta de Tarefas para Colunas (Ideal para Mobile & Touch)
+function moveTaskColumn(taskId, targetCol) {
+  const task = kanbanTasks.find(t => t.id === taskId);
+  if (!task) return;
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (targetCol === "concluido" && currentActor.permissoes && !currentActor.permissoes.homologar) {
+    showToast("Permissão negada: Seu perfil não possui permissão para Homologar / Concluir.");
+    return;
+  }
+
+  task.coluna = targetCol;
+  saveKanbanToStorage();
+  renderKanban();
+  showToast("Tarefa \"" + task.titulo + "\" movida para \"" + getColLabel(targetCol) + "\"! ");
+}
+
 function createKanbanCardElement(task) {
   const card = document.createElement("div");
   card.className = "kanban-card";
@@ -4284,7 +4650,13 @@ function createKanbanCardElement(task) {
         <span>${actor.nome}</span>
       </div>
 
-      <div class="card-actions-menu">
+      <div class="card-actions-menu" style="display:flex; align-items:center; gap:4px;">
+        <select style="font-size:11px; padding:3px 6px; border-radius:var(--radius-sm); border:1px solid var(--rule); background:#fff;" onchange="moveTaskColumn('${task.id}', this.value)" title="Mover Tarefa">
+          <option value="backlog" ${task.coluna === 'backlog' ? 'selected' : ''}>📋 A Fazer</option>
+          <option value="em_andamento" ${task.coluna === 'em_andamento' ? 'selected' : ''}>⏳ Andamento</option>
+          <option value="em_pauta" ${task.coluna === 'em_pauta' ? 'selected' : ''}>📝 Pauta</option>
+          <option value="concluido" ${task.coluna === 'concluido' ? 'selected' : ''}>✅ Concluído</option>
+        </select>
         <button class="card-btn-action" title="Editar Tarefa" onclick="openEditTaskModal('${task.id}')">✏️</button>
         <button class="card-btn-action" title="Excluir Tarefa" onclick="deleteTask('${task.id}')">🗑️</button>
       </div>
