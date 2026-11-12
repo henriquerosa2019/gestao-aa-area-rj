@@ -3768,6 +3768,7 @@ function onDocOpenClick(e, docId) {
   doc.visualizadoPor = currentActor.nome + " (" + currentActor.papel + ")";
   
   saveDocsAndAuditToStorage();
+  if (typeof registrarLogAuditoria === 'function') registrarLogAuditoria('visualizacao', docId, { titulo: doc.titulo });
   renderDocs();
   showToast("Visualizando: " + doc.titulo + " · Registrado em auditoria!");
 }
@@ -4254,6 +4255,7 @@ function handleDrop(e, targetCol) {
     doc.responsavelAlteracao = currentActor.nome + " (" + currentActor.papel + ")";
     
     saveDocsAndAuditToStorage();
+    if (typeof registrarLogAuditoria === 'function') registrarLogAuditoria('mover_kanban', doc.id, { coluna: getColLabel(targetCol) });
     renderKanban();
     renderDocs();
     showToast("Documento \"" + doc.titulo + "\" movido para \"" + getColLabel(targetCol) + "\"!");
