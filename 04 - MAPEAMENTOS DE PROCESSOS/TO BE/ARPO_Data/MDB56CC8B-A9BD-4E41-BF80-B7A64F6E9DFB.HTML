@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="iso-8859-1"/>
+  <meta name="description" content="Página web gerada pelo Software ARPO"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <title> ARPO - Website de processos </title>
+  <link rel="stylesheet" href="../ARPO_Styles/Style_Model.css">
+<link rel="icon" href="../ARPO_Styles/Style_Icon.png">
+</head>
+
+<body>
+<div class="Titlebar_Process">
+  <div class="ButtonGroup">
+    <button class="Button_Enabled" title="Retornar" onclick="history.back()"> <img src="../ARPO_Images/Button_Back.png" alt="Retornar"> </button> 
+    <button class="Button_Enabled" title="Subir de nível" onclick="window.location.href='M251DDA8F-B597-427F-915C-C4EC81A40069.HTML'"> <img src="../ARPO_Images/Button_LevelUp.png" alt="Subir de nível"> </button>
+    <button class="Button_Enabled" id="resetZoom" title="Zoom 100%"> <img src="../ARPO_Images/Button_Zoom.png" alt="Zoom 100%"> </button>
+    <button class="Button_Enabled" title="Imprimir modelo" data-print-title="9.3.2 Obter e instalar equipamento" onclick="printPage(event)"> <img src="../ARPO_Images/Button_Print.png" alt="Imprimir modelo"> </button>
+    <button class="Button_Disabled" title=> <img src="../ARPO_Images/Button_Report.png" alt=> </button>
+  </div>
+  <div class="ZoomGroup">
+    <span id="zoomLabel">100%</span>
+    <input type="range" id="zoomSlider">
+  </div>
+  <span class="BarTitle">9.3.2 Obter e instalar equipamento</span>
+</div>
+<div id="bottomFrame">
+  <div id="container">
+    <img id="zoomImage" src="MDB56CC8B-A9BD-4E41-BF80-B7A64F6E9DFB.JPG" usemap="#ModelMap" alt="Modelo">
+     <map name="ModelMap">
+       <area shape="rect" coords="23,23,161,107" href="O5CCCB9AF-2AF1-47AB-ACBD-C4C16138B84C.HTML" data-id="area1" data-label=""/>
+       <area shape="rect" coords="23,263,161,347" href="O2FC468E1-F4D2-4FEE-A03B-51722382784C.HTML" data-id="area2" data-label=""/>
+       <area shape="rect" coords="23,143,161,227" href="OB3C4367B-B939-44CA-9E9F-78E3FABB3F04.HTML" data-id="area3" data-label=""/>
+     </map>
+    <div id="tooltip"></div>
+  </div>
+</div>
+<script src="../ARPO_Data/@Model_Display.js"></script>
+</body>
+</html>
+

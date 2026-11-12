@@ -1,0 +1,117 @@
+/* Definitions for Variables =================================== */
+:root
+{
+  /*Variables for toolbar*/
+  --titlebar-font-size     : 18px;
+  --titlebar-font-color    : #F5F5F5;
+  --titlebar-back-color-one: #3F6491;
+  --titlebar-back-color-two: #0D325F;
+  --button-color-enabled   : #050532;
+  --button-color-disabled  : #C0C0C0;
+
+  /*Variables for Body*/
+  --body-back-color        : #CCCCCC;
+  --body-font-size         : 16px   ;
+  --body-font-color        : #1E293B;
+  --shadow-color           : rgba(17,24,39,0.08);
+
+  /*Variables for Section*/
+  --section-back-color     : #D8D8D8;
+  --section-font-color     : #333333;
+  --section-font-size      : 17px   ;
+  --section-line-color     : #444444;
+
+  /*Variables for Table*/
+  --table-border-color     : #587DAA;
+  --table-font-color       : #222222;
+  --table-font-size        : 14px   ;
+  --table-row-color-odd    : #E9E9E9;
+  --table-row-color-even   : #F9F9F9;
+  --table-row-color-hover  : #CCCCCC;
+
+  /*Variables for Title Row of Table*/
+  --table-title-color-one  : #7196C3;
+  --table-title-color-two  : #3F6491;
+  --table-title-font-color : #F5F5F5;
+  --table-title-font-size  : 15px   ;
+}
+
+/* Definitions for html and body =============================== */
+body {background:var(--body-back-color); color:var(--body-font-color); font-family:"Segoe UI",system-ui,Arial,Helvetica,sans-serif; font-size:var(--body-font-size); margin-bottom:100px; margin-left:20px; margin-right:28px; margin-top:68px; line-height:1.4}
+img  {margin:0; border:0; vertical-align:middle}
+a    {text-decoration:underline; color:var(--table-font-color); font-weight:normal; display:block}
+a:hover      {text-decoration:underline}
+.tdLink:hover{background:var(--table-row-color-hover)}
+
+/* Definitions for Titlebar and Buttons ======================== */
+.Titlebar_Report {background:var(--titlebar-back-color-one); background-image:linear-gradient(180deg,var(--titlebar-back-color-one),var(--titlebar-back-color-two)); color:var(--titlebar-font-color); position:fixed; top:0; left:0; width:100%; height:44px; display:flex; align-items:center; padding:0 6px 0 5px; box-sizing:border-box; z-index:1000; font-size:var(--titlebar-font-size); font-weight:bold; font-variant:small-caps;}
+.ButtonGroup     {display:flex; gap:2px; flex-shrink:0; margin-right:11px;}
+.Button_Enabled,
+.Button_Disabled {display:flex; align-items:center; justify-content:center; width:34px; height:34px; margin:1px 2px; padding:0; border:none; border-radius:5px; color:white; opacity:0.6; font-size:0.75rem; transition:0.3s;}
+.Button_Enabled  {background-color:var(--button-color-enabled) ; cursor:pointer; }
+.Button_Disabled {background-color:var(--button-color-disabled); cursor:default; }
+.Button_Enabled  img {vertical-align:middle;}
+.Button_Disabled img {vertical-align:middle;}
+
+/* Definitions for Report Body, Section and H1 ================= */
+report-body{display:block; margin-top:0}
+section    {margin-bottom:24px; padding:10px 20px 24px 10px; background:var(--section-back-color); border-radius:12px; box-shadow:0 4px 12px var(--shadow-color)}
+h1         {font-size:var(--section-font-size); font-weight:bold; color:var(--section-font-color); margin:0 6px 8px 15px; padding-bottom:10px; padding-left:0px; border-bottom:2px solid var(--section-line-color);}
+
+/* Definitions for Tables ====================================== */
+.table-container{display:block; width:100%; overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch}
+table {border-collapse:separate; border-spacing:0; border:1px solid var(--table-border-color); width:auto; margin-left:14px;}
+thead {background:var(--table-title-color-one); background-image:linear-gradient(180deg, var(--table-title-color-one), var(--table-title-color-two) )}
+th,td {border:1px solid var(--table-border-color); padding:12px 15px; text-align:left; transition:background .3s ease}
+th    {text-align:left; font-weight:bold; border-top:none; color:var(--table-title-font-color); font-size:var(--table-title-font-size);}
+thead th{padding-block:10px; line-height:1.1}
+tbody td{padding-block: 6px; line-height:1.1}
+tbody                   {background:var(--table-row-color-odd) ; color:var(--table-font-color); font-size:var(--table-font-size);}
+tbody tr:nth-child(even){background:var(--table-row-color-even)}
+tbody tr:hover          {background:var(--table-row-color-hover)}
+
+/* Definitions for Customized Tables ========================== */
+table.TabObj_Properties,
+table.TabObj_Occurrences,
+table.TabObj_Relationships,
+table.TabModel_Reports,
+table.TabLink_Details,
+table.TabLink_Summary   {border:2px solid var(--table-border-color); border-radius:12px; box-shadow:0 2px 6px var(--shadow-color); overflow:hidden; margin-top:10px}
+
+.TabObj_Properties      {width:730px}
+  .TabObj_Properties    td:nth-child(1){width:30%}
+  .TabObj_Properties    td:nth-child(2){width:70%}
+
+.TabObj_Occurrences     {width:730px}
+  .TabObj_Occurrences   td:nth-child(1){width:30%}
+  .TabObj_Occurrences   td:nth-child(2){width:70%}
+
+.TabObj_Relationships   {width:1460px}
+  .TabObj_Relationships td:nth-child(1){width:15%}
+  .TabObj_Relationships td:nth-child(2){width:35%}
+  .TabObj_Relationships td:nth-child(3){width:15%}
+  .TabObj_Relationships td:nth-child(4){width:35%}
+
+.TabModel_Reports       {width:1080px}
+  .TabModel_Reports     td:nth-child(1){width:35%}
+  .TabModel_Reports     td:nth-child(2){width:20%}
+  .TabModel_Reports     td:nth-child(3){width:45%}
+
+.TabLink_Summary        {width:350px}
+  .TabLink_Summary      td:nth-child(1){width:50%}
+  .TabLink_Summary      td:nth-child(2){width:50%}
+
+.TabLink_Details        {width:2500px}
+  .TabLink_Details      td:nth-child(1){width: 7%}
+  .TabLink_Details      td:nth-child(2){width: 7%}
+  .TabLink_Details      td:nth-child(3){width:15%}
+  .TabLink_Details      td:nth-child(4){width:21%}
+  .TabLink_Details      td:nth-child(5){width: 9%}
+  .TabLink_Details      td:nth-child(6){width:40%}
+
+/* Avoid user selection and drag & drop ======================== */
+html, body, .Titlebar_Report, report-body{-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+a, img {-webkit-user-drag:none; user-drag:none;}
+
+/* Responsive Tweaks ========================================== */
+@media (max-width:768px){ body{font-size:14px;padding:0 10px} table{font-size:12px} th,td{padding:8px 10px} }

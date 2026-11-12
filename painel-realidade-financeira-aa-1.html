@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Realidade financeira do movimento — Painel de análise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1B2E;
+  --cloth:#1B3A6B;
+  --cloth-lt:#5B7CA8;
+  --cloth-pale:#CBD8E8;
+  --paper:#E7EBF0;
+  --surface:#FFFFFF;
+  --deficit:#A0342A;
+  --deficit-pale:#E9C9C3;
+  --surplus:#2C6B54;
+  --amber:#A8721B;
+  --muted:#63718A;
+  --rule:#C7D1DE;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+
+/* ---------- masthead ---------- */
+.masthead{background:var(--ink);color:#fff;padding:28px 0 26px;margin-bottom:34px}
+.masthead .wrap{padding-bottom:0}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cloth-lt);margin:0 0 12px
+}
+.masthead h1{
+  font-family:var(--cond);font-weight:700;font-size:clamp(28px,5.2vw,50px);
+  line-height:1.03;letter-spacing:-.015em;margin:0 0 14px;max-width:20ch
+}
+.masthead p{margin:0;max-width:62ch;color:#C3CEDE;font-size:15px}
+.meta-line{
+  display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:20px;padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.16);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:#8FA3BE
+}
+.meta-line b{color:#DDE5EF;font-weight:500}
+
+/* ---------- shared blocks ---------- */
+.sec{margin:0 0 44px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 18px;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.sec-head h2{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:-.01em;margin:0}
+.sec-head span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:auto}
+.card{background:var(--surface);border:1px solid var(--rule);padding:20px 22px}
+.card h3{font-family:var(--cond);font-weight:700;font-size:16px;margin:0 0 3px;letter-spacing:.01em}
+.card .sub{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.note{font-family:var(--mono);font-size:10.5px;line-height:1.5;color:var(--muted);margin:14px 0 0;padding-top:10px;border-top:1px dotted var(--rule)}
+.grid{display:grid;gap:14px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.55fr 1fr;gap:14px;margin-bottom:44px}
+.thesis{background:var(--ink);color:#fff;padding:30px 32px;display:flex;flex-direction:column;justify-content:center}
+.thesis .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cloth-lt);margin:0 0 16px}
+.thesis .stat{font-family:var(--cond);font-weight:700;font-size:clamp(46px,8vw,78px);line-height:.92;letter-spacing:-.03em;color:#fff;margin:0}
+.thesis .stat em{font-style:normal;color:var(--deficit-pale)}
+.thesis .stat-cap{font-size:15px;color:#C3CEDE;margin:16px 0 0;max-width:34ch}
+.thesis .years{display:flex;gap:0;margin-top:26px;border-top:1px solid rgba(255,255,255,.18)}
+.thesis .years div{flex:1;padding:12px 0 0;border-right:1px solid rgba(255,255,255,.12)}
+.thesis .years div:last-child{border-right:0}
+.thesis .years dt{font-family:var(--mono);font-size:11px;color:#8FA3BE;margin:0 0 4px;letter-spacing:.08em}
+.thesis .years dd{font-family:var(--mono);font-size:17px;font-weight:600;margin:0;color:#E9C9C3}
+
+/* ---------- signature: reserve meter ---------- */
+.meter-card{background:var(--surface);border:1px solid var(--rule);padding:20px 22px 18px;display:flex;flex-direction:column}
+.meter-card h3{font-family:var(--cond);font-size:16px;font-weight:700;margin:0 0 2px}
+.meter-card .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.meter-body{display:flex;gap:14px;flex:1;min-height:280px}
+.meter-track{
+  position:relative;width:74px;flex:none;background:var(--paper);
+  border:1px solid var(--rule);overflow:hidden
+}
+.meter-fill{
+  position:absolute;left:0;right:0;bottom:0;height:0;
+  background:linear-gradient(180deg,#2E5691,var(--cloth));
+  transition:height 1.1s cubic-bezier(.22,.9,.28,1)
+}
+.meter-rules{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(to top,transparent 0,transparent calc(8.3333% - 1px),rgba(255,255,255,.55) calc(8.3333% - 1px),rgba(255,255,255,.55) 8.3333%);
+  pointer-events:none
+}
+.meter-mark{position:absolute;left:0;right:0;border-top:2px dashed var(--amber)}
+.meter-mark.top{border-top:2px solid var(--ink)}
+.meter-legend{display:flex;flex-direction:column;justify-content:space-between;padding:2px 0}
+.mrow{position:relative}
+.mrow .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);margin:0;text-transform:uppercase}
+.mrow .val{font-family:var(--cond);font-weight:700;font-size:26px;line-height:1.05;margin:2px 0 0}
+.mrow.now .val{color:var(--cloth);font-size:40px}
+.mrow.now .val small{font-size:15px;font-weight:600;color:var(--muted);margin-left:5px}
+.mrow.hist .val{color:var(--amber)}
+.mrow p{font-size:12px;color:var(--muted);margin:5px 0 0;max-width:26ch}
+
+/* ---------- KPI ---------- */
+.kpis{grid-template-columns:repeat(3,1fr)}
+.kpi{background:var(--surface);border:1px solid var(--rule);padding:16px 18px 15px;position:relative}
+.kpi::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:3px;background:var(--cloth)}
+.kpi.neg::before{background:var(--deficit)}
+.kpi .k-lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.kpi .k-val{font-family:var(--cond);font-weight:700;font-size:33px;line-height:1;letter-spacing:-.02em;margin:0}
+.kpi.neg .k-val{color:var(--deficit)}
+.kpi .k-sub{font-size:12.5px;color:var(--muted);margin:7px 0 0}
+
+/* ---------- charts ---------- */
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.chart .v-lbl{font-family:var(--cond);font-weight:700;font-size:12px;fill:var(--ink)}
+.chart .grid-l{stroke:var(--rule);stroke-width:1}
+.chart .axis{stroke:var(--ink);stroke-width:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0 0;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+
+/* ---------- comparison bars ---------- */
+.cmp{margin:0}
+.cmp-row{margin-bottom:18px}
+.cmp-row:last-child{margin-bottom:0}
+.cmp-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.cmp-top .n{font-family:var(--sans);font-size:13.5px;font-weight:500}
+.cmp-top .p{font-family:var(--mono);font-size:14px;font-weight:600}
+.cmp-bar{height:12px;background:var(--paper);border:1px solid var(--rule);position:relative;overflow:hidden}
+.cmp-bar i{position:absolute;top:0;bottom:0;left:0;width:0;transition:width .9s cubic-bezier(.22,.9,.28,1)}
+.up i{background:var(--surplus)} .up .p{color:var(--surplus)}
+.dn i{background:var(--deficit)} .dn .p{color:var(--deficit)}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:500;padding:0 10px 8px 0;border-bottom:1.5px solid var(--ink)}
+th.r,td.r{text-align:right;padding-right:0}
+td{padding:10px 10px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td.num{font-family:var(--mono);font-size:13px;font-weight:500;white-space:nowrap}
+td.num.neg{color:var(--deficit)}
+tr:last-child td{border-bottom:0}
+
+/* ---------- questions ---------- */
+.qs{grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.q{background:var(--surface);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:18px 20px}
+.q .qn{font-family:var(--mono);font-size:11px;color:var(--cloth-lt);letter-spacing:.1em;margin:0 0 8px}
+.q h4{font-family:var(--cond);font-weight:700;font-size:15px;margin:0 0 5px}
+.q p{margin:0;font-size:13.5px;color:#31405A}
+
+/* ---------- footer ---------- */
+.foot{background:var(--ink);color:#8FA3BE;padding:26px 0}
+.foot .wrap{padding-bottom:0;display:flex;flex-wrap:wrap;gap:14px 30px;align-items:center;justify-content:space-between}
+.foot .org{font-family:var(--cond);font-weight:700;font-size:17px;color:#fff;letter-spacing:.01em;margin:0}
+.foot .org span{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.14em;color:var(--cloth-lt);text-transform:uppercase;margin-top:5px}
+.foot .src{font-family:var(--mono);font-size:11px;line-height:1.6;text-align:right;max-width:46ch}
+
+a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+@media (max-width:940px){
+  .hero{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr !important}
+}
+@media (max-width:600px){
+  .kpis{grid-template-columns:1fr}
+  .qs{grid-template-columns:1fr}
+  .foot .wrap{flex-direction:column;align-items:flex-start}
+  .foot .src{text-align:left}
+  .thesis{padding:24px 20px}
+  .card{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+@media print{
+  body{background:#fff}
+  .masthead,.thesis,.foot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card,.kpi,.q,.meter-card{break-inside:avoid;page-break-inside:avoid}
+  .sec{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Painel de análise · Serviços Gerais</p>
+    <h1>A nova realidade financeira do nosso movimento espiritual</h1>
+    <p>Leitura dos dados de 2024 do Relatório Final da 75ª Conferência de Serviços Gerais e dos desdobramentos até agosto de 2025. Todos os valores estão ajustados pela inflação para dólares de 2024, em regime de caixa.</p>
+    <div class="meta-line">
+      <span>Documento-base: <b>Dave G., Marion, Iowa</b></span>
+      <span>Publicação: <b>fevereiro de 2026</b></span>
+      <span>Exercício analisado: <b>2016–2024</b></span>
+      <span>Reserva: <b>posição de agosto de 2025</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="thesis">
+      <p class="kicker">O achado central</p>
+      <p class="stat">US$ <em>4,77 mi</em></p>
+      <p class="stat-cap">de prejuízo acumulado em três anos consecutivos, na posição consolidada de GSO, Grapevine e La Viña.</p>
+      <dl class="years">
+        <div><dt>2022</dt><dd>−1,8 mi</dd></div>
+        <div><dt>2023</dt><dd>−1,2 mi</dd></div>
+        <div><dt>2024</dt><dd>−1,7 mi</dd></div>
+      </dl>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="meter-card">
+      <h3>Fundo de reserva</h3>
+      <p class="sub">Meses de despesa operacional cobertos. Teto de 12 meses fixado pela Conferência em 2001; não há piso definido.</p>
+      <div class="meter-body">
+        <div class="meter-track" role="img" aria-label="Fundo de reserva em 5,1 meses de despesa, contra média histórica de 9,7 meses e teto de 12 meses">
+          <div class="meter-fill" id="mfill"></div>
+          <div class="meter-rules"></div>
+          <div class="meter-mark" style="bottom:80.83%"></div>
+          <div class="meter-mark top" style="bottom:calc(100% - 2px)"></div>
+        </div>
+        <div class="meter-legend">
+          <div class="mrow"><p class="lbl">Teto da Conferência</p><p class="val">12,0</p></div>
+          <div class="mrow hist"><p class="lbl">Média 2000–2024</p><p class="val">9,7</p><p>Patamar que o precedente histórico associa à Garantia Dois do Décimo Segundo Conceito.</p></div>
+          <div class="mrow now"><p class="lbl">Agosto de 2025</p><p class="val">5,1<small>meses</small></p><p>47% abaixo do nível mantido nas duas últimas décadas.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANORAMA -->
+  <section class="sec">
+    <div class="sec-head"><h2>Panorama</h2><span>Seis indicadores</span></div>
+    <div class="grid kpis">
+      <div class="kpi neg"><p class="k-lbl">Contribuições</p><p class="k-val">−10,5%</p><p class="k-sub">Queda de US$ 1,3 milhão desde 2021, em três anos.</p></div>
+      <div class="kpi neg"><p class="k-lbl">Vendas de literatura</p><p class="k-val">−34,6%</p><p class="k-sub">Desde 2018. Média de −US$ 618 mil por ano ao longo de oito anos.</p></div>
+      <div class="kpi neg"><p class="k-lbl">Receita combinada</p><p class="k-val">−US$ 4,1 mi</p><p class="k-sub">Contribuições e literatura somadas, na comparação com 2018.</p></div>
+      <div class="kpi neg"><p class="k-lbl">Despesas</p><p class="k-val">+11,1%</p><p class="k-sub">Aumento de US$ 2,2 milhões entre 2022 e 2024.</p></div>
+      <div class="kpi neg"><p class="k-lbl">Grupos no mundo</p><p class="k-val">−53.602</p><p class="k-sub">Encerramentos registrados desde 2020: queda de 41,3%.</p></div>
+      <div class="kpi neg"><p class="k-lbl">Membros fora de EUA/Canadá</p><p class="k-val">−76,7%</p><p class="k-sub">685.564 membros a menos desde o pico de 1990.</p></div>
+    </div>
+  </section>
+
+  <!-- RECEITAS -->
+  <section class="sec">
+    <div class="sec-head"><h2>Receitas</h2><span>Contribuições e literatura</span></div>
+    <div class="grid two" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <h3>Contribuições ajustadas pela inflação</h3>
+        <p class="sub">Subiram até 2021 e recuaram desde então.</p>
+        <svg class="chart" id="c-contrib" viewBox="0 0 460 250" preserveAspectRatio="xMidYMid meet"></svg>
+        <p class="note">Pontos declarados no documento. Os exercícios de 2017–2020, 2022 e 2023 aparecem apenas em gráfico no original, sem valores no texto — por isso não foram estimados aqui.</p>
+      </div>
+      <div class="card">
+        <h3>Vendas de literatura</h3>
+        <p class="sub">De US$ 14,3 milhões em 2016 para US$ 9,3 milhões em 2024.</p>
+        <svg class="chart" id="c-lit" viewBox="0 0 460 250" preserveAspectRatio="xMidYMid meet"></svg>
+        <p class="note">2016 e 2024 declarados no texto. 2018 derivado da queda informada de 34,6% até 2024 (≈ US$ 14,2 milhões).</p>
+      </div>
+    </div>
+
+    <div class="grid two" style="grid-template-columns:1fr 1fr;margin-top:14px">
+      <div class="card">
+        <h3>De onde vem a contribuição</h3>
+        <p class="sub">Variação do período 2022–2024 contra 2016–2019.</p>
+        <div class="cmp">
+          <div class="cmp-row up">
+            <div class="cmp-top"><span class="n">Contribuições individuais</span><span class="p">+231,3%</span></div>
+            <div class="cmp-bar"><i data-w="100"></i></div>
+          </div>
+          <div class="cmp-row dn">
+            <div class="cmp-top"><span class="n">Contribuição média por grupo</span><span class="p">−21,5%</span></div>
+            <div class="cmp-bar"><i data-w="9.3"></i></div>
+          </div>
+        </div>
+        <p class="note">Barras proporcionais à magnitude da variação percentual, não a valores absolutos. O documento levanta a hipótese de exercício do Conceito VII (“o poder do bolso”) combinado ao repasse de reservas excedentes por distritos, intergrupos e áreas.</p>
+      </div>
+      <div class="card">
+        <h3>Menos grupos contribuindo, mais por grupo</h3>
+        <p class="sub">O ticket por grupo subiu enquanto a base encolheu.</p>
+        <table>
+          <thead><tr><th>Indicador</th><th class="r">2016</th><th class="r">2024</th></tr></thead>
+          <tbody>
+            <tr><td>Contribuição por grupo</td><td class="num r">US$ 306</td><td class="num r">US$ 366</td></tr>
+            <tr><td>Grupos contribuintes</td><td class="num r" colspan="2">≈ 9.700 a menos no período</td></tr>
+            <tr><td>Contribuições totais</td><td class="num r">US$ 10,4 mi</td><td class="num r">US$ 11,3 mi</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Total de 2024 derivado do pico de US$ 12,6 milhões em 2021 menos a queda declarada de US$ 1,3 milhão.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADO -->
+  <section class="sec">
+    <div class="sec-head"><h2>Resultado</h2><span>Despesas, lucro e prejuízo</span></div>
+    <div class="grid two" style="grid-template-columns:1fr 1.25fr">
+      <div class="card">
+        <h3>Despesas operacionais</h3>
+        <p class="sub">Crescimento de 11,1% em dois anos.</p>
+        <svg class="chart" id="c-desp" viewBox="0 0 380 250" preserveAspectRatio="xMidYMid meet"></svg>
+        <p class="note">Valores derivados do aumento declarado de US$ 2,2 milhões equivalente a 11,1%. O exercício de 2023 não teve valor informado no texto.</p>
+      </div>
+      <div class="card">
+        <h3>Do superávit ao déficit</h3>
+        <p class="sub">Resultado em regime de caixa, ajustado pela inflação.</p>
+        <svg class="chart" id="c-pl" viewBox="0 0 460 250" preserveAspectRatio="xMidYMid meet"></svg>
+        <p class="note">A primeira barra é a média anual do período 2016–2021 (US$ 1.269.000 de lucro). O déficit médio de 2022–2024 é de US$ 1.589.000 ao ano.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>Duas leituras do mesmo exercício</h3>
+      <p class="sub">O Relatório Final da Conferência de 2025 registra superávit; a consolidação ajustada mostra outro quadro.</p>
+      <table>
+        <thead><tr><th>Leitura</th><th>Escopo</th><th class="r">Resultado</th></tr></thead>
+        <tbody>
+          <tr><td>“Superávit líquido” do FCR 2025</td><td>Escritório de Serviços Gerais</td><td class="num r">+US$ 4.768.955</td></tr>
+          <tr><td>Consolidado ajustado por metodologia e inflação</td><td>GSO + Grapevine + La Viña, 2022–2024</td><td class="num r neg">−US$ 4.767.000</td></tr>
+          <tr><td>Queda observada no Fundo de Reserva</td><td>Mesmo período</td><td class="num r neg">−US$ 4.233.190</td></tr>
+        </tbody>
+      </table>
+      <p class="note">A convergência entre o prejuízo consolidado e a redução do Fundo de Reserva é o principal teste de consistência da análise: as duas cifras se aproximam sem terem sido calculadas pela mesma via.</p>
+    </div>
+  </section>
+
+  <!-- RESERVA -->
+  <section class="sec">
+    <div class="sec-head"><h2>Fundo de reserva</h2><span>Terceiro ano consecutivo de redução</span></div>
+    <div class="grid two" style="grid-template-columns:1.25fr 1fr">
+      <div class="card">
+        <h3>Movimentação até agosto de 2025</h3>
+        <table>
+          <thead><tr><th>Momento</th><th class="r">Saldo</th><th class="r">Cobertura</th></tr></thead>
+          <tbody>
+            <tr><td>Fechamento de 2024</td><td class="num r">US$ 11.910.000</td><td class="num r">—</td></tr>
+            <tr><td>Redução autorizada em ago/2025</td><td class="num r neg">−US$ 2.450.000</td><td class="num r">—</td></tr>
+            <tr><td>Posição em agosto de 2025</td><td class="num r">US$ 9.491.173</td><td class="num r">5,10 meses</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Destino da redução de agosto de 2025: reforma do escritório do GSO (US$ 2,03 milhões) e operações do Grapevine, que segue deficitário e depende de subsídio contínuo da Junta de Serviços Gerais.</p>
+      </div>
+      <div class="card">
+        <h3>O parâmetro em disputa</h3>
+        <p class="sub">A Conferência fixou um teto, não um piso.</p>
+        <p style="font-size:14px;margin:0 0 14px">A Ação de 2001 estabelece que a reserva <b>não deve exceder 12 meses</b> de despesa operacional. Não há limite mínimo definido — a avaliação fica a cargo do auditor. O precedente histórico aponta para 9 a 10 meses.</p>
+        <p style="font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:0;padding:14px 16px;background:var(--paper);border-left:3px solid var(--amber)">“Fundos operacionais suficientes, mais uma reserva ampla, devem ser o seu princípio financeiro prudente.”<br><span style="color:var(--muted)">Garantia Dois do Décimo Segundo Conceito</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBROS -->
+  <section class="sec">
+    <div class="sec-head"><h2>Membros e grupos</h2><span>1990–2025</span></div>
+    <div class="grid two" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <h3>Grupos no mundo: 2020 contra 2024</h3>
+        <p class="sub">A perda é concentrada fora dos Estados Unidos e do Canadá.</p>
+        <svg class="chart" id="c-grupos" viewBox="0 0 460 250" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="legend"><span><i style="background:var(--cloth-lt)"></i>2020</span><span><i style="background:var(--cloth)"></i>2024</span></div>
+        <p class="note">Números derivados dos percentuais e das perdas absolutas declaradas. O resultado para fora de EUA/Canadá (22.431) confere com os 22.432 grupos informados pelo GSO na página 30 do FCR 2025.</p>
+      </div>
+      <div class="card">
+        <h3>A assimetria escondida no total</h3>
+        <p class="sub">Entre 2001 e 2021, o mundo perdeu 247.680 membros — mas não de forma uniforme.</p>
+        <table>
+          <thead><tr><th>Recorte</th><th class="r">Variação</th></tr></thead>
+          <tbody>
+            <tr><td>EUA e Canadá, 2001–2021</td><td class="num r" style="color:var(--surplus)">+150.727</td></tr>
+            <tr><td>Fora de EUA e Canadá, 2001–2021</td><td class="num r neg">−398.407</td></tr>
+            <tr><td>Pico internacional, 1990</td><td class="num r">894.260</td></tr>
+            <tr><td>Internacional em 2025 (FCR, p. 30)</td><td class="num r">208.696</td></tr>
+            <tr><td>Pico mundial, 1992</td><td class="num r">2.490.000</td></tr>
+            <tr><td>Mundial em 2021</td><td class="num r neg">1.970.000 <span style="color:var(--muted)">(−20,9%)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;border-left:3px solid var(--amber)">
+      <h3>Transparência dos dados de membros</h3>
+      <p style="margin:0;font-size:14px;max-width:88ch">De 1951 a 2022, os Relatórios Finais da Conferência publicaram consistentemente o número de membros nos Estados Unidos, no Canadá e no total mundial. <b>Esses números foram omitidos nas edições de 2023, 2024 e 2025.</b> A série histórica de membros e grupos usada nesta análise não apresenta variação significativa entre os Relatórios Finais e o material de serviço SMF-132 do GSO.</p>
+    </div>
+  </section>
+
+  <!-- DEMOGRAFIA -->
+  <section class="sec">
+    <div class="sec-head"><h2>Perfil da irmandade</h2><span>Pesquisas de membros, 1986–2022</span></div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card"><p class="k-lbl" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px">Idade média</p><p style="font-family:var(--cond);font-weight:700;font-size:33px;line-height:1;margin:0">41 → 52</p><p class="sub" style="margin:8px 0 0">Anos, entre as pesquisas de 1992 e 2022.</p></div>
+      <div class="card"><p class="k-lbl" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px">Membros com menos de 21 anos</p><p style="font-family:var(--cond);font-weight:700;font-size:33px;line-height:1;margin:0;color:var(--deficit)">−91,8%</p><p class="sub" style="margin:8px 0 0">De 49.000 em 1992 para menos de 4.000 em 2022.</p></div>
+      <div class="card"><p class="k-lbl" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px">Composição racial</p><p style="font-family:var(--cond);font-weight:700;font-size:33px;line-height:1;margin:0">87,7%</p><p class="sub" style="margin:8px 0 0">Caucasianos em 2022, praticamente estável desde 1996 — 27,7 pontos acima da população em tratamento.</p></div>
+      <div class="card"><p class="k-lbl" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px">Composição por gênero</p><p style="font-family:var(--cond);font-weight:700;font-size:33px;line-height:1;margin:0">64%</p><p class="sub" style="margin:8px 0 0">Homens — 7,5 pontos acima do esperado pela prevalência do transtorno.</p></div>
+    </div>
+  </section>
+
+  <!-- QUESTOES -->
+  <section class="sec">
+    <div class="sec-head"><h2>Questões para consideração da irmandade</h2><span>Oito pontos de pauta</span></div>
+    <div class="grid qs">
+      <div class="q"><p class="qn">01</p><h4>Sustentabilidade financeira</h4><p>Que modelos de preços e de contribuição sustentam as operações sem novas reduções das reservas?</p></div>
+      <div class="q"><p class="qn">02</p><h4>Transparência financeira</h4><p>Que práticas de relatório atendem melhor à necessidade de informação e de participação informada da irmandade?</p></div>
+      <div class="q"><p class="qn">03</p><h4>Suficiência da reserva</h4><p>Que nível de fundo de reserva é apropriado hoje, e em que prazo alcançá-lo?</p></div>
+      <div class="q"><p class="qn">04</p><h4>Padrões de contribuição</h4><p>O que se conclui da queda das contribuições de grupo somada ao salto das individuais?</p></div>
+      <div class="q"><p class="qn">05</p><h4>Operações do Grapevine</h4><p>Que mudanças de preço e de operação garantem a sustentabilidade da publicação no longo prazo?</p></div>
+      <div class="q"><p class="qn">06</p><h4>Dados de membros</h4><p>Que práticas de divulgação apoiam melhor a unidade e a tomada de decisão informada?</p></div>
+      <div class="q"><p class="qn">07</p><h4>Perfil demográfico</h4><p>Como a atenção às tendências demográficas pode ajudar mais alcoólicos — mulheres, jovens e pessoas de origens diversas?</p></div>
+      <div class="q"><p class="qn">08</p><h4>Membros internacionais</h4><p>Que fatores explicam a queda fora dos EUA e do Canadá, e como levar a mensagem à comunidade internacional?</p></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="org">Comitê de Apadrinhamento em Serviço ao Delegado<span>CASD · Área 01</span></p>
+    <p class="src">Fontes: Relatórios Finais da Conferência de Serviços Gerais (1951–2025) · Material de serviço SMF-132 do GSO · Relatório trimestral do GSO, 3º trimestre de 2025 · Pesquisas de membros (1986–2022). Valores em dólares de 2024.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var C={cloth:'#1B3A6B',lt:'#5B7CA8',pale:'#CBD8E8',def:'#A0342A',sur:'#2C6B54',rule:'#C7D1DE',ink:'#0E1B2E',muted:'#63718A'};
+  var NS='http://www.w3.org/2000/svg';
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function txt(x,y,s,cls,anchor){var t=el('text',{x:x,y:y,'text-anchor':anchor||'middle'});if(cls)t.setAttribute('class',cls);t.textContent=s;return t;}
+
+  // ---- line chart with declared anchor points ----
+  function line(id,pts,fmt,yMin,yMax){
+    var s=document.getElementById(id); if(!s)return;
+    var W=460,H=250,L=52,R=14,T=18,B=34;
+    var pw=W-L-R, ph=H-T-B;
+    var xs=pts.map(function(p){return p.x;});
+    var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs);
+    var X=function(v){return L+(v-x0)/(x1-x0)*pw;};
+    var Y=function(v){return T+ph-(v-yMin)/(yMax-yMin)*ph;};
+    for(var i=0;i<=4;i++){
+      var v=yMin+(yMax-yMin)*i/4, y=Y(v);
+      s.appendChild(el('line',{x1:L,x2:W-R,y1:y,y2:y,class:'grid-l'}));
+      s.appendChild(txt(L-8,y+3.5,fmt(v),null,'end'));
+    }
+    var d=pts.map(function(p,i){return (i?'L':'M')+X(p.x)+' '+Y(p.y);}).join(' ');
+    s.appendChild(el('path',{d:d,fill:'none',stroke:C.cloth,'stroke-width':2.4,'stroke-linejoin':'round','stroke-dasharray':'7 5','stroke-linecap':'round'}));
+    pts.forEach(function(p){
+      s.appendChild(el('circle',{cx:X(p.x),cy:Y(p.y),r:5,fill:C.cloth}));
+      s.appendChild(el('circle',{cx:X(p.x),cy:Y(p.y),r:9,fill:'none',stroke:C.cloth,'stroke-width':1,opacity:.35}));
+      s.appendChild(txt(X(p.x),Y(p.y)-16,p.lbl,'v-lbl'));
+      s.appendChild(txt(X(p.x),H-12,p.x,null));
+    });
+    s.appendChild(el('line',{x1:L,x2:W-R,y1:T+ph,y2:T+ph,class:'axis'}));
+  }
+
+  // ---- simple bars ----
+  function bars(id,data,fmt,W,yMax){
+    var s=document.getElementById(id); if(!s)return;
+    var H=250,L=58,R=14,T=22,B=34, pw=W-L-R, ph=H-T-B;
+    var n=data.length, bw=Math.min(72,pw/n*0.55), gap=pw/n;
+    for(var i=0;i<=4;i++){
+      var v=yMax*i/4, y=T+ph-(v/yMax)*ph;
+      s.appendChild(el('line',{x1:L,x2:W-R,y1:y,y2:y,class:'grid-l'}));
+      s.appendChild(txt(L-8,y+3.5,fmt(v),null,'end'));
+    }
+    data.forEach(function(d,i){
+      var cx=L+gap*i+gap/2, h=(d.v/yMax)*ph, y=T+ph-h;
+      s.appendChild(el('rect',{x:cx-bw/2,y:y,width:bw,height:h,fill:d.c||C.cloth}));
+      s.appendChild(txt(cx,y-8,d.lbl,'v-lbl'));
+      s.appendChild(txt(cx,H-12,d.k,null));
+    });
+    s.appendChild(el('line',{x1:L,x2:W-R,y1:T+ph,y2:T+ph,class:'axis'}));
+  }
+
+  // ---- diverging bars (P&L) ----
+  function diverge(id,data){
+    var s=document.getElementById(id); if(!s)return;
+    var W=460,H=250,L=62,R=14,T=26,B=42, pw=W-L-R, ph=H-T-B;
+    var max=2.0, min=-2.0;
+    var Y=function(v){return T+ph-(v-min)/(max-min)*ph;};
+    for(var v=-2;v<=2;v+=1){
+      var y=Y(v);
+      s.appendChild(el('line',{x1:L,x2:W-R,y1:y,y2:y,class:'grid-l'}));
+      s.appendChild(txt(L-8,y+3.5,(v>0?'+':'')+v.toFixed(1),null,'end'));
+    }
+    var zero=Y(0), n=data.length, gap=pw/n, bw=Math.min(58,gap*0.52);
+    data.forEach(function(d,i){
+      var cx=L+gap*i+gap/2, y=d.v>=0?Y(d.v):zero, h=Math.abs(Y(d.v)-zero);
+      s.appendChild(el('rect',{x:cx-bw/2,y:y,width:bw,height:h,fill:d.v>=0?C.sur:C.def}));
+      s.appendChild(txt(cx,d.v>=0?y-8:y+h+15,d.lbl,'v-lbl'));
+      s.appendChild(txt(cx,H-10,d.k,null));
+    });
+    s.appendChild(el('line',{x1:L,x2:W-R,y1:zero,y2:zero,class:'axis'}));
+    s.appendChild(txt(L-8,T-8,'US$ mi',null,'end'));
+  }
+
+  // ---- grouped bars (grupos) ----
+  function grouped(id,data){
+    var s=document.getElementById(id); if(!s)return;
+    var W=460,H=250,L=58,R=14,T=24,B=44, pw=W-L-R, ph=H-T-B, yMax=140000;
+    for(var i=0;i<=4;i++){
+      var v=yMax*i/4, y=T+ph-(v/yMax)*ph;
+      s.appendChild(el('line',{x1:L,x2:W-R,y1:y,y2:y,class:'grid-l'}));
+      s.appendChild(txt(L-8,y+3.5,(v/1000)+'k',null,'end'));
+    }
+    var n=data.length, gap=pw/n, bw=26;
+    data.forEach(function(d,i){
+      var cx=L+gap*i+gap/2;
+      [[d.a,C.lt,-1],[d.b,C.cloth,1]].forEach(function(p){
+        var h=(p[0]/yMax)*ph, y=T+ph-h, x=cx+p[2]*(bw/2+1)-bw/2;
+        s.appendChild(el('rect',{x:x,y:y,width:bw,height:h,fill:p[1]}));
+        s.appendChild(txt(x+bw/2,y-7,(p[0]/1000).toFixed(1).replace('.',',')+'k','v-lbl'));
+      });
+      var w=d.k.split('|');
+      s.appendChild(txt(cx,H-24,w[0],null));
+      if(w[1])s.appendChild(txt(cx,H-12,w[1],null));
+    });
+    s.appendChild(el('line',{x1:L,x2:W-R,y1:T+ph,y2:T+ph,class:'axis'}));
+  }
+
+  var mi=function(v){return v.toFixed(1).replace('.',',');};
+
+  line('c-contrib',[
+    {x:2016,y:10.4,lbl:'10,4'},
+    {x:2021,y:12.6,lbl:'12,6'},
+    {x:2024,y:11.3,lbl:'11,3'}
+  ],mi,9.5,13.5);
+
+  line('c-lit',[
+    {x:2016,y:14.3,lbl:'14,3'},
+    {x:2018,y:14.2,lbl:'14,2*'},
+    {x:2024,y:9.3,lbl:'9,3'}
+  ],mi,8,15.5);
+
+  bars('c-desp',[
+    {k:'2022',v:19.82,lbl:'19,8',c:C.lt},
+    {k:'2024',v:22.02,lbl:'22,0',c:C.cloth}
+  ],mi,380,24);
+
+  diverge('c-pl',[
+    {k:'2016–21',v:1.269,lbl:'+1,27'},
+    {k:'2022',v:-1.8,lbl:'−1,8'},
+    {k:'2023',v:-1.2,lbl:'−1,2'},
+    {k:'2024',v:-1.7,lbl:'−1,7'}
+  ]);
+
+  grouped('c-grupos',[
+    {k:'Mundo',a:129787,b:76185},
+    {k:'EUA e|Canadá',a:76609,b:53856},
+    {k:'Demais|países',a:53280,b:22431}
+  ]);
+
+  // animations
+  function go(){
+    var f=document.getElementById('mfill'); if(f)f.style.height='42.5%';
+    document.querySelectorAll('.cmp-bar i').forEach(function(b){b.style.width=b.dataset.w+'%';});
+  }
+  if('IntersectionObserver' in window){setTimeout(go,180);}else{go();}
+})();
+</script>
+</body>
+</html>

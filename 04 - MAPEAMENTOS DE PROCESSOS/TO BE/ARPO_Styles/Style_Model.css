@@ -1,0 +1,127 @@
+/* Variables==================================================== */
+:root
+{
+  /*Variables for the toolbar*/
+  --titlebar-font-size     : 18px;
+  --titlebar-font-color    : #F5F5F5;
+  --titlebar-back-color-one: #3F6491;
+  --titlebar-back-color-two: #0D325F;
+  --titlebar-back-color    : #264B78;
+  --button-color-enabled   : #050532;
+  --button-color-disabled  : #C0C0C0;
+  --tooltip-font-size      : 14px;
+  --tooltip-font-color     : #F5F5F5;
+  --tooltip-backcolor      : #264B78;
+
+  /* Variables for zoom values */
+  --zoom-value-min         :   10;
+  --zoom-value-max         :  160;
+  --zoom-value-step        :   10;
+  --zoom-value-default     :  100;
+
+  /* Variables for zoom slider */
+  --slider-width           : 130px;
+  --slider-height          :   8px;
+  --slider-border-radius   :   4px;
+  --slider-color-filled    : #050532;
+  --slider-color-unfilled  : #C0C0C0;
+
+  /* Variables for zoom thumb */
+  --thumb-diameter         : 18px;
+  --thumb-back-color       : #050532;
+  --thumb-border           : 2px solid var(--slider-color-filled);
+  --thumb-shadow           : 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Definitions for html and body =============================== */
+html { margin:0; height:100%; overflow:hidden;  }
+body { margin:0; height:100%; font-family:"Segoe UI", system-ui, Arial, Helvetica, sans-serif; font-size:120%; }
+
+/* Definitions for the Titlebar ================================ */
+.Titlebar_Process
+{
+  background:var(--titlebar-back-color-one); background-image:linear-gradient(180deg,var(--titlebar-back-color-one),var(--titlebar-back-color-two));
+  color:var(--titlebar-font-color);
+  position:fixed; top:0; left:0; width:100%; height:44px; display:flex;
+  align-items:center; gap:16px; padding:0 4px; box-sizing:border-box; z-index:1000;
+}
+
+.ButtonGroup { display:flex; gap:2px; flex-shrink:0; }
+
+.Button_Enabled, .Button_Disabled
+{
+  display:flex; align-items:center; justify-content:center; width:34px; height:34px;
+  margin:1px 2px; padding:0; border:none; border-radius:5px;
+  color:white; opacity:0.6; font-size:0.75rem; transition:0.3s;
+}
+.Button_Enabled  { background-color:var(--button-color-enabled) ; cursor:pointer; }
+.Button_Disabled { background-color:var(--button-color-disabled); cursor:default; }
+.Button_Enabled  img { vertical-align:middle;}
+.Button_Disabled img { vertical-align:middle;}
+
+.ZoomGroup { display:flex; align-items:center; gap:6px; }
+
+#zoomLabel { width:32px; text-align:right; flex-shrink:0; font-size:0.8rem; margin-bottom:3px}
+
+#zoomSlider
+{
+  width:var(--slider-width); height:var(--slider-height);
+  appearance:none; border:none; outline:none; border-radius:var(--slider-border-radius);
+  background:linear-gradient(to right, var(--slider-color-filled) 0%, var(--slider-color-unfilled) 0%);
+}
+
+#zoomSlider::-webkit-slider-thumb
+{
+  -webkit-appearance:none;
+  height:var(--thumb-diameter); width:var(--thumb-diameter); border-radius:50%;
+  background:var(--thumb-back-color); border:var(--thumb-border); box-shadow:var(--thumb-shadow);
+  cursor:pointer; margin-top:0;
+}
+
+#zoomSlider::-moz-range-thumb
+{
+  height:var(--thumb-diameter); width:var(--thumb-diameter); border-radius:50%;
+  background:var(--thumb-back-color); border:var(--thumb-border); box-shadow:var(--thumb-shadow);
+  cursor:pointer;
+}
+
+#zoomSlider::-moz-range-track
+{
+  width:var(--slider-width); height:var(--slider-height); cursor:pointer;
+  background:transparent;  border-radius:var(--slider-border-radius);
+}
+
+#zoomSlider::-ms-thumb
+{
+  height:var(--thumb-diameter); width:var(--thumb-diameter); border-radius:50%; background:var(--thumb-back-color);
+  border:var(--thumb-border); box-shadow:var(--thumb-shadow); cursor:pointer; margin-top:0;
+}
+
+#zoomSlider::-ms-track
+{
+  width:var(--slider-width); height:var(--slider-height); cursor:pointer;
+  background:transparent; border-color:transparent; color:transparent;
+}
+
+#zoomSlider::-ms-fill-lower { background:transparent; border-radius:var(--slider-border-radius);}
+
+#zoomSlider::-ms-fill-upper { background:transparent; border-radius:var(--slider-border-radius);}
+
+.BarTitle { white-space:nowrap; font-size:var(--titlebar-font-size); font-weight:bold; font-variant:small-caps; flex-shrink:0; margin-bottom:3px;}
+
+/* Definitions for Model Image ================================= */
+#bottomFrame { position:absolute; top:44px; left:0; right:0; bottom:0; overflow:auto; padding-bottom:70px;}
+#container   { position:relative; display:inline-block; }
+#zoomImage   { display:block; transition:width 0.15s ease;}
+
+/* Definitions for Tooltips ==================================== */
+#tooltip
+{
+  position:fixed; left:0; top:0; background:var(--tooltip-backcolor); color:var(--tooltip-font-color);
+  padding:6px 10px; border-radius:4px; font-size:var(--tooltip-font-size); display:none;
+  pointer-events:none; max-width:333px; box-shadow:0 2px 6px rgba(0, 0, 0, 0.25); z-index:9999;
+}
+
+/* Avoid user selection and drag & drop ======================== */
+html, body, .Titlebar_Process { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+a, img { -webkit-user-drag:none; user-drag:none;}

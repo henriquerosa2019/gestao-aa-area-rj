@@ -1,0 +1,59 @@
+/* Definitions for Variables =================================== */
+:root
+{
+  --titlebar-font-size     : 18px;
+  --titlebar-font-color    : #F5F5F5;
+  --titlebar-back-color-one: #3F6491;
+  --titlebar-back-color-two: #0D325F;
+  --body-font-size         : 16px;
+  --body-font-color        : black;
+  --body-back-color        : #EEEEEE;
+  --body-line-height       : 1.1;
+  --h1-font-size           : 18px;
+  --h1-font-color          : #264B78;
+  --block-gap              : 10px;
+}
+
+/* Definitions for html and body =============================== */
+html {margin:0; height:100%; overflow:auto; font-size:var(--body-font-size);}
+body {background:var(--body-back-color); color:var(--body-font-color); font-family:"Segoe UI", system-ui, Arial, Helvetica, sans-serif; margin-left:5px; margin-top:55px; margin-bottom:70px; line-height:var(--body-line-height); text-align:left;}
+a {text-decoration:none; color:var(--body-font-color);}
+
+p { line-height:inherit; margin:0;}
+p + p {margin-top:0.75em;}
+p br  {display:inline;}
+
+/* Headers ===================================================== */
+h1 {color:var(--h1-font-color); font-size:var(--h1-font-size); font-weight:bold; text-align:left; text-indent:10px; margin-top:25px; margin-bottom:var(--block-gap);}
+
+/* Classes ===================================================== */
+.Titlebar_Welcome {background:var(--titlebar-back-color-one); background-image:linear-gradient(180deg,var(--titlebar-back-color-one),var(--titlebar-back-color-two)); color:var(--titlebar-font-color); font-size:var(--titlebar-font-size); font-weight:bold; font-variant:small-caps; padding-left:15px; line-height:44px; position:fixed; left:0; top:0; width:7000px; }
+.normal_h1 {margin-left:30px; line-height:inherit;}
+
+/* Lists ======================================================= */
+ul    { list-style-position:outside; padding-left:1.2em; margin-left:32px; margin-top:0; margin-bottom:var(--block-gap); font-size:16px; line-height:inherit; text-align:left; text-indent:0;}
+ul li { margin:0 0 10px 0;}
+
+/* Avoid user selection and drag & drop ======================== */
+html, body, .Titlebar_Welcome { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+a, img { -webkit-user-drag:none; user-drag:none;}
+
+@media (max-width: 768px) {
+  :root {
+    --titlebar-font-size : 16px;
+    --body-font-size     : 14px;
+    --h1-font-size       : 16px;
+  }
+
+  body {
+    margin:50px 8px 70px 8px; padding-bottom:70px;
+  }
+
+  .normal_h1 {
+    margin-left:15px;
+  }
+
+  ul {
+    margin-left:20px;
+  }
+}

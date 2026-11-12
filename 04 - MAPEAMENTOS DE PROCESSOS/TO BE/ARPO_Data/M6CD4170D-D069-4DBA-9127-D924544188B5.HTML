@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="iso-8859-1"/>
+  <meta name="description" content="Página web gerada pelo Software ARPO"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <title> ARPO - Website de processos </title>
+  <link rel="stylesheet" href="../ARPO_Styles/Style_Model.css">
+<link rel="icon" href="../ARPO_Styles/Style_Icon.png">
+</head>
+
+<body>
+<div class="Titlebar_Process">
+  <div class="ButtonGroup">
+    <button class="Button_Enabled" title="Retornar" onclick="history.back()"> <img src="../ARPO_Images/Button_Back.png" alt="Retornar"> </button> 
+    <button class="Button_Enabled" title="Subir de nível" onclick="window.location.href='MDD155AF6-F20B-42F7-8570-9582913E2BA4.HTML'"> <img src="../ARPO_Images/Button_LevelUp.png" alt="Subir de nível"> </button>
+    <button class="Button_Enabled" id="resetZoom" title="Zoom 100%"> <img src="../ARPO_Images/Button_Zoom.png" alt="Zoom 100%"> </button>
+    <button class="Button_Enabled" title="Imprimir modelo" data-print-title="9.1 Projetar, construir ou dquirir ativos não produtivos" onclick="printPage(event)"> <img src="../ARPO_Images/Button_Print.png" alt="Imprimir modelo"> </button>
+    <button class="Button_Disabled" title=> <img src="../ARPO_Images/Button_Report.png" alt=> </button>
+  </div>
+  <div class="ZoomGroup">
+    <span id="zoomLabel">100%</span>
+    <input type="range" id="zoomSlider">
+  </div>
+  <span class="BarTitle">9.1 Projetar, construir ou dquirir ativos não produtivos</span>
+</div>
+<div id="bottomFrame">
+  <div id="container">
+    <img id="zoomImage" src="M6CD4170D-D069-4DBA-9127-D924544188B5.JPG" usemap="#ModelMap" alt="Modelo">
+     <map name="ModelMap">
+       <area shape="rect" coords="23,23,233,107" href="OC252C76B-8525-40D4-B115-9B6E40DFC1E4.HTML" data-id="area1" data-label=""/>
+       <area shape="rect" coords="463,571,479,587" href="ME5DA5B9A-380E-42B7-9059-C38B706E29DC.HTML" data-id="area2" data-label="Abrir subnível"/>
+       <area shape="rect" coords="269,503,479,587" href="O50242558-3E6B-4FB3-827E-93C594F4DBE3.HTML" data-id="area3" data-label=""/>
+       <area shape="rect" coords="463,211,479,227" href="M75347DA5-8952-44BD-BFFE-9F4FCD358263.HTML" data-id="area4" data-label="Abrir subnível"/>
+       <area shape="rect" coords="269,143,479,227" href="O62EDD9BA-86B6-46DA-94D3-DD0AA299DDE9.HTML" data-id="area5" data-label=""/>
+       <area shape="rect" coords="463,451,479,467" href="MFC1B1AE9-31BA-4B1D-8F87-8AE69439467D.HTML" data-id="area6" data-label="Abrir subnível"/>
+       <area shape="rect" coords="269,383,479,467" href="O40050F44-2D64-4B94-B2E3-D47A5C2B3707.HTML" data-id="area7" data-label=""/>
+       <area shape="rect" coords="269,263,479,347" href="O6B5218CE-3367-4962-A7B2-6CD1ED8F7F02.HTML" data-id="area8" data-label=""/>
+     </map>
+    <div id="tooltip"></div>
+  </div>
+</div>
+<script src="../ARPO_Data/@Model_Display.js"></script>
+</body>
+</html>
+

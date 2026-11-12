@@ -1,0 +1,33 @@
+# Sistema Operacional
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Node / NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Variáveis de ambiente sensíveis
+.env
+.env.local
+.env.*.local
+
+# Arquivos binários pesados (PDFs volumosos que devem ser armazenados no Supabase Storage)
+# Isso garante que o repositório Git e o deploy na Vercel fiquem abaixo do limite de 100 MB.
+01 - FINANCEIRO/**/*.pdf
+01 - FINANCEIRO/*.pdf
+!01 - FINANCEIRO/**/.gitkeep
+
+# Builds temporários Vercel
+.vercel/

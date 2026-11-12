@@ -1,0 +1,3189 @@
+{
+  "resumoMensal": [
+    {
+      "mes": "Janeiro",
+      "ano": "2025",
+      "mes_num": "1",
+      "saldo_ant_caixa": "1133.24",
+      "saldo_ant_banco": "1834.00",
+      "saldo_ant_total": "2967.24",
+      "total_entradas_periodo": "15168.50",
+      "total_entradas_geral": "18135.74",
+      "total_saidas": "15198.16",
+      "saldo_caixa_fim": "1877.14",
+      "saldo_banco_fim": "2937.58",
+      "saldo_total_fim": "4814.72",
+      "reserva_prudente_ant": "32218.22",
+      "reserva_prudente_entradas": "208.89",
+      "reserva_prudente_saldo": "",
+      "convencao2027_saldo_ant": "9695.79",
+      "convencao2027_movimentacao": "3595.34",
+      "convencao2027_saldo_atual": "13291.13"
+    },
+    {
+      "mes": "Fevereiro",
+      "ano": "2025",
+      "mes_num": "2",
+      "saldo_ant_caixa": "1841.14",
+      "saldo_ant_banco": "1060.44",
+      "saldo_ant_total": "2901.58",
+      "total_entradas_periodo": "14533.60",
+      "total_entradas_geral": "17435.18",
+      "total_saidas": "15365.29",
+      "saldo_caixa_fim": "262.86",
+      "saldo_banco_fim": "1807.03",
+      "saldo_total_fim": "2069.89",
+      "reserva_prudente_ant": "32427.11",
+      "reserva_prudente_entradas": "207.45",
+      "reserva_prudente_saldo": "32634.56",
+      "convencao2027_saldo_ant": "13291.13",
+      "convencao2027_movimentacao": "4290.42",
+      "convencao2027_saldo_atual": "17581.55"
+    },
+    {
+      "mes": "Março",
+      "ano": "2025",
+      "mes_num": "3",
+      "saldo_ant_caixa": "262.86",
+      "saldo_ant_banco": "1807.03",
+      "saldo_ant_total": "2069.89",
+      "total_entradas_periodo": "18052.23",
+      "total_entradas_geral": "20122.12",
+      "total_saidas": "15479.33",
+      "saldo_caixa_fim": "2206.22",
+      "saldo_banco_fim": "2436.57",
+      "saldo_total_fim": "4642.79",
+      "reserva_prudente_ant": "32634.56",
+      "reserva_prudente_entradas": "38.04",
+      "reserva_prudente_saldo": "32672.60",
+      "convencao2027_saldo_ant": "17581.55",
+      "convencao2027_movimentacao": "6218.33",
+      "convencao2027_saldo_atual": "23799.88"
+    },
+    {
+      "mes": "Abril",
+      "ano": "2025",
+      "mes_num": "4",
+      "saldo_ant_caixa": "2206.22",
+      "saldo_ant_banco": "2436.57",
+      "saldo_ant_total": "4642.79",
+      "total_entradas_periodo": "25130.45",
+      "total_entradas_geral": "29773.24",
+      "total_saidas": "23936.97",
+      "saldo_caixa_fim": "3944.51",
+      "saldo_banco_fim": "1891.76",
+      "saldo_total_fim": "5836.27",
+      "reserva_prudente_ant": "32672.60",
+      "reserva_prudente_entradas": "358.46",
+      "reserva_prudente_saldo": "33031.06",
+      "convencao2027_saldo_ant": "23799.88",
+      "convencao2027_movimentacao": "3872.61",
+      "convencao2027_saldo_atual": "19927.27"
+    },
+    {
+      "mes": "Maio",
+      "ano": "2025",
+      "mes_num": "5",
+      "saldo_ant_caixa": "3944.51",
+      "saldo_ant_banco": "1891.76",
+      "saldo_ant_total": "5836.27",
+      "total_entradas_periodo": "16922.81",
+      "total_entradas_geral": "22759.08",
+      "total_saidas": "21335.91",
+      "saldo_caixa_fim": "1004.06",
+      "saldo_banco_fim": "419.11",
+      "saldo_total_fim": "1423.17",
+      "reserva_prudente_ant": "33031.06",
+      "reserva_prudente_entradas": "215.02",
+      "reserva_prudente_saldo": "33246.08",
+      "convencao2027_saldo_ant": "19927.27",
+      "convencao2027_movimentacao": "6375.11",
+      "convencao2027_saldo_atual": "26302.38"
+    },
+    {
+      "mes": "Junho",
+      "ano": "2025",
+      "mes_num": "6",
+      "saldo_ant_caixa": "1004.06",
+      "saldo_ant_banco": "419.11",
+      "saldo_ant_total": "1423.17",
+      "total_entradas_periodo": "23336.85",
+      "total_entradas_geral": "24760.02",
+      "total_saidas": "21853.69",
+      "saldo_caixa_fim": "625.67",
+      "saldo_banco_fim": "2280.66",
+      "saldo_total_fim": "2906.33",
+      "reserva_prudente_ant": "33246.08",
+      "reserva_prudente_entradas": "56.15",
+      "reserva_prudente_saldo": "33302.23",
+      "convencao2027_saldo_ant": "26302.38",
+      "convencao2027_movimentacao": "-12252.68",
+      "convencao2027_saldo_atual": "14049.70"
+    },
+    {
+      "mes": "Julho",
+      "ano": "2025",
+      "mes_num": "7",
+      "saldo_ant_caixa": "625.67",
+      "saldo_ant_banco": "2280.66",
+      "saldo_ant_total": "2906.33",
+      "total_entradas_periodo": "33220.82",
+      "total_entradas_geral": "36127.15",
+      "total_saidas": "35377.58",
+      "saldo_caixa_fim": "369.97",
+      "saldo_banco_fim": "379.60",
+      "saldo_total_fim": "749.57",
+      "reserva_prudente_ant": "33302.23",
+      "reserva_prudente_entradas": "203.77",
+      "reserva_prudente_saldo": "33506.00",
+      "convencao2027_saldo_ant": "14049.70",
+      "convencao2027_movimentacao": "-9708.23",
+      "convencao2027_saldo_atual": "4341.47"
+    },
+    {
+      "mes": "Agosto",
+      "ano": "2025",
+      "mes_num": "8",
+      "saldo_ant_caixa": "369.97",
+      "saldo_ant_banco": "379.60",
+      "saldo_ant_total": "749.57",
+      "total_entradas_periodo": "30049.47",
+      "total_entradas_geral": "30799.04",
+      "total_saidas": "27560.63",
+      "saldo_caixa_fim": "2533.06",
+      "saldo_banco_fim": "705.35",
+      "saldo_total_fim": "3238.41",
+      "reserva_prudente_ant": "33506.00",
+      "reserva_prudente_entradas": "202.66",
+      "reserva_prudente_saldo": "33708.66",
+      "convencao2027_saldo_ant": "4341.47",
+      "convencao2027_movimentacao": "8135.92",
+      "convencao2027_saldo_atual": "12477.39"
+    },
+    {
+      "mes": "Setembro",
+      "ano": "2025",
+      "mes_num": "9",
+      "saldo_ant_caixa": "2533.06",
+      "saldo_ant_banco": "705.35",
+      "saldo_ant_total": "3238.41",
+      "total_entradas_periodo": "21147.13",
+      "total_entradas_geral": "24385.54",
+      "total_saidas": "20283.86",
+      "saldo_caixa_fim": "3128.37",
+      "saldo_banco_fim": "973.31",
+      "saldo_total_fim": "4101.68",
+      "reserva_prudente_ant": "33708.66",
+      "reserva_prudente_entradas": "225.98",
+      "reserva_prudente_saldo": "33934.64",
+      "convencao2027_saldo_ant": "12477.39",
+      "convencao2027_movimentacao": "3781.52",
+      "convencao2027_saldo_atual": "16258.91"
+    },
+    {
+      "mes": "Outubro",
+      "ano": "2025",
+      "mes_num": "10",
+      "saldo_ant_caixa": "3128.37",
+      "saldo_ant_banco": "973.31",
+      "saldo_ant_total": "4101.68",
+      "total_entradas_periodo": "18424.70",
+      "total_entradas_geral": "22526.38",
+      "total_saidas": "18823.62",
+      "saldo_caixa_fim": "2947.56",
+      "saldo_banco_fim": "755.20",
+      "saldo_total_fim": "3702.76",
+      "reserva_prudente_ant": "33934.64",
+      "reserva_prudente_entradas": "381.71",
+      "reserva_prudente_saldo": "34316.35",
+      "convencao2027_saldo_ant": "16258.91",
+      "convencao2027_movimentacao": "6948.06",
+      "convencao2027_saldo_atual": "23206.97"
+    },
+    {
+      "mes": "Novembro",
+      "ano": "2025",
+      "mes_num": "11",
+      "saldo_ant_caixa": "2948.06",
+      "saldo_ant_banco": "755.20",
+      "saldo_ant_total": "3703.26",
+      "total_entradas_periodo": "19118.93",
+      "total_entradas_geral": "22822.19",
+      "total_saidas": "20654.52",
+      "saldo_caixa_fim": "1498.99",
+      "saldo_banco_fim": "668.68",
+      "saldo_total_fim": "2167.67",
+      "reserva_prudente_ant": "34316.35",
+      "reserva_prudente_entradas": "59.39",
+      "reserva_prudente_saldo": "34375.74",
+      "convencao2027_saldo_ant": "23206.97",
+      "convencao2027_movimentacao": "-16005.09",
+      "convencao2027_saldo_atual": "7201.88"
+    },
+    {
+      "mes": "Dezembro",
+      "ano": "2025",
+      "mes_num": "12",
+      "saldo_ant_caixa": "1498.99",
+      "saldo_ant_banco": "668.68",
+      "saldo_ant_total": "2167.67",
+      "total_entradas_periodo": "26462.89",
+      "total_entradas_geral": "28630.56",
+      "total_saidas": "26387.07",
+      "saldo_caixa_fim": "818.64",
+      "saldo_banco_fim": "1424.85",
+      "saldo_total_fim": "2243.49",
+      "reserva_prudente_ant": "34375.74",
+      "reserva_prudente_entradas": "362.14",
+      "reserva_prudente_saldo": "34737.88",
+      "convencao2027_saldo_ant": "7201.88",
+      "convencao2027_movimentacao": "8340.41",
+      "convencao2027_saldo_atual": "15542.29"
+    },
+    {
+      "mes": "Janeiro",
+      "ano": "2026",
+      "mes_num": "13",
+      "saldo_ant_caixa": "818.64",
+      "saldo_ant_banco": "1424.85",
+      "saldo_ant_total": "2243.49",
+      "total_entradas_periodo": "18905.50",
+      "total_entradas_geral": "21148.99",
+      "total_saidas": "14809.69",
+      "saldo_caixa_fim": "2127.00",
+      "saldo_banco_fim": "4212.30",
+      "saldo_total_fim": "6339.30",
+      "reserva_prudente_ant": "34737.88",
+      "reserva_prudente_entradas": "237.16",
+      "reserva_prudente_saldo": "34975.04",
+      "convencao2027_saldo_ant": "",
+      "convencao2027_movimentacao": "",
+      "convencao2027_saldo_atual": ""
+    }
+  ],
+  "despesasCategoria": [
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Funcionário",
+      "valor": "2741.37"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "641.30"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Copa e Limpeza",
+      "valor": "365.83"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Aluguel",
+      "valor": "1425.45"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Energia (ENEL)",
+      "valor": "95.40"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "883.80"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Telefone/Internet",
+      "valor": "373.64"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3161.76"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "5204.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Despesas Bancárias",
+      "valor": "189.61"
+    },
+    {
+      "mes_ano": "2025-01",
+      "categoria": "Outros",
+      "valor": "99.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Funcionário",
+      "valor": "2679.17"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "404.93"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Copa e Limpeza",
+      "valor": "349.65"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Aluguel",
+      "valor": "1425.45"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Energia (ENEL)",
+      "valor": "106.62"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "611.40"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Telefone/Internet",
+      "valor": "371.42"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3107.25"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "3872.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Despesas Bancárias",
+      "valor": "201.31"
+    },
+    {
+      "mes_ano": "2025-02",
+      "categoria": "Outros",
+      "valor": "2230.09"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Funcionário",
+      "valor": "2599.97"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "617.15"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Copa e Limpeza",
+      "valor": "361.07"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Aluguel",
+      "valor": "1425.45"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Energia (ENEL)",
+      "valor": "95.88"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "1720.80"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Telefone/Internet",
+      "valor": "371.42"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Aquisição de Literatura",
+      "valor": "1959.65"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "5849.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Despesas Bancárias",
+      "valor": "187.09"
+    },
+    {
+      "mes_ano": "2025-03",
+      "categoria": "Outros",
+      "valor": "291.85"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Funcionário",
+      "valor": "2679.17"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "232.20"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Copa e Limpeza",
+      "valor": "325.54"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Energia (ENEL)",
+      "valor": "93.92"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "925.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Telefone/Internet",
+      "valor": "371.42"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3070.73"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "8655.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Despesas Bancárias",
+      "valor": "342.21"
+    },
+    {
+      "mes_ano": "2025-04",
+      "categoria": "Outros",
+      "valor": "5696.03"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Funcionário",
+      "valor": "2713.37"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "292.90"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Copa e Limpeza",
+      "valor": "382.19"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Energia (ENEL)",
+      "valor": "101.93"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "647.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Telefone/Internet",
+      "valor": "377.66"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3165.52"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "8025.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Despesas Bancárias",
+      "valor": "240.06"
+    },
+    {
+      "mes_ano": "2025-05",
+      "categoria": "Outros",
+      "valor": "3844.53"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Funcionário",
+      "valor": "3336.80"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "375.80"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Copa e Limpeza",
+      "valor": "282.35"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Energia (ENEL)",
+      "valor": "105.28"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "1120.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Telefone/Internet",
+      "valor": "383.88"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Aquisição de Literatura",
+      "valor": "2698.62"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "6358.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Despesas Bancárias",
+      "valor": "196.45"
+    },
+    {
+      "mes_ano": "2025-06",
+      "categoria": "Outros",
+      "valor": "5450.76"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Funcionário",
+      "valor": "2908.11"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "512.97"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Copa e Limpeza",
+      "valor": "310.43"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Energia (ENEL)",
+      "valor": "91.23"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "382.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Telefone/Internet",
+      "valor": "379.81"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3815.05"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "5990.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Despesas Bancárias",
+      "valor": "267.59"
+    },
+    {
+      "mes_ano": "2025-07",
+      "categoria": "Outros",
+      "valor": "18174.64"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Funcionário",
+      "valor": "2688.77"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "423.80"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Copa e Limpeza",
+      "valor": "395.84"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Energia (ENEL)",
+      "valor": "115.68"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "879.66"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Telefone/Internet",
+      "valor": "382.19"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3858.56"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "8849.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Despesas Bancárias",
+      "valor": "234.52"
+    },
+    {
+      "mes_ano": "2025-08",
+      "categoria": "Outros",
+      "valor": "7186.86"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Funcionário",
+      "valor": "2703.77"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "524.55"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Copa e Limpeza",
+      "valor": "343.29"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Energia (ENEL)",
+      "valor": "106.45"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "1597.83"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Telefone/Internet",
+      "valor": "379.81"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Aquisição de Literatura",
+      "valor": "3743.22"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "8080.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Despesas Bancárias",
+      "valor": "303.14"
+    },
+    {
+      "mes_ano": "2025-09",
+      "categoria": "Outros",
+      "valor": "955.99"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Funcionário",
+      "valor": "2750.97"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "429.45"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Copa e Limpeza",
+      "valor": "285.30"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Energia (ENEL)",
+      "valor": "100.20"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "630.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Telefone/Internet",
+      "valor": "379.81"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Aquisição de Literatura",
+      "valor": "1009.80"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "5603.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Despesas Bancárias",
+      "valor": "291.41"
+    },
+    {
+      "mes_ano": "2025-10",
+      "categoria": "Outros",
+      "valor": "5797.93"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Funcionário",
+      "valor": "3451.60"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "347.54"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Copa e Limpeza",
+      "valor": "359.60"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Energia (ENEL)",
+      "valor": "98.40"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "509.96"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Telefone/Internet",
+      "valor": "382.85"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Aquisição de Literatura",
+      "valor": "4174.02"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "3373.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Despesas Bancárias",
+      "valor": "305.95"
+    },
+    {
+      "mes_ano": "2025-11",
+      "categoria": "Outros",
+      "valor": "6105.85"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Funcionário",
+      "valor": "4016.35"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "384.95"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Copa e Limpeza",
+      "valor": "489.50"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Energia (ENEL)",
+      "valor": "93.22"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "1086.55"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Telefone/Internet",
+      "valor": "381.63"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Aquisição de Literatura",
+      "valor": "4608.23"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "11292.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Despesas Bancárias",
+      "valor": "286.75"
+    },
+    {
+      "mes_ano": "2025-12",
+      "categoria": "Outros",
+      "valor": "2201.64"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Funcionário",
+      "valor": "2875.99"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Material Expediente/Fotocópias",
+      "valor": "340.20"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Copa e Limpeza",
+      "valor": "470.50"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Aluguel",
+      "valor": "1545.75"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Energia (ENEL)",
+      "valor": "88.44"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Despesas Eventuais/Serviços",
+      "valor": "588.81"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Telefone/Internet",
+      "valor": "393.63"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Aquisição de Literatura",
+      "valor": "2669.31"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+      "valor": "1831.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Despesas Bancárias",
+      "valor": "182.19"
+    },
+    {
+      "mes_ano": "2026-01",
+      "categoria": "Outros",
+      "valor": "3823.87"
+    }
+  ],
+  "convencao2027Mensal": [
+    {
+      "mes_ano": "2025-01",
+      "total_arrecadado": "2040.00",
+      "qtd_inscricoes_estimada": "17",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-02",
+      "total_arrecadado": "2880.00",
+      "qtd_inscricoes_estimada": "24",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-03",
+      "total_arrecadado": "3360.00",
+      "qtd_inscricoes_estimada": "28",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-04",
+      "total_arrecadado": "4920.00",
+      "qtd_inscricoes_estimada": "41",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-05",
+      "total_arrecadado": "2400.00",
+      "qtd_inscricoes_estimada": "20",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-06",
+      "total_arrecadado": "4200.00",
+      "qtd_inscricoes_estimada": "35",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-07",
+      "total_arrecadado": "2400.00",
+      "qtd_inscricoes_estimada": "20",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-08",
+      "total_arrecadado": "3600.00",
+      "qtd_inscricoes_estimada": "30",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-09",
+      "total_arrecadado": "3360.00",
+      "qtd_inscricoes_estimada": "28",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-10",
+      "total_arrecadado": "4320.00",
+      "qtd_inscricoes_estimada": "36",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-11",
+      "total_arrecadado": "3960.00",
+      "qtd_inscricoes_estimada": "33",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2025-12",
+      "total_arrecadado": "5040.00",
+      "qtd_inscricoes_estimada": "42",
+      "valor_cota": "120"
+    },
+    {
+      "mes_ano": "2026-01",
+      "total_arrecadado": "1800.00",
+      "qtd_inscricoes_estimada": "15",
+      "valor_cota": "120"
+    }
+  ],
+  "convencao2027Nominal": [
+    {
+      "data": "07/01/2025",
+      "recibo": "23834",
+      "contribuinte": "ROSINHA - (GRUPO BEIRA MAR)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "07/01/2025",
+      "recibo": "23835",
+      "contribuinte": "LIDUINO - (GRUPO N. SRA. DAS GRAÇAS)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "07/01/2025",
+      "recibo": "23836",
+      "contribuinte": "JOÃO IRINEU - (GRUPO JANGADEIRO)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "17/01/2025",
+      "recibo": "23844",
+      "contribuinte": "CD 28 - LITORAL NORTE",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "23/01/2025",
+      "recibo": "23859",
+      "contribuinte": "ROCHA - GRUPO CRIANÇA FELIZ",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "23/01/2025",
+      "recibo": "23860",
+      "contribuinte": "FIGUEIREDO - GRUPO COMUNICAÇÃO",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "23/01/2025",
+      "recibo": "23861",
+      "contribuinte": "ANTONIO CARLOS - GRUPO COMUNICAÇÃO",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "23/01/2025",
+      "recibo": "23862",
+      "contribuinte": "FABRÍCIO - (GRUPO LAGO AZUL)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "23/01/2025",
+      "recibo": "23865",
+      "contribuinte": "DJALMA - (GRUPO PACAJUS)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "24/01/2025",
+      "recibo": "23866",
+      "contribuinte": "JOANINHA - GRUPO PREVIDÊNCIA",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "25/01/2025",
+      "recibo": "23753",
+      "contribuinte": "SOCORRO MONTE",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "27/01/2025",
+      "recibo": "23869",
+      "contribuinte": "GRUPO GERAÇÃO CARIDADE - (JOSINO ALVES)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "28/01/2025",
+      "recibo": "23872",
+      "contribuinte": "GRUPO FIO DE ESPERANÇA",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "29/01/2025",
+      "recibo": "23875",
+      "contribuinte": "CD 12 - GRUPO MONTESE",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "30/01/2025",
+      "recibo": "23877",
+      "contribuinte": "GRUPO PAREI PARA VIVER",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "30/01/2025",
+      "recibo": "23883",
+      "contribuinte": "FRANCISCO DAS CHAGAS - (GRUPO ALVORADA)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "31/01/2025",
+      "recibo": "23885",
+      "contribuinte": "VANUSA - (GRUPO BEM ESTAR)",
+      "valor": "120.00",
+      "mes_ano": "2025-01"
+    },
+    {
+      "data": "02/02/2025",
+      "recibo": "23754",
+      "contribuinte": "GIRLANDIA - GRUPO ANTONIO DIOGO",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "03/02/2025",
+      "recibo": "23893",
+      "contribuinte": "LUCINDA - GRUPO PREVIDÊNCIA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "04/02/2025",
+      "recibo": "23894",
+      "contribuinte": "CD 16 - ZONA SUL",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "04/02/2025",
+      "recibo": "23895",
+      "contribuinte": "CD 16 - ZONA SUL",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "05/02/2025",
+      "recibo": "23898",
+      "contribuinte": "JOANA DARC",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "06/02/2025",
+      "recibo": "23899",
+      "contribuinte": "CITÔE",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "06/02/2025",
+      "recibo": "23900",
+      "contribuinte": "ALEXANDRE - (GRUPO PACAJUS)",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "06/02/2025",
+      "recibo": "23755",
+      "contribuinte": "FERNANDO GOMES",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "11/02/2025",
+      "recibo": "23907",
+      "contribuinte": "RAIMUNDO BRAZ - GRUPO MESSEJANA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "11/02/2025",
+      "recibo": "23908",
+      "contribuinte": "CHARLES MAGNO - GRUPO MESSEJANA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "12/02/2025",
+      "recibo": "23909",
+      "contribuinte": "ALEXANDRE - GRUPO MESSEJANA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "17/02/2025",
+      "recibo": "23917",
+      "contribuinte": "CD 21 - CAUCAIA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "18/02/2025",
+      "recibo": "23922",
+      "contribuinte": "GRUPO GERAÇÃO CARIDADE - (LEITE)",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "18/02/2025",
+      "recibo": "23923",
+      "contribuinte": "CD 11 - CENTRO SUL",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "18/02/2025",
+      "recibo": "23924",
+      "contribuinte": "EVANILDO",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "18/02/2025",
+      "recibo": "23925",
+      "contribuinte": "CD 19 - PALMEIRAS",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "22/02/2025",
+      "recibo": "23929",
+      "contribuinte": "GRUPO ALVORECER",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "24/02/2025",
+      "recibo": "23931",
+      "contribuinte": "GRUPO ALVORADA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "24/02/2025",
+      "recibo": "23932",
+      "contribuinte": "GRUPO ARATURI",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "25/02/2025",
+      "recibo": "23934",
+      "contribuinte": "GRUPO MANGABEIRA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "26/02/2025",
+      "recibo": "23944",
+      "contribuinte": "FLÁVIO - GRUPO ALVORADA",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "27/02/2025",
+      "recibo": "23945",
+      "contribuinte": "GRUPO PRIMEIRO PASSO",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "28/02/2025",
+      "recibo": "23952",
+      "contribuinte": "CD 28 - LITORAL NORTE",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "28/02/2025",
+      "recibo": "23957",
+      "contribuinte": "CD 12 - GRANDE MONTESE",
+      "valor": "120.00",
+      "mes_ano": "2025-02"
+    },
+    {
+      "data": "08/03/2025",
+      "recibo": "24001",
+      "contribuinte": "LEONARDO DE ARAUJO - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "09/03/2025",
+      "recibo": "24002",
+      "contribuinte": "PAULO CÉSAR FERREIRA - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "11/03/2025",
+      "recibo": "23968",
+      "contribuinte": "CD 16 - ZONA SUL",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "14/03/2025",
+      "recibo": "23970",
+      "contribuinte": "RAIMUNDO ALVES",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "14/03/2025",
+      "recibo": "23971",
+      "contribuinte": "LINDOMAR",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "17/03/2025",
+      "recibo": "23975",
+      "contribuinte": "GRUPO MESSEJANA - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "17/03/2025",
+      "recibo": "23978",
+      "contribuinte": "CD 19 - PALMEIRAS - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "17/03/2025",
+      "recibo": "23979",
+      "contribuinte": "CD 19 - PALMEIRAS",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "18/03/2025",
+      "recibo": "23986",
+      "contribuinte": "CD 28 - LITORAL NORTE - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "18/03/2025",
+      "recibo": "23987",
+      "contribuinte": "GRUPO GERAÇÃO CARIDADE - (PIX)",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "20/03/2025",
+      "recibo": "24003",
+      "contribuinte": "EMANUEL PYTITINGA - PIX",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "22/03/2025",
+      "recibo": "23992",
+      "contribuinte": "CD 16 - ZONA SUL",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "23/03/2025",
+      "recibo": "24054",
+      "contribuinte": "CD 01 - SOARES MORENO",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "27/03/2025",
+      "recibo": "24004",
+      "contribuinte": "ERIVALDO VIEIRA GUIMARÃES - PIX",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "27/03/2025",
+      "recibo": "24005",
+      "contribuinte": "ERIVALDO ADAIL P. GUIMARÃES",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "29/03/2025",
+      "recibo": "24000",
+      "contribuinte": "CD 21 - CAUCAIA",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "29/03/2025",
+      "recibo": "24065",
+      "contribuinte": "WALTER LEITE (GRUPO ALVORADA) - PIX",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "31/03/2025",
+      "recibo": "24175",
+      "contribuinte": "CD 26 - MACIÇO BATURITÉ - PIX",
+      "valor": "1200.00",
+      "mes_ano": "2025-03"
+    },
+    {
+      "data": "31/03/2025",
+      "recibo": "24071",
+      "contribuinte": "GRUPO RIO SIQUEIRA - PIX",
+      "valor": "120.00",
+      "mes_ano": "2025-03"
+    }
+  ],
+  "entradasRubrica": [
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4917.50"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Venda de Literatura",
+      "valor": "4764.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Relatório Anual",
+      "valor": "453.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Revista Vivência",
+      "valor": "660.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Receitas da Área",
+      "valor": "255.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "790.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "68.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "2040.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Camisas da Convenção - Vendas",
+      "valor": "250.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Depósito não identificado",
+      "valor": "65.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Sacola da Gratidão ESG",
+      "valor": "150.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "ENCMCD'S",
+      "valor": "384.00"
+    },
+    {
+      "mes_ano": "2025-01",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "372.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "5109.45"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Venda de Literatura",
+      "valor": "1900.15"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Relatório Anual",
+      "valor": "1172.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Revista Vivência",
+      "valor": "550.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "890.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "65.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "2880.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Depósito não identificado",
+      "valor": "20.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "330.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "ENCMCD'S",
+      "valor": "1130.00"
+    },
+    {
+      "mes_ano": "2025-02",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "487.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4132.87"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Venda de Literatura",
+      "valor": "5015.15"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Relatório Anual",
+      "valor": "1005.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Revista Vivência",
+      "valor": "770.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "680.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Receitas da Área",
+      "valor": "634.21"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "3360.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Depósito não identificado",
+      "valor": "220.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Encontro Estrutural RSGs",
+      "valor": "3050.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Camisas da Convenção - Vendas",
+      "valor": "350.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "ENCMCD'S",
+      "valor": "1450.00"
+    },
+    {
+      "mes_ano": "2025-03",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "220.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "5491.50"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Venda de Literatura",
+      "valor": "4203.80"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Relatório Anual",
+      "valor": "1476.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Revista Vivência",
+      "valor": "770.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "665.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Receitas da Área",
+      "valor": "364.15"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "170.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "4920.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Depósito não identificado",
+      "valor": "90.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Encontro Estrutural RSGs",
+      "valor": "2775.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "940.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "ENCMCD'S",
+      "valor": "3045.00"
+    },
+    {
+      "mes_ano": "2025-04",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "220.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4549.50"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Venda de Literatura",
+      "valor": "3423.10"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Relatório Anual",
+      "valor": "1365.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Revista Vivência",
+      "valor": "700.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1085.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Receitas da Área",
+      "valor": "235.80"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "2400.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Vendas Camisas Convenção",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Depósito não identificado",
+      "valor": "10.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "609.41"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Contribuição Específica Seminário",
+      "valor": "535.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "ENCMCD'S",
+      "valor": "1755.00"
+    },
+    {
+      "mes_ano": "2025-05",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "5988.25"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Venda de Literatura",
+      "valor": "2977.80"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Relatório Anual",
+      "valor": "2894.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Revista Vivência",
+      "valor": "470.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "462.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Receitas da Área",
+      "valor": "945.80"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "180.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "4200.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Depósito não identificado",
+      "valor": "10.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "610.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "Contribuição Específica Seminário",
+      "valor": "1662.00"
+    },
+    {
+      "mes_ano": "2025-06",
+      "rubrica": "ENCMCD'S",
+      "valor": "2832.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "5213.29"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Venda de Literatura",
+      "valor": "2702.70"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Relatório Anual",
+      "valor": "2176.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Revista Vivência",
+      "valor": "360.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1418.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Receitas da Área",
+      "valor": "1156.83"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "2400.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Depósito não identificado",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "1050.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "Resgate em Duplicidade (BB)",
+      "valor": "15000.00"
+    },
+    {
+      "mes_ano": "2025-07",
+      "rubrica": "ENCMCD'S",
+      "valor": "1644.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4861.02"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Venda de Literatura",
+      "valor": "4912.95"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Relatório Anual",
+      "valor": "2369.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Revista Vivência",
+      "valor": "600.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "9254.50"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Receitas da Área",
+      "valor": "598.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "410.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "3600.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Depósito não identificado",
+      "valor": "65.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "1640.00"
+    },
+    {
+      "mes_ano": "2025-08",
+      "rubrica": "ENCMCD'S",
+      "valor": "1689.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4739.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Venda de Literatura",
+      "valor": "4741.80"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Relatório Anual",
+      "valor": "3668.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Revista Vivência",
+      "valor": "360.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "2551.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Receitas da Área",
+      "valor": "313.50"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "230.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "3360.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Camisas da Convenção - Vendas",
+      "valor": "100.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Depósito não identificado",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "507.83"
+    },
+    {
+      "mes_ano": "2025-09",
+      "rubrica": "ENCMCD'S",
+      "valor": "476.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4959.30"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Venda de Literatura",
+      "valor": "3654.40"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Relatório Anual",
+      "valor": "2644.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1551.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Receitas da Área",
+      "valor": "651.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "70.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "4320.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "370.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "ENCMCD'S",
+      "valor": "200.00"
+    },
+    {
+      "mes_ano": "2025-10",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "5.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4870.50"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Venda de Literatura",
+      "valor": "2528.90"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Relatório Anual",
+      "valor": "2488.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1595.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "70.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Contribuição 13º Salário Funcionário",
+      "valor": "789.70"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "ENCMCD'S",
+      "valor": "150.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "3960.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Depósito não identificado",
+      "valor": "50.00"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Sacola da Gratidão",
+      "valor": "766.50"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "1532.23"
+    },
+    {
+      "mes_ano": "2025-11",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "130.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "5547.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Venda de Literatura",
+      "valor": "5597.70"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Relatório Anual",
+      "valor": "4135.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Revista Vivência",
+      "valor": "960.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1390.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Receitas da Área",
+      "valor": "309.87"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "330.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Contribuição 13º Salário Funcionário",
+      "valor": "555.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "ENCMCD'S",
+      "valor": "240.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "5040.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Depósito não identificado",
+      "valor": "20.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Sacola da Gratidão",
+      "valor": "1459.00"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "472.32"
+    },
+    {
+      "mes_ano": "2025-12",
+      "rubrica": "Contas a Receber (Pagas)",
+      "valor": "320.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+      "valor": "4329.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Venda de Literatura",
+      "valor": "3881.20"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Relatório Anual",
+      "valor": "948.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Receitas da Área",
+      "valor": "171.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Revista Vivência",
+      "valor": "480.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "ENCMCD'S",
+      "valor": "966.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Seminário do Nordeste",
+      "valor": "1361.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Contribuição para o CTO",
+      "valor": "10.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Convenção Nacional 2027",
+      "valor": "1800.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Saque Conta Seminário Nordeste",
+      "valor": "2000.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Contribuição Específica ESL-Sede",
+      "valor": "696.80"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Recebimento Débitos",
+      "valor": "660.00"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Contribuição Específica AR-CONDICIONADO",
+      "valor": "1562.50"
+    },
+    {
+      "mes_ano": "2026-01",
+      "rubrica": "Depósito não identificado",
+      "valor": "40.00"
+    }
+  ],
+  "extratoBancarioJan2025": [
+    {
+      "data": "13/01/2025",
+      "historico": "PIX - RECEBIDO - Maria de Fatim",
+      "documento": "367.822.212.461.891",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "1096.50"
+    },
+    {
+      "data": "13/01/2025",
+      "historico": "MENSALID SEGURO BB SEGUROS",
+      "documento": "12.695",
+      "valor": "50.49",
+      "tipo": "D",
+      "saldo": "1046.01"
+    },
+    {
+      "data": "14/01/2025",
+      "historico": "PIX - RECEBIDO - Agnelo Marq",
+      "documento": "141.518.228.643.982",
+      "valor": "26.80",
+      "tipo": "C",
+      "saldo": "1072.81"
+    },
+    {
+      "data": "14/01/2025",
+      "historico": "PIX - RECEBIDO - Raimundo Co",
+      "documento": "141.626.308.213.072",
+      "valor": "300.00",
+      "tipo": "C",
+      "saldo": "1372.81"
+    },
+    {
+      "data": "14/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.891",
+      "valor": "426.00",
+      "tipo": "D",
+      "saldo": "946.81"
+    },
+    {
+      "data": "15/01/2025",
+      "historico": "PIX - RECEBIDO - George Ande",
+      "documento": "150.943.046.277.282",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "996.81"
+    },
+    {
+      "data": "15/01/2025",
+      "historico": "PIX-REC QR CODE - Jose Joatan So",
+      "documento": "369.585.233.661.721",
+      "valor": "82.00",
+      "tipo": "C",
+      "saldo": "1078.81"
+    },
+    {
+      "data": "15/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.892",
+      "valor": "286.00",
+      "tipo": "D",
+      "saldo": "792.81"
+    },
+    {
+      "data": "15/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "880.151.200.129.420",
+      "valor": "0.81",
+      "tipo": "D",
+      "saldo": "792.00"
+    },
+    {
+      "data": "17/01/2025",
+      "historico": "PIX - RECEBIDO - Fernando Si",
+      "documento": "171.519.128.637.252",
+      "valor": "27.80",
+      "tipo": "C",
+      "saldo": "819.80"
+    },
+    {
+      "data": "17/01/2025",
+      "historico": "PIX - RECEBIDO - Francisco Orle",
+      "documento": "371.144.480.885.891",
+      "valor": "295.00",
+      "tipo": "C",
+      "saldo": "1114.80"
+    },
+    {
+      "data": "17/01/2025",
+      "historico": "PIX - RECEBIDO - Francisco Mace",
+      "documento": "371.175.831.122.761",
+      "valor": "74.00",
+      "tipo": "C",
+      "saldo": "1188.80"
+    },
+    {
+      "data": "20/01/2025",
+      "historico": "PIX-REC QR CODE - Vandeir Jos",
+      "documento": "180.954.305.059.262",
+      "valor": "59.00",
+      "tipo": "C",
+      "saldo": "1247.80"
+    },
+    {
+      "data": "20/01/2025",
+      "historico": "PIX - RECEBIDO - Nubia Maria",
+      "documento": "201.626.155.710.552",
+      "valor": "275.00",
+      "tipo": "C",
+      "saldo": "1522.80"
+    },
+    {
+      "data": "20/01/2025",
+      "historico": "PIX - RECEBIDO - Hernandes de A",
+      "documento": "373.769.351.073.991",
+      "valor": "80.00",
+      "tipo": "C",
+      "saldo": "1602.80"
+    },
+    {
+      "data": "20/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.894",
+      "valor": "688.40",
+      "tipo": "D",
+      "saldo": "914.40"
+    },
+    {
+      "data": "20/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "830.201.200.738.936",
+      "valor": "0.58",
+      "tipo": "D",
+      "saldo": "913.82"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX-REC QR CODE - Roberto Sil",
+      "documento": "211.400.393.806.332",
+      "valor": "26.80",
+      "tipo": "C",
+      "saldo": "940.62"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX - RECEBIDO - Alberto Jose D",
+      "documento": "374.555.726.007.801",
+      "valor": "232.50",
+      "tipo": "C",
+      "saldo": "1173.12"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX - RECEBIDO - Antonio Franci",
+      "documento": "374.618.330.676.291",
+      "valor": "10.00",
+      "tipo": "C",
+      "saldo": "1183.12"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX - RECEBIDO - Jose Mendes Ju",
+      "documento": "374.632.007.075.621",
+      "valor": "100.00",
+      "tipo": "C",
+      "saldo": "1283.12"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX-REC QR CODE - Roberto Silva",
+      "documento": "374.793.010.422.311",
+      "valor": "11.20",
+      "tipo": "C",
+      "saldo": "1294.32"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "PIX-REC QR CODE - Eduardo Amorim",
+      "documento": "374.859.627.225.231",
+      "valor": "275.00",
+      "tipo": "C",
+      "saldo": "1569.32"
+    },
+    {
+      "data": "21/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "890.211.200.272.204",
+      "valor": "3.09",
+      "tipo": "D",
+      "saldo": "1566.23"
+    },
+    {
+      "data": "22/01/2025",
+      "historico": "PIX - RECEBIDO - Antonio Car",
+      "documento": "220.229.398.011.752",
+      "valor": "340.00",
+      "tipo": "C",
+      "saldo": "1906.23"
+    },
+    {
+      "data": "22/01/2025",
+      "historico": "PIX - RECEBIDO - Liduina Bez",
+      "documento": "221.708.516.360.912",
+      "valor": "480.00",
+      "tipo": "C",
+      "saldo": "2386.23"
+    },
+    {
+      "data": "22/01/2025",
+      "historico": "PIX - RECEBIDO - Joao Paulo",
+      "documento": "222.108.220.075.212",
+      "valor": "10.00",
+      "tipo": "C",
+      "saldo": "2396.23"
+    },
+    {
+      "data": "22/01/2025",
+      "historico": "PIX - RECEBIDO - Eduardo Amorim",
+      "documento": "375.587.053.575.281",
+      "valor": "150.00",
+      "tipo": "C",
+      "saldo": "2546.23"
+    },
+    {
+      "data": "23/01/2025",
+      "historico": "PIX - RECEBIDO - Jose Mendes",
+      "documento": "231.603.038.711.272",
+      "valor": "101.70",
+      "tipo": "C",
+      "saldo": "2647.93"
+    },
+    {
+      "data": "23/01/2025",
+      "historico": "PIX - RECEBIDO - Rogerio Ara",
+      "documento": "231.630.102.058.122",
+      "valor": "120.00",
+      "tipo": "C",
+      "saldo": "2767.93"
+    },
+    {
+      "data": "23/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.895",
+      "valor": "930.00",
+      "tipo": "D",
+      "saldo": "1837.93"
+    },
+    {
+      "data": "23/01/2025",
+      "historico": "TAR PROCES CHEQ",
+      "documento": "810.231.100.110.884",
+      "valor": "16.80",
+      "tipo": "D",
+      "saldo": "1821.13"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "PIX - RECEBIDO - Jose Mendes",
+      "documento": "241.529.104.439.402",
+      "valor": "284.15",
+      "tipo": "C",
+      "saldo": "2105.28"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "PIX - RECEBIDO - Jose Ivan D",
+      "documento": "241.532.476.419.912",
+      "valor": "270.00",
+      "tipo": "C",
+      "saldo": "2375.28"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "PIX - RECEBIDO - Rogerio De",
+      "documento": "241.650.499.958.392",
+      "valor": "90.00",
+      "tipo": "C",
+      "saldo": "2465.28"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "PIX - RECEBIDO - Liduina Bezerr",
+      "documento": "377.197.593.462.801",
+      "valor": "120.00",
+      "tipo": "C",
+      "saldo": "2585.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "TRANSF RECEBIDA - Francisco Chagas Aniceto",
+      "documento": "600.613.000.005.037",
+      "valor": "120.00",
+      "tipo": "C",
+      "saldo": "2705.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "PIX-REC QR CODE - Felipe Barb",
+      "documento": "251.056.517.952.002",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "2755.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "PIX-REC QR CODE - Jose Ribama",
+      "documento": "251.130.216.239.262",
+      "valor": "285.00",
+      "tipo": "C",
+      "saldo": "3040.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "PIX - RECEBIDO - Erivaldo Vi",
+      "documento": "271.038.338.452.442",
+      "valor": "278.00",
+      "tipo": "C",
+      "saldo": "3318.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "PIX-REC QR CODE - Alexsandro Roc",
+      "documento": "378.109.682.610.571",
+      "valor": "62.00",
+      "tipo": "C",
+      "saldo": "3380.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "PIX - RECEBIDO - Francisco Mace",
+      "documento": "380.006.411.491.471",
+      "valor": "94.00",
+      "tipo": "C",
+      "saldo": "3474.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.896",
+      "valor": "3000.00",
+      "tipo": "D",
+      "saldo": "474.28"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "TAR PACOTE SERV",
+      "documento": "850.271.100.719.074",
+      "valor": "73.80",
+      "tipo": "D",
+      "saldo": "400.48"
+    },
+    {
+      "data": "27/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "890.271.200.225.022",
+      "valor": "3.92",
+      "tipo": "D",
+      "saldo": "396.56"
+    },
+    {
+      "data": "28/01/2025",
+      "historico": "PIX - RECEBIDO - Antonio Jos",
+      "documento": "281.152.441.461.192",
+      "valor": "30.00",
+      "tipo": "C",
+      "saldo": "426.56"
+    },
+    {
+      "data": "28/01/2025",
+      "historico": "PIX - RECEBIDO - Fabricio Ferre",
+      "documento": "380.719.728.086.271",
+      "valor": "90.00",
+      "tipo": "C",
+      "saldo": "516.56"
+    },
+    {
+      "data": "28/01/2025",
+      "historico": "TAR PROCES CHEQ",
+      "documento": "810.280.700.251.938",
+      "valor": "16.80",
+      "tipo": "D",
+      "saldo": "499.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "TRANSF RECEBIDA - Francisco Glauco G Basto",
+      "documento": "603.472.000.258.894",
+      "valor": "363.00",
+      "tipo": "C",
+      "saldo": "862.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "PIX - RECEBIDO - Julio Lima",
+      "documento": "291.946.382.651.762",
+      "valor": "15.00",
+      "tipo": "C",
+      "saldo": "877.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "PIX-REC QR CODE - Pedro Irineu D",
+      "documento": "381.602.449.528.991",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "927.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "PIX - RECEBIDO - Lasaro Oliveir",
+      "documento": "381.784.678.795.321",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "977.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "PIX - RECEBIDO - Maria Claudia",
+      "documento": "381.998.504.551.001",
+      "valor": "50.00",
+      "tipo": "C",
+      "saldo": "1027.76"
+    },
+    {
+      "data": "29/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "840.291.200.030.757",
+      "valor": "0.49",
+      "tipo": "D",
+      "saldo": "1027.27"
+    },
+    {
+      "data": "30/01/2025",
+      "historico": "PIX-REC QR CODE - Jose Valdir",
+      "documento": "301.028.305.378.212",
+      "valor": "580.00",
+      "tipo": "C",
+      "saldo": "1607.27"
+    },
+    {
+      "data": "30/01/2025",
+      "historico": "PIX - RECEBIDO - Raimundo No",
+      "documento": "301.113.445.879.872",
+      "valor": "10.00",
+      "tipo": "C",
+      "saldo": "1617.27"
+    },
+    {
+      "data": "30/01/2025",
+      "historico": "PIX - RECEBIDO - Jose Ribama",
+      "documento": "301.357.302.034.382",
+      "valor": "120.00",
+      "tipo": "C",
+      "saldo": "1737.27"
+    },
+    {
+      "data": "30/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "890.301.200.283.053",
+      "valor": "5.74",
+      "tipo": "D",
+      "saldo": "1731.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "PIX - RECEBIDO - Antoniel Am",
+      "documento": "310.801.560.993.742",
+      "valor": "110.00",
+      "tipo": "C",
+      "saldo": "1841.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "PIX - RECEBIDO - Erivaldo Vi",
+      "documento": "310.916.197.007.582",
+      "valor": "1006.00",
+      "tipo": "C",
+      "saldo": "2847.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "PIX - RECEBIDO - Francisco M",
+      "documento": "310.920.225.918.712",
+      "valor": "200.00",
+      "tipo": "C",
+      "saldo": "3047.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "PIX-REC QR CODE - BS Institui",
+      "documento": "383.206.532.232.931",
+      "valor": "30.00",
+      "tipo": "C",
+      "saldo": "3077.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "CH PAGO AG",
+      "documento": "850.898",
+      "valor": "2000.00",
+      "tipo": "D",
+      "saldo": "1077.53"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "TAR PROCES CHEQ",
+      "documento": "880.311.200.218.343",
+      "valor": "16.80",
+      "tipo": "D",
+      "saldo": "1060.73"
+    },
+    {
+      "data": "31/01/2025",
+      "historico": "TARIFA PIX",
+      "documento": "890.311.200.317.525",
+      "valor": "0.29",
+      "tipo": "D",
+      "saldo": "1060.44"
+    }
+  ],
+  "poupexJan2025": [
+    {
+      "data": "03/01/2025",
+      "historico": "741-Reajuste Monetário BACEN",
+      "documento": "675-0",
+      "valor": "2.72",
+      "origem": "rendimento"
+    },
+    {
+      "data": "03/01/2025",
+      "historico": "737-Juros",
+      "documento": "675-0",
+      "valor": "15.58",
+      "origem": "rendimento"
+    },
+    {
+      "data": "03/01/2025",
+      "historico": "290-Imposto de Renda",
+      "documento": "675-0",
+      "valor": "-4.11",
+      "origem": "rendimento"
+    },
+    {
+      "data": "03/01/2025",
+      "historico": "741-Reajuste Monetário BACEN",
+      "documento": "675-0",
+      "valor": "0.18",
+      "origem": "rendimento"
+    },
+    {
+      "data": "03/01/2025",
+      "historico": "737-Juros",
+      "documento": "675-0",
+      "valor": "1.25",
+      "origem": "rendimento"
+    },
+    {
+      "data": "03/01/2025",
+      "historico": "290-Imposto de Renda",
+      "documento": "675-0",
+      "valor": "-0.32",
+      "origem": "rendimento"
+    },
+    {
+      "data": "06/01/2025",
+      "historico": "615-PIX Recebido QR Code - FAUSTO Z EL DI",
+      "documento": "947.348.401",
+      "valor": "500.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "09/01/2025",
+      "historico": "502-Dep dinheiro inter agência",
+      "documento": "16.938",
+      "valor": "1000.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "09/01/2025",
+      "historico": "615-PIX Recebido QR Code - ANTONIO ALE",
+      "documento": "495.256.582",
+      "valor": "500.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "10/01/2025",
+      "historico": "737-Juros",
+      "documento": "675-0",
+      "valor": "20.68",
+      "origem": "rendimento"
+    },
+    {
+      "data": "10/01/2025",
+      "historico": "290-Imposto de Renda",
+      "documento": "675-0",
+      "valor": "-5.66",
+      "origem": "rendimento"
+    },
+    {
+      "data": "10/01/2025",
+      "historico": "741-Reajuste Monetário BACEN",
+      "documento": "675-0",
+      "valor": "4.49",
+      "origem": "rendimento"
+    },
+    {
+      "data": "13/01/2025",
+      "historico": "615-PIX Recebido QR Code - FAUSTO Z EL DI",
+      "documento": "496.072.991",
+      "valor": "1000.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "13/01/2025",
+      "historico": "615-PIX Recebido - ROGERIO ARA",
+      "documento": "431.081.142",
+      "valor": "100.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "23/01/2025",
+      "historico": "615-PIX Recebido - ROGERIO ARAUJO",
+      "documento": "667.189.281",
+      "valor": "50.00",
+      "origem": "deposito_direto"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "741-Reajuste Monetário BACEN",
+      "documento": "675-0",
+      "valor": "2.57",
+      "origem": "rendimento"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "737-Juros",
+      "documento": "675-0",
+      "valor": "11.01",
+      "origem": "rendimento"
+    },
+    {
+      "data": "24/01/2025",
+      "historico": "290-Imposto de Renda",
+      "documento": "675-0",
+      "valor": "-3.05",
+      "origem": "rendimento"
+    },
+    {
+      "data": "30/01/2025",
+      "historico": "615-PIX Recebido - FAUSTO Z EL",
+      "documento": "376.741.972",
+      "valor": "400.00",
+      "origem": "deposito_direto"
+    }
+  ],
+  "inconsistencias": [
+    {
+      "mes_ano": "2025-01",
+      "severidade": "alta",
+      "titulo": "Depósitos diretos na poupança Conv. 2027 sem registro nominal",
+      "descricao": "R$ 3.550,00 entraram via PIX/depósito direto na Poupança Poupex (Variação 96 - Convenção 2027) em janeiro/2025, sem passar pela conta corrente. Desses, apenas R$ 2.040,00 (17 inscrições x R$120) constam na tabela nominal de contribuintes da rubrica 'Convenção Nacional 2027'. Os depositantes Fausto Z El Di (R$1.900,00 em 3 PIX), Antonio Ale (R$500,00), Rogério Ara/Araújo (R$150,00) e um depósito em espécie inter-agência de R$1.000,00 não aparecem na lista de contribuintes divulgada.",
+      "valor_envolvido": "1510.00",
+      "paginas_origem": "21-24 (extrato bancário e poupanças)"
+    },
+    {
+      "mes_ano": "2025-06",
+      "severidade": "media",
+      "titulo": "Saque de R$19.000 da poupança sem destino identificável",
+      "descricao": "Duas transferências de R$9.500,00 (13/06 e 24/06) saíram da Poupança Poupex (Convenção 2027) para a conta corrente, somando R$19.000,00. Ao cair na conta corrente, o valor se mistura ao caixa geral do ESL/Área 27 e não é mais rastreável como gasto específico da Convenção. Nos dias seguintes houve R$15.176,00 em cheques pagos em agência, mas nenhum documento ou nota identifica se esses cheques têm relação com a Convenção ou com despesas correntes da Área (literatura, aluguel, funcionário).",
+      "valor_envolvido": "19000.00",
+      "paginas_origem": "21-30 (extrato conta corrente e poupança Poupex)"
+    },
+    {
+      "mes_ano": "2025-07",
+      "severidade": "baixa",
+      "titulo": "Saída da poupança com destino identificado e plausível",
+      "descricao": "R$15.000,00 saíram da Poupança Poupex (Convenção 2027) em 17/07/2025 e foram registrados como 'RESGATE EM DUPLICIDADE' no Demonstrativo, com estorno do mesmo valor no mesmo mês -- ou seja, o próprio ESL identificou e corrigiu uma duplicidade bancária. Já em 22/07/2025, uma TED de R$15.000,00 foi enviada para uma conta identificada como 'JUNTA DE SERV...' (Banco 341, Ag 0180) -- compatível com repasse a uma Junta de Serviços Gerais de AA (JUNAAB ou Tesouraria Nacional/CNAAB). Este é o único dos três meses analisados com destino claramente identificável e plausível para o repasse.",
+      "valor_envolvido": "15000.00",
+      "paginas_origem": "22-31 (extrato conta corrente e poupança Poupex)"
+    },
+    {
+      "mes_ano": "2025-11",
+      "severidade": "alta",
+      "titulo": "Saque de R$20.000,00 via cheque sem qualquer documentação ou referência",
+      "descricao": "Em 13/11/2025, R$22.700,00 saíram da Poupança Poupex (Convenção 2027) para a conta corrente. No mesmo dia, dois débitos consumiram quase todo o valor: R$3.400,00 em 'CH PAGO AG' e R$20.000,00 em 'CHEQ COMPENSADO' -- o maior saque isolado identificado em todo o período analisado. Nenhuma tabela do Demonstrativo de Novembro (Demonstração dos Repasses, despesas, ou notas do Conselho Fiscal) menciona, referencia ou explica este valor. É o alerta de maior severidade e maior valor encontrado até agora -- recomenda-se solicitar ao Conselho Fiscal o comprovante/cópia do cheque nº correspondente ao documento 851.026.",
+      "valor_envolvido": "20000.00",
+      "paginas_origem": "26-36 (extrato conta corrente e poupança Poupex)"
+    }
+  ],
+  "auditoriaTransferencias": [
+    {
+      "mes_ano": "2025-06",
+      "data": "13/06/2025",
+      "valor_transferido": "9500.00",
+      "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+      "destino_final": "Caixa geral do ESL",
+      "status": "nao_rastreavel",
+      "detalhe": "Somou-se ao caixa geral; não há nota vinculando a saques específicos a esta transferência"
+    },
+    {
+      "mes_ano": "2025-06",
+      "data": "24/06/2025",
+      "valor_transferido": "9500.00",
+      "destino_imediato": "Conta Corrente (Acerto de Movimentos)",
+      "destino_final": "Caixa geral do ESL",
+      "status": "nao_rastreavel",
+      "detalhe": "Somou-se ao caixa geral; em junho houve R$15.176",
+      "null": [
+        "00 em cheques pagos após as transferências"
+      ]
+    },
+    {
+      "mes_ano": "2025-07",
+      "data": "17/07/2025",
+      "valor_transferido": "15000.00",
+      "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+      "destino_final": "Estornado no mesmo mês",
+      "status": "resolvido",
+      "detalhe": "Identificado pelo próprio ESL como 'Resgate em Duplicidade' e estornado integralmente"
+    },
+    {
+      "mes_ano": "2025-07",
+      "data": "22/07/2025",
+      "valor_transferido": "15000.00",
+      "destino_imediato": "TED para \"JUNTA DE SERV...\" (Banco 341 Ag 0180)",
+      "destino_final": "Provável JUNAAB/Tesouraria Nacional",
+      "status": "provavel_ok",
+      "detalhe": "TED com destinatário identificável no extrato; padrão compatível com repasse oficial a Junta de Serviços"
+    },
+    {
+      "mes_ano": "2025-11",
+      "data": "13/11/2025",
+      "valor_transferido": "22700.00",
+      "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+      "destino_final": "Não identificado",
+      "status": "sem_documentacao",
+      "detalhe": "R$3.400,00 em CH PAGO AG + R$20.000,00 em CHEQ COMPENSADO no mesmo dia, sem nenhuma referência em nenhuma tabela do Demonstrativo de Novembro"
+    }
+  ],
+  "importacoes": [
+    {
+      "mes_ano": "2025-02",
+      "arquivos": [
+        {
+          "nome": "02 - DEMONSTRATIVO FINANCEIRO - FEVEREIRO 2025.pdf",
+          "tamanho": 25058170
+        }
+      ],
+      "importado_em": "2026-06-20T02:41:47.205Z",
+      "qtd_rubricas_entrada": 11,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-03",
+      "arquivos": [
+        {
+          "nome": "03 - DEMONSTRATIVO FINANCEIRO - MARÇO 2025.pdf.pdf",
+          "tamanho": 26376981
+        }
+      ],
+      "importado_em": "2026-06-20T02:42:01.341Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-01",
+      "arquivos": [
+        {
+          "nome": "01 - DEMONSTRATIVO FINANCEIRO JANEIRO DE 2025.pdf.pdf",
+          "tamanho": 25323945
+        }
+      ],
+      "importado_em": "2026-06-20T02:42:33.421Z",
+      "qtd_rubricas_entrada": 13,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-04",
+      "arquivos": [
+        {
+          "nome": "04 - DEMONSTRATIVO FINANCEIRO - ABRIL 2025.pdf",
+          "tamanho": 36899700
+        }
+      ],
+      "importado_em": "2026-06-20T02:42:55.301Z",
+      "qtd_rubricas_entrada": 13,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-05",
+      "arquivos": [
+        {
+          "nome": "05 - DEMONSTRATIVO FINANCEIRO - MAIO 2025.pdf.pdf",
+          "tamanho": 2456275
+        }
+      ],
+      "importado_em": "2026-06-20T02:43:18.812Z",
+      "qtd_rubricas_entrada": 14,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-06",
+      "arquivos": [
+        {
+          "nome": "06 - DEMONSTRATIVO FINANCEIRO - JUNHO 2025.pdf",
+          "tamanho": 29297714
+        }
+      ],
+      "importado_em": "2026-06-20T02:43:31.205Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-07",
+      "arquivos": [
+        {
+          "nome": "07 - DEMONSTRATIVO FINANCEIRO - JULHO 2025.pdf.pdf",
+          "tamanho": 29171051
+        }
+      ],
+      "importado_em": "2026-06-20T02:43:44.004Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-08",
+      "arquivos": [
+        {
+          "nome": "08 - DEMONSTRATIVO FINANCEIRO - AGOSTO 2025.pdf.pdf",
+          "tamanho": 20491117
+        }
+      ],
+      "importado_em": "2026-06-20T02:43:55.693Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-09",
+      "arquivos": [
+        {
+          "nome": "09 - DEMONSTRATIVO FINANCEIRO - SETEMBRO 2025.pdf",
+          "tamanho": 32132848
+        }
+      ],
+      "importado_em": "2026-06-20T02:44:09.748Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-10",
+      "arquivos": [
+        {
+          "nome": "10 - DEMONSTRATIVO FINANCEIRO OUTUBRO-2025.pdf",
+          "tamanho": 33358932
+        }
+      ],
+      "importado_em": "2026-06-20T02:44:23.692Z",
+      "qtd_rubricas_entrada": 10,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-11",
+      "arquivos": [
+        {
+          "nome": "11 - DEMONSTRATIVO FINANCEIRO NOVEMBRO-2025.pdf",
+          "tamanho": 34760901
+        }
+      ],
+      "importado_em": "2026-06-20T02:44:42.349Z",
+      "qtd_rubricas_entrada": 12,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2025-12",
+      "arquivos": [
+        {
+          "nome": "12 - DEMONSTRATIVO FINANCEIRO DEZEMBRO-2025.pdf",
+          "tamanho": 21588735
+        }
+      ],
+      "importado_em": "2026-06-20T02:44:54.980Z",
+      "qtd_rubricas_entrada": 14,
+      "qtd_categorias_despesa": 11
+    },
+    {
+      "mes_ano": "2026-01",
+      "arquivos": [
+        {
+          "nome": "DEM. FIN. JAN-2026.pdf",
+          "tamanho": 15932848
+        }
+      ],
+      "importado_em": "2026-06-20T02:45:10.268Z",
+      "qtd_rubricas_entrada": 14,
+      "qtd_categorias_despesa": 11
+    }
+  ]
+}

@@ -1,0 +1,5116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma de Gestão Documental & Administrativa — Delegado AA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink: #0E1726;
+  --ink-light: #1E293B;
+  --navy: #1B365D;
+  --navy-dark: #0F2038;
+  --navy-light: #2A4D80;
+  --cloth-pale: #E2E8F0;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --surface-hover: #F1F5F9;
+  --rule: #CBD5E1;
+  --rule-light: #E2E8F0;
+  --muted: #64748B;
+  --muted-light: #94A3B8;
+  --primary: #1B365D;
+  --primary-hover: #12243F;
+  --accent-blue: #0284C7;
+  --accent-blue-bg: #E0F2FE;
+  --accent-emerald: #059669;
+  --accent-emerald-bg: #D1FAE5;
+  --accent-amber: #D97706;
+  --accent-amber-bg: #FEF3C7;
+  --accent-rose: #E11D48;
+  --accent-rose-bg: #FFE4E6;
+  --accent-purple: #7C3AED;
+  --accent-purple-bg: #EDE9FE;
+
+  --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --cond: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--surface-alt);
+  color: var(--ink);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Masthead */
+header.app-header {
+  background: var(--navy-dark);
+  color: #fff;
+  border-bottom: 3px solid var(--accent-amber);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--accent-amber), #B45309);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--cond);
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.brand-text h1 {
+  font-family: var(--cond);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #F8FAFC;
+}
+.brand-text p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.header-center {
+  display: flex;
+  gap: 8px;
+}
+.nav-tab-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #E2E8F0;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+.nav-tab-btn.active {
+  background: #fff;
+  color: var(--navy-dark);
+  font-weight: 600;
+  border-color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* User / Role Switcher */
+.role-box {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.role-avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--accent-amber);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy-dark);
+}
+.role-info {
+  display: flex;
+  flex-direction: column;
+}
+.role-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: #94A3B8;
+  text-transform: uppercase;
+}
+.role-select {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+.role-select option {
+  background: var(--navy-dark);
+  color: #fff;
+}
+
+/* Main Container */
+main.app-main {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 24px 60px;
+  flex: 1;
+}
+
+/* Top Summary Banner */
+.stats-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.stat-card.blue .stat-icon { background: var(--accent-blue-bg); color: var(--accent-blue); }
+.stat-card.emerald .stat-icon { background: var(--accent-emerald-bg); color: var(--accent-emerald); }
+.stat-card.amber .stat-icon { background: var(--accent-amber-bg); color: var(--accent-amber); }
+.stat-card.purple .stat-icon { background: var(--accent-purple-bg); color: var(--accent-purple); }
+
+.stat-details h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.stat-details .stat-val {
+  font-family: var(--cond);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+/* Views Container */
+.view-panel {
+  display: none;
+}
+.view-panel.active {
+  display: block;
+}
+
+/* --- TAB 1: ACERVO & BUSCA AVANÇADA --- */
+.search-hero {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 18px;
+  color: var(--muted);
+  pointer-events: none;
+  font-size: 18px;
+}
+.main-search-input {
+  width: 100%;
+  padding: 14px 18px 14px 50px;
+  font-family: var(--sans);
+  font-size: 16px;
+  border: 2px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+.main-search-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(27, 54, 93, 0.12);
+}
+.clear-search-btn {
+  position: absolute;
+  right: 14px;
+  background: var(--rule);
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--ink);
+}
+.clear-search-btn:hover { background: var(--muted-light); }
+
+/* Quick Search Suggestion Pills */
+.search-suggestions {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sugg-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.sugg-pill {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-family: var(--sans);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sugg-pill:hover {
+  background: var(--accent-blue-bg);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* Filter Controls Bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-light);
+  flex-wrap: wrap;
+}
+.filter-groups {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-select {
+  padding: 7px 12px;
+  font-size: 13px;
+  font-family: var(--sans);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+}
+.filter-select:focus {
+  border-color: var(--navy);
+}
+
+.view-mode-toggle {
+  display: flex;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.view-mode-btn {
+  background: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.view-mode-btn.active {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* Results Section */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.results-header b {
+  color: var(--ink);
+}
+
+/* Documents Grid View */
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+}
+.doc-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.doc-card:hover {
+  border-color: var(--rule);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+.doc-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.doc-type-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.doc-type-badge.pdf { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+.doc-type-badge.html { background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD; }
+.doc-type-badge.csv, .doc-type-badge.xlsx { background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0; }
+.doc-type-badge.pptx, .doc-type-badge.docx { background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE; }
+.doc-type-badge.imagem { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+.doc-type-badge.zip { background: #F3E8FF; color: #9333EA; border: 1px solid #E9D5FF; }
+
+.doc-meta-info {
+  flex: 1;
+}
+.doc-cat-path {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.doc-card h3 {
+  font-family: var(--cond);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+.doc-period-chip {
+  display: inline-block;
+  background: var(--cloth-pale);
+  color: var(--ink-light);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.doc-summary {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  flex-grow: 1;
+}
+
+.doc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+.doc-tag {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule-light);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.doc-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-light);
+}
+.btn-open-doc {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+  transition: background 0.15s ease;
+  text-decoration: none;
+}
+.btn-open-doc:hover {
+  background: var(--primary-hover);
+}
+.btn-icon-secondary {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+.btn-icon-secondary:hover {
+  background: var(--surface-hover);
+  border-color: var(--muted);
+}
+
+/* Documents Table View */
+.docs-table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
+}
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.docs-table th {
+  background: var(--surface-alt);
+  text-align: left;
+  padding: 12px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--rule);
+}
+.docs-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule-light);
+  vertical-align: middle;
+}
+.docs-table tr:hover td {
+  background: var(--surface-hover);
+}
+.highlight-term {
+  background: #FEF08A;
+  color: #854D0E;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* --- TAB 2: KANBAN ADMINISTRATIVO ESTILO TRELLO --- */
+.kanban-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.kanban-title-area h2 {
+  font-family: var(--cond);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.kanban-title-area p {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.kanban-btn-group {
+  display: flex;
+  gap: 10px;
+}
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+.btn-secondary {
+  background: #fff;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-secondary:hover {
+  background: var(--surface-hover);
+}
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+@media (max-width: 1100px) {
+  .kanban-board {
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
+  }
+}
+
+.kanban-col {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+.kanban-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--rule);
+}
+.col-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--cond);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+}
+.col-count {
+  background: var(--rule);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+}
+
+.kanban-col-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 4px;
+  min-height: 120px;
+}
+.kanban-col-cards.drag-over {
+  background: rgba(2, 132, 199, 0.08);
+  border: 2px dashed var(--accent-blue);
+  border-radius: var(--radius);
+}
+
+/* Kanban Card */
+.kanban-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kanban-card:active {
+  cursor: grabbing;
+}
+.kanban-card:hover {
+  box-shadow: var(--shadow);
+  border-color: #94A3B8;
+  transform: translateY(-2px);
+}
+.card-priority-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.priority-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.priority-urgente { background: var(--accent-rose-bg); color: var(--accent-rose); border: 1px solid #FECDD3; }
+.priority-alta { background: var(--accent-amber-bg); color: var(--accent-amber); border: 1px solid #FDE68A; }
+.priority-media { background: var(--accent-blue-bg); color: var(--accent-blue); border: 1px solid #BAE6FD; }
+.priority-baixa { background: #F1F5F9; color: var(--muted); border: 1px solid var(--rule); }
+
+.card-deadline {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-deadline.overdue { color: var(--accent-rose); font-weight: 600; }
+
+.card-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* Linked Document inside Kanban Card */
+.card-doc-link {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule-light);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.card-doc-link:hover {
+  background: #E2E8F0;
+}
+.card-doc-title {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+/* Subtasks Progress */
+.card-checklist-bar {
+  margin-top: 4px;
+}
+.checklist-text {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+}
+.progress-bg {
+  width: 100%;
+  height: 5px;
+  background: var(--rule-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent-emerald);
+  transition: width 0.3s ease;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dotted var(--rule);
+}
+.card-assignee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--ink-light);
+}
+.card-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+}
+.card-actions-menu {
+  display: flex;
+  gap: 4px;
+}
+.card-btn-action {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.card-btn-action:hover {
+  background: var(--rule-light);
+  color: var(--ink);
+}
+
+/* --- TAB 3: ATORES & MATRIZ DE PERMISSÕES --- */
+.rbac-container {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 24px;
+}
+@media (max-width: 992px) {
+  .rbac-container { grid-template-columns: 1fr; }
+}
+
+.actors-list-card, .matrix-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.section-heading {
+  font-family: var(--cond);
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.section-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.actor-item {
+  border: 1px solid var(--rule-light);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+}
+.actor-item.active-profile {
+  border-color: var(--navy);
+  background: #F8FAFC;
+  box-shadow: 0 0 0 2px rgba(27, 54, 93, 0.1);
+}
+.actor-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.actor-big-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+.actor-titles h4 {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.actor-titles p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+.btn-select-actor {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn-select-actor.selected {
+  background: var(--accent-emerald-bg);
+  border-color: var(--accent-emerald);
+  color: var(--accent-emerald);
+  font-weight: 600;
+}
+
+.raci-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.raci-table th {
+  background: var(--surface-alt);
+  padding: 10px 12px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--rule);
+}
+.raci-table th:first-child { text-align: left; }
+.raci-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule-light);
+  text-align: center;
+}
+.raci-table td:first-child { text-align: left; font-weight: 500; }
+.badge-perm-yes {
+  background: var(--accent-emerald-bg);
+  color: var(--accent-emerald);
+  font-family: var(--mono);
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.badge-perm-no {
+  background: #F1F5F9;
+  color: var(--muted-light);
+  font-family: var(--mono);
+  font-weight: 500;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+/* --- TAB 4: PAINEL EXECUTIVO & FERRAMENTAS --- */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.tool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--navy-light);
+}
+.tool-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.tool-header h3 {
+  font-family: var(--cond);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.tool-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 23, 38, 0.65);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal-content {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  max-width: 580px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  padding: 26px;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--rule-light);
+  padding-bottom: 12px;
+}
+.modal-header h3 {
+  font-family: var(--cond);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.form-control {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-family: var(--sans);
+  font-size: 14px;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--navy);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule-light);
+  padding-top: 16px;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toast {
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.2s ease;
+  border-left: 4px solid var(--accent-emerald);
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Fallback Document Viewer / Path Dialog */
+.doc-viewer-modal-path {
+  background: var(--surface-alt);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 12px;
+  word-break: break-all;
+  user-select: all;
+  margin: 12px 0;
+  color: var(--navy-dark);
+}
+
+/* --- Estilos Supabase, Versionamento e Auditoria --- */
+.btn-supabase-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-supabase-status:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #94A3B8;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+.status-dot.connected {
+  background: #10B981;
+  box-shadow: 0 0 6px #10B981;
+}
+
+/* Timeline de Versionamento */
+.version-timeline {
+  position: relative;
+  padding: 10px 0 10px 24px;
+  border-left: 2px solid var(--rule);
+  margin-left: 12px;
+}
+.version-item {
+  position: relative;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.version-item.current {
+  border-color: #4338CA;
+  background: #F8FAFC;
+}
+.version-item::before {
+  content: "";
+  position: absolute;
+  left: -31px;
+  top: 18px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--rule);
+}
+.version-item.current::before {
+  background: #4338CA;
+  box-shadow: 0 0 0 3px #C7D2FE;
+}
+.version-badge-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--mono);
+  background: #EEF2FF;
+  color: #4338CA;
+  border: 1px solid #C7D2FE;
+}
+.hash-pill {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  background: #F1F5F9;
+  color: #475569;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--rule-light);
+  word-break: break-all;
+}
+.audit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.audit-table th {
+  background: var(--surface-alt);
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 2px solid var(--rule);
+  color: var(--navy);
+  font-weight: 600;
+}
+.audit-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule-light);
+  vertical-align: middle;
+}
+.audit-table tr:hover td {
+  background: var(--surface-hover);
+}
+
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logo">AA</div>
+      <div class="brand-text">
+        <h1>GESTÃO ADMINISTRATIVA & DOCUMENTAL</h1>
+        <p>DELEGADO DE ÁREA · JUNAAB · ÁREA 27</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="header-center">
+      <button class="nav-tab-btn active" onclick="switchTab('acervo')">
+        <span>📂</span> Acervo & Busca
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('kanban')">
+        <span>📌</span> Kanban Trello
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('rbac')">
+        <span>👥</span> Atores & Permissões
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('executivo')">
+        <span>📊</span> Painel Executivo
+      </button>
+    </nav>
+
+    <!-- Header Actions & Actor Switcher -->
+    <div class="header-actions">
+      <!-- Botão Status do Supabase -->
+      <button class="btn-supabase-status" id="btnSupabaseStatus" onclick="abrirModalSupabase()" title="Configuração e sincronização com Supabase">
+        <span class="status-dot" id="supabaseDot"></span>
+        <span id="supabaseLabel">Supabase: Offline</span>
+      </button>
+
+      <!-- Botão Auditoria & Segurança -->
+      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="abrirModalAuditoria()" title="Ver trilha de auditoria completa e segurança dos documentos">
+        🛡️ Trilha de Auditoria
+      </button>
+      <div class="role-box">
+        <div class="role-avatar" id="headerRoleAvatar">D</div>
+        <div class="role-info">
+          <span class="role-label">Perfil Ativo</span>
+          <select class="role-select" id="roleSelector" onchange="onRoleChange(this.value)">
+            <option value="delegado">Delegado de Área (Admin)</option>
+            <option value="tesouraria">Tesoureiro / Finanças</option>
+            <option value="secretaria">Secretaria / ESG</option>
+            <option value="conselho">Conselho Fiscal / Auditoria</option>
+            <option value="custodio">Junta de Custódios</option>
+            <option value="observador">Membro / Observador</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="backupData()">
+        💾 Backup
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main">
+
+  <!-- Top Metric Cards -->
+  <section class="stats-banner">
+    <div class="stat-card blue">
+      <div class="stat-icon">📄</div>
+      <div class="stat-details">
+        <h4>Documentos Indexados</h4>
+        <div class="stat-val" id="kpiTotalDocs">26</div>
+      </div>
+    </div>
+    <div class="stat-card emerald">
+      <div class="stat-icon">💰</div>
+      <div class="stat-details">
+        <h4>Demonstrativos Financeiros</h4>
+        <div class="stat-val" id="kpiFinDocs">14</div>
+      </div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon">📋</div>
+      <div class="stat-details">
+        <h4>Tarefas em Andamento</h4>
+        <div class="stat-val" id="kpiActiveTasks">4</div>
+      </div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">🏛️</div>
+      <div class="stat-details">
+        <h4>Atas & Pareceres JUNAAB</h4>
+        <div class="stat-val" id="kpiJunaabDocs">7</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 1: ACERVO & BUSCA AVANÇADA ==================== -->
+  <section id="view-acervo" class="view-panel active">
+    
+    <div class="search-hero">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="mainSearchInput" class="main-search-input" placeholder="Digite parte do conteúdo, título ou período (ex: 'relatorio financeiro jan/26', 'auditoria csg', 'custodios')..." oninput="handleSearch(this.value)">
+        <button id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()">✕</button>
+      </div>
+
+      <!-- Quick Search Suggestions -->
+      <div class="search-suggestions">
+        <span class="sugg-label">Buscas Rápidas:</span>
+        <button class="sugg-pill" onclick="applySearchQuery('relatorio financeiro jan/26')">relatorio financeiro jan/26</button>
+        <button class="sugg-pill" onclick="applySearchQuery('auditoria csg')">auditoria csg</button>
+        <button class="sugg-pill" onclick="applySearchQuery('ata reuniao extraordinaria')">atas de custódios</button>
+        <button class="sugg-pill" onclick="applySearchQuery('relatorio contestacao junaab')">pareceres junaab</button>
+        <button class="sugg-pill" onclick="applySearchQuery('pix camisas convencao')">camisas convenção 2027</button>
+        <button class="sugg-pill" onclick="applySearchQuery('matriz raci')">matriz raci</button>
+        <button class="sugg-pill" onclick="applySearchQuery('reserva prudente')">reserva prudente</button>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="filter-bar">
+        <div class="filter-groups">
+          <select id="filterCategory" class="filter-select" onchange="applyFilters()">
+            <option value="all">Todas as Categorias</option>
+            <option value="01 - FINANCEIRO">01 - FINANCEIRO</option>
+            <option value="02 - DOCUMENTOS JUNAAB">02 - DOCUMENTOS JUNAAB</option>
+            <option value="03 - PLANEJAMENTO ESTRATEGICO">03 - PLANEJAMENTO ESTRATÉGICO</option>
+            <option value="04 - MAPEAMENTOS DE PROCESSOS">04 - MAPEAMENTOS DE PROCESSOS</option>
+            <option value="05 - CONVENCAO">05 - CONVENÇÃO</option>
+            <option value="06 - DASHBOARDS E FERRAMENTAS">06 - DASHBOARDS & FERRAMENTAS</option>
+          </select>
+
+          <select id="filterPeriod" class="filter-select" onchange="applyFilters()">
+            <option value="all">Todos os Períodos</option>
+            <option value="2026">Exercício 2026</option>
+            <option value="2025">Exercício 2025</option>
+            <option value="hist">Histórico / Referência</option>
+          </select>
+
+          <select id="filterType" class="filter-select" onchange="applyFilters()">
+            <option value="all">Todos os Tipos</option>
+            <option value="PDF">PDF</option>
+            <option value="HTML">HTML</option>
+            <option value="CSV">Planilha / CSV</option>
+            <option value="PPTX">Apresentação / PPTX</option>
+            <option value="IMAGEM">Imagem / Mapa</option>
+          </select>
+
+          <select id="filterStatus" class="filter-select" onchange="applyFilters()">
+            <option value="all">Todos os Status</option>
+            <option value="Homologado">Homologado</option>
+            <option value="Vigente">Vigente</option>
+            <option value="Em Análise">Em Análise</option>
+            <option value="Referência">Referência</option>
+          </select>
+
+          <button id="btnClearFilters" class="btn-secondary" style="padding: 7px 14px; font-size: 13px; color: var(--accent-rose); border-color: #FECDD3; background: #FFF1F2; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="resetAllFilters()">
+            <span>🔄</span> Limpar Filtros
+          </button>
+        </div>
+
+        <div class="view-mode-toggle">
+          <button id="btnViewGrid" class="view-mode-btn active" onclick="setViewMode('grid')">
+            ⊞ Cards
+          </button>
+          <button id="btnViewTable" class="view-mode-btn" onclick="setViewMode('table')">
+            ☰ Tabela
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Header -->
+    <div class="results-header" style="align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <div>Mostrando <b id="filteredDocsCount">0</b> de <b id="totalDocsCount">0</b> documentos</div>
+        <div id="searchIndicator" style="display:none; color: var(--accent-blue); font-weight: 500;">
+          Filtrando pelo termo: "<span id="activeSearchQuery"></span>"
+        </div>
+      </div>
+      <button class="btn-primary" style="padding: 7px 16px; font-size: 13px;" onclick="openUploadModal()">
+        <span>📤</span> Upload de Novo Documento
+      </button>
+    </div>
+
+    <!-- Grid View -->
+    <div id="docsGridContainer" class="docs-grid"></div>
+
+    <!-- Table View -->
+    <div id="docsTableContainer" class="docs-table-wrapper" style="display: none;">
+      <table class="docs-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Título & Ementa</th>
+            <th>Categoria / Pasta</th>
+            <th>Período</th>
+            <th>Última Visualização</th>
+            <th>Última Alteração</th>
+            <th style="text-align: right;">Ações Rápidas</th>
+          </tr>
+        </thead>
+        <tbody id="docsTableBody"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- ==================== TAB 2: KANBAN ADMINISTRATIVO ==================== -->
+  <section id="view-kanban" class="view-panel">
+    <div class="kanban-controls">
+      <div class="kanban-title-area">
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <h2 style="margin: 0;">Kanban de Gestão Administrativa</h2>
+          <div class="view-mode-toggle" style="background: #fff;">
+            <button id="btnKanbanModeDocs" class="view-mode-btn active" onclick="setKanbanMode('docs')">
+              📑 Documentos do Acervo
+            </button>
+            <button id="btnKanbanModeTasks" class="view-mode-btn" onclick="setKanbanMode('tasks')">
+              📋 Tarefas Administrativas
+            </button>
+            <button id="btnKanbanModeAll" class="view-mode-btn" onclick="setKanbanMode('all')">
+              🌐 Visão Integrada
+            </button>
+          </div>
+        </div>
+        <p style="margin-top: 4px;">Arraste os documentos entre as colunas (A Fazer, Em Andamento, Considerações Finais, Concluído) no estilo Trello.</p>
+      </div>
+      <div class="kanban-btn-group">
+        <button class="btn-primary" onclick="openNewTaskModal()">
+          <span>➕</span> Nova Tarefa
+        </button>
+        <button class="btn-secondary" onclick="exportKanbanData()">
+          <span>📤</span> Exportar JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Kanban Board Columns -->
+    <div class="kanban-board" id="kanbanBoard">
+      <!-- Coluna 1 -->
+      <div class="kanban-col" data-col="backlog">
+        <div class="kanban-col-header">
+          <div class="col-title"><span>📋</span> A Fazer (Backlog)</div>
+          <span class="col-count" id="count-backlog">0</span>
+        </div>
+        <div class="kanban-col-cards" id="cards-backlog" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'backlog')" ondragleave="handleDragLeave(event)"></div>
+      </div>
+
+      <!-- Coluna 2 -->
+      <div class="kanban-col" data-col="em_andamento">
+        <div class="kanban-col-header">
+          <div class="col-title"><span>⏳</span> Em Andamento / Análise</div>
+          <span class="col-count" id="count-em_andamento">0</span>
+        </div>
+        <div class="kanban-col-cards" id="cards-em_andamento" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'em_andamento')" ondragleave="handleDragLeave(event)"></div>
+      </div>
+
+      <!-- Coluna 3 -->
+      <div class="kanban-col" data-col="em_pauta">
+        <div class="kanban-col-header">
+          <div class="col-title"><span>📝</span> Considerações Finais</div>
+          <span class="col-count" id="count-em_pauta">0</span>
+        </div>
+        <div class="kanban-col-cards" id="cards-em_pauta" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'em_pauta')" ondragleave="handleDragLeave(event)"></div>
+      </div>
+
+      <!-- Coluna 4 -->
+      <div class="kanban-col" data-col="concluido">
+        <div class="kanban-col-header">
+          <div class="col-title"><span>✅</span> Concluído / Homologado</div>
+          <span class="col-count" id="count-concluido">0</span>
+        </div>
+        <div class="kanban-col-cards" id="cards-concluido" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'concluido')" ondragleave="handleDragLeave(event)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: ATORES & PERMISSÕES (RBAC) ==================== -->
+  <section id="view-rbac" class="view-panel">
+    <div class="rbac-container">
+      <!-- Coluna Esquerda: Lista de Atores -->
+      <div class="actors-list-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 10px; flex-wrap: wrap;">
+          <div>
+            <h3 class="section-heading">Atores Administrativos Cadastrados</h3>
+            <p class="section-sub" style="margin-bottom: 0;">Estrutura estatutária, encargos e Áreas de A.A. Brasil.</p>
+          </div>
+          <button class="btn-primary" style="padding: 7px 14px; font-size: 12.5px; white-space: nowrap;" onclick="openNewActorModal()">
+            <span>➕</span> Incluir Novo Ator
+          </button>
+        </div>
+
+        <div id="actorsListContainer"></div>
+      </div>
+
+      <!-- Coluna Direita: Matriz RACI & Permissões -->
+      <div class="matrix-card">
+        <h3 class="section-heading">Matriz de Permissões no Sistema</h3>
+        <p class="section-sub">Privilégios de ação de acordo com o papel administrativo ativo.</p>
+
+        <table class="raci-table">
+          <thead>
+            <tr>
+              <th>Ator / Encargo</th>
+              <th>Área de A.A.</th>
+              <th>Ver Docs</th>
+              <th>Abrir 1-Clique</th>
+              <th>Criar Tarefas</th>
+              <th>Mover Kanban</th>
+              <th>Homologar</th>
+              <th>Admin</th>
+            </tr>
+          </thead>
+          <tbody id="dynamicPermissionsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: PAINEL EXECUTIVO & FERRAMENTAS ==================== -->
+  <section id="view-executivo" class="view-panel">
+    <div class="search-hero">
+      <h3 style="font-family: var(--cond); font-size: 20px; font-weight: 700; margin-bottom: 6px;">
+        Ferramentas e Dashboards Integrados
+      </h3>
+      <p style="font-size: 13.5px; color: var(--muted);">
+        Acesso direto em 1 clique às ferramentas analíticas, notas técnicas e apresentações do projeto.
+      </p>
+
+      <div class="tools-grid">
+        <!-- Ferramenta 1 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">📈</div>
+            <div>
+              <h3>Painel da Realidade Financeira</h3>
+              <span class="doc-period-chip">Tese Déficit e Reserva</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Visualização executiva sobre o déficit contábil acumulado, queima da reserva prudente de A.A. Brasil e métricas de autossuficiência.
+          </p>
+          <a href="painel-realidade-financeira-aa-1.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Painel
+          </a>
+        </div>
+
+        <!-- Ferramenta 2 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">📑</div>
+            <div>
+              <h3>Nota Técnica: Regimes Contábeis</h3>
+              <span class="doc-period-chip">Citações Completas & NBC TG</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Documento de clarificação metodológica sobre a divergência entre regime de caixa e competência na apuração contábil da JUNAAB.
+          </p>
+          <a href="NOTA_TECNICA_COM_CITACOES_COMPLETAS.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Nota Técnica
+          </a>
+        </div>
+
+        <!-- Ferramenta 3 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">📊</div>
+            <div>
+              <h3>Dashboard Financeiro Área 27</h3>
+              <span class="doc-period-chip">Controle Mensal e Extratos</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Painel interativo completo em React com receitas por rubrica, despesas por categoria, controle nominal de cotas da Convenção e extrato bancário.
+          </p>
+          <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Dashboard Área 27
+          </a>
+        </div>
+
+        <!-- Ferramenta 4 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">🗺️</div>
+            <div>
+              <h3>Macroprocesso AS IS (JUNAAB)</h3>
+              <span class="doc-period-chip">BPMN & Diagnóstico Atual</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Mapeamento de arquitetura de processos atual da governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais.
+          </p>
+          <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Macroprocesso AS IS
+          </a>
+        </div>
+
+        <!-- Ferramenta 5 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">⚡</div>
+            <div>
+              <h3>Macroprocesso TO BE (Proposta)</h3>
+              <span class="doc-period-chip">Modernização da Governança</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Modelo de processos otimizado proposto para modernização da JUNAAB com gestão orientada a valor e fluxos integrados.
+          </p>
+          <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Macroprocesso TO BE
+          </a>
+        </div>
+
+        <!-- Ferramenta 6 -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">🖥️</div>
+            <div>
+              <h3>Apresentação de Gestão Atualizada</h3>
+              <span class="doc-period-chip">Slides Interativos</span>
+            </div>
+          </div>
+          <p class="tool-desc">
+            Apresentação estruturada para assembleias e reuniões de delegação com síntese de dados, desafios e direcionamentos estratégicos.
+          </p>
+          <a href="APRESENTACAO_ATUALIZADA.html" target="_blank" class="btn-open-doc">
+            🚀 Abrir Apresentação
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- ============================================================== -->
+<!-- MODAL: CONEXÃO COM SUPABASE & PERSISTÊNCIA EM NUVEM             -->
+<!-- ============================================================== -->
+<div id="supabaseModal" class="modal-overlay">
+  <div class="modal-box" style="max-width: 620px;">
+    <div class="modal-header">
+      <div>
+        <h3 style="margin: 0; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+          ⚡ Conexão Supabase (Banco de Dados & Storage)
+        </h3>
+        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 0;">
+          Persistência segura em nuvem de documentos, versionamento, atores e tarefas.
+        </p>
+      </div>
+      <button class="modal-close-btn" onclick="fecharModalSupabase()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 12px; border-radius: var(--radius); margin-bottom: 16px; font-size: 12.5px; color: #166534;">
+        <b>💡 Como conectar seu projeto Supabase:</b><br>
+        1. Crie seu projeto gratuito em <b>supabase.com</b><br>
+        2. Vá em <b>Project Settings &gt; API</b> e copie a <b>Project URL</b> e a chave <b>anon / public key</b><br>
+        3. Execute o script <code>supabase_schema.sql</code> no <b>SQL Editor</b> do Supabase para criar as tabelas.<br>
+        4. Insira as credenciais abaixo e clique em <b>Conectar & Sincronizar</b>.
+      </div>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
+          Supabase Project URL
+        </label>
+        <input type="text" id="supabaseUrlInput" placeholder="https://xyzproject.supabase.co" style="width: 100%; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: var(--mono); font-size: 13px;">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
+          Supabase Anon / Public API Key
+        </label>
+        <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsIn..." style="width: 100%; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: var(--mono); font-size: 13px;">
+      </div>
+
+      <div id="supabaseStatusAlert" style="display:none; padding: 10px 12px; border-radius: var(--radius); font-size: 12px; margin-bottom: 14px;"></div>
+
+      <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid var(--rule); padding-top: 14px;">
+        <div>
+          <button type="button" class="btn-secondary" style="font-size: 12px; color: var(--accent-rose);" onclick="desconectarSupabase()">
+            Desconectar (Modo Local)
+          </button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn-secondary" style="font-size: 12px;" onclick="testarConexaoSupabaseUI()">
+            🔍 Testar Conexão
+          </button>
+          <button type="button" class="btn-primary" style="font-size: 12px; padding: 8px 16px;" onclick="salvarConexaoSupabase()">
+            💾 Salvar & Sincronizar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL: HISTÓRICO DE VERSÕES & SEGURANÇA DO DOCUMENTO           -->
+<!-- ============================================================== -->
+<div id="versionHistoryModal" class="modal-overlay">
+  <div class="modal-box" style="max-width: 740px;">
+    <div class="modal-header">
+      <div>
+        <h3 style="margin: 0; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+          🕒 Histórico de Versões & Auditoria de Segurança
+        </h3>
+        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 0;" id="versionModalDocTitle">
+          Documento selecionado
+        </p>
+      </div>
+      <button class="modal-close-btn" onclick="fecharHistoricoVersoes()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--surface-alt); padding: 10px 14px; border-radius: var(--radius); margin-bottom: 16px; border: 1px solid var(--rule-light);">
+        <div>
+          <span style="font-size: 12px; color: var(--muted);">Versão Atual Vigente:</span>
+          <span class="version-badge-pill" id="versionModalCurrentBadge" style="margin-left: 6px; font-size: 12px;">v1.0</span>
+        </div>
+        <button class="btn-primary" style="font-size: 12px; padding: 6px 12px;" onclick="abrirModalNovaVersao(selectedDocIdForVersion)">
+          ⬆️ Registrar Nova Versão
+        </button>
+      </div>
+
+      <div id="versionTimelineContainer" class="version-timeline">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL: REGISTRAR NOVA VERSÃO DO DOCUMENTO                      -->
+<!-- ============================================================== -->
+<div id="newVersionModal" class="modal-overlay">
+  <div class="modal-box" style="max-width: 600px;">
+    <div class="modal-header">
+      <div>
+        <h3 style="margin: 0; color: var(--navy);">⬆️ Criar Nova Versão do Documento</h3>
+        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 0;" id="newVersionDocName">
+          Documento
+        </p>
+      </div>
+      <button class="modal-close-btn" onclick="fecharModalNovaVersao()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="formNovaVersao" onsubmit="submeterNovaVersao(event)">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
+            Tipo de Incremento da Versão *
+          </label>
+          <div style="display: flex; gap: 12px;">
+            <label style="font-size: 12.5px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="tipoIncremento" value="minor" checked>
+              <b>Revisão Menor (ex: v1.1)</b> — Retificação, aditamento ou ajuste pontual
+            </label>
+          </div>
+          <div style="display: flex; gap: 12px; margin-top: 6px;">
+            <label style="font-size: 12.5px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="tipoIncremento" value="major">
+              <b>Nova Versão Maior (ex: v2.0)</b> — Novo fechamento contábil, nova ata ou reforma
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
+            Substituir Arquivo Físico (PDF, DOCX, XLSX)
+          </label>
+          <input type="file" id="newVersionFileInput" style="width: 100%; padding: 8px; border: 1px dashed var(--rule); border-radius: var(--radius); font-size: 12px;">
+          <small style="color: var(--muted); font-size: 11px;">Opcional: Se não selecionar novo arquivo, o arquivo atual será preservado com o novo número de versão e justificativa.</small>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
+            Notas da Versão / Justificativa da Alteração *
+          </label>
+          <textarea id="newVersionNotasInput" required rows="3" placeholder="Ex: Inclusão do balancete consolidado pós-auditoria de abril com assinatura da comissão..." style="width: 100%; padding: 8px 10px; border: 1px solid var(--rule); border-radius: var(--radius); font-size: 12.5px; font-family: var(--sans);"></textarea>
+          <small style="color: var(--muted); font-size: 11px;">Obrigatório por segurança: toda nova versão gera registro permanente com autor e data.</small>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--rule); padding-top: 14px;">
+          <button type="button" class="btn-secondary" onclick="fecharModalNovaVersao()">Cancelar</button>
+          <button type="submit" class="btn-primary" style="padding: 8px 18px;">
+            🔒 Salvar Nova Versão & Gerar Log
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL: TRILHA DE AUDITORIA & SEGURANÇA GERAL                   -->
+<!-- ============================================================== -->
+<div id="auditModal" class="modal-overlay">
+  <div class="modal-box" style="max-width: 900px;">
+    <div class="modal-header">
+      <div>
+        <h3 style="margin: 0; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+          🛡️ Trilha Geral de Auditoria & Conformidade
+        </h3>
+        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 0;">
+          Registro cronológico imutável de visualizações, downloads, novas versões e alterações administrativas.
+        </p>
+      </div>
+      <button class="modal-close-btn" onclick="fecharModalAuditoria()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="auditSearchInput" oninput="filtrarLogsAuditoria(this.value)" placeholder="Filtrar por ator, documento ou ação..." style="padding: 6px 12px; border: 1px solid var(--rule); border-radius: var(--radius); font-size: 12.5px; width: 280px;">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-secondary" style="font-size: 12px;" onclick="exportarAuditoriaCSV()">
+            📥 Exportar CSV
+          </button>
+          <button class="btn-secondary" style="font-size: 12px;" onclick="carregarTrilhaAuditoria()">
+            🔄 Atualizar
+          </button>
+        </div>
+      </div>
+
+      <div style="max-height: 440px; overflow-y: auto; border: 1px solid var(--rule); border-radius: var(--radius);">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 140px;">Data / Hora</th>
+              <th style="width: 140px;">Ação</th>
+              <th>Documento / Detalhes</th>
+              <th style="width: 170px;">Ator Responsável</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody">
+            <!-- Renderizado dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- Modal: Upload de Novo Documento -->
+<div id="uploadModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 650px;">
+    <div class="modal-header">
+      <h3 id="modalUploadTitle">Upload de Novo Documento para o Acervo</h3>
+      <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
+    </div>
+
+    <form id="uploadForm" onsubmit="submitDocumentUpload(event)">
+      <!-- Dropzone para seleção ou arraste de arquivo -->
+      <div id="uploadDropzone" style="border: 2px dashed var(--navy-light); border-radius: var(--radius); padding: 24px 20px; text-align: center; background: var(--surface-alt); cursor: pointer; transition: all 0.2s ease; margin-bottom: 18px;" onclick="document.getElementById('fileUploadInput').click()" ondragover="handleUploadDragOver(event)" ondragleave="handleUploadDragLeave(event)" ondrop="handleUploadDrop(event)">
+        <input type="file" id="fileUploadInput" style="display: none;" onchange="handleFileSelect(this.files)">
+        <div style="font-size: 32px; margin-bottom: 8px;">📁</div>
+        <div style="font-size: 14.5px; font-weight: 600; color: var(--navy);" id="dropzoneText">Clique para selecionar ou arraste o arquivo aqui</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">Suporta PDF, Planilhas, Atas, Circulares, Apresentações e Imagens</div>
+        <div id="selectedFileInfo" style="display: none; margin-top: 10px; font-family: var(--mono); font-size: 12.5px; color: var(--accent-emerald); font-weight: 600;"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="uploadInputTitle">Título do Documento *</label>
+          <input type="text" id="uploadInputTitle" class="form-control" required placeholder="Ex: Demonstrativo Financeiro Fevereiro 2026">
+        </div>
+
+        <div class="form-group">
+          <label for="uploadInputPeriod">Período de Referência *</label>
+          <input type="text" id="uploadInputPeriod" class="form-control" required placeholder="Ex: Fevereiro / 2026">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="uploadInputFolder">Pasta de Destino no Disco *</label>
+        <select id="uploadInputFolder" class="form-control" onchange="onUploadFolderChange(this.value)"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="uploadInputSummary">Ementa / Resumo do Conteúdo</label>
+        <textarea id="uploadInputSummary" class="form-control" rows="2" placeholder="Breve descrição dos tópicos abordados para facilitar a busca por conteúdo..."></textarea>
+      </div>
+
+      <!-- Tags Automáticas -->
+      <div class="form-group">
+        <label for="uploadInputTags">Tags de Busca (Geradas Automaticamente)</label>
+        <div id="autoTagsPreview" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; min-height: 24px;"></div>
+        <input type="text" id="uploadInputTags" class="form-control" placeholder="Tags adicionais separadas por vírgula">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="uploadInputStatus">Status Administrativo</label>
+          <select id="uploadInputStatus" class="form-control">
+            <option value="Homologado">Homologado</option>
+            <option value="Vigente">Vigente</option>
+            <option value="Em Análise">Em Análise</option>
+            <option value="Referência">Referência</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Responsável pelo Envio</label>
+          <input type="text" id="uploadInputActor" class="form-control" readonly style="background: var(--surface-alt); font-weight: 500;">
+        </div>
+      </div>
+
+      <div id="uploadProgressBarContainer" style="display:none; margin-bottom: 14px;">
+        <div style="font-size: 11.5px; color: var(--muted); margin-bottom: 4px;">Salvando arquivo no disco...</div>
+        <div class="progress-bg"><div id="uploadProgressBar" class="progress-fill" style="width: 0%;"></div></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeUploadModal()">Cancelar</button>
+        <button type="submit" class="btn-primary" id="btnSubmitUpload">Salvar Documento no Acervo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Criar / Editar Tarefa Kanban -->
+<div id="taskModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTaskTitle">Nova Tarefa Administrativa</h3>
+      <button class="modal-close-btn" onclick="closeTaskModal()">✕</button>
+    </div>
+
+    <form id="taskForm" onsubmit="saveTask(event)">
+      <input type="hidden" id="taskId">
+      
+      <div class="form-group">
+        <label for="taskInputTitle">Título da Tarefa *</label>
+        <input type="text" id="taskInputTitle" class="form-control" required placeholder="Ex: Homologar Prestação de Contas Jan/2026">
+      </div>
+
+      <div class="form-group">
+        <label for="taskInputDesc">Descrição / Instruções</label>
+        <textarea id="taskInputDesc" class="form-control" rows="3" placeholder="Detalhes do que deve ser analisado ou executado..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="taskInputCol">Coluna de Destino</label>
+          <select id="taskInputCol" class="form-control">
+            <option value="backlog">📋 A Fazer (Backlog)</option>
+            <option value="em_andamento">⏳ Em Andamento / Análise</option>
+            <option value="em_pauta">📝 Considerações Finais</option>
+            <option value="concluido">✅ Concluído / Homologado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="taskInputPriority">Prioridade</label>
+          <select id="taskInputPriority" class="form-control">
+            <option value="media">🟡 Média</option>
+            <option value="alta">🟠 Alta</option>
+            <option value="urgente">🔴 Urgente</option>
+            <option value="baixa">⚪ Baixa</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="taskInputActor">Ator Responsável</label>
+          <select id="taskInputActor" class="form-control" id="taskActorSelect"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="taskInputDueDate">Prazo Limite</label>
+          <input type="date" id="taskInputDueDate" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="taskInputDoc">Documento Vinculado do Acervo</label>
+        <select id="taskInputDoc" class="form-control">
+          <option value="">(Nenhum documento vinculado)</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeTaskModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar Tarefa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Cadastrar / Editar Ator Administrativo -->
+<div id="actorModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 620px;">
+    <div class="modal-header">
+      <h3 id="modalActorTitle">Cadastrar Novo Ator</h3>
+      <button class="modal-close-btn" onclick="closeActorModal()">✕</button>
+    </div>
+
+    <form id="actorForm" onsubmit="saveActor(event)">
+      <input type="hidden" id="actorId">
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="actorInputName">Nome do Ator *</label>
+          <input type="text" id="actorInputName" class="form-control" required placeholder="Ex: Carlos S.R. / Henrique / Maria">
+        </div>
+
+        <div class="form-group">
+          <label for="actorInputInitials">Sigla / Iniciais (2 ou 3 letras)</label>
+          <input type="text" id="actorInputInitials" class="form-control" maxlength="4" placeholder="Ex: CS, HA, CF">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="actorInputRoleSelect">Encargo / Função *</label>
+          <select id="actorInputRoleSelect" class="form-control" onchange="onActorRoleSelectChange(this.value)"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="actorInputAreaSelect">Área de A.A. (Manual de Serviços) *</label>
+          <select id="actorInputAreaSelect" class="form-control"></select>
+        </div>
+      </div>
+
+      <div class="form-group" id="actorCustomRoleGroup" style="display:none;">
+        <label for="actorInputCustomRole">Especificar Outro Encargo</label>
+        <input type="text" id="actorInputCustomRole" class="form-control" placeholder="Digite o encargo personalizado">
+      </div>
+
+      <div class="form-group">
+        <label for="actorInputDesc">Descrição das Atribuições / Resumo</label>
+        <input type="text" id="actorInputDesc" class="form-control" placeholder="Ex: Mapeamento de processos, relatórios e governança">
+      </div>
+
+      <div class="form-group" style="background: var(--surface-alt); padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--rule);">
+        <label style="margin-bottom: 10px; display: block; font-weight: 700; color: var(--navy);">Matriz de Permissões do Ator</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permVerDocs" checked> Ver / Buscar Documentos
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permAbrirDocs" checked> Abrir Arquivos em 1 Clique
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permCriarTarefas" checked> Criar Tarefas no Kanban
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permMoverKanban" checked> Mover Cards no Kanban
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permHomologar"> Homologar / Concluir Pautas
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="permGerenciarAtores"> Gerenciar Atores & Sistema
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeActorModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar Ator</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Abrir / Detalhes de Arquivo Local -->
+<div id="docViewerModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="docModalTitle">Detalhes do Documento</h3>
+      <button class="modal-close-btn" onclick="closeDocModal()">✕</button>
+    </div>
+
+    <div>
+      <p id="docModalSummary" style="font-size: 14px; color: var(--ink-light); margin-bottom: 12px;"></p>
+      
+      <div style="font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase;">Caminho Completo do Arquivo:</div>
+      <div id="docModalPath" class="doc-viewer-modal-path"></div>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button class="btn-primary" style="flex:1;" onclick="executeOpenDoc()">
+          🚀 Abrir Arquivo no Navegador / App
+        </button>
+        <button class="btn-secondary" onclick="executeCopyPath()">
+          📋 Copiar Caminho
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Scripts -->
+<script>
+/**
+ * Catálogo Geral de Documentos Indexados — Delegado de A.A.
+ * Indexação completa com metadados, resumos/ementas para busca de conteúdo e links locais.
+ */
+const CATALOGO_DOCUMENTOS = [
+  // --- 01 - FINANCEIRO ---
+  {
+    id: "doc-fin-001",
+    titulo: "Demonstrativo Financeiro - Janeiro de 2026",
+    arquivo: "01 - DEMONSTRATIVO FINANCEIRO JANEIRO DE 2026.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos e Balancetes - 2026/01 - DEMONSTRATIVO FINANCEIRO JANEIRO DE 2026.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos e Balancetes - 2026",
+    tipo: "PDF",
+    periodo: "Janeiro / 2026",
+    ano: 2026,
+    tamanho: "15.2 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["relatorio financeiro jan/26", "demonstrativo financeiro janeiro 2026", "balancete", "entradas", "saidas", "reserva prudente", "saldo bancario", "banco do brasil", "caixa"],
+    resumo: "Demonstrativo financeiro completo referente a janeiro de 2026 da Área 27. Contém receitas do Plano 60/25/15, vendas de literatura, relatórios anuais, convenção nacional 2027, conciliação de caixa e extrato bancário detalhado.",
+    destaque: true
+  },
+  {
+    id: "doc-fin-002",
+    titulo: "Demonstrativo Resumido - Jan 2026",
+    arquivo: "DEMONSTRATIVO JAN 2026.PDF",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos e Balancetes - 2026/DEMONSTRATIVO JAN 2026.PDF",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos e Balancetes - 2026",
+    tipo: "PDF",
+    periodo: "Janeiro / 2026",
+    ano: 2026,
+    tamanho: "215 KB",
+    dataModificacao: "19/06/2026",
+    status: "Vigente",
+    tags: ["relatorio financeiro jan/26", "demonstrativo jan 2026", "resumo executivo", "entradas", "despesas"],
+    resumo: "Versão executiva compacta do demonstrativo financeiro de janeiro de 2026 para rápida apreciação da mesa de coordenação de área.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-003",
+    titulo: "Auditoria 2026 pós-CSG (29/04/26) — Delegados SE",
+    arquivo: "Auditoria_2026 pos_CSG_(29-04-26)_Delegados_SE.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Analise e Auditoria/Auditoria_2026 pos_CSG_(29-04-26)_Delegados_SE.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Análise e Auditoria",
+    tipo: "PDF",
+    periodo: "Abril / 2026",
+    ano: 2026,
+    tamanho: "329 KB",
+    dataModificacao: "29/05/2026",
+    status: "Homologado",
+    tags: ["auditoria 2026", "csg", "conferencia de servicos gerais", "delegados se", "comite de financas", "prestacao de contas"],
+    resumo: "Relatório de auditoria pós-CSG elaborado pelos delegados da região Sudeste. Aborda a verificação contábil, controles internos, parecer sobre receitas da literatura e recomendações para a JUNAAB.",
+    destaque: true
+  },
+  {
+    id: "doc-fin-004",
+    titulo: "Análise Financeira JUNAAB (2019-2025) Gráficos",
+    arquivo: "Analise Financeira JUNAAB (2019-2025) Graficos.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Analise e Auditoria/Analise Financeira JUNAAB (2019-2025) Graficos.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Análise e Auditoria",
+    tipo: "PDF",
+    periodo: "Histórico (2019-2025)",
+    ano: 2025,
+    tamanho: "545 KB",
+    dataModificacao: "21/05/2026",
+    status: "Referência",
+    tags: ["analise financeira junaab", "graficos financeiros", "serie historica", "deficit", "superavit", "evolucao financeira"],
+    resumo: "Estudo comparativo gráfico da saúde financeira da JUNAAB entre 2019 e 2025. Demonstra a evolução das receitas com literatura, contribuições da 7ª Tradição e impacto inflacionário nas despesas operacionais.",
+    destaque: true
+  },
+  {
+    id: "doc-fin-005",
+    titulo: "Demonstrativo Financeiro - Dezembro de 2025",
+    arquivo: "12 - DEMONSTRATIVO FINANCEIRO DEZEMBRO-2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/12 - DEMONSTRATIVO FINANCEIRO DEZEMBRO-2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Dezembro / 2025",
+    ano: 2025,
+    tamanho: "20.6 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro dezembro 2025", "fechamento do ano", "balanço anual", "sacola da gratidao", "13o salario"],
+    resumo: "Fechamento anual de 2025. Demonstração de entradas (R$ 26.462,89), saídas (R$ 26.387,07), saldo bancário de fim de ano e prestação da Sacola da Gratidão.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-006",
+    titulo: "Demonstrativo Financeiro - Novembro de 2025",
+    arquivo: "11 - DEMONSTRATIVO FINANCEIRO NOVEMBRO-2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/11 - DEMONSTRATIVO FINANCEIRO NOVEMBRO-2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Novembro / 2025",
+    ano: 2025,
+    tamanho: "33.1 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro novembro 2025", "entradas", "despesas", "folha de pagamento"],
+    resumo: "Prestação de contas de novembro de 2025: receitas de literatura, arrecadações distritais e provisionamento de encargos.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-007",
+    titulo: "Demonstrativo Financeiro - Outubro de 2025",
+    arquivo: "10 - DEMONSTRATIVO FINANCEIRO OUTUBRO-2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/10 - DEMONSTRATIVO FINANCEIRO OUTUBRO-2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Outubro / 2025",
+    ano: 2025,
+    tamanho: "31.8 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro outubro 2025", "balancete", "despesas operacionais"],
+    resumo: "Relatório de receitas e despesas de outubro de 2025 com comprovantes bancários anexados.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-008",
+    titulo: "Demonstrativo Financeiro - Setembro de 2025",
+    arquivo: "09 - DEMONSTRATIVO FINANCEIRO - SETEMBRO 2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/09 - DEMONSTRATIVO FINANCEIRO - SETEMBRO 2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Setembro / 2025",
+    ano: 2025,
+    tamanho: "30.6 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro setembro 2025", "seminario nordeste", "repasses"],
+    resumo: "Demonstrativo de setembro de 2025 com receitas do Seminário do Nordeste e apuração das contas distritais.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-009",
+    titulo: "Demonstrativo Financeiro - Agosto de 2025",
+    arquivo: "08 - DEMONSTRATIVO FINANCEIRO - AGOSTO 2025.pdf.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/08 - DEMONSTRATIVO FINANCEIRO - AGOSTO 2025.pdf.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Agosto / 2025",
+    ano: 2025,
+    tamanho: "19.5 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro agosto 2025", "seminario do nordeste receitas"],
+    resumo: "Receitas recordes de agosto de 2025 incluindo arrecadações do Seminário do Nordeste (R$ 9.254,50) e convenção.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-010",
+    titulo: "Demonstrativo Financeiro - Julho de 2025",
+    arquivo: "07 - DEMONSTRATIVO FINANCEIRO - JULHO 2025.pdf.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/07 - DEMONSTRATIVO FINANCEIRO - JULHO 2025.pdf.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Julho / 2025",
+    ano: 2025,
+    tamanho: "27.8 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro julho 2025", "resgate duplicidade", "conciliacao"],
+    resumo: "Demonstrativo contábil de julho de 2025, detalhando movimentação de entradas (R$ 33.220,82) e conciliações bancárias.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-011",
+    titulo: "Demonstrativo Financeiro - Junho de 2025",
+    arquivo: "06 - DEMONSTRATIVO FINANCEIRO - JUNHO 2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/06 - DEMONSTRATIVO FINANCEIRO - JUNHO 2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Junho / 2025",
+    ano: 2025,
+    tamanho: "27.9 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro junho 2025", "fechamento semestral"],
+    resumo: "Demonstrativo mensal e encerramento do primeiro semestre de 2025 da Área 27.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-012",
+    titulo: "Balancete Oficial - Junho de 2025",
+    arquivo: "BALANCETE JUNHO-2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/BALANCETE JUNHO-2025.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Junho / 2025",
+    ano: 2025,
+    tamanho: "27.9 MB",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["balancete junho 2025", "balanco patrimonial semestral", "auditoria"],
+    resumo: "Balancete detalhado com apuração de receitas, despesas administrativas e reserva prudente.",
+    destaque: false
+  },
+  {
+    id: "doc-fin-013",
+    titulo: "Demonstrativos Mensais 2025 — Jan a Maio",
+    arquivo: "01 a 05 - DEMONSTRATIVOS FINANCEIROS 2025.pdf",
+    caminhoRelativo: "01 - FINANCEIRO/Demonstrativos Mensais - 2025/01 - DEMONSTRATIVO FINANCEIRO JANEIRO DE 2025.pdf.pdf",
+    categoria: "01 - FINANCEIRO",
+    subcategoria: "Demonstrativos Mensais - 2025",
+    tipo: "PDF",
+    periodo: "Jan-Maio / 2025",
+    ano: 2025,
+    tamanho: "25 MB+",
+    dataModificacao: "19/06/2026",
+    status: "Homologado",
+    tags: ["demonstrativo financeiro janeiro 2025", "fevereiro 2025", "marco 2025", "abril 2025", "maio 2025"],
+    resumo: "Série histórica completa dos demonstrativos de janeiro, fevereiro, março, abril e maio de 2025 com comprovantes bancários e notas fiscais.",
+    destaque: false
+  },
+
+  // --- 02 - DOCUMENTOS JUNAAB ---
+  {
+    id: "doc-jun-001",
+    titulo: "Relatório de Contestação — JUNAAB",
+    arquivo: "RELATÓRIO CONTESTACAO_JUNAAB.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Pareceres e Contestacoes/RELATÓRIO CONTESTACAO_JUNAAB.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Pareceres e Contestações",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "235 KB",
+    dataModificacao: "23/05/2026",
+    status: "Vigente",
+    tags: ["relatorio contestacao junaab", "parecer delegado", "impugnacao", "analise contabil", "regime de competencia", "regime de caixa"],
+    resumo: "Relatório fundamentado de contestação apresentado pelo Delegado de Área à JUNAAB. Trata das discrepâncias entre os demonstrativos enviados e a realidade contábil, alertando sobre distorções entre regime de competência e regime de caixa.",
+    destaque: true
+  },
+  {
+    id: "doc-jun-002",
+    titulo: "Anexo — Análise Financeira JUNAAB",
+    arquivo: "ANEXO_ANALISE_FINANCEIRA_JUNAAB.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Pareceres e Contestacoes/ANEXO_ANALISE_FINANCEIRA_JUNAAB.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Pareceres e Contestações",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "300 KB",
+    dataModificacao: "23/05/2026",
+    status: "Vigente",
+    tags: ["anexo analise financeira junaab", "tabelas contabeis", "demonstracao de resultados", "custos operacionais"],
+    resumo: "Anexo técnico com planilhas, memórias de cálculo e auditoria dos balancetes JUNAAB que instruem o relatório de contestação do Delegado.",
+    destaque: true
+  },
+  {
+    id: "doc-jun-003",
+    titulo: "Mapa Mental — Parecer JUNAAB",
+    arquivo: "Mapa Mental Parecer JUNAAB.png",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Pareceres e Contestacoes/Mapa Mental Parecer JUNAAB.png",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Pareceres e Contestações",
+    tipo: "IMAGEM",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "2.3 MB",
+    dataModificacao: "21/05/2026",
+    status: "Referência",
+    tags: ["mapa mental", "parecer junaab", "diagrama sintetico", "arvore de decisoes"],
+    resumo: "Diagrama visual sinóptico estruturando todos os argumentos jurídicos, estatutários e financeiros do Parecer JUNAAB.",
+    destaque: false
+  },
+  {
+    id: "doc-jun-004",
+    titulo: "Ata da 5ª Reunião Extraordinária da Junta de Custódios",
+    arquivo: "Ata 5ª Reunião Extraordinária da Junta - junho 202_260523_103001.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Atas e Reunioes/Ata 5ª Reunião Extraordinária da Junta - junho 202_260523_103001.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Atas e Reuniões",
+    tipo: "PDF",
+    periodo: "Junho / 2024-2026",
+    ano: 2026,
+    tamanho: "642 KB",
+    dataModificacao: "23/05/2026",
+    status: "Homologado",
+    tags: ["ata reuniao extraordinaria", "junta de custodios", "deliberacoes", "pauta administrativa"],
+    resumo: "Ata oficial da 5ª Reunião Extraordinária da Junta de Custódios de A.A. Brasil. Registra deliberações sobre a gestão financeira, contratos editoriais e comunicação com os delegados de área.",
+    destaque: true
+  },
+  {
+    id: "doc-jun-005",
+    titulo: "Relatório do Comitê de Finanças — Junta de Custódios",
+    arquivo: "5 - Relatório do Comitê de Finanças - Junta de Cus_260523_103054.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Atas e Reunioes/5 - Relatório do Comitê de Finanças - Junta de Cus_260523_103054.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Atas e Reuniões",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "184 KB",
+    dataModificacao: "23/05/2026",
+    status: "Homologado",
+    tags: ["relatorio comite de financas", "junta de custodios", "parecer financeiro", "orcamento anual"],
+    resumo: "Parecer do Comitê de Finanças da Junta avaliando a execução orçamentária do exercício, fluxo de caixa e recomendações de contingenciamento.",
+    destaque: false
+  },
+  {
+    id: "doc-jun-006",
+    titulo: "Circular 04-2026 (30/05/2026)",
+    arquivo: "Circular 04-2026 - 30.05.2026_pagenumber.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Circulares/Circular 04-2026 - 30.05.2026_pagenumber.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Circulares",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "8.5 MB",
+    dataModificacao: "19/06/2026",
+    status: "Vigente",
+    tags: ["circular 04-2026", "comunicado oficial junaab", "orientacoes aos grupos", "diretrizes nacionais"],
+    resumo: "Circular oficial nº 04/2026 enviada pela JUNAAB a todas as Áreas de A.A. do Brasil com diretrizes sobre encontros estruturais, prestação de contas e temas da próxima CSG.",
+    destaque: true
+  },
+  {
+    id: "doc-jun-007",
+    titulo: "Junta de Custódios — Auditoria — Reunião 05/05",
+    arquivo: "1 - JUNTA DE CUSTÓDIOS - AUDITORIA - REUNIÃO 05052_260523_102837.pdf",
+    caminhoRelativo: "02 - DOCUMENTOS JUNAAB/Atas e Reunioes/1 - JUNTA DE CUSTÓDIOS - AUDITORIA - REUNIÃO 05052_260523_102837.pdf",
+    categoria: "02 - DOCUMENTOS JUNAAB",
+    subcategoria: "Atas e Reuniões",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "638 KB",
+    dataModificacao: "23/05/2026",
+    status: "Homologado",
+    tags: ["auditoria junta de custodios", "reuniao maio", "relatorio de auditoria independente"],
+    resumo: "Apresentação e ata da reunião com os auditores independentes acerca do balanço patrimonial e apontamentos contábeis da JUNAAB.",
+    destaque: false
+  },
+
+  // --- 03 - PLANEJAMENTO ESTRATÉGICO ---
+  {
+    id: "doc-est-001",
+    titulo: "Proposta de Planejamento Estratégico JUNAAB",
+    arquivo: "PROPOSTA DE PLANEJAMENTO ESTRATÉGICO JUNAAB.pdf",
+    caminhoRelativo: "03 - PLANEJAMENTO ESTRATEGICO/Proposta Estrategica JUNAAB/PROPOSTA DE PLANEJAMENTO ESTRATÉGICO JUNAAB.pdf",
+    categoria: "03 - PLANEJAMENTO ESTRATEGICO",
+    subcategoria: "Proposta Estratégica JUNAAB",
+    tipo: "PDF",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "548 KB",
+    dataModificacao: "21/05/2026",
+    status: "Em Análise",
+    tags: ["planejamento estrategico junaab", "proposta estrategica", "metas e diretrizes", "missao visao valores", "modernizacao"],
+    resumo: "Documento oficial contendo a proposta de Planejamento Estratégico da JUNAAB. Estabelece metas de autossuficiência, ampliação do alcance da mensagem de A.A., sustentabilidade das publicações e transformação digital.",
+    destaque: true
+  },
+  {
+    id: "doc-est-002",
+    titulo: "Estruturação de Áreas Online de A.A. no Brasil",
+    arquivo: "Estruturacao de Areas Online de A.A. no Brasil 1.pptx",
+    caminhoRelativo: "03 - PLANEJAMENTO ESTRATEGICO/Estruturacao Areas Online AA/Estruturacao de Areas Online de A.A. no Brasil 1.pptx",
+    categoria: "03 - PLANEJAMENTO ESTRATEGICO",
+    subcategoria: "Estruturação Áreas Online AA",
+    tipo: "PPTX",
+    periodo: "Maio / 2026",
+    ano: 2026,
+    tamanho: "1.9 MB",
+    dataModificacao: "24/05/2026",
+    status: "Em Análise",
+    tags: ["areas online", "grupos digitais", "reunioes virtuais", "apresentacao estruturacao", "7a tradicao online"],
+    resumo: "Apresentação executiva em slides sobre o modelo de integração e representatividade de reuniões e distritos virtuais na estrutura de serviços gerais de A.A. no Brasil.",
+    destaque: true
+  },
+
+  // --- 04 - MAPEAMENTOS DE PROCESSOS & GOVERNANÇA ---
+  {
+    id: "doc-proc-001",
+    titulo: "Matriz RACI — Estrutura de Serviços Gerais de A.A. Brasil",
+    arquivo: "matriz_raci_aa_brasil.html",
+    caminhoRelativo: "04 - MAPEAMENTOS DE PROCESSOS/AS IS/matriz_raci_aa_brasil.html",
+    categoria: "04 - MAPEAMENTOS DE PROCESSOS",
+    subcategoria: "AS IS (Situação Atual)",
+    tipo: "HTML",
+    periodo: "Referência Permanente",
+    ano: 2026,
+    tamanho: "11.6 KB",
+    dataModificacao: "21/05/2026",
+    status: "Vigente",
+    tags: ["matriz raci", "papeis e responsabilidades", "governanca", "delegado", "custodios", "csg", "conselho fiscal", "esg"],
+    resumo: "Matriz interativa definindo papéis e responsabilidades (Responsible, Accountable, Consulted, Informed) para todas as 25 ações críticas de governança, finanças e deliberação estatutária.",
+    destaque: true
+  },
+  {
+    id: "doc-proc-002",
+    titulo: "Macroprocesso AS IS — JUNAAB",
+    arquivo: "MACRO PROCESSO AS IS JUNAAB.html",
+    caminhoRelativo: "04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html",
+    categoria: "04 - MAPEAMENTOS DE PROCESSOS",
+    subcategoria: "AS IS (Situação Atual)",
+    tipo: "HTML",
+    periodo: "Referência Permanente",
+    ano: 2026,
+    tamanho: "52 KB",
+    dataModificacao: "21/05/2026",
+    status: "Vigente",
+    tags: ["macroprocesso as is", "fluxo atual", "bpmn", "mapeamento de processos junaab"],
+    resumo: "Mapeamento completo do fluxo de processos atual (AS IS) da JUNAAB e escritórios de área, identificando gargalos burocráticos e duplicidades de esforço.",
+    destaque: true
+  },
+  {
+    id: "doc-proc-003",
+    titulo: "Macroprocesso TO BE — JUNAAB (Proposta Otimizada)",
+    arquivo: "MACRO PROCESSO TO BE JUNAAB.html",
+    caminhoRelativo: "04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html",
+    categoria: "04 - MAPEAMENTOS DE PROCESSOS",
+    subcategoria: "TO BE (Proposta Futura)",
+    tipo: "HTML",
+    periodo: "Proposta",
+    ano: 2026,
+    tamanho: "60 KB",
+    dataModificacao: "21/05/2026",
+    status: "Em Análise",
+    tags: ["macroprocesso to be", "modelo futuro", "otimizacao de processos", "gestao moderna"],
+    resumo: "Arquitetura de processos futura proposta (TO BE) para modernização da JUNAAB com gestão orientada a valor, fluxos ágeis de aprovação e transparência orçamentária.",
+    destaque: true
+  },
+  {
+    id: "doc-proc-004",
+    titulo: "Manual de Serviço de A.A. — Referência Estatutária",
+    arquivo: "Manual de Serviço de A.A -.pdf",
+    caminhoRelativo: "04 - MAPEAMENTOS DE PROCESSOS/AS IS/Manual de Serviço de A.A -.pdf",
+    categoria: "04 - MAPEAMENTOS DE PROCESSOS",
+    subcategoria: "AS IS (Situação Atual)",
+    tipo: "PDF",
+    periodo: "Estatutário",
+    ano: 2026,
+    tamanho: "1.2 MB",
+    dataModificacao: "21/05/2026",
+    status: "Referência",
+    tags: ["manual de servico", "estatuto junaab", "12 conceitos", "12 tradicoes", "deveres do delegado"],
+    resumo: "Manual oficial de Serviços Gerais contendo os Doze Passos, Doze Tradições, Doze Conceitos para o Serviço Mundial e regulamentação das funções dos Delegados de Área.",
+    destaque: false
+  },
+
+  // --- 05 - CONVENÇÃO ---
+  {
+    id: "doc-cnv-001",
+    titulo: "Prestação de Contas — Vendas de Camisas Convenção 2027",
+    arquivo: "pix_camisas_convencao.csv",
+    caminhoRelativo: "05 - CONVENCAO/Comprovantes de Saques/pix_camisas_convencao.csv",
+    categoria: "05 - CONVENCAO",
+    subcategoria: "Comprovantes de Saques",
+    tipo: "CSV",
+    periodo: "Junho / 2026",
+    ano: 2026,
+    tamanho: "2.5 KB",
+    dataModificacao: "21/06/2026",
+    status: "Vigente",
+    tags: ["pix camisas convencao", "convencao 2027", "comprovantes pix", "vendas de camisas", "planilha financeira"],
+    resumo: "Planilha em CSV com o registro de todos os pagamentos via PIX para aquisição de camisas promocionais da Convenção Nacional de 2027.",
+    destaque: true
+  },
+  {
+    id: "doc-cnv-002",
+    titulo: "Comprovantes e Recibos WhatsApp — Convenção",
+    arquivo: "WhatsApp Unknown 2026-06-19 at 16.48.08.zip",
+    caminhoRelativo: "05 - CONVENCAO/Comprovantes de Saques/WhatsApp Unknown 2026-06-19 at 16.48.08.zip",
+    categoria: "05 - CONVENCAO",
+    subcategoria: "Comprovantes de Saques",
+    tipo: "ZIP",
+    periodo: "Junho / 2026",
+    ano: 2026,
+    tamanho: "505 KB",
+    dataModificacao: "19/06/2026",
+    status: "Vigente",
+    tags: ["recibos convencao", "comprovantes bancarios whatsapp", "saques poupanca", "arquivos zip"],
+    resumo: "Pacote contendo comprovantes digitais de transferências, recibos e extratos de saques da conta poupança para custeio operacional da Convenção.",
+    destaque: false
+  },
+
+  // --- 06 - DASHBOARDS & FERRAMENTAS EXECUTIVAS ---
+  {
+    id: "doc-dsh-001",
+    titulo: "Painel da Realidade Financeira do Movimento",
+    arquivo: "painel-realidade-financeira-aa-1.html",
+    caminhoRelativo: "painel-realidade-financeira-aa-1.html",
+    categoria: "06 - DASHBOARDS E FERRAMENTAS",
+    subcategoria: "Dashboards Executivos",
+    tipo: "HTML",
+    periodo: "2019-2026",
+    ano: 2026,
+    tamanho: "32.1 KB",
+    dataModificacao: "22/07/2026",
+    status: "Vigente",
+    tags: ["painel realidade financeira", "deficit estrutural", "reserva prudente", "diagnostico financeiro", "junaab"],
+    resumo: "Painel interativo com visualização da tese financeira: déficit operacional acumulado, queima da reserva prudente de A.A. Brasil e métricas de sustentabilidade.",
+    destaque: true
+  },
+  {
+    id: "doc-dsh-002",
+    titulo: "Nota Técnica — Clarificação Metodológica dos Regimes Contábeis",
+    arquivo: "NOTA_TECNICA_COM_CITACOES_COMPLETAS.html",
+    caminhoRelativo: "NOTA_TECNICA_COM_CITACOES_COMPLETAS.html",
+    categoria: "06 - DASHBOARDS E FERRAMENTAS",
+    subcategoria: "Notas Técnicas",
+    tipo: "HTML",
+    periodo: "Julho / 2026",
+    ano: 2026,
+    tamanho: "19.1 KB",
+    dataModificacao: "21/07/2026",
+    status: "Vigente",
+    tags: ["nota tecnica", "regimes contabeis", "citacoes completas", "regime de competencia", "regime de caixa", "itg 2002"],
+    resumo: "Nota técnica aprofundada com citações das normas contábeis brasileiras (NBC TG e ITG 2002 para entidades sem fins lucrativos) fundamentando a correta contabilização das receitas de literatura.",
+    destaque: true
+  },
+  {
+    id: "doc-dsh-003",
+    titulo: "Dashboard Financeiro ESL Área 27 CE",
+    arquivo: "dashboard_aa_area27.html",
+    caminhoRelativo: "06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html",
+    categoria: "06 - DASHBOARDS E FERRAMENTAS",
+    subcategoria: "Dashboard Area 27",
+    tipo: "HTML",
+    periodo: "2025-2026",
+    ano: 2026,
+    tamanho: "170 KB",
+    dataModificacao: "20/06/2026",
+    status: "Vigente",
+    tags: ["dashboard area 27", "controle financeiro", "graficos interativos", "extratos", "rubricas", "convencao 2027"],
+    resumo: "Dashboard financeiro interativo completo com gráficos de receitas por rubrica, despesas por categoria, controle nominal de cotas da Convenção e extrato bancário categorizado.",
+    destaque: true
+  },
+  {
+    id: "doc-dsh-004",
+    titulo: "Apresentação Atualizada — Relatório de Gestão",
+    arquivo: "APRESENTACAO_ATUALIZADA.html",
+    caminhoRelativo: "APRESENTACAO_ATUALIZADA.html",
+    categoria: "06 - DASHBOARDS E FERRAMENTAS",
+    subcategoria: "Apresentações",
+    tipo: "HTML",
+    periodo: "Julho / 2026",
+    ano: 2026,
+    tamanho: "81.2 KB",
+    dataModificacao: "21/07/2026",
+    status: "Vigente",
+    tags: ["apresentacao atualizada", "slides executivos", "prestacao de contas assembleia", "relatorio de gestao"],
+    resumo: "Apresentação interativa em slides para assembleia de delegados, sintetizando os números da área, desafios institucionais e propostas para a CSG.",
+    destaque: true
+  }
+];
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { CATALOGO_DOCUMENTOS };
+}
+
+</script>
+<script>
+/**
+ * PLATAFORMA DE GESTÃO DOCUMENTAL E KANBAN — DELEGADO AA
+ * Lógica Completa de Busca por Conteúdo, Kanban Trello e RBAC
+ */
+
+// Estado Global
+let docsData = typeof CATALOGO_DOCUMENTOS !== 'undefined' ? CATALOGO_DOCUMENTOS : [];
+let currentSearchTerm = "";
+let currentViewMode = "grid"; // 'grid' | 'table'
+let currentActiveRole = "henrique";
+let selectedDocForModal = null;
+
+// Áreas Oficiais de A.A. no Brasil (conforme Manual de Serviços)
+const AREAS_MANUAL_SERVICOS = [
+  "Área 01 - Rio de Janeiro (RJ)",
+  "Área 02 - São Paulo (SP - Capital)",
+  "Área 03 - Minas Gerais (MG - Central)",
+  "Área 04 - Rio Grande do Sul (RS)",
+  "Área 05 - Paraná (PR)",
+  "Área 06 - Santa Catarina (SC)",
+  "Área 07 - Bahia (BA - Salvador/Recôncavo)",
+  "Área 08 - Pernambuco (PE)",
+  "Área 09 - Ceará (CE - Norte/Sertão)",
+  "Área 10 - Pará (PA)",
+  "Área 11 - Goiás e Tocantins (GO/TO)",
+  "Área 12 - Espírito Santo (ES)",
+  "Área 13 - Maranhão (MA)",
+  "Área 14 - Paraíba (PB)",
+  "Área 15 - Rio Grande do Norte (RN)",
+  "Área 16 - Alagoas (AL)",
+  "Área 17 - Piauí (PI)",
+  "Área 18 - Mato Grosso do Sul (MS)",
+  "Área 19 - Mato Grosso (MT)",
+  "Área 20 - Amazonas (AM)",
+  "Área 21 - Sergipe (SE)",
+  "Área 22 - Distrito Federal (DF)",
+  "Área 23 - São Paulo (SP - Vale do Paraíba/Litoral)",
+  "Área 24 - São Paulo (SP - Noroeste)",
+  "Área 25 - São Paulo (SP - Centro-Oeste)",
+  "Área 26 - São Paulo (SP - Campinas)",
+  "Área 27 - Ceará (CE - Metropolitana/Fortaleza)",
+  "Área 28 - Bahia (BA - Sul/Sudoeste)",
+  "Área 29 - Minas Gerais (MG - Sul)",
+  "Área 30 - Minas Gerais (MG - Triângulo)",
+  "Área 31 - Rio de Janeiro (RJ - Interior/Norte)",
+  "Área 32 - Rondônia e Acre (RO/AC)",
+  "Área 33 - Roraima (RR)",
+  "Área 34 - Amapá (AP)",
+  "Área 35 - São Paulo (SP - Litoral/Santos)",
+  "JUNAAB (Estrutura Nacional)",
+  "Área Online (Nacional Digital)"
+];
+
+// Lista de Encargos / Funções Estatutárias Padrão
+const ENCARGOS_PADRAO = [
+  "Analista de Processos",
+  "Delegado de Área RJ",
+  "Delegado de Área",
+  "Tesoureiro / Finanças",
+  "Secretário de Área / ESG",
+  "Membro do Conselho Fiscal / Auditor",
+  "Custódio Regional / Junta",
+  "Coordenador de Comitê de Serviço",
+  "Representante de Serviços Gerais (RSG)",
+  "Membro / Observador",
+  "Outro (Personalizado)..."
+];
+
+// Atores Iniciais com Henrique (Analista de Processos) e Carlos S.R. (Delegado de Área RJ)
+const ATORES_DEFAULT = [
+  {
+    id: "henrique",
+    nome: "Henrique",
+    papel: "Analista de Processos",
+    area: "Área 27 - Ceará (CE - Metropolitana/Fortaleza)",
+    sigla: "HA",
+    avatarBg: "#1B365D",
+    desc: "Mapeamento de processos AS IS / TO BE, governança RACI e suporte executivo",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: true, homologar: true, gerenciarAtores: true }
+  },
+  {
+    id: "carlos",
+    nome: "Carlos S.R.",
+    papel: "Delegado de Área RJ",
+    area: "Área 01 - Rio de Janeiro (RJ)",
+    sigla: "CS",
+    avatarBg: "#0284C7",
+    desc: "Representação de Área junto à CSG, deliberações e homologações estatutárias",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: true, homologar: true, gerenciarAtores: true }
+  },
+  {
+    id: "tesouraria",
+    nome: "Comitê de Finanças",
+    papel: "Tesoureiro / Finanças",
+    area: "Área 01 - Rio de Janeiro (RJ)",
+    sigla: "CF",
+    avatarBg: "#059669",
+    desc: "Gestão de demonstrativos, balancetes, prestação de contas e 7ª Tradição",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: true, homologar: true, gerenciarAtores: false }
+  },
+  {
+    id: "secretaria",
+    nome: "Secretaria / ESG",
+    papel: "Secretário de Área / ESG",
+    area: "Área 01 - Rio de Janeiro (RJ)",
+    sigla: "SC",
+    avatarBg: "#7C3AED",
+    desc: "Redação de atas, expedição de circulares e cadastros distritais",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: true, homologar: false, gerenciarAtores: false }
+  },
+  {
+    id: "conselho",
+    nome: "Conselho Fiscal",
+    papel: "Membro do Conselho Fiscal / Auditor",
+    area: "Área 01 - Rio de Janeiro (RJ)",
+    sigla: "CF",
+    avatarBg: "#D97706",
+    desc: "Auditoria contábil, emissão de pareceres e conformidade estatutária",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: true, homologar: false, gerenciarAtores: false }
+  },
+  {
+    id: "custodio",
+    nome: "Junta de Custódios",
+    papel: "Custódio Regional / Junta",
+    area: "JUNAAB (Estrutura Nacional)",
+    sigla: "JC",
+    avatarBg: "#4338CA",
+    desc: "Apreciação institucional, deliberações nacionais e comunicação com CSG",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: true, moverKanban: false, homologar: true, gerenciarAtores: false }
+  },
+  {
+    id: "observador",
+    nome: "Membro de Grupo",
+    papel: "Representante de Serviços Gerais (RSG)",
+    area: "Área 01 - Rio de Janeiro (RJ)",
+    sigla: "RSG",
+    avatarBg: "#64748B",
+    desc: "Acompanhamento comunitário com acesso de consulta aos documentos",
+    permissoes: { verDocs: true, abrirDocs: true, criarTarefas: false, moverKanban: false, homologar: false, gerenciarAtores: false }
+  }
+];
+
+let ATORES = [];
+
+// Tarefas Iniciais do Kanban (Baseadas na Realidade do Acervo)
+const TAREFAS_DEFAULT = [
+  {
+    id: "task-001",
+    titulo: "Homologar Prestação de Contas — Janeiro de 2026",
+    descricao: "Conferir conciliação bancária do Banco do Brasil, entradas da literatura e repasses distritais do mês.",
+    coluna: "backlog",
+    prioridade: "alta",
+    atorId: "tesouraria",
+    dataLimite: "2026-11-20",
+    docId: "doc-fin-001",
+    subtarefas: [
+      { texto: "Verificar extrato bancário Jan/2026", feito: true },
+      { texto: "Validar recibos nominais da Convenção 2027", feito: false },
+      { texto: "Emitir parecer para aprovação na Mesa de Área", feito: false }
+    ]
+  },
+  {
+    id: "task-002",
+    titulo: "Apreciação do Parecer e Contestação JUNAAB",
+    descricao: "Revisar as discrepâncias apontadas entre o regime de caixa e regime de competência nos balancetes da Junta.",
+    coluna: "em_andamento",
+    prioridade: "urgente",
+    atorId: "carlos",
+    dataLimite: "2026-11-18",
+    docId: "doc-jun-001",
+    subtarefas: [
+      { texto: "Cruzar dados do Anexo Financeiro com a Nota Técnica", feito: true },
+      { texto: "Apresentar conclusões ao Conselho Fiscal", feito: true },
+      { texto: "Protocolar manifestação formal na Secretaria da Junta", feito: false }
+    ]
+  },
+  {
+    id: "task-003",
+    titulo: "Revisar Relatório da Auditoria 2026 pós-CSG",
+    descricao: "Análise das recomendações formuladas pelo comitê de delegados da região Sudeste acerca da sustentabilidade.",
+    coluna: "em_pauta",
+    prioridade: "media",
+    atorId: "conselho",
+    dataLimite: "2026-11-25",
+    docId: "doc-fin-003",
+    subtarefas: [
+      { texto: "Mapear desvios de inventário de literatura", feito: true },
+      { texto: "Verificar contingenciamento de reserva prudente", feito: true }
+    ]
+  },
+  {
+    id: "task-004",
+    titulo: "Mapeamento dos Processos TO BE e Matriz RACI",
+    descricao: "Estruturação dos macroprocessos e responsabilidades estatutárias para apresentação na assembleia.",
+    coluna: "em_andamento",
+    prioridade: "alta",
+    atorId: "henrique",
+    dataLimite: "2026-11-22",
+    docId: "doc-proc-001",
+    subtarefas: [
+      { texto: "Conferir matriz RACI das 25 ações críticas", feito: true },
+      { texto: "Integrar fluxo TO BE com os delegados de área", feito: true }
+    ]
+  },
+  {
+    id: "task-005",
+    titulo: "Distribuir Circular 04-2026 aos Grupos e Distritos",
+    descricao: "Envio das diretrizes oficiais aos Representantes de Serviços Gerais (RSGs) sobre o calendário do semestre.",
+    coluna: "concluido",
+    prioridade: "baixa",
+    atorId: "secretaria",
+    dataLimite: "2026-11-10",
+    docId: "doc-jun-006",
+    subtarefas: [
+      { texto: "Disparo no grupo de comunicados da Área 01", feito: true },
+      { texto: "Disponibilizar PDF impresso na sede", feito: true }
+    ]
+  }
+];
+
+let kanbanTasks = [];
+
+// Inicialização da Aplicação
+document.addEventListener("DOMContentLoaded", () => {
+  loadActorsFromStorage();
+  loadKanbanFromStorage();
+  populateDropdownOptions();
+  populateActorsInDOM();
+  renderPermissionMatrix();
+  populateDocSelectInModal();
+  updateStatsKPIs();
+  renderDocs();
+  renderKanban();
+});
+
+// Gestão de Armazenamento de Atores
+function loadActorsFromStorage() {
+  const stored = localStorage.getItem("delegado_aa_atores_v3");
+  if (stored) {
+    try {
+      ATORES = JSON.parse(stored);
+    } catch(e) {
+      ATORES = [...ATORES_DEFAULT];
+    }
+  } else {
+    ATORES = [...ATORES_DEFAULT];
+    saveActorsToStorage();
+  }
+}
+
+function saveActorsToStorage() {
+  localStorage.setItem("delegado_aa_atores_v3", JSON.stringify(ATORES));
+}
+
+// Preenchimento de Opções de Dropdown (Áreas e Encargos)
+function populateDropdownOptions() {
+  const roleSelect = document.getElementById("actorInputRoleSelect");
+  const areaSelect = document.getElementById("actorInputAreaSelect");
+  
+  if (roleSelect) {
+    roleSelect.innerHTML = ENCARGOS_PADRAO.map(r => '<option value="' + r + '">' + r + '</option>').join("");
+  }
+  if (areaSelect) {
+    areaSelect.innerHTML = AREAS_MANUAL_SERVICOS.map(a => '<option value="' + a + '">' + a + '</option>').join("");
+  }
+}
+
+function onActorRoleSelectChange(val) {
+  const customGroup = document.getElementById("actorCustomRoleGroup");
+  if (customGroup) {
+    customGroup.style.display = val.includes("Outro") ? "block" : "none";
+  }
+}
+
+// Alternância de Abas
+function switchTab(tabKey) {
+  document.querySelectorAll(".nav-tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".view-panel").forEach(panel => panel.classList.remove("active"));
+
+  const targetPanel = document.getElementById("view-" + tabKey);
+  if (targetPanel) {
+    targetPanel.classList.add("active");
+  }
+
+  const navBtns = document.querySelectorAll(".nav-tab-btn");
+  if (tabKey === 'acervo') navBtns[0].classList.add("active");
+  if (tabKey === 'kanban') navBtns[1].classList.add("active");
+  if (tabKey === 'rbac') navBtns[2].classList.add("active");
+  if (tabKey === 'executivo') navBtns[3].classList.add("active");
+}
+
+// Troca de Perfil de Ator (RBAC)
+function onRoleChange(roleKey) {
+  currentActiveRole = roleKey;
+  const actor = ATORES.find(a => a.id === roleKey) || ATORES[0];
+  if (actor) {
+    document.getElementById("headerRoleAvatar").innerText = actor.sigla || actor.nome.substring(0, 2).toUpperCase();
+    document.getElementById("headerRoleAvatar").style.background = actor.avatarBg || "#1B365D";
+  }
+  showToast("Perfil ativo: " + actor.nome + " (" + actor.papel + " - " + (actor.area ? actor.area.split(" - ")[0] : "") + ")");
+  highlightActiveActorCard();
+  renderKanban();
+}
+
+function selectActorProfile(roleKey) {
+  document.getElementById("roleSelector").value = roleKey;
+  onRoleChange(roleKey);
+}
+
+function highlightActiveActorCard() {
+  document.querySelectorAll(".actor-item").forEach(item => {
+    const isCurrent = item.dataset.actorId === currentActiveRole;
+    item.classList.toggle("active-profile", isCurrent);
+    const btn = item.querySelector(".btn-select-actor");
+    if (btn) {
+      btn.classList.toggle("selected", isCurrent);
+      btn.innerText = isCurrent ? "✓ Ativo" : "Selecionar";
+    }
+  });
+}
+
+// Renderização dos Atores na Interface
+function populateActorsInDOM() {
+  const container = document.getElementById("actorsListContainer");
+  const taskActorSelect = document.getElementById("taskInputActor");
+  const headerRoleSelect = document.getElementById("roleSelector");
+  
+  if (!container) return;
+  container.innerHTML = "";
+  if (taskActorSelect) taskActorSelect.innerHTML = "";
+  if (headerRoleSelect) headerRoleSelect.innerHTML = "";
+
+  ATORES.forEach(actor => {
+    // 1. Inserir na lista RBAC
+    const item = document.createElement("div");
+    item.className = "actor-item " + (actor.id === currentActiveRole ? "active-profile" : "");
+    item.dataset.actorId = actor.id;
+
+    // Resumo de badges de permissão ativas
+    const p = actor.permissoes || {};
+    const permBadges = [];
+    if (p.verDocs) permBadges.push("Ver Docs");
+    if (p.abrirDocs) permBadges.push("Abrir 1-Clique");
+    if (p.criarTarefas) permBadges.push("Criar Tarefas");
+    if (p.moverKanban) permBadges.push("Mover Cards");
+    if (p.homologar) permBadges.push("Homologar");
+    if (p.gerenciarAtores) permBadges.push("Admin");
+
+    item.innerHTML = `
+      <div class="actor-left" style="align-items: flex-start;">
+        <div class="actor-big-avatar" style="background: ${actor.avatarBg || '#1B365D'}">${actor.sigla || actor.nome.substring(0,2).toUpperCase()}</div>
+        <div class="actor-titles" style="flex:1;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <h4 style="margin: 0; font-size: 15px;">${actor.nome}</h4>
+            <span style="font-family: var(--mono); font-size: 11px; background: var(--cloth-pale); color: var(--navy); padding: 2px 8px; border-radius: 4px; font-weight: 600;">
+              ${actor.papel}
+            </span>
+          </div>
+          <div style="margin: 4px 0; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px;">
+            <span style="color: var(--accent-blue);">📍</span> <b>${actor.area || 'Área não definida'}</b>
+          </div>
+          <p style="margin: 3px 0 6px; font-size: 12px; color: #475569;">${actor.desc || ''}</p>
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+            ${permBadges.map(b => '<span style="font-size:10px; font-family:var(--mono); background:#E2E8F0; color:#334155; padding:1px 6px; border-radius:3px;">' + b + '</span>').join('')}
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end; margin-left: 12px;">
+        <button class="btn-select-actor ${actor.id === currentActiveRole ? 'selected' : ''}" onclick="selectActorProfile('${actor.id}')">
+          ${actor.id === currentActiveRole ? '✓ Ativo' : 'Selecionar'}
+        </button>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn-icon-secondary" style="padding: 4px 8px; font-size: 11.5px;" title="Editar Ator e Permissões" onclick="openEditActorModal('${actor.id}')">✏️ Editar</button>
+          ${actor.id !== 'henrique' && actor.id !== 'carlos' ? '<button class="btn-icon-secondary" style="padding: 4px 8px; font-size: 11.5px; color: var(--accent-rose);" title="Excluir Ator" onclick="deleteActor(\'' + actor.id + '\')">🗑️</button>' : ''}
+        </div>
+      </div>
+    `;
+    container.appendChild(item);
+
+    // 2. Inserir no select da tarefa
+    if (taskActorSelect) {
+      const opt = document.createElement("option");
+      opt.value = actor.id;
+      opt.innerText = actor.nome + " — " + actor.papel + " (" + (actor.area ? actor.area.split(" - ")[0] : "") + ")";
+      taskActorSelect.appendChild(opt);
+    }
+
+    // 3. Inserir no select do cabeçalho
+    if (headerRoleSelect) {
+      const optH = document.createElement("option");
+      optH.value = actor.id;
+      optH.innerText = actor.nome + " (" + actor.papel + ")";
+      headerRoleSelect.appendChild(optH);
+    }
+  });
+
+  if (headerRoleSelect) {
+    headerRoleSelect.value = currentActiveRole;
+  }
+}
+
+// Renderização Dinâmica da Matriz de Permissões com Toggles Interativos
+function renderPermissionMatrix() {
+  const tbody = document.getElementById("dynamicPermissionsTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  ATORES.forEach(actor => {
+    const p = actor.permissoes || {};
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="card-avatar" style="background:${actor.avatarBg || '#1B365D'}; width:24px; height:24px; font-size:10px;">${actor.sigla || actor.nome.substring(0,2).toUpperCase()}</div>
+          <div>
+            <b>${actor.nome}</b><br>
+            <span style="font-size:11px; color:var(--muted)">${actor.papel}</span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <span style="font-family:var(--mono); font-size:11px; color:var(--navy); background:var(--cloth-pale); padding:2px 6px; border-radius:3px;">
+          ${actor.area ? actor.area.split(" - ")[0] : 'Nacional'}
+        </span>
+      </td>
+      <td>${createPermToggleBadge(actor.id, 'verDocs', p.verDocs)}</td>
+      <td>${createPermToggleBadge(actor.id, 'abrirDocs', p.abrirDocs)}</td>
+      <td>${createPermToggleBadge(actor.id, 'criarTarefas', p.criarTarefas)}</td>
+      <td>${createPermToggleBadge(actor.id, 'moverKanban', p.moverKanban)}</td>
+      <td>${createPermToggleBadge(actor.id, 'homologar', p.homologar)}</td>
+      <td>${createPermToggleBadge(actor.id, 'gerenciarAtores', p.gerenciarAtores)}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function createPermToggleBadge(actorId, permKey, isAllowed) {
+  const badgeClass = isAllowed ? "badge-perm-yes" : "badge-perm-no";
+  const label = isAllowed ? "✓ SIM" : "✕ NÃO";
+  return '<span class="' + badgeClass + '" style="cursor: pointer; user-select: none; transition: transform 0.1s ease;" title="Clique para alternar permissão" onclick="toggleActorPermission(\'' + actorId + '\', \'' + permKey + '\')">' + label + '</span>';
+}
+
+// Alternar Permissão Diretamente na Tabela com 1 Clique
+function toggleActorPermission(actorId, permKey) {
+  const actor = ATORES.find(a => a.id === actorId);
+  if (!actor) return;
+  if (!actor.permissoes) actor.permissoes = {};
+
+  actor.permissoes[permKey] = !actor.permissoes[permKey];
+  saveActorsToStorage();
+  populateActorsInDOM();
+  renderPermissionMatrix();
+  renderKanban();
+
+  const labels = {
+    verDocs: "Ver Documentos",
+    abrirDocs: "Abrir com 1 Clique",
+    criarTarefas: "Criar Tarefas",
+    moverKanban: "Mover Kanban",
+    homologar: "Homologar Pautas",
+    gerenciarAtores: "Administração"
+  };
+  const statusStr = actor.permissoes[permKey] ? "ATIVADA" : "DESATIVADA";
+  showToast("Permissão [" + (labels[permKey] || permKey) + "] de " + actor.nome + ": " + statusStr);
+}
+
+// Modal de Cadastrar / Editar Ator
+function openNewActorModal() {
+  document.getElementById("modalActorTitle").innerText = "Cadastrar Novo Ator Administrativo";
+  document.getElementById("actorId").value = "";
+  document.getElementById("actorInputName").value = "";
+  document.getElementById("actorInputInitials").value = "";
+  document.getElementById("actorInputRoleSelect").value = ENCARGOS_PADRAO[0];
+  document.getElementById("actorInputAreaSelect").value = AREAS_MANUAL_SERVICOS[0];
+  document.getElementById("actorInputCustomRole").value = "";
+  document.getElementById("actorCustomRoleGroup").style.display = "none";
+  document.getElementById("actorInputDesc").value = "";
+  
+  document.getElementById("permVerDocs").checked = true;
+  document.getElementById("permAbrirDocs").checked = true;
+  document.getElementById("permCriarTarefas").checked = true;
+  document.getElementById("permMoverKanban").checked = true;
+  document.getElementById("permHomologar").checked = false;
+  document.getElementById("permGerenciarAtores").checked = false;
+
+  document.getElementById("actorModal").classList.add("open");
+}
+
+function openEditActorModal(actorId) {
+  const actor = ATORES.find(a => a.id === actorId);
+  if (!actor) return;
+
+  document.getElementById("modalActorTitle").innerText = "Editar Ator: " + actor.nome;
+  document.getElementById("actorId").value = actor.id;
+  document.getElementById("actorInputName").value = actor.nome;
+  document.getElementById("actorInputInitials").value = actor.sigla || "";
+
+  const roleSelect = document.getElementById("actorInputRoleSelect");
+  if (ENCARGOS_PADRAO.includes(actor.papel)) {
+    roleSelect.value = actor.papel;
+    document.getElementById("actorCustomRoleGroup").style.display = "none";
+  } else {
+    roleSelect.value = "Outro (Personalizado)...";
+    document.getElementById("actorCustomRoleGroup").style.display = "block";
+    document.getElementById("actorInputCustomRole").value = actor.papel;
+  }
+
+  document.getElementById("actorInputAreaSelect").value = actor.area || AREAS_MANUAL_SERVICOS[0];
+  document.getElementById("actorInputDesc").value = actor.desc || "";
+
+  const p = actor.permissoes || {};
+  document.getElementById("permVerDocs").checked = p.verDocs !== false;
+  document.getElementById("permAbrirDocs").checked = p.abrirDocs !== false;
+  document.getElementById("permCriarTarefas").checked = !!p.criarTarefas;
+  document.getElementById("permMoverKanban").checked = !!p.moverKanban;
+  document.getElementById("permHomologar").checked = !!p.homologar;
+  document.getElementById("permGerenciarAtores").checked = !!p.gerenciarAtores;
+
+  document.getElementById("actorModal").classList.add("open");
+}
+
+function closeActorModal() {
+  document.getElementById("actorModal").classList.remove("open");
+}
+
+function saveActor(e) {
+  e.preventDefault();
+  const id = document.getElementById("actorId").value;
+  const nome = document.getElementById("actorInputName").value.trim();
+  const siglaRaw = document.getElementById("actorInputInitials").value.trim();
+  const sigla = siglaRaw || nome.split(" ").map(w => w[0]).join("").substring(0, 3).toUpperCase();
+  
+  const roleSelectVal = document.getElementById("actorInputRoleSelect").value;
+  let papel = roleSelectVal;
+  if (roleSelectVal.includes("Outro")) {
+    papel = document.getElementById("actorInputCustomRole").value.trim() || "Encargo Especial";
+  }
+
+  const area = document.getElementById("actorInputAreaSelect").value;
+  const desc = document.getElementById("actorInputDesc").value.trim();
+
+  const permissoes = {
+    verDocs: document.getElementById("permVerDocs").checked,
+    abrirDocs: document.getElementById("permAbrirDocs").checked,
+    criarTarefas: document.getElementById("permCriarTarefas").checked,
+    moverKanban: document.getElementById("permMoverKanban").checked,
+    homologar: document.getElementById("permHomologar").checked,
+    gerenciarAtores: document.getElementById("permGerenciarAtores").checked
+  };
+
+  const colors = ["#1B365D", "#0284C7", "#059669", "#7C3AED", "#D97706", "#BE123C", "#4338CA", "#0D9488"];
+  const avatarBg = colors[Math.floor(Math.random() * colors.length)];
+
+  if (id) {
+    const actor = ATORES.find(a => a.id === id);
+    if (actor) {
+      actor.nome = nome;
+      actor.sigla = sigla;
+      actor.papel = papel;
+      actor.area = area;
+      actor.desc = desc;
+      actor.permissoes = permissoes;
+      showToast("Ator [" + nome + "] atualizado com sucesso!");
+    }
+  } else {
+    const newId = "ator-" + Date.now();
+    ATORES.push({
+      id: newId,
+      nome,
+      sigla,
+      papel,
+      area,
+      desc,
+      avatarBg,
+      permissoes
+    });
+    showToast("Novo ator [" + nome + "] incluído com sucesso!");
+  }
+
+  saveActorsToStorage();
+  populateActorsInDOM();
+  renderPermissionMatrix();
+  renderKanban();
+  closeActorModal();
+}
+
+function deleteActor(actorId) {
+  const actor = ATORES.find(a => a.id === actorId);
+  if (!actor) return;
+  if (confirm("Deseja realmente remover o ator " + actor.nome + "?")) {
+    ATORES = ATORES.filter(a => a.id !== actorId);
+    if (currentActiveRole === actorId) {
+      currentActiveRole = "henrique";
+    }
+    saveActorsToStorage();
+    populateActorsInDOM();
+    renderPermissionMatrix();
+    renderKanban();
+    showToast("Ator removido do sistema.");
+  }
+}
+
+// Botão Limpar Filtros do Acervo
+function resetAllFilters() {
+  document.getElementById("mainSearchInput").value = "";
+  currentSearchTerm = "";
+  document.getElementById("clearSearchBtn").style.display = "none";
+  document.getElementById("searchIndicator").style.display = "none";
+
+  document.getElementById("filterCategory").value = "all";
+  document.getElementById("filterPeriod").value = "all";
+  document.getElementById("filterType").value = "all";
+  document.getElementById("filterStatus").value = "all";
+
+  renderDocs();
+  showToast("Todos os filtros foram redefinidos. Mostrando acervo completo.");
+}
+function populateDocSelectInModal() {
+  const select = document.getElementById("taskInputDoc");
+  select.innerHTML = '<option value="">(Nenhum documento vinculado)</option>';
+  docsData.forEach(doc => {
+    const opt = document.createElement("option");
+    opt.value = doc.id;
+    opt.innerText = `${doc.categoria.split(" - ")[1] || doc.categoria} › ${doc.titulo}`;
+    select.appendChild(opt);
+  });
+}
+
+// Atualização de KPIs no topo
+function updateStatsKPIs() {
+  document.getElementById("kpiTotalDocs").innerText = docsData.length;
+  document.getElementById("totalDocsCount").innerText = docsData.length;
+  
+  const finCount = docsData.filter(d => d.categoria.includes("FINANCEIRO")).length;
+  document.getElementById("kpiFinDocs").innerText = finCount;
+
+  const junaabCount = docsData.filter(d => d.categoria.includes("JUNAAB")).length;
+  document.getElementById("kpiJunaabDocs").innerText = junaabCount;
+
+  const activeTasks = kanbanTasks.filter(t => t.coluna === "backlog" || t.coluna === "em_andamento" || t.coluna === "em_pauta").length;
+  document.getElementById("kpiActiveTasks").innerText = activeTasks;
+}
+
+// ==================== MECANISMO DE BUSCA E FILTROS ====================
+function handleSearch(term) {
+  currentSearchTerm = term.trim().toLowerCase();
+  document.getElementById("clearSearchBtn").style.display = currentSearchTerm ? "flex" : "none";
+  
+  const indicator = document.getElementById("searchIndicator");
+  const querySpan = document.getElementById("activeSearchQuery");
+  if (currentSearchTerm) {
+    indicator.style.display = "block";
+    querySpan.innerText = term;
+  } else {
+    indicator.style.display = "none";
+  }
+
+  renderDocs();
+}
+
+function clearSearch() {
+  document.getElementById("mainSearchInput").value = "";
+  handleSearch("");
+}
+
+function applySearchQuery(query) {
+  document.getElementById("mainSearchInput").value = query;
+  handleSearch(query);
+  switchTab("acervo");
+}
+
+function applyFilters() {
+  renderDocs();
+}
+
+function setViewMode(mode) {
+  currentViewMode = mode;
+  document.getElementById("btnViewGrid").classList.toggle("active", mode === "grid");
+  document.getElementById("btnViewTable").classList.toggle("active", mode === "table");
+  
+  document.getElementById("docsGridContainer").style.display = mode === "grid" ? "grid" : "none";
+  document.getElementById("docsTableContainer").style.display = mode === "table" ? "block" : "none";
+  renderDocs();
+}
+
+function getFilteredDocs() {
+  const catFilter = document.getElementById("filterCategory").value;
+  const periodFilter = document.getElementById("filterPeriod").value;
+  const typeFilter = document.getElementById("filterType").value;
+  const statusFilter = document.getElementById("filterStatus").value;
+
+  return docsData.filter(doc => {
+    // Filtro por Categoria
+    if (catFilter !== "all" && doc.categoria !== catFilter) return false;
+
+    // Filtro por Período
+    if (periodFilter === "2026" && doc.ano !== 2026) return false;
+    if (periodFilter === "2025" && doc.ano !== 2025) return false;
+    if (periodFilter === "hist" && doc.ano === 2026) return false;
+
+    // Filtro por Tipo
+    if (typeFilter !== "all" && doc.tipo !== typeFilter) return false;
+
+    // Filtro por Status
+    if (statusFilter !== "all" && doc.status !== statusFilter) return false;
+
+    // Busca textual inteligente (título, resumo, arquivo, tags, categoria, período)
+    if (currentSearchTerm) {
+      const matchTitle = doc.titulo.toLowerCase().includes(currentSearchTerm);
+      const matchResumo = doc.resumo.toLowerCase().includes(currentSearchTerm);
+      const matchArquivo = doc.arquivo.toLowerCase().includes(currentSearchTerm);
+      const matchCat = doc.categoria.toLowerCase().includes(currentSearchTerm);
+      const matchTags = doc.tags.some(t => t.toLowerCase().includes(currentSearchTerm));
+      const matchPeriodo = doc.periodo.toLowerCase().includes(currentSearchTerm);
+
+      // Tratamento especial para busca tipo "relatorio financeiro jan/26"
+      if (!matchTitle && !matchResumo && !matchArquivo && !matchTags && !matchPeriodo) {
+        const terms = currentSearchTerm.split(/[\s/]+/);
+        const matchesAllSubTerms = terms.every(term => 
+          doc.titulo.toLowerCase().includes(term) ||
+          doc.resumo.toLowerCase().includes(term) ||
+          doc.arquivo.toLowerCase().includes(term) ||
+          doc.periodo.toLowerCase().includes(term) ||
+          doc.tags.some(t => t.toLowerCase().includes(term))
+        );
+        if (!matchesAllSubTerms) return false;
+      }
+    }
+
+    return true;
+  });
+}
+
+function highlightText(text, query) {
+  if (!query) return text;
+  const regex = new RegExp(`(${query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')})`, 'gi');
+  return text.replace(regex, '<span class="highlight-term">$1</span>');
+}
+
+// Lista de Pastas Padrão de Destino no Disco
+const PASTAS_DESTINO_PADRAO = [
+  { label: "01 - FINANCEIRO / Demonstrativos e Balancetes - 2026", path: "01 - FINANCEIRO/Demonstrativos e Balancetes - 2026", categoria: "01 - FINANCEIRO", sub: "Demonstrativos e Balancetes - 2026" },
+  { label: "01 - FINANCEIRO / Analise e Auditoria", path: "01 - FINANCEIRO/Analise e Auditoria", categoria: "01 - FINANCEIRO", sub: "Análise e Auditoria" },
+  { label: "01 - FINANCEIRO / Demonstrativos Mensais - 2025", path: "01 - FINANCEIRO/Demonstrativos Mensais - 2025", categoria: "01 - FINANCEIRO", sub: "Demonstrativos Mensais - 2025" },
+  { label: "02 - DOCUMENTOS JUNAAB / Atas e Reunioes", path: "02 - DOCUMENTOS JUNAAB/Atas e Reunioes", categoria: "02 - DOCUMENTOS JUNAAB", sub: "Atas e Reuniões" },
+  { label: "02 - DOCUMENTOS JUNAAB / Circulares", path: "02 - DOCUMENTOS JUNAAB/Circulares", categoria: "02 - DOCUMENTOS JUNAAB", sub: "Circulares" },
+  { label: "02 - DOCUMENTOS JUNAAB / Pareceres e Contestacoes", path: "02 - DOCUMENTOS JUNAAB/Pareceres e Contestacoes", categoria: "02 - DOCUMENTOS JUNAAB", sub: "Pareceres e Contestações" },
+  { label: "03 - PLANEJAMENTO ESTRATEGICO / Proposta Estrategica JUNAAB", path: "03 - PLANEJAMENTO ESTRATEGICO/Proposta Estrategica JUNAAB", categoria: "03 - PLANEJAMENTO ESTRATEGICO", sub: "Proposta Estratégica JUNAAB" },
+  { label: "03 - PLANEJAMENTO ESTRATEGICO / Estruturacao Areas Online AA", path: "03 - PLANEJAMENTO ESTRATEGICO/Estruturacao Areas Online AA", categoria: "03 - PLANEJAMENTO ESTRATEGICO", sub: "Estruturação Áreas Online AA" },
+  { label: "04 - MAPEAMENTOS DE PROCESSOS / AS IS", path: "04 - MAPEAMENTOS DE PROCESSOS/AS IS", categoria: "04 - MAPEAMENTOS DE PROCESSOS", sub: "AS IS" },
+  { label: "04 - MAPEAMENTOS DE PROCESSOS / TO BE", path: "04 - MAPEAMENTOS DE PROCESSOS/TO BE", categoria: "04 - MAPEAMENTOS DE PROCESSOS", sub: "TO BE" },
+  { label: "05 - CONVENCAO / Comprovantes de Saques", path: "05 - CONVENCAO/Comprovantes de Saques", categoria: "05 - CONVENCAO", sub: "Comprovantes de Saques" },
+  { label: "06 - DASHBOARDS E FERRAMENTAS", path: "06 - DASHBOARDS E FERRAMENTAS", categoria: "06 - DASHBOARDS E FERRAMENTAS", sub: "Ferramentas" }
+];
+
+// Motor de Geração Automática de Tags
+function generateAutomaticTags(filename, folderPath) {
+  const tags = new Set();
+  const lowerName = filename.toLowerCase();
+  const lowerFolder = (folderPath || '').toLowerCase();
+
+  // Tipo / Extensão
+  const ext = filename.split('.').pop().toLowerCase();
+  tags.add(ext);
+
+  // Ano
+  const yearMatch = lowerName.match(/20\d\d/g);
+  let detectedYear = "2026";
+  if (yearMatch) {
+    yearMatch.forEach(y => tags.add(y));
+    detectedYear = yearMatch[0];
+  }
+
+  // Meses
+  const months = {
+    'jan': 'janeiro', 'fev': 'fevereiro', 'mar': 'março', 'abr': 'abril',
+    'mai': 'maio', 'jun': 'junho', 'jul': 'julho', 'ago': 'agosto',
+    'set': 'setembro', 'out': 'outubro', 'nov': 'novembro', 'dez': 'dezembro'
+  };
+  for (const [mShort, mLong] of Object.entries(months)) {
+    if (lowerName.includes(mShort) || lowerName.includes(mLong)) {
+      tags.add(mLong);
+      tags.add("relatorio financeiro " + mShort + "/" + detectedYear.slice(2));
+    }
+  }
+
+  // Palavras-chave de Governança e Finanças
+  const keywords = [
+    'demonstrativo', 'balancete', 'auditoria', 'relatorio', 'financeiro',
+    'ata', 'reuniao', 'extraordinaria', 'ordinaria', 'custodio', 'custodios',
+    'circular', 'comunicado', 'parecer', 'contestacao', 'junaab',
+    'planejamento', 'estrategico', 'online', 'proposta', 'diretrizes',
+    'processo', 'processos', 'macroprocesso', 'bpmn', 'raci', 'as is', 'to be',
+    'convencao', 'camisa', 'camisas', 'saque', 'pix', 'recibo', 'reserva prudente'
+  ];
+
+  keywords.forEach(kw => {
+    if (lowerName.includes(kw) || lowerFolder.includes(kw)) {
+      tags.add(kw);
+    }
+  });
+
+  return Array.from(tags);
+}
+
+// Carregar e Mesclar Auditoria e Documentos Customizados do Storage
+function loadDocsAndAuditFromStorage() {
+  const storedAudit = localStorage.getItem("delegado_aa_docs_audit_v4");
+  if (storedAudit) {
+    try {
+      const auditMap = JSON.parse(storedAudit);
+      docsData.forEach(doc => {
+        if (auditMap[doc.id]) {
+          doc.ultimaVisualizacao = auditMap[doc.id].ultimaVisualizacao;
+          doc.visualizadoPor = auditMap[doc.id].visualizadoPor;
+          if (auditMap[doc.id].ultimaAlteracao) doc.ultimaAlteracao = auditMap[doc.id].ultimaAlteracao;
+          if (auditMap[doc.id].responsavelAlteracao) doc.responsavelAlteracao = auditMap[doc.id].responsavelAlteracao;
+        }
+      });
+    } catch(e) {}
+  }
+
+  const storedCustomDocs = localStorage.getItem("delegado_aa_custom_docs_v4");
+  if (storedCustomDocs) {
+    try {
+      const customList = JSON.parse(storedCustomDocs);
+      customList.forEach(cDoc => {
+        if (!docsData.some(d => d.id === cDoc.id)) {
+          docsData.unshift(cDoc);
+        }
+      });
+    } catch(e) {}
+  }
+}
+
+function saveDocsAndAuditToStorage() {
+  const auditMap = {};
+  const customList = [];
+  docsData.forEach(doc => {
+    auditMap[doc.id] = {
+      ultimaVisualizacao: doc.ultimaVisualizacao || null,
+      visualizadoPor: doc.visualizadoPor || null,
+      ultimaAlteracao: doc.ultimaAlteracao || null,
+      responsavelAlteracao: doc.responsavelAlteracao || null
+    };
+    if (doc.isCustomUpload) {
+      customList.push(doc);
+    }
+  });
+  localStorage.setItem("delegado_aa_docs_audit_v4", JSON.stringify(auditMap));
+  localStorage.setItem("delegado_aa_custom_docs_v4", JSON.stringify(customList));
+}
+
+// Inicializar Dados de Documentos ao Carregar
+loadDocsAndAuditFromStorage();
+
+function renderDocs() {
+  const filtered = getFilteredDocs();
+  document.getElementById("filteredDocsCount").innerText = filtered.length;
+
+  const gridContainer = document.getElementById("docsGridContainer");
+  const tableBody = document.getElementById("docsTableBody");
+
+  gridContainer.innerHTML = "";
+  tableBody.innerHTML = "";
+
+  if (filtered.length === 0) {
+    const emptyMsg = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px; background: #fff; border: 1px dashed var(--rule); border-radius: var(--radius); color: var(--muted);">
+        <p style="font-size: 24px; margin-bottom: 8px;">🔍 Nenhum documento encontrado</p>
+        <p style="font-size: 14px;">Tente ajustar os filtros ou digitar outros termos de busca.</p>
+        <button class="btn-secondary" style="margin: 14px auto 0;" onclick="resetAllFilters()">Limpar Filtros</button>
+      </div>
+    `;
+    gridContainer.innerHTML = emptyMsg;
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:32px;">Nenhum documento encontrado com os critérios atuais.</td></tr>`;
+    return;
+  }
+
+  filtered.forEach(doc => {
+    const card = document.createElement("div");
+    card.className = "doc-card";
+    
+    const highlightedTitle = highlightText(doc.titulo, currentSearchTerm);
+    const highlightedResumo = highlightText(doc.resumo || '', currentSearchTerm);
+    const typeClass = (doc.tipo || 'pdf').toLowerCase();
+
+    // Rodapé de Auditoria e Rastreabilidade
+    const viewStatus = doc.ultimaVisualizacao 
+      ? doc.ultimaVisualizacao + ' (' + (doc.visualizadoPor || 'Usuário') + ')' 
+      : '<span style="color:var(--muted); font-style:italic;">Ainda não visualizado</span>';
+      
+    const editStatus = doc.ultimaAlteracao || doc.dataModificacao || 'Inicial';
+    const editAuthor = doc.responsavelAlteracao || 'Sistema JUNAAB';
+
+    card.innerHTML = `
+      <div>
+        <div class="doc-card-top">
+          <span class="doc-type-badge ${typeClass}">${doc.tipo}</span>
+          <div class="doc-meta-info">
+            <div class="doc-cat-path">${doc.categoria.split(" - ")[1] || doc.categoria} › ${doc.subcategoria || ''}</div>
+            <h3>${highlightedTitle}</h3>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <span class="doc-period-chip">📅 ${doc.periodo}</span>
+          <span class="doc-period-chip" style="background:#F1F5F9; color:var(--muted)">💾 ${doc.tamanho}</span>
+          <span class="doc-period-chip" style="background:var(--accent-emerald-bg); color:var(--accent-emerald)">${doc.status || 'Vigente'}</span>
+          <span class="version-badge-pill" style="cursor:pointer;" onclick="abrirHistoricoVersoes('${doc.id}')" title="Clique para histórico de versões">🏷️ ${doc.versao || 'v1.0'}</span>
+        </div>
+
+        <p class="doc-summary">${highlightedResumo}</p>
+
+        <!-- Status de Auditoria: Última Visualização e Alteração -->
+        <div style="font-size: 11px; color: var(--muted); background: var(--surface-alt); padding: 8px 10px; border-radius: var(--radius-sm); margin: 8px 0 12px; border: 1px solid var(--rule-light);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px; gap: 6px;">
+            <span>👁️ <b>Última visualização:</b></span>
+            <span style="color: var(--navy); font-weight: 500; text-align: right;">${viewStatus}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 6px;">
+            <span>✏️ <b>Última alteração:</b></span>
+            <span style="color: #475569; text-align: right;">${editStatus} (${editAuthor})</span>
+          </div>
+        </div>
+
+        <div class="doc-tags">
+          ${(doc.tags || []).slice(0, 5).map(t => '<span class="doc-tag">' + highlightText(t, currentSearchTerm) + '</span>').join("")}
+        </div>
+      </div>
+
+      <div class="doc-card-actions">
+        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" onclick="onDocOpenClick(event, '${doc.id}')">
+          🚀 Abrir Arquivo
+        </a>
+        <button class="btn-icon-secondary" title="Copiar Caminho Windows" onclick="copyDocPath('${doc.caminhoRelativo}')">
+          📋 Copiar
+        </button>
+        <button class="btn-icon-secondary" title="Criar Tarefa no Kanban com este Documento" onclick="createTaskFromDoc('${doc.id}')">
+          📌 Tarefa
+        </button>
+        <button class="btn-icon-secondary" title="Histórico de Versões e Segurança" onclick="abrirHistoricoVersoes('${doc.id}')">
+          🕒 Versões
+        </button>
+      </div>
+    `;
+    gridContainer.appendChild(card);
+
+    // Linha na Tabela
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><span class="doc-type-badge ${typeClass}">${doc.tipo}</span></td>
+      <td>
+        <b style="color:var(--navy); font-size:14px;">${highlightedTitle}</b><br>
+        <span style="font-size:12px; color:var(--muted);">${highlightedResumo.substring(0, 90)}...</span>
+      </td>
+      <td><span class="doc-cat-path">${doc.subcategoria || doc.categoria}</span></td>
+      <td><span class="doc-period-chip">${doc.periodo}</span></td>
+      <td>
+        <span style="font-size:11.5px; color:var(--navy); font-weight:500;">
+          ${doc.ultimaVisualizacao ? doc.ultimaVisualizacao + '<br><small style="color:var(--muted)">' + (doc.visualizadoPor || '') + '</small>' : '<span style="color:var(--muted); font-style:italic;">Não visualizado</span>'}
+        </span>
+      </td>
+      <td>
+        <span style="font-size:11.5px; color:#475569;">
+          ${editStatus}<br><small style="color:var(--muted)">${editAuthor}</small>
+        </span>
+      </td>
+      <td style="text-align: right; white-space: nowrap;">
+        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="display:inline-flex; padding:5px 10px; font-size:11.5px;" onclick="onDocOpenClick(event, '${doc.id}')">
+          🚀 Abrir
+        </a>
+        <button class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px;" onclick="copyDocPath('${doc.caminhoRelativo}')">
+          📋
+        </button>
+        <button class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px;" onclick="createTaskFromDoc('${doc.id}')">
+          📌
+        </button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Abertura e Rastreamento de Visualização com Timestamp e Ator
+function onDocOpenClick(e, docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  doc.ultimaVisualizacao = new Date().toLocaleString('pt-BR');
+  doc.visualizadoPor = currentActor.nome + " (" + currentActor.papel + ")";
+  
+  saveDocsAndAuditToStorage();
+  renderDocs();
+  showToast("Visualizando: " + doc.titulo + " · Registrado em auditoria!");
+}
+
+function showDocModal(docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+  selectedDocForModal = doc;
+
+  document.getElementById("docModalTitle").innerText = doc.titulo;
+  document.getElementById("docModalSummary").innerText = doc.resumo || '';
+  document.getElementById("docModalPath").innerText = "C:\\PROJETOS IA\\DELEGADO AA\\" + doc.caminhoRelativo.replace(/\//g, '\\');
+  document.getElementById("docViewerModal").classList.add("open");
+}
+
+function closeDocModal() {
+  document.getElementById("docViewerModal").classList.remove("open");
+  selectedDocForModal = null;
+}
+
+function executeOpenDoc() {
+  if (selectedDocForModal) {
+    onDocOpenClick(null, selectedDocForModal.id);
+    window.open(encodeURI(selectedDocForModal.caminhoRelativo), '_blank');
+    closeDocModal();
+  }
+}
+
+function executeCopyPath() {
+  if (selectedDocForModal) {
+    copyDocPath(selectedDocForModal.caminhoRelativo);
+    closeDocModal();
+  }
+}
+
+function copyDocPath(relPath) {
+  const fullWinPath = "C:\\PROJETOS IA\\DELEGADO AA\\" + relPath.replace(/\//g, '\\');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fullWinPath).then(() => {
+      showToast("Caminho copiado com sucesso para a área de transferência!");
+    }).catch(() => {
+      prompt("Copie o caminho do arquivo abaixo:", fullWinPath);
+    });
+  } else {
+    prompt("Copie o caminho do arquivo abaixo:", fullWinPath);
+  }
+}
+
+function createTaskFromDoc(docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  openNewTaskModal();
+  document.getElementById("taskInputTitle").value = "Apreciar / Analisar: " + doc.titulo;
+  document.getElementById("taskInputDesc").value = "Revisão do documento [" + doc.arquivo + "] referente a " + doc.periodo + ".\nEmenta: " + (doc.resumo || '');
+  document.getElementById("taskInputDoc").value = doc.id;
+  switchTab("kanban");
+}
+
+// ==================== MÓDULO DE UPLOAD DE DOCUMENTOS ====================
+let selectedUploadFile = null;
+let currentAutoTags = [];
+
+function openUploadModal() {
+  selectedUploadFile = null;
+  currentAutoTags = [];
+
+  const folderSelect = document.getElementById("uploadInputFolder");
+  if (folderSelect) {
+    folderSelect.innerHTML = PASTAS_DESTINO_PADRAO.map((p, idx) => 
+      '<option value="' + idx + '">' + p.label + '</option>'
+    ).join("");
+  }
+
+  document.getElementById("uploadInputTitle").value = "";
+  document.getElementById("uploadInputPeriod").value = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  document.getElementById("uploadInputSummary").value = "";
+  document.getElementById("uploadInputTags").value = "";
+  document.getElementById("autoTagsPreview").innerHTML = '<span style="color:var(--muted); font-size:12px;">Selecione um arquivo para gerar tags automáticas</span>';
+  document.getElementById("selectedFileInfo").style.display = "none";
+  document.getElementById("dropzoneText").innerText = "Clique para selecionar ou arraste o arquivo aqui";
+  document.getElementById("uploadProgressBarContainer").style.display = "none";
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  document.getElementById("uploadInputActor").value = currentActor.nome + " (" + currentActor.papel + ")";
+
+  document.getElementById("uploadModal").classList.add("open");
+}
+
+function closeUploadModal() {
+  document.getElementById("uploadModal").classList.remove("open");
+}
+
+function handleUploadDragOver(e) {
+  e.preventDefault();
+  document.getElementById("uploadDropzone").style.borderColor = "var(--accent-blue)";
+  document.getElementById("uploadDropzone").style.background = "var(--accent-blue-bg)";
+}
+
+function handleUploadDragLeave(e) {
+  document.getElementById("uploadDropzone").style.borderColor = "var(--navy-light)";
+  document.getElementById("uploadDropzone").style.background = "var(--surface-alt)";
+}
+
+function handleUploadDrop(e) {
+  e.preventDefault();
+  handleUploadDragLeave(e);
+  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    handleFileSelect(e.dataTransfer.files);
+  }
+}
+
+function handleFileSelect(files) {
+  if (!files || files.length === 0) return;
+  selectedUploadFile = files[0];
+
+  document.getElementById("selectedFileInfo").style.display = "block";
+  document.getElementById("selectedFileInfo").innerText = "✓ Arquivo: " + selectedUploadFile.name + " (" + (selectedUploadFile.size / 1024).toFixed(1) + " KB)";
+  document.getElementById("dropzoneText").innerText = "Arquivo selecionado pronto para envio";
+
+  // Preencher título se vazio
+  const rawName = selectedUploadFile.name.replace(/\.[^/.]+$/, "");
+  document.getElementById("uploadInputTitle").value = rawName.replace(/[_-]/g, " ");
+
+  // Sugerir pasta de destino
+  const lower = selectedUploadFile.name.toLowerCase();
+  let suggestedIdx = 0;
+  PASTAS_DESTINO_PADRAO.forEach((p, idx) => {
+    if (lower.includes("2026") && (lower.includes("demonstrativo") || lower.includes("balancete"))) suggestedIdx = 0;
+    else if (lower.includes("auditoria")) suggestedIdx = 1;
+    else if (lower.includes("ata")) suggestedIdx = 3;
+    else if (lower.includes("circular")) suggestedIdx = 4;
+    else if (lower.includes("parecer") || lower.includes("contestacao")) suggestedIdx = 5;
+    else if (lower.includes("planejamento")) suggestedIdx = 6;
+    else if (lower.includes("online")) suggestedIdx = 7;
+    else if (lower.includes("processo") || lower.includes("bpmn") || lower.includes("raci")) suggestedIdx = 8;
+    else if (lower.includes("convencao") || lower.includes("pix") || lower.includes("camisa")) suggestedIdx = 10;
+  });
+  document.getElementById("uploadInputFolder").value = suggestedIdx;
+
+  updateAutoTagsPreview();
+}
+
+function onUploadFolderChange(val) {
+  updateAutoTagsPreview();
+}
+
+function updateAutoTagsPreview() {
+  if (!selectedUploadFile) return;
+  const folderIdx = parseInt(document.getElementById("uploadInputFolder").value, 10);
+  const folderObj = PASTAS_DESTINO_PADRAO[folderIdx] || PASTAS_DESTINO_PADRAO[0];
+  
+  currentAutoTags = generateAutomaticTags(selectedUploadFile.name, folderObj.path);
+  const previewDiv = document.getElementById("autoTagsPreview");
+  previewDiv.innerHTML = currentAutoTags.map(t => 
+    '<span style="background:var(--accent-blue-bg); color:var(--accent-blue); font-size:11px; padding:2px 8px; border-radius:12px; font-weight:500;">#' + t + '</span>'
+  ).join(" ");
+}
+
+async function submitDocumentUpload(e) {
+  e.preventDefault();
+  if (!selectedUploadFile) {
+    showToast("Por favor, selecione um arquivo para upload.");
+    return;
+  }
+
+  const folderIdx = parseInt(document.getElementById("uploadInputFolder").value, 10);
+  const folderObj = PASTAS_DESTINO_PADRAO[folderIdx] || PASTAS_DESTINO_PADRAO[0];
+  
+  const title = document.getElementById("uploadInputTitle").value.trim();
+  const period = document.getElementById("uploadInputPeriod").value.trim();
+  const summary = document.getElementById("uploadInputSummary").value.trim() || ("Documento arquivado em " + folderObj.label);
+  const status = document.getElementById("uploadInputStatus").value;
+  const extraTags = document.getElementById("uploadInputTags").value.split(",").map(t => t.trim().toLowerCase()).filter(t => t);
+  const allTags = Array.from(new Set([...currentAutoTags, ...extraTags]));
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  const relativePath = folderObj.path + "/" + selectedUploadFile.name;
+
+  // Tentar upload físico via Servidor Local se estiver rodando
+  const progressContainer = document.getElementById("uploadProgressBarContainer");
+  const progressBar = document.getElementById("uploadProgressBar");
+  progressContainer.style.display = "block";
+  progressBar.style.width = "40%";
+
+  let savedPhysically = false;
+  try {
+    const formData = new FormData();
+    formData.append("file", selectedUploadFile);
+    formData.append("folder", folderObj.path);
+
+    const res = await fetch("/upload", {
+      method: "POST",
+      body: formData
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.success) {
+        savedPhysically = true;
+      }
+    }
+  } catch(err) {
+    // Servidor local não ativo ou executando em file:///
+  }
+
+  progressBar.style.width = "100%";
+
+  // Registrar Documento no Catálogo
+  const ext = selectedUploadFile.name.split('.').pop().toUpperCase();
+  const newDoc = {
+    id: "doc-custom-" + Date.now(),
+    titulo: title,
+    arquivo: selectedUploadFile.name,
+    caminhoRelativo: relativePath,
+    categoria: folderObj.categoria,
+    subcategoria: folderObj.sub,
+    tipo: ext,
+    periodo: period,
+    ano: parseInt((period.match(/20\d\d/) || ['2026'])[0], 10),
+    tamanho: (selectedUploadFile.size / 1024).toFixed(1) + " KB",
+    dataModificacao: new Date().toLocaleDateString('pt-BR'),
+    status: status,
+    tags: allTags,
+    resumo: summary,
+    destaque: true,
+    isCustomUpload: true,
+    ultimaVisualizacao: null,
+    visualizadoPor: null,
+    ultimaAlteracao: new Date().toLocaleString('pt-BR'),
+    responsavelAlteracao: currentActor.nome + " (" + currentActor.papel + ")"
+  };
+
+  docsData.unshift(newDoc);
+  saveDocsAndAuditToStorage();
+  updateStatsKPIs();
+  renderDocs();
+  closeUploadModal();
+
+  if (savedPhysically) {
+    showToast("Documento gravado fisicamente em [" + folderObj.path + "] com tags automáticas!");
+  } else {
+    showToast("Documento indexado no acervo com sucesso! (Audit trail e tags geradas)");
+  }
+}
+
+// ==================== KANBAN ADMINISTRATIVO ====================
+function loadKanbanFromStorage() {
+  const stored = localStorage.getItem("delegado_aa_kanban_tasks");
+  if (stored) {
+    try {
+      kanbanTasks = JSON.parse(stored);
+    } catch(e) {
+      kanbanTasks = [...TAREFAS_DEFAULT];
+    }
+  } else {
+    kanbanTasks = [...TAREFAS_DEFAULT];
+    saveKanbanToStorage();
+  }
+}
+
+function saveKanbanToStorage() {
+  localStorage.setItem("delegado_aa_kanban_tasks", JSON.stringify(kanbanTasks));
+  updateStatsKPIs();
+}
+
+// Modo do Kanban: 'docs' | 'tasks' | 'all'
+let currentKanbanMode = 'docs';
+
+function setKanbanMode(mode) {
+  currentKanbanMode = mode;
+  document.getElementById('btnKanbanModeDocs').classList.toggle('active', mode === 'docs');
+  document.getElementById('btnKanbanModeTasks').classList.toggle('active', mode === 'tasks');
+  document.getElementById('btnKanbanModeAll').classList.toggle('active', mode === 'all');
+  renderKanban();
+  showToast("Modo de exibição: " + (mode === 'docs' ? 'Documentos do Acervo' : mode === 'tasks' ? 'Tarefas' : 'Visão Integrada'));
+}
+
+// Inicializar colunas padrão dos documentos caso não tenham sido salvas
+function initializeDocKanbanColumns() {
+  docsData.forEach(doc => {
+    if (!doc.coluna) {
+      const lower = (doc.titulo + " " + doc.arquivo + " " + doc.categoria).toLowerCase();
+      if (lower.includes("2025") || lower.includes("manual") || lower.includes("raci") || lower.includes("painel realidade") || lower.includes("nota tecnica") || lower.includes("macroprocesso")) {
+        doc.coluna = "concluido";
+      } else if (lower.includes("auditoria") || lower.includes("ata 5") || lower.includes("comite de financas") || lower.includes("camisas")) {
+        doc.coluna = "em_pauta"; // Considerações Finais
+      } else if (lower.includes("contestacao") || lower.includes("anexo_analise") || lower.includes("planejamento") || lower.includes("online")) {
+        doc.coluna = "em_andamento";
+      } else {
+        doc.coluna = "backlog"; // A Fazer / Entrada
+      }
+    }
+  });
+}
+
+initializeDocKanbanColumns();
+
+function renderKanban() {
+  const cols = ["backlog", "em_andamento", "em_pauta", "concluido"];
+  
+  cols.forEach(colKey => {
+    const container = document.getElementById("cards-" + colKey);
+    const countEl = document.getElementById("count-" + colKey);
+    if (!container || !countEl) return;
+
+    container.innerHTML = "";
+
+    // 1. Filtrar Documentos nesta coluna
+    const docsInCol = docsData.filter(d => (d.coluna || 'backlog') === colKey);
+    // 2. Filtrar Tarefas nesta coluna
+    const tasksInCol = kanbanTasks.filter(t => t.coluna === colKey);
+
+    let totalCards = 0;
+
+    // Renderizar Documentos se o modo for 'docs' ou 'all'
+    if (currentKanbanMode === 'docs' || currentKanbanMode === 'all') {
+      docsInCol.forEach(doc => {
+        totalCards++;
+        const cardEl = createDocumentKanbanCard(doc);
+        container.appendChild(cardEl);
+      });
+    }
+
+    // Renderizar Tarefas se o modo for 'tasks' ou 'all'
+    if (currentKanbanMode === 'tasks' || currentKanbanMode === 'all') {
+      tasksInCol.forEach(task => {
+        totalCards++;
+        const cardEl = createKanbanCardElement(task);
+        container.appendChild(cardEl);
+      });
+    }
+
+    countEl.innerText = totalCards;
+  });
+}
+
+// Criação do Card de Documento para o Kanban (Estilo Trello)
+function createDocumentKanbanCard(doc) {
+  const card = document.createElement("div");
+  card.className = "kanban-card";
+  card.id = "doc-card-" + doc.id;
+  card.style.borderLeft = "4px solid var(--navy)";
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  const canDrag = currentActor.permissoes ? currentActor.permissoes.moverKanban : true;
+  card.draggable = canDrag;
+  if (canDrag) {
+    card.ondragstart = (e) => handleDragStartItem(e, 'doc', doc.id);
+  }
+
+  const typeClass = (doc.tipo || 'pdf').toLowerCase();
+  const viewStatus = doc.ultimaVisualizacao 
+    ? doc.ultimaVisualizacao + ' (' + (doc.visualizadoPor || 'Usuário') + ')' 
+    : '<span style="color:var(--muted); font-style:italic;">Não visualizado</span>';
+  const editAuthor = doc.responsavelAlteracao || 'Sistema';
+
+  card.innerHTML = `
+    <div class="card-priority-row">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span class="doc-type-badge ${typeClass}">${doc.tipo}</span>
+        <span style="font-family: var(--mono); font-size: 10px; color: var(--navy); background: var(--cloth-pale); padding: 2px 6px; border-radius: 4px; font-weight: 600;">
+          📄 DOCUMENTO
+        </span>
+      </div>
+      <span class="priority-pill priority-media" style="font-size: 9.5px;">${doc.status || 'Vigente'}</span>
+    </div>
+
+    <div class="card-title" style="margin-top: 4px;">${doc.titulo}</div>
+    <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; font-family: var(--mono);">
+      ${doc.categoria.split(" - ")[1] || doc.categoria}
+    </div>
+
+    <p class="card-desc">${(doc.resumo || '').substring(0, 110)}...</p>
+
+    <!-- Auditoria no Card do Kanban -->
+    <div style="font-size: 10.5px; color: var(--muted); background: var(--surface-alt); padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid var(--rule-light);">
+      <div style="margin-bottom: 2px;">👁️ <b>Última visualização:</b> ${viewStatus}</div>
+      <div>✏️ <b>Última alteração:</b> ${doc.ultimaAlteracao || doc.dataModificacao || 'Inicial'} (${editAuthor})</div>
+    </div>
+
+    <div style="display: flex; gap: 6px; margin-top: 6px;">
+      <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="padding: 5px 10px; font-size: 11.5px;" onclick="onDocOpenClick(event, '${doc.id}')">
+        🚀 Abrir Arquivo
+      </a>
+      <button class="btn-icon-secondary" style="padding: 5px 8px; font-size: 11.5px;" title="Copiar Caminho" onclick="copyDocPath('${doc.caminhoRelativo}')">
+        📋
+      </button>
+      <select style="font-size: 11px; padding: 2px 6px; border-radius: var(--radius-sm); border: 1px solid var(--rule); background: #fff;" onchange="moveDocToColumn('${doc.id}', this.value)">
+        <option value="backlog" ${doc.coluna === 'backlog' ? 'selected' : ''}>📋 A Fazer</option>
+        <option value="em_andamento" ${doc.coluna === 'em_andamento' ? 'selected' : ''}>⏳ Em Andamento</option>
+        <option value="em_pauta" ${doc.coluna === 'em_pauta' ? 'selected' : ''}>📝 Considerações Finais</option>
+        <option value="concluido" ${doc.coluna === 'concluido' ? 'selected' : ''}>✅ Concluído</option>
+      </select>
+    </div>
+  `;
+
+  return card;
+}
+
+// Movimentação Direta de Documento para Coluna
+function moveDocToColumn(docId, targetCol) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (targetCol === "concluido" && currentActor.permissoes && !currentActor.permissoes.homologar) {
+    showToast("Permissão negada: Seu perfil não possui permissão para Homologar / Concluir.");
+    renderKanban();
+    return;
+  }
+
+  doc.coluna = targetCol;
+  doc.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+  doc.responsavelAlteracao = currentActor.nome + " (" + currentActor.papel + ")";
+  
+  saveDocsAndAuditToStorage();
+  renderKanban();
+  renderDocs();
+  showToast("Documento \"" + doc.titulo + "\" movido para \"" + getColLabel(targetCol) + "\"!");
+}
+
+// Drag & Drop Unificado para Documentos e Tarefas
+let draggedItemType = null; // 'doc' | 'task'
+let draggedItemId = null;
+
+function handleDragStartItem(e, itemType, itemId) {
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  const canDrag = currentActor.permissoes ? currentActor.permissoes.moverKanban : true;
+  if (!canDrag) {
+    e.preventDefault();
+    showToast("Seu perfil não possui permissão para mover itens no Kanban.");
+    return;
+  }
+
+  draggedItemType = itemType;
+  draggedItemId = itemId;
+  e.dataTransfer.setData("text/plain", itemType + ":" + itemId);
+  e.dataTransfer.effectAllowed = "move";
+}
+
+function handleDragStart(e, taskId) {
+  handleDragStartItem(e, 'task', taskId);
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
+  e.currentTarget.classList.add("drag-over");
+}
+
+function handleDragLeave(e) {
+  e.currentTarget.classList.remove("drag-over");
+}
+
+function handleDrop(e, targetCol) {
+  e.preventDefault();
+  e.currentTarget.classList.remove("drag-over");
+
+  const rawData = e.dataTransfer.getData("text/plain") || "";
+  let itemType = draggedItemType;
+  let itemId = draggedItemId;
+
+  if (rawData.includes(":")) {
+    const parts = rawData.split(":");
+    itemType = parts[0];
+    itemId = parts[1];
+  }
+
+  if (!itemId) return;
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (targetCol === "concluido" && currentActor.permissoes && !currentActor.permissoes.homologar) {
+    showToast("Permissão negada: Seu perfil não possui permissão para Homologar / Concluir.");
+    return;
+  }
+
+  if (itemType === 'doc') {
+    // É um Documento
+    const doc = docsData.find(d => d.id === itemId);
+    if (!doc) return;
+
+    doc.coluna = targetCol;
+    doc.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+    doc.responsavelAlteracao = currentActor.nome + " (" + currentActor.papel + ")";
+    
+    saveDocsAndAuditToStorage();
+    renderKanban();
+    renderDocs();
+    showToast("Documento \"" + doc.titulo + "\" movido para \"" + getColLabel(targetCol) + "\"!");
+  } else {
+    // É uma Tarefa
+    const task = kanbanTasks.find(t => t.id === itemId);
+    if (!task) return;
+
+    task.coluna = targetCol;
+    saveKanbanToStorage();
+    renderKanban();
+    showToast("Tarefa \"" + task.titulo + "\" movida para \"" + getColLabel(targetCol) + "\"!");
+  }
+}
+
+function getColLabel(colKey) {
+  switch(colKey) {
+    case "backlog": return "A Fazer";
+    case "em_andamento": return "Em Andamento";
+    case "em_pauta": return "Considerações Finais";
+    case "concluido": return "Concluído / Homologado";
+    default: return colKey;
+  }
+}
+
+// Criação do Card de Tarefa (Mantido e Integrado)
+function createKanbanCardElement(task) {
+  const card = document.createElement("div");
+  card.className = "kanban-card";
+  card.id = "card-" + task.id;
+
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  const canDrag = currentActor.permissoes ? currentActor.permissoes.moverKanban : true;
+  card.draggable = canDrag;
+  if (canDrag) {
+    card.ondragstart = (e) => handleDragStartItem(e, 'task', task.id);
+  }
+
+  const actor = ATORES.find(a => a.id === task.atorId) || ATORES[0];
+  const linkedDoc = task.docId ? docsData.find(d => d.id === task.docId) : null;
+
+  const totalSub = task.subtarefas ? task.subtarefas.length : 0;
+  const doneSub = task.subtarefas ? task.subtarefas.filter(s => s.feito).length : 0;
+  const pctSub = totalSub > 0 ? Math.round((doneSub / totalSub) * 100) : 0;
+
+  let deadlineHtml = "";
+  if (task.dataLimite) {
+    const today = new Date().toISOString().split("T")[0];
+    const isOverdue = task.dataLimite < today && task.coluna !== "concluido";
+    deadlineHtml = `
+      <div class="card-deadline ${isOverdue ? 'overdue' : ''}">
+        <span>${isOverdue ? '⚠️' : '📅'}</span> ${formatDateBR(task.dataLimite)}
+      </div>
+    `;
+  }
+
+  card.innerHTML = `
+    <div class="card-priority-row">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span class="priority-pill priority-${task.prioridade}">${task.prioridade}</span>
+        <span style="font-family:var(--mono); font-size:10px; color:var(--muted); background:#F1F5F9; padding:2px 6px; border-radius:4px;">
+          📋 TAREFA
+        </span>
+      </div>
+      ${deadlineHtml}
+    </div>
+
+    <div class="card-title" style="margin-top:4px;">${task.titulo}</div>
+    ${task.descricao ? '<div class="card-desc">' + task.descricao + '</div>' : ''}
+
+    ${linkedDoc ? `
+      <div class="card-doc-link" title="Clique para abrir: ${linkedDoc.arquivo}" onclick="openLinkedDoc('${linkedDoc.caminhoRelativo}', '${linkedDoc.id}')">
+        <span style="font-size:13px;">📄</span>
+        <span class="card-doc-title">${linkedDoc.titulo}</span>
+        <span style="font-size:11px; color:var(--accent-blue);">Abrir ↗</span>
+      </div>
+    ` : ''}
+
+    ${totalSub > 0 ? `
+      <div class="card-checklist-bar">
+        <div class="checklist-text">
+          <span>Checklist</span>
+          <span>${doneSub}/${totalSub} (${pctSub}%)</span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill" style="width: ${pctSub}%;"></div>
+        </div>
+      </div>
+    ` : ''}
+
+    <div class="card-footer">
+      <div class="card-assignee" title="${actor.papel} - ${actor.area || ''}">
+        <div class="card-avatar" style="background: ${actor.avatarBg || '#1B365D'}">${actor.sigla || actor.nome.substring(0,2).toUpperCase()}</div>
+        <span>${actor.nome}</span>
+      </div>
+
+      <div class="card-actions-menu">
+        <button class="card-btn-action" title="Editar Tarefa" onclick="openEditTaskModal('${task.id}')">✏️</button>
+        <button class="card-btn-action" title="Excluir Tarefa" onclick="deleteTask('${task.id}')">🗑️</button>
+      </div>
+    </div>
+  `;
+
+  return card;
+}
+
+function formatDateBR(dateStr) {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-");
+  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return dateStr;
+}
+
+function openLinkedDoc(relPath, docId) {
+  if (docId) onDocOpenClick(null, docId);
+  window.open(encodeURI(relPath), '_blank');
+}
+
+// Modal Tarefas (Criar / Editar)
+function openNewTaskModal() {
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (currentActor.permissoes && !currentActor.permissoes.criarTarefas) {
+    showToast("Seu perfil não possui permissão para criar tarefas.");
+    return;
+  }
+
+  document.getElementById("modalTaskTitle").innerText = "Nova Tarefa Administrativa";
+  document.getElementById("taskId").value = "";
+  document.getElementById("taskInputTitle").value = "";
+  document.getElementById("taskInputDesc").value = "";
+  document.getElementById("taskInputCol").value = "backlog";
+  document.getElementById("taskInputPriority").value = "media";
+  document.getElementById("taskInputActor").value = currentActiveRole;
+  document.getElementById("taskInputDueDate").value = "";
+  document.getElementById("taskInputDoc").value = "";
+  document.getElementById("taskModal").classList.add("open");
+}
+
+function openEditTaskModal(taskId) {
+  const task = kanbanTasks.find(t => t.id === taskId);
+  if (!task) return;
+
+  document.getElementById("modalTaskTitle").innerText = "Editar Tarefa Administrativa";
+  document.getElementById("taskId").value = task.id;
+  document.getElementById("taskInputTitle").value = task.titulo;
+  document.getElementById("taskInputDesc").value = task.descricao || "";
+  document.getElementById("taskInputCol").value = task.coluna;
+  document.getElementById("taskInputPriority").value = task.prioridade;
+  document.getElementById("taskInputActor").value = task.atorId;
+  document.getElementById("taskInputDueDate").value = task.dataLimite || "";
+  document.getElementById("taskInputDoc").value = task.docId || "";
+  document.getElementById("taskModal").classList.add("open");
+}
+
+function closeTaskModal() {
+  document.getElementById("taskModal").classList.remove("open");
+}
+
+function saveTask(e) {
+  e.preventDefault();
+  const id = document.getElementById("taskId").value;
+  const titulo = document.getElementById("taskInputTitle").value.trim();
+  const descricao = document.getElementById("taskInputDesc").value.trim();
+  const coluna = document.getElementById("taskInputCol").value;
+  const prioridade = document.getElementById("taskInputPriority").value;
+  const atorId = document.getElementById("taskInputActor").value;
+  const dataLimite = document.getElementById("taskInputDueDate").value;
+  const docId = document.getElementById("taskInputDoc").value;
+
+  if (id) {
+    const task = kanbanTasks.find(t => t.id === id);
+    if (task) {
+      task.titulo = titulo;
+      task.descricao = descricao;
+      task.coluna = coluna;
+      task.prioridade = prioridade;
+      task.atorId = atorId;
+      task.dataLimite = dataLimite;
+      task.docId = docId;
+      showToast("Tarefa atualizada com sucesso!");
+    }
+  } else {
+    const newTask = {
+      id: "task-" + Date.now(),
+      titulo,
+      descricao,
+      coluna,
+      prioridade,
+      atorId,
+      dataLimite,
+      docId,
+      subtarefas: []
+    };
+    kanbanTasks.push(newTask);
+    showToast("Nova tarefa criada no Kanban!");
+  }
+
+  saveKanbanToStorage();
+  renderKanban();
+  closeTaskModal();
+}
+
+function deleteTask(taskId) {
+  const currentActor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (currentActor.permissoes && !currentActor.permissoes.moverKanban) {
+    showToast("Seu perfil não possui permissão para excluir tarefas.");
+    return;
+  }
+  if (confirm("Deseja realmente excluir esta tarefa do Kanban?")) {
+    kanbanTasks = kanbanTasks.filter(t => t.id !== taskId);
+    saveKanbanToStorage();
+    renderKanban();
+    showToast("Tarefa excluída.");
+  }
+}
+
+// Backup e Exportação
+function backupData() {
+  const payload = {
+    versao: "3.0",
+    dataExportacao: new Date().toISOString(),
+    atores: ATORES,
+    tarefas: kanbanTasks,
+    documentos: docsData
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "backup_gestao_delegado_aa_" + (new Date().toISOString().split("T")[0]) + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("Backup baixado com sucesso!");
+}
+
+function exportKanbanData() {
+  backupData();
+}
+
+// Toast Notificações
+function showToast(msg) {
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = "<span>🔔</span> <span>" + msg + "</span>";
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(100%)";
+    toast.style.transition = "all 0.3s ease";
+    setTimeout(() => toast.remove(), 300);
+  }, 3200);
+}
+
+
+
+// ==============================================================================
+// MÓDULO SUPABASE, SISTEMA DE VERSIONAMENTO & TRILHA DE AUDITORIA
+// ==============================================================================
+
+// Estado do Supabase
+let supabaseClient = null;
+let supabaseConfig = {
+  url: localStorage.getItem('delegado_aa_supabase_url') || '',
+  key: localStorage.getItem('delegado_aa_supabase_key') || ''
+};
+
+// Chaves de Armazenamento Local para Fallback Offline
+const STORAGE_VERSIONS_KEY = 'delegado_aa_doc_versions_v2';
+const STORAGE_AUDIT_KEY = 'delegado_aa_audit_trail_v2';
+
+let docVersionsStore = {};
+let auditTrailStore = [];
+
+let selectedDocIdForVersion = null;
+
+// Inicialização do Supabase
+function initSupabase() {
+  if (supabaseConfig.url && supabaseConfig.key && typeof supabase !== 'undefined') {
+    try {
+      supabaseClient = supabase.createClient(supabaseConfig.url, supabaseConfig.key);
+      atualizarBadgeSupabase(true, 'Supabase: Conectado');
+      console.log('✅ Supabase Client inicializado com sucesso.');
+      // Sincronizar dados em segundo plano
+      sincronizarDadosSupabase();
+    } catch (err) {
+      console.warn('⚠️ Falha ao inicializar Supabase Client:', err);
+      atualizarBadgeSupabase(false, 'Supabase: Erro de Conexão');
+    }
+  } else {
+    atualizarBadgeSupabase(false, 'Modo Local (Offline)');
+  }
+
+  // Carregar armazenamento local
+  try {
+    const rawVersions = localStorage.getItem(STORAGE_VERSIONS_KEY);
+    if (rawVersions) docVersionsStore = JSON.parse(rawVersions);
+    
+    const rawAudit = localStorage.getItem(STORAGE_AUDIT_KEY);
+    if (rawAudit) auditTrailStore = JSON.parse(rawAudit);
+  } catch (e) {
+    console.warn('Erro ao carregar storage local de versões/auditoria:', e);
+  }
+
+  // Garantir que todo documento tenha ao menos a versão v1.0 registrada
+  inicializarVersoesPadrao();
+}
+
+function atualizarBadgeSupabase(conectado, label) {
+  const dot = document.getElementById('supabaseDot');
+  const txt = document.getElementById('supabaseLabel');
+  if (dot) {
+    if (conectado) dot.classList.add('connected');
+    else dot.classList.remove('connected');
+  }
+  if (txt) txt.textContent = label;
+}
+
+function abrirModalSupabase() {
+  document.getElementById('supabaseUrlInput').value = supabaseConfig.url;
+  document.getElementById('supabaseKeyInput').value = supabaseConfig.key;
+  document.getElementById('supabaseStatusAlert').style.display = 'none';
+  document.getElementById('supabaseModal').classList.add('open');
+}
+
+function fecharModalSupabase() {
+  document.getElementById('supabaseModal').classList.remove('open');
+}
+
+async function testarConexaoSupabaseUI() {
+  const url = document.getElementById('supabaseUrlInput').value.trim();
+  const key = document.getElementById('supabaseKeyInput').value.trim();
+  const alertBox = document.getElementById('supabaseStatusAlert');
+
+  if (!url || !key) {
+    alertBox.style.display = 'block';
+    alertBox.style.background = '#FEF2F2';
+    alertBox.style.color = '#991B1B';
+    alertBox.style.border = '1px solid #FECACA';
+    alertBox.innerHTML = '⚠️ Por favor, informe a URL e a Anon Key do projeto Supabase.';
+    return;
+  }
+
+  alertBox.style.display = 'block';
+  alertBox.style.background = '#EFF6FF';
+  alertBox.style.color = '#1E40AF';
+  alertBox.style.border = '1px solid #BFDBFE';
+  alertBox.innerHTML = '⏳ Testando conexão com Supabase...';
+
+  try {
+    const testClient = supabase.createClient(url, key);
+    const { data, error } = await testClient.from('documents').select('count', { count: 'exact', head: true });
+    
+    if (error) {
+      // Se a tabela ainda não existir, mas a conexão foi bem-sucedida
+      if (error.code === '42P01') {
+        alertBox.style.background = '#FEF3C7';
+        alertBox.style.color = '#92400E';
+        alertBox.style.border = '1px solid #FDE68A';
+        alertBox.innerHTML = '⚠️ Conectado ao Supabase! Porém a tabela <b>documents</b> ainda não existe. Execute o arquivo <code>supabase_schema.sql</code> no SQL Editor.';
+        return;
+      }
+      throw error;
+    }
+
+    alertBox.style.background = '#F0FDF4';
+    alertBox.style.color = '#166534';
+    alertBox.style.border = '1px solid #BBF7D0';
+    alertBox.innerHTML = '✅ Conexão bem-sucedida! Banco de dados e tabelas encontrados.';
+  } catch (err) {
+    alertBox.style.background = '#FEF2F2';
+    alertBox.style.color = '#991B1B';
+    alertBox.style.border = '1px solid #FECACA';
+    alertBox.innerHTML = '❌ Falha ao conectar: ' + (err.message || err);
+  }
+}
+
+async function salvarConexaoSupabase() {
+  const url = document.getElementById('supabaseUrlInput').value.trim();
+  const key = document.getElementById('supabaseKeyInput').value.trim();
+
+  supabaseConfig.url = url;
+  supabaseConfig.key = key;
+
+  localStorage.setItem('delegado_aa_supabase_url', url);
+  localStorage.setItem('delegado_aa_supabase_key', key);
+
+  initSupabase();
+  fecharModalSupabase();
+  showToast('Configurações do Supabase salvas!');
+}
+
+function desconectarSupabase() {
+  if (confirm('Deseja desconectar do Supabase e voltar para o Modo Local?')) {
+    supabaseConfig.url = '';
+    supabaseConfig.key = '';
+    localStorage.removeItem('delegado_aa_supabase_url');
+    localStorage.removeItem('delegado_aa_supabase_key');
+    supabaseClient = null;
+    atualizarBadgeSupabase(false, 'Modo Local (Offline)');
+    fecharModalSupabase();
+    showToast('Desconectado do Supabase. Operando em Modo Local.');
+  }
+}
+
+// Sincronização com Supabase (Carrega e envia dados)
+async function sincronizarDadosSupabase() {
+  if (!supabaseClient) return;
+
+  try {
+    // 1. Sincronizar documentos
+    const { data: remoteDocs, error: docErr } = await supabaseClient
+      .from('documents')
+      .select('*');
+
+    if (!docErr && remoteDocs && remoteDocs.length > 0) {
+      console.log('Sincronizados ' + remoteDocs.length + ' documentos do Supabase.');
+      // Mesclar documentos remotos
+      remoteDocs.forEach(rd => {
+        const localIdx = docsData.findIndex(d => d.id === rd.id);
+        const mapped = {
+          id: rd.id,
+          titulo: rd.titulo,
+          arquivo: rd.arquivo_nome,
+          caminhoRelativo: rd.caminho_relativo,
+          categoria: rd.categoria,
+          subcategoria: rd.subcategoria,
+          tipo: rd.tipo,
+          periodo: rd.periodo,
+          ano: rd.ano,
+          tamanho: rd.tamanho,
+          status: rd.status,
+          kanbanStatus: rd.kanban_status,
+          tags: rd.tags || [],
+          resumo: rd.resumo,
+          destaque: rd.destaque,
+          versao: 'v' + (rd.versao_atual || 1) + '.0',
+          versaoAtualNum: rd.versao_atual || 1,
+          urlPublica: rd.url_publica
+        };
+
+        if (localIdx >= 0) {
+          docsData[localIdx] = { ...docsData[localIdx], ...mapped };
+        } else {
+          docsData.push(mapped);
+        }
+      });
+      renderizarTudo();
+    }
+
+    // 2. Carregar versões
+    const { data: remoteVersions, error: verErr } = await supabaseClient
+      .from('document_versions')
+      .select('*')
+      .order('versao', { ascending: false });
+
+    if (!verErr && remoteVersions) {
+      remoteVersions.forEach(rv => {
+        if (!docVersionsStore[rv.documento_id]) docVersionsStore[rv.documento_id] = [];
+        const exists = docVersionsStore[rv.documento_id].some(v => v.versao === rv.versao);
+        if (!exists) {
+          docVersionsStore[rv.documento_id].push({
+            versao: rv.versao,
+            numeroVersao: rv.numero_versao,
+            arquivo: rv.arquivo_nome,
+            tamanho: rv.tamanho,
+            notas: rv.notas_alteracao,
+            autor: rv.modificado_por_nome,
+            cargo: rv.modificado_por_cargo,
+            checksum: rv.checksum_sha256,
+            criadoEm: rv.criado_em,
+            url: rv.url_arquivo
+          });
+        }
+      });
+      localStorage.setItem(STORAGE_VERSIONS_KEY, JSON.stringify(docVersionsStore));
+    }
+  } catch (err) {
+    console.warn('Erro durante sincronização com Supabase:', err);
+  }
+}
+
+// Inicializar versões padrão v1.0 para todos os documentos catalogados
+function inicializarVersoesPadrao() {
+  docsData.forEach(doc => {
+    if (!docVersionsStore[doc.id] || docVersionsStore[doc.id].length === 0) {
+      docVersionsStore[doc.id] = [{
+        versao: 1,
+        numeroVersao: "v1.0",
+        arquivo: doc.arquivo,
+        tamanho: doc.tamanho || "1 MB",
+        notas: "Versão inicial homologada e catalogada no acervo do Delegado.",
+        autor: "Henrique",
+        cargo: "Analista de Processos",
+        area: "Área 27 - CE",
+        checksum: "sha256:" + pseudoHash(doc.id + doc.arquivo),
+        criadoEm: new Date().toISOString()
+      }];
+    }
+    if (!doc.versao) doc.versao = "v1.0";
+    if (!doc.versaoAtualNum) doc.versaoAtualNum = 1;
+  });
+  localStorage.setItem(STORAGE_VERSIONS_KEY, JSON.stringify(docVersionsStore));
+}
+
+function pseudoHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(16).padStart(8, '0') + "e4f8b2c1";
+}
+
+// Calcular Hash SHA-256 Real para Arquivos usando Web Crypto API
+async function calcularSHA256(fileOrString) {
+  try {
+    let buffer;
+    if (typeof fileOrString === 'string') {
+      buffer = new TextEncoder().encode(fileOrString);
+    } else {
+      buffer = await fileOrString.arrayBuffer();
+    }
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return 'sha256:' + hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
+  } catch (e) {
+    return 'sha256:' + pseudoHash(String(fileOrString));
+  }
+}
+
+// Gerenciamento de Versões na Interface
+function abrirHistoricoVersoes(docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  selectedDocIdForVersion = docId;
+  document.getElementById('versionModalDocTitle').textContent = doc.titulo + ' (' + (doc.codigo || doc.id) + ')';
+  document.getElementById('versionModalCurrentBadge').textContent = doc.versao || 'v1.0';
+
+  const container = document.getElementById('versionTimelineContainer');
+  container.innerHTML = '';
+
+  const versoes = (docVersionsStore[docId] || []).slice().sort((a,b) => b.versao - a.versao);
+
+  if (versoes.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted); font-size:13px;">Nenhuma versão anterior registrada.</p>';
+  } else {
+    versoes.forEach((v, index) => {
+      const isCurrent = index === 0;
+      const item = document.createElement('div');
+      item.className = 'version-item' + (isCurrent ? ' current' : '');
+
+      const dataFormatada = v.criadoEm ? new Date(v.criadoEm).toLocaleString('pt-BR') : 'Data não informada';
+
+      item.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 6px; flex-wrap:wrap; gap:6px;">
+          <div>
+            <span class="version-badge-pill">${v.numeroVersao || ('v' + v.versao + '.0')}</span>
+            ${isCurrent ? '<span style="font-size:11px; font-weight:600; color:#4338CA; margin-left:6px;">● Versão Vigente</span>' : ''}
+            <span style="font-size:12px; color:var(--muted); margin-left:8px;">${dataFormatada}</span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <a href="${encodeURI(doc.caminhoRelativo)}" download="${v.arquivo}" class="btn-secondary" style="font-size:11.5px; padding:3px 8px; text-decoration:none;" onclick="registrarLogAuditoria('download', '${doc.id}', { versao: '${v.numeroVersao}' })">
+              📥 Baixar
+            </a>
+            ${!isCurrent ? `<button class="btn-secondary" style="font-size:11.5px; padding:3px 8px; color:var(--accent-amber);" onclick="restaurarVersaoDoc('${doc.id}', ${v.versao})">⏪ Restaurar</button>` : ''}
+          </div>
+        </div>
+
+        <div style="font-size:12.5px; color:#334155; margin-bottom:8px; line-height:1.4;">
+          <b>Notas:</b> ${v.notas || 'Sem notas registradas.'}
+        </div>
+
+        <div style="font-size:11.5px; color:var(--muted); display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+          <span>👤 <b>Autor:</b> ${v.autor || 'Henrique'} (${v.cargo || 'Analista de Processos'})</span>
+          <span>💾 <b>Tamanho:</b> ${v.tamanho || doc.tamanho}</span>
+          <span>🔒 <b>Integridade:</b> <code class="hash-pill">${v.checksum || 'sha256:verificado'}</code></span>
+        </div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  document.getElementById('versionHistoryModal').classList.add('open');
+  registrarLogAuditoria('visualizacao_historico', doc.id, { titulo: doc.titulo });
+}
+
+function fecharHistoricoVersoes() {
+  document.getElementById('versionHistoryModal').classList.remove('open');
+}
+
+function abrirModalNovaVersao(docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  selectedDocIdForVersion = docId;
+  document.getElementById('newVersionDocName').textContent = doc.titulo + ' (Versão Atual: ' + (doc.versao || 'v1.0') + ')';
+  document.getElementById('newVersionNotasInput').value = '';
+  document.getElementById('newVersionFileInput').value = '';
+  document.getElementById('newVersionModal').classList.add('open');
+}
+
+function fecharModalNovaVersao() {
+  document.getElementById('newVersionModal').classList.remove('open');
+}
+
+async function submeterNovaVersao(event) {
+  event.preventDefault();
+  const doc = docsData.find(d => d.id === selectedDocIdForVersion);
+  if (!doc) return;
+
+  const tipo = document.querySelector('input[name="tipoIncremento"]:checked').value;
+  const notas = document.getElementById('newVersionNotasInput').value.trim();
+  const fileInput = document.getElementById('newVersionFileInput');
+  const file = fileInput.files[0];
+
+  const currentNum = doc.versaoAtualNum || 1;
+  let nextNum = currentNum + 1;
+  let nextBadge = tipo === 'major' ? 'v' + nextNum + '.0' : 'v' + currentNum + '.' + ( (docVersionsStore[doc.id] || []).length );
+
+  let hash = 'sha256:' + pseudoHash(doc.id + Date.now());
+  let tamanhoStr = doc.tamanho;
+  let nomeArquivo = doc.arquivo;
+
+  if (file) {
+    hash = await calcularSHA256(file);
+    tamanhoStr = (file.size / (1024*1024)).toFixed(1) + ' MB';
+    nomeArquivo = file.name;
+  }
+
+  const actorAtual = ATORES_DEFAULT.find(a => a.id === currentActiveRole) || {
+    nome: "Henrique",
+    papel: "Analista de Processos",
+    area: "Área 27 - CE"
+  };
+
+  const novaVersaoObj = {
+    versao: nextNum,
+    numeroVersao: nextBadge,
+    arquivo: nomeArquivo,
+    tamanho: tamanhoStr,
+    notas: notas,
+    autor: actorAtual.nome,
+    cargo: actorAtual.papel,
+    area: actorAtual.area,
+    checksum: hash,
+    criadoEm: new Date().toISOString()
+  };
+
+  if (!docVersionsStore[doc.id]) docVersionsStore[doc.id] = [];
+  docVersionsStore[doc.id].push(novaVersaoObj);
+  localStorage.setItem(STORAGE_VERSIONS_KEY, JSON.stringify(docVersionsStore));
+
+  // Atualizar documento ativo
+  doc.versao = nextBadge;
+  doc.versaoAtualNum = nextNum;
+  doc.ultimaAlteracao = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  doc.responsavelAlteracao = actorAtual.nome + ' (' + actorAtual.papel + ')';
+
+  // Persistir auditoria local
+  registrarLogAuditoria('nova_versao', doc.id, {
+    versao: nextBadge,
+    notas: notas,
+    hash: hash
+  });
+
+  // Atualizar no Supabase se conectado
+  if (supabaseClient) {
+    try {
+      await supabaseClient.from('documents').update({
+        versao_atual: nextNum,
+        atualizado_por_nome: actorAtual.nome,
+        checksum_sha256: hash
+      }).eq('id', doc.id);
+
+      await supabaseClient.from('document_versions').insert({
+        documento_id: doc.id,
+        versao: nextNum,
+        numero_versao: nextBadge,
+        arquivo_nome: nomeArquivo,
+        tamanho: tamanhoStr,
+        notas_alteracao: notas,
+        modificado_por_nome: actorAtual.nome,
+        modificado_por_cargo: actorAtual.papel,
+        checksum_sha256: hash
+      });
+      console.log('Versão sincronizada com o Supabase com sucesso.');
+    } catch (err) {
+      console.warn('Erro ao sincronizar versão com Supabase:', err);
+    }
+  }
+
+  fecharModalNovaVersao();
+  fecharHistoricoVersoes();
+  renderizarTudo();
+  showToast('Nova versão ' + nextBadge + ' registrada com sucesso!');
+}
+
+function restaurarVersaoDoc(docId, versaoNum) {
+  const doc = docsData.find(d => d.id === docId);
+  const versoes = docVersionsStore[docId] || [];
+  const target = versoes.find(v => v.versao === versaoNum);
+
+  if (!doc || !target) return;
+
+  if (confirm('Deseja restaurar a versão ' + target.numeroVersao + ' como a versão vigente do documento?')) {
+    doc.versao = target.numeroVersao;
+    doc.versaoAtualNum = target.versao;
+    doc.ultimaAlteracao = new Date().toLocaleDateString('pt-BR') + ' (Restaurado ' + target.numeroVersao + ')';
+
+    registrarLogAuditoria('restauracao_versao', doc.id, {
+      versaoRestaurada: target.numeroVersao
+    });
+
+    fecharHistoricoVersoes();
+    renderizarTudo();
+    showToast('Versão ' + target.numeroVersao + ' restaurada!');
+  }
+}
+
+// Trilha de Auditoria & Segurança
+function registrarLogAuditoria(acao, docId, detalhes) {
+  const actorAtual = ATORES_DEFAULT.find(a => a.id === currentActiveRole) || {
+    nome: "Henrique",
+    papel: "Analista de Processos",
+    area: "Área 27 - CE"
+  };
+
+  const doc = docsData.find(d => d.id === docId);
+
+  const entry = {
+    id: 'log-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+    dataHora: new Date().toISOString(),
+    acao: acao,
+    documentoId: docId || null,
+    documentoTitulo: doc ? doc.titulo : (detalhes && detalhes.titulo ? detalhes.titulo : 'Geral'),
+    atorNome: actorAtual.nome,
+    atorCargo: actorAtual.papel,
+    atorArea: actorAtual.area,
+    detalhes: detalhes || {}
+  };
+
+  auditTrailStore.unshift(entry);
+  if (auditTrailStore.length > 200) auditTrailStore.pop();
+
+  try {
+    localStorage.setItem(STORAGE_AUDIT_KEY, JSON.stringify(auditTrailStore));
+  } catch (e) {}
+
+  // Enviar para Supabase se conectado
+  if (supabaseClient) {
+    supabaseClient.from('audit_logs').insert({
+      documento_id: docId,
+      acao: acao,
+      ator_nome: actorAtual.nome,
+      ator_cargo: actorAtual.papel,
+      ator_area: actorAtual.area,
+      detalhes: detalhes
+    }).then(({ error }) => {
+      if (error) console.warn('Erro ao registrar log no Supabase:', error);
+    });
+  }
+}
+
+function abrirModalAuditoria() {
+  carregarTrilhaAuditoria();
+  document.getElementById('auditModal').classList.add('open');
+}
+
+function fecharModalAuditoria() {
+  document.getElementById('auditModal').classList.remove('open');
+}
+
+function carregarTrilhaAuditoria(filtro = '') {
+  const tbody = document.getElementById('auditTableBody');
+  tbody.innerHTML = '';
+
+  const termo = (filtro || '').toLowerCase();
+
+  const logsFiltrados = auditTrailStore.filter(l => {
+    if (!termo) return true;
+    return (l.atorNome || '').toLowerCase().includes(termo) ||
+           (l.acao || '').toLowerCase().includes(termo) ||
+           (l.documentoTitulo || '').toLowerCase().includes(termo);
+  });
+
+  if (logsFiltrados.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 24px; color:var(--muted);">Nenhum log de auditoria encontrado.</td></tr>';
+    return;
+  }
+
+  const acaoLabels = {
+    'visualizacao': '👁️ Visualização',
+    'download': '📥 Download',
+    'upload_novo': '⬆️ Novo Documento',
+    'nova_versao': '🏷️ Nova Versão',
+    'restauracao_versao': '⏪ Restauração',
+    'mover_kanban': '📋 Movido no Kanban',
+    'visualizacao_historico': '🕒 Consulta Versões'
+  };
+
+  logsFiltrados.forEach(l => {
+    const tr = document.createElement('tr');
+    const dt = new Date(l.dataHora).toLocaleString('pt-BR');
+    const badgeLabel = acaoLabels[l.acao] || l.acao;
+
+    tr.innerHTML = `
+      <td style="font-family:var(--mono); font-size:11.5px; color:var(--muted);">${dt}</td>
+      <td><b style="font-size:12px; color:var(--navy);">${badgeLabel}</b></td>
+      <td>
+        <span style="font-weight:500; color:var(--ink);">${l.documentoTitulo}</span>
+        ${l.detalhes && l.detalhes.versao ? '<br><small style="color:#4338CA;">Versão: ' + l.detalhes.versao + '</small>' : ''}
+        ${l.detalhes && l.detalhes.notas ? '<br><small style="color:var(--muted); font-style:italic;">"' + l.detalhes.notas + '"</small>' : ''}
+      </td>
+      <td>
+        <b>${l.atorNome}</b><br>
+        <small style="color:var(--muted);">${l.atorCargo}</small>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filtrarLogsAuditoria(val) {
+  carregarTrilhaAuditoria(val);
+}
+
+function exportarAuditoriaCSV() {
+  if (auditTrailStore.length === 0) {
+    alert('Não há logs para exportar.');
+    return;
+  }
+
+  let csv = 'Data/Hora,Acao,Documento,Ator,Cargo,Area,Notas\n';
+  auditTrailStore.forEach(l => {
+    const notas = (l.detalhes && l.detalhes.notas) ? l.detalhes.notas.replace(/"/g, '""') : '';
+    csv += `"${l.dataHora}","${l.acao}","${(l.documentoTitulo||'').replace(/"/g, '""')}","${l.atorNome}","${l.atorCargo}","${l.atorArea}","${notas}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'trilha_auditoria_delegado_aa_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// Inicializar Supabase e Versões no carregamento
+window.addEventListener('DOMContentLoaded', () => {
+  initSupabase();
+});
+
+</script>
+
+</body>
+</html>

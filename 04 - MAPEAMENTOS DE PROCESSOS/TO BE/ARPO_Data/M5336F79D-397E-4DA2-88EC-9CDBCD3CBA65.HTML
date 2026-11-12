@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="iso-8859-1"/>
+  <meta name="description" content="Página web gerada pelo Software ARPO"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <title> ARPO - Website de processos </title>
+  <link rel="stylesheet" href="../ARPO_Styles/Style_Model.css">
+<link rel="icon" href="../ARPO_Styles/Style_Icon.png">
+</head>
+
+<body>
+<div class="Titlebar_Process">
+  <div class="ButtonGroup">
+    <button class="Button_Enabled" title="Retornar" onclick="history.back()"> <img src="../ARPO_Images/Button_Back.png" alt="Retornar"> </button> 
+    <button class="Button_Enabled" title="Subir de nível" onclick="window.location.href='M62AF2432-DB5A-42D0-B4CE-7F5C5FD2792F.HTML'"> <img src="../ARPO_Images/Button_LevelUp.png" alt="Subir de nível"> </button>
+    <button class="Button_Enabled" id="resetZoom" title="Zoom 100%"> <img src="../ARPO_Images/Button_Zoom.png" alt="Zoom 100%"> </button>
+    <button class="Button_Enabled" title="Imprimir modelo" data-print-title="B.2 Gerenciar relações com as empresas e com o governo" onclick="printPage(event)"> <img src="../ARPO_Images/Button_Print.png" alt="Imprimir modelo"> </button>
+    <button class="Button_Disabled" title=> <img src="../ARPO_Images/Button_Report.png" alt=> </button>
+  </div>
+  <div class="ZoomGroup">
+    <span id="zoomLabel">100%</span>
+    <input type="range" id="zoomSlider">
+  </div>
+  <span class="BarTitle">B.2 Gerenciar relações com as empresas e com o governo</span>
+</div>
+<div id="bottomFrame">
+  <div id="container">
+    <img id="zoomImage" src="M5336F79D-397E-4DA2-88EC-9CDBCD3CBA65.JPG" usemap="#ModelMap" alt="Modelo">
+     <map name="ModelMap">
+       <area shape="rect" coords="269,143,479,227" href="O1907083D-9E8A-4C0F-8DCB-B9838DB44712.HTML" data-id="area1" data-label=""/>
+       <area shape="rect" coords="269,383,479,467" href="OD6FA455D-FB1A-43B2-AB2F-8F08C760B018.HTML" data-id="area2" data-label=""/>
+       <area shape="rect" coords="269,503,479,587" href="O1EBBBAC8-57EF-4413-8317-EE30716C3709.HTML" data-id="area3" data-label=""/>
+       <area shape="rect" coords="269,263,479,347" href="OA1D9A23D-F404-4F6A-B2D9-8DB2FA40AA4D.HTML" data-id="area4" data-label=""/>
+       <area shape="rect" coords="23,23,233,107" href="O9BD940F5-A2AB-41BC-A51E-3FDC68C2947A.HTML" data-id="area5" data-label=""/>
+     </map>
+    <div id="tooltip"></div>
+  </div>
+</div>
+<script src="../ARPO_Data/@Model_Display.js"></script>
+</body>
+</html>
+

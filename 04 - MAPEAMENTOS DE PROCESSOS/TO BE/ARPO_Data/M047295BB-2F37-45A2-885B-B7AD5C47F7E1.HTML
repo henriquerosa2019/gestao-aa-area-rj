@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="iso-8859-1"/>
+  <meta name="description" content="Página web gerada pelo Software ARPO"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <title> ARPO - Website de processos </title>
+  <link rel="stylesheet" href="../ARPO_Styles/Style_Model.css">
+<link rel="icon" href="../ARPO_Styles/Style_Icon.png">
+</head>
+
+<body>
+<div class="Titlebar_Process">
+  <div class="ButtonGroup">
+    <button class="Button_Enabled" title="Retornar" onclick="history.back()"> <img src="../ARPO_Images/Button_Back.png" alt="Retornar"> </button> 
+    <button class="Button_Enabled" title="Subir de nível" onclick="window.location.href='M92928677-B36E-4710-99B2-A0154D7C0DD3.HTML'"> <img src="../ARPO_Images/Button_LevelUp.png" alt="Subir de nível"> </button>
+    <button class="Button_Enabled" id="resetZoom" title="Zoom 100%"> <img src="../ARPO_Images/Button_Zoom.png" alt="Zoom 100%"> </button>
+    <button class="Button_Enabled" title="Imprimir modelo" data-print-title="6.6 Gerenciar informações dos funcionários" onclick="printPage(event)"> <img src="../ARPO_Images/Button_Print.png" alt="Imprimir modelo"> </button>
+    <button class="Button_Disabled" title=> <img src="../ARPO_Images/Button_Report.png" alt=> </button>
+  </div>
+  <div class="ZoomGroup">
+    <span id="zoomLabel">100%</span>
+    <input type="range" id="zoomSlider">
+  </div>
+  <span class="BarTitle">6.6 Gerenciar informações dos funcionários</span>
+</div>
+<div id="bottomFrame">
+  <div id="container">
+    <img id="zoomImage" src="M047295BB-2F37-45A2-885B-B7AD5C47F7E1.JPG" usemap="#ModelMap" alt="Modelo">
+     <map name="ModelMap">
+       <area shape="rect" coords="269,503,479,587" href="O3FD01DE1-A876-4749-9BBE-DBFFC170E018.HTML" data-id="area1" data-label=""/>
+       <area shape="rect" coords="269,263,479,347" href="OB20441B6-3E80-408D-A8AF-60D38F3873FC.HTML" data-id="area2" data-label=""/>
+       <area shape="rect" coords="269,743,479,827" href="O599F7157-F27E-46A0-8A29-135D8C26E788.HTML" data-id="area3" data-label=""/>
+       <area shape="rect" coords="463,931,479,947" href="MF66235FC-848B-43D5-803E-53FB491C4959.HTML" data-id="area4" data-label="Abrir subnível"/>
+       <area shape="rect" coords="269,863,479,947" href="O342D02BE-B943-4816-8787-AFAF4A56F4F9.HTML" data-id="area5" data-label=""/>
+       <area shape="rect" coords="269,383,479,467" href="OE1918D30-C670-475A-B741-B1C72C52FB4F.HTML" data-id="area6" data-label=""/>
+       <area shape="rect" coords="269,143,479,227" href="OC3F38CCD-89C6-4288-B5CC-3EBC0DB7DA3E.HTML" data-id="area7" data-label=""/>
+       <area shape="rect" coords="23,23,233,107" href="OFB86648A-F531-47D8-B328-56EBEA046344.HTML" data-id="area8" data-label=""/>
+       <area shape="rect" coords="269,623,479,707" href="OB70B6B77-C833-4DC5-9528-9774ED686B2A.HTML" data-id="area9" data-label=""/>
+     </map>
+    <div id="tooltip"></div>
+  </div>
+</div>
+<script src="../ARPO_Data/@Model_Display.js"></script>
+</body>
+</html>
+

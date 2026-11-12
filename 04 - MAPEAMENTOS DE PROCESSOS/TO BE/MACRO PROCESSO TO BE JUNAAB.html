@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPMN To Be — Processos Redesenhados da JUNAAB</title>
+<style>
+:root {
+  /* Paleta original (atividades herdadas do AS IS) */
+  --purple-50: #EEEDFE; --purple-600: #534AB7; --purple-800: #3C3489; --purple-900: #26215C;
+  --amber-50:  #FAEEDA; --amber-600:  #854F0B; --amber-800:  #633806; --amber-900:  #412402;
+  --coral-50:  #FAECE7; --coral-600:  #993C1D; --coral-800:  #712B13; --coral-900:  #4A1B0C;
+  --gray-50:   #F1EFE8; --gray-600:   #5F5E5A; --gray-800:   #444441; --gray-900:   #2C2C2A;
+  --blue-50:   #E6F1FB; --blue-600:   #185FA5; --blue-800:   #0C447C; --blue-900:   #042C53;
+  --teal-50:   #E1F5EE; --teal-600:   #0F6E56; --teal-800:   #085041; --teal-900:   #04342C;
+  --red-50:    #FCEBEB; --red-600:    #A32D2D; --red-800:    #791F1F; --red-900:    #501313;
+  --border: #C4C3BB;
+  --bg: #FAFAF8;
+  --text: #1a1a18;
+
+  /* NOVAS atividades — cor laranja-âmbar vibrante para destacar os gaps mitigados */
+  --new-bg:      #FFF3CD;
+  --new-border:  #D97706;
+  --new-text:    #92400E;
+  --new-label:   #78350F;
+  --new-gw-bg:   #FEF3C7;
+  --new-gw-bd:   #F59E0B;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  background: var(--purple-900);
+  color: white;
+  padding: 16px 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--purple-600);
+  gap: 20px;
+}
+header h1  { font-size: 15px; font-weight: 400; letter-spacing: .02em; }
+header p   { font-size: 11px; opacity: .65; margin-top: 3px; font-family: 'Courier New', monospace; }
+.badges    { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; flex-shrink:0; }
+.badge     { background: var(--purple-600); color: white; font-size: 10px; padding: 4px 10px; border-radius: 3px; font-family: 'Courier New', monospace; letter-spacing:.05em; white-space:nowrap; }
+.badge-new { background: #D97706; color: white; font-size: 10px; padding: 4px 10px; border-radius: 3px; font-family: 'Courier New', monospace; letter-spacing:.05em; white-space:nowrap; }
+.scroll-wrap { overflow: auto; max-height: 78vh; padding: 24px; border-bottom: 1px solid var(--border); resize: vertical; }
+svg { display: block; min-width: 1560px; }
+.tooltip {
+  position: fixed; background: var(--purple-900); color: white;
+  padding: 9px 13px; border-radius: 5px; font-size: 12px;
+  font-family: Georgia, serif; max-width: 280px;
+  pointer-events: none; opacity: 0; transition: opacity .15s;
+  z-index: 9999; line-height: 1.55;
+}
+.tooltip.show { opacity: 1; }
+/* New-activity tooltip gets amber accent */
+.tooltip.new-tip { background: #78350F; }
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px 20px;
+  padding: 14px 32px; background: white;
+  border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--gray-600);
+  font-family: Georgia, serif;
+}
+.leg-item  { display: flex; align-items: center; gap: 6px; }
+.leg-box   { width: 18px; height: 12px; border-radius: 3px; border: 1px solid; flex-shrink: 0; }
+.leg-line  { width: 28px; height: 2px; flex-shrink: 0; }
+.leg-diamond { width: 14px; height: 14px; transform: rotate(45deg); border-radius: 2px; border: 1px solid; flex-shrink: 0; }
+.hint { padding: 8px 32px; font-size: 11px; color: var(--gray-600); background: #f5f4f0; border-top: 1px solid var(--border); font-family: 'Courier New', monospace; }
+.clarification-section {
+  background: #FEF3C7;
+  border-top: 1px solid #E5D4B8;
+  border-bottom: 2px solid #D97706;
+  padding: 14px 32px;
+  font-size: 12px;
+  color: #78350F;
+  font-family: Georgia, serif;
+  line-height: 1.5;
+}
+.clarification-section strong { font-weight: 700; }
+
+.casd-footer {
+  background: #26215C; color: rgba(255,255,255,.72);
+  padding: 14px 32px; text-align: center;
+  font-family: Georgia, serif; font-size: 11.5px; letter-spacing: .04em;
+  border-top: 3px solid #534AB7;
+}
+.task-g { cursor: pointer; }
+.task-g:hover rect, .task-g:hover polygon { opacity: .85; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>BPMN To Be — Processos Redesenhados da JUNAAB</h1>
+    <p>Junta de Serviços Gerais de A.A. do Brasil · Versão proposta pós-auditoria 2026 · Base: Relatório do Comitê de Finanças, Ata 5ª REJ e Contestação Área 01-RJ</p>
+  </div>
+  <div class="badges">
+    <span class="badge">Manual de Serviço · Ed. 2023–2027</span>
+    <span class="badge-new">⬛ = Atividade nova (gap mitigado)</span>
+  </div>
+</header>
+
+<div class="hint">💡 Passe o mouse sobre as atividades para ver detalhes. Atividades com borda âmbar/laranja são <strong>novas</strong> — criadas para mitigar os gaps do AS IS. Role horizontalmente para ver o mapa completo.</div>
+
+<div class="clarification-section">
+⚠️ <strong>Nota importante sobre metodologia contábil:</strong> Esta análise de processos é <strong>tecnicamente correta</strong>. A ressalva do auditor (AudLink) sobre "comparação entre regimes contábeis" foi um <strong>erro metodológico do auditor, não do processo</strong>. A JUNAAB adota corretamente Regime de Competência (Contabilidade) e Regime de Caixa (Financeiro), conforme requerido por lei. Consulte a <strong>Nota Técnica anexa</strong> para esclarecimento completo.
+</div>
+
+<div class="scroll-wrap">
+<svg width="1560" viewBox="0 0 1560 2260" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr"   viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#993C1D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-n" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ═══════════════════════════════
+     POOL BORDER
+═══════════════════════════════ -->
+<rect x="2" y="2" width="1556" height="2220" rx="7" fill="none" stroke="#26215C" stroke-width="1.5"/>
+<rect x="2" y="2" width="28" height="2220" rx="5" fill="#26215C"/>
+<text x="16" y="1211" text-anchor="middle" fill="white" font-size="11" font-family="Georgia,serif" transform="rotate(-90,16,1112)">JUNAAB — Junta de Serviços Gerais de A.A. do Brasil · BPMN To Be</text>
+
+<!-- ═══════════════════════════════
+     LANE BACKGROUNDS
+═══════════════════════════════ -->
+<!-- L1: CSG -->
+<rect x="30" y="2"    width="1528" height="270" fill="#EEEDFE" opacity=".25"/>
+<!-- L2: Junta de Custódios -->
+<rect x="30" y="272"  width="1528" height="360" fill="#FAEEDA" opacity=".25"/>
+<!-- L3: Diretoria Executiva + ESG -->
+<rect x="30" y="632"  width="1528" height="440" fill="#FAECE7" opacity=".25"/>
+<!-- L4: Ger. Adm. + Comitê de Finanças -->
+<rect x="30" y="1072" width="1528" height="310" fill="#F1EFE8" opacity=".30"/>
+<!-- L5: Conselho Fiscal -->
+<rect x="30" y="1382" width="1528" height="290" fill="#E6F1FB" opacity=".25"/>
+<!-- L6: Delegado de Área -->
+<rect x="30" y="1672" width="1528" height="285" fill="#E1F5EE" opacity=".25"/>
+<!-- L7: SP — Subprocesso Reserva Prudente -->
+<rect x="30" y="1957" width="1528" height="263" fill="#FEF3C7" opacity=".35"/>
+
+<!-- Lane borders -->
+<line x1="30" y1="272"  x2="1558" y2="272"  stroke="#C4C3BB" stroke-width="1"/>
+<line x1="30" y1="632"  x2="1558" y2="632"  stroke="#C4C3BB" stroke-width="1"/>
+<line x1="30" y1="1072" x2="1558" y2="1072" stroke="#C4C3BB" stroke-width="1"/>
+<line x1="30" y1="1382" x2="1558" y2="1382" stroke="#C4C3BB" stroke-width="1"/>
+<line x1="30" y1="1672" x2="1558" y2="1672" stroke="#C4C3BB" stroke-width="1"/>
+<line x1="30" y1="1957" x2="1558" y2="1957" stroke="#C4C3BB" stroke-width="1.5" stroke-dasharray="6 3"/>
+<line x1="30" y1="2220" x2="1558" y2="2220" stroke="#C4C3BB" stroke-width="1"/>
+
+<!-- Lane header panels -->
+<rect x="30" y="2"    width="72" height="270" fill="#534AB7" opacity=".13"/>
+<rect x="30" y="272"  width="72" height="360" fill="#854F0B" opacity=".11"/>
+<rect x="30" y="632"  width="72" height="440" fill="#993C1D" opacity=".11"/>
+<rect x="30" y="1072" width="72" height="310" fill="#5F5E5A" opacity=".09"/>
+<rect x="30" y="1382" width="72" height="290" fill="#185FA5" opacity=".11"/>
+<rect x="30" y="1672" width="72" height="285" fill="#0F6E56" opacity=".11"/>
+<rect x="30" y="1957" width="72" height="263" fill="#D97706" opacity=".15"/>
+
+<!-- Lane labels -->
+<text x="66" y="137"  text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#26215C" font-weight="bold" transform="rotate(-90,66,137)">CSG — Conferência de Serviços Gerais</text>
+<text x="66" y="452"  text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#412402" font-weight="bold" transform="rotate(-90,66,452)">Junta de Custódios</text>
+<text x="66" y="852"  text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#4A1B0C" font-weight="bold" transform="rotate(-90,66,852)">Diretoria Executiva + ESG</text>
+<text x="66" y="1227" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#2C2C2A" font-weight="bold" transform="rotate(-90,66,1227)">Ger. Adm. + Comitê Finanças</text>
+<text x="66" y="1527" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#042C53" font-weight="bold" transform="rotate(-90,66,1527)">Conselho Fiscal</text>
+<text x="66" y="1814" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#04342C" font-weight="bold" transform="rotate(-90,66,1814)">Delegado de Área</text>
+<text x="66" y="2088" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#78350F" font-weight="bold" transform="rotate(-90,66,2088)">SP — Reserva Prudente</text>
+
+<!-- ═══════════════════════════════
+     LANE 1 — CSG
+═══════════════════════════════ -->
+<circle cx="120" cy="137" r="13" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+<text x="120" y="157" text-anchor="middle" font-size="9" fill="#085041" font-family="Georgia,serif">Início anual</text>
+
+<!-- T1 Convocar CSG -->
+<g class="task-g" data-tip="Junta + ESG convocam a CSG com antecedência mínima definida. ESG prepara local, data e pauta. (Reg. CSG Art. 8) — Herdado do AS IS.">
+<rect x="150" y="99" width="118" height="76" rx="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.8"/>
+<text x="209" y="121" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Convocar CSG</text>
+<text x="209" y="136" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Junta + ESG</text>
+<text x="209" y="165" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Reg. CSG Art. 8</text>
+</g>
+
+<!-- T2 Preparar pauta -->
+<g class="task-g" data-tip="ESG e Comissões preparam documentação, relatórios e ordem do dia. (Reg. ESG Art. 9) — Herdado do AS IS.">
+<rect x="284" y="99" width="122" height="76" rx="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.8"/>
+<text x="345" y="120" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Preparar pauta</text>
+<text x="345" y="135" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">ESG + Comissões</text>
+<text x="345" y="165" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Reg. ESG Art. 9</text>
+</g>
+
+<!-- T-NEW-1 Incluir relatório Comitê Finanças na pauta (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 5) — Relatório do Comitê de Finanças com série histórica de resultados dos últimos 24 meses é obrigatório como item de pauta e pré-condição para aprovação do balanço. Na 49ª CSG o Comitê afirmou 'estava tudo certo' sem apresentar análise de tendência. Isso cria accountability formal.">
+<rect x="422" y="99" width="136" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="490" y="118" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Incluir rel. Comitê</text>
+<text x="490" y="133" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">Finanças na pauta</text>
+<text x="490" y="147" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">obrigatório</text>
+<text x="490" y="165" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 5</text>
+</g>
+
+<!-- T3 Plenária -->
+<g class="task-g" data-tip="Reunião plenária anual. Voz e voto: Delegados + Custódios. Só voz: Ger.Adm. + Coordenadores. (Art. 8/11) — Herdado do AS IS.">
+<rect x="574" y="87" width="124" height="100" rx="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.8"/>
+<text x="636" y="108" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Plenária CSG</text>
+<text x="636" y="123" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Voz+voto: Deleg+</text>
+<text x="636" y="137" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Custódios</text>
+<text x="636" y="151" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Voz: Ger.Adm.</text>
+<text x="636" y="177" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Art. 8 / Art. 11</text>
+</g>
+
+<!-- Gateway quórum -->
+<polygon points="730,137 754,113 778,137 754,161" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="754" y="178" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#633806">2/3 quórum?</text>
+
+<!-- T4a Deliberação obrigatória -->
+<g class="task-g" data-tip="Com 2/3 do quórum a deliberação é OBRIGATÓRIA para a Junta e órgãos executivos. (Art. 11 §Único) — Herdado do AS IS.">
+<rect x="792" y="99" width="118" height="76" rx="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.8"/>
+<text x="851" y="120" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Deliberação</text>
+<text x="851" y="135" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">obrigatória p/</text>
+<text x="851" y="149" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Junta e ESG</text>
+<text x="851" y="165" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Art. 11 §Único</text>
+</g>
+
+<!-- T5 Aprovar balanço + análise tendência -->
+<g class="task-g" data-tip="Aprovação do balanço patrimonial. Exige 2/3 sem voto secreto + parecer CF + relatório do Comitê de Finanças com série histórica. (Art. 11 §Único IV) — Base herdada, obrigatoriedade de série histórica é nova (Gap 5). [🔵 Regime: Competência - base para aprovação]">
+<rect x="928" y="99" width="136" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="996" y="120" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Aprovar balanço</text>
+<text x="996" y="135" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">2/3 + parecer CF</text>
+<text x="996" y="149" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">+ série histórica</text>
+<text x="996" y="165" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Art. 11 §Único IV</text>
+</g>
+
+<!-- T6 Aprovar orçamento anual (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — A CSG aprova o orçamento anual proposto pela Diretoria com tetos de gasto por rubrica e plano de contingência. No AS IS não havia aprovação formal do orçamento pela Conferência — gastos foram executados sem orçamento aprovado. [🟡 Conciliação: articula competência com caixa]">
+<rect x="1082" y="99" width="136" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="1150" y="118" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Aprovar orçamento</text>
+<text x="1150" y="133" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">anual + tetos por</text>
+<text x="1150" y="147" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">rubrica</text>
+<text x="1150" y="165" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- T7 Eleger Custódios -->
+<g class="task-g" data-tip="Elege e homologa Custódios regionais e membros do Conselho Fiscal. Método do Terceiro Legado. (Art. 13, 24, 37) — Herdado do AS IS.">
+<rect x="1236" y="99" width="130" height="76" rx="5" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.8"/>
+<text x="1301" y="120" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#26215C" font-weight="bold">Eleger Custódios</text>
+<text x="1301" y="135" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Método Terceiro</text>
+<text x="1301" y="149" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#3C3489">Legado</text>
+<text x="1301" y="165" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#534AB7" font-style="italic">Art. 13, 24, 37</text>
+</g>
+
+<!-- End CSG -->
+<circle cx="1508" cy="137" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+<!-- CSG flows -->
+<line x1="133" y1="137" x2="150" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="268" y1="137" x2="284" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="406" y1="137" x2="422" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="558" y1="137" x2="574" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="698" y1="137" x2="730" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="778" y1="137" x2="792" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="783" y="131" font-size="8" fill="#534AB7" text-anchor="middle" font-family="Georgia,serif">Sim</text>
+<line x1="910" y1="137" x2="928" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1064" y1="137" x2="1082" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1218" y1="137" x2="1236" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1366" y1="137" x2="1495" y2="137" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+<!-- ═══════════════════════════════
+     LANE 2 — JUNTA DE CUSTÓDIOS
+═══════════════════════════════ -->
+<circle cx="120" cy="452" r="13" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.5"/>
+
+<!-- T8 Homologar custódios -->
+<g class="task-g" data-tip="Junta homologa Custódios e Diretoria eleitos na CSG. (Art. 13) — Herdado do AS IS.">
+<rect x="150" y="414" width="128" height="76" rx="5" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="214" y="435" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#412402" font-weight="bold">Homologar</text>
+<text x="214" y="450" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#633806">Custódios</text>
+<text x="214" y="464" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#633806">e Diretoria</text>
+<text x="214" y="481" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#854F0B" font-style="italic">Art. 13</text>
+</g>
+
+<!-- T9 Nomear Ger.Adm -->
+<g class="task-g" data-tip="Junta nomeia o Gerente Administrativo. (Manual de Serviço) — Herdado do AS IS.">
+<rect x="294" y="414" width="128" height="76" rx="5" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="358" y="435" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#412402" font-weight="bold">Nomear</text>
+<text x="358" y="450" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#633806">Gerente Adm.</text>
+<text x="358" y="481" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#854F0B" font-style="italic">Manual de Serviço</text>
+</g>
+
+<!-- T-NEW-2 Aprovar limites de alçada por cargo (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 1) — Junta delibera e publica tabela de alçadas financeiras por cargo: valores que cada nível pode aprovar individualmente, em dupla, ou que exigem aprovação da Junta. Ex.: Dir. Financeiro sozinho até R$5k; Dir.Fin + Ger.Adm até R$20k; acima disso → Junta. No AS IS o Art. 27 era usado sem limites de valor. [🟢 Regime: Caixa - controla fluxo de aprovações]">
+<rect x="438" y="414" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="507" y="432" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Deliberar tabela</text>
+<text x="507" y="447" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">de alçadas</text>
+<text x="507" y="461" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">financeiras</text>
+<text x="507" y="479" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 1</text>
+</g>
+
+<!-- T10 Supervisionar Diretoria -->
+<g class="task-g" data-tip="Junta supervisiona a Diretoria Executiva de forma contínua. Reuniões trimestrais obrigatórias. (Estatuto) — Herdado do AS IS.">
+<rect x="592" y="414" width="128" height="76" rx="5" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="656" y="435" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#412402" font-weight="bold">Supervisionar</text>
+<text x="656" y="450" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#633806">Diretoria Exec.</text>
+<text x="656" y="464" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#633806">Reuniões trimestrais</text>
+<text x="656" y="481" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#854F0B" font-style="italic">Estatuto</text>
+</g>
+
+<!-- T-NEW-3 Receber alerta acumulado Reserva Prudente (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 3) — Junta recebe alerta automático do Comitê de Finanças toda vez que o uso acumulado da Reserva Prudente superar 25% do saldo. No AS IS cada saque era tratado isoladamente — nenhum custódio somou os R$650k em tempo real.">
+<rect x="736" y="414" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="805" y="432" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Receber alerta</text>
+<text x="805" y="447" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">acumulado</text>
+<text x="805" y="461" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">Reserva Prudente</text>
+<text x="805" y="479" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- Gateway: saque RP necessário? -->
+<polygon points="908,452 932,428 956,452 932,476" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+<text x="932" y="494" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#78350F">Saque RP?</text>
+
+<!-- Seta para SP Reserva Prudente -->
+<path d="M932 476 L932 540 L932 1957" stroke="#D97706" stroke-width="1.2" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-n)"/>
+<text x="944" y="520" font-size="8" fill="#D97706" font-family="Georgia,serif">Sim → SP</text>
+
+<!-- T11 Comunicar Áreas resultado CSG (NOVO - quarterly) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 5) — Junta comunica trimestralmente às Áreas o resultado financeiro consolidado (não apenas no ciclo anual da CSG). No AS IS delegados só recebiam o parecer anual, impossibilitando reação tempestiva.">
+<rect x="978" y="414" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="1047" y="432" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Comunicar Áreas</text>
+<text x="1047" y="447" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">resultado trim.</text>
+<text x="1047" y="461" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ status RP</text>
+<text x="1047" y="479" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 5</text>
+</g>
+
+<!-- Junta flows -->
+<line x1="133" y1="452" x2="150" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="278" y1="452" x2="294" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="422" y1="452" x2="438" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="576" y1="452" x2="592" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="720" y1="452" x2="736" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="874" y1="452" x2="908" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="956" y1="452" x2="978" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="961" y="446" font-size="8" fill="#888" text-anchor="middle" font-family="Georgia,serif">Não</text>
+
+
+<!-- End event — Junta de Custodios -->
+<line x1="1116" y1="452" x2="1169" y2="452" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<circle cx="1182" cy="452" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+<!-- ═══════════════════════════════
+     LANE 3 — DIRETORIA EXEC + ESG
+═══════════════════════════════ -->
+<circle cx="120" cy="718" r="13" fill="#FAECE7" stroke="#993C1D" stroke-width="1.5"/>
+<circle cx="120" cy="958" r="13" fill="#FAECE7" stroke="#993C1D" stroke-width="1.5"/>
+
+<!-- T12 Elaborar orçamento anual (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — Diretoria elabora o orçamento anual antes da execução, com projeção de receitas por fonte, tetos de despesa por rubrica e plano de contingência. Submetido ao Comitê de Finanças e depois à Junta/CSG para aprovação. No AS IS não havia orçamento formal aprovado.">
+<rect x="150" y="680" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="219" y="698" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Elaborar orçamento</text>
+<text x="219" y="713" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">anual + plano de</text>
+<text x="219" y="727" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">contingência</text>
+<text x="219" y="745" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- T13 Identificar necessidade de contratação -->
+<g class="task-g" data-tip="Diretoria identifica necessidade de obra, serviço ou compra. Documento formal de requisição com justificativa de urgência. — Reformulado do AS IS.">
+<rect x="304" y="680" width="130" height="76" rx="5" fill="#FAECE7" stroke="#993C1D" stroke-width="0.8"/>
+<text x="369" y="699" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#4A1B0C" font-weight="bold">Identificar</text>
+<text x="369" y="714" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">necessidade</text>
+<text x="369" y="728" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">+ requisição formal</text>
+<text x="369" y="745" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#993C1D" font-style="italic">Diretoria</text>
+</g>
+
+<!-- T-NEW-4 Verificar aderência orçamentária (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — Antes de qualquer contratação, verifica se a despesa está prevista no orçamento aprovado e dentro do teto da rubrica. Se extrapolou, aciona o gateway de exceção orçamentária. No AS IS o orçamento era extrapolado sem alerta.">
+<rect x="450" y="680" width="130" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="515" y="698" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Verificar aderência</text>
+<text x="515" y="713" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">orçamentária</text>
+<text x="515" y="727" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">teto da rubrica</text>
+<text x="515" y="745" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- GW orçamento ok? -->
+<polygon points="610,718 634,694 658,718 634,742" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+<text x="634" y="760" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#78350F">Dentro do orçamento?</text>
+
+<!-- T-NEW-5 Solicitar aprovação exceção (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — Se o gasto extrapola o orçamento aprovado, aciona processo de exceção: justificativa formal → Comitê de Finanças → Junta → aprovação ou recusa. No AS IS a Reserva Prudente era sacada sem esse processo.">
+<rect x="450" y="780" width="130" height="66" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="515" y="798" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Solicitar aprovação</text>
+<text x="515" y="813" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">exceção orçamentária</text>
+<text x="515" y="836" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- T-NEW-6 Verificar conformidade fornecedor (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gaps 1 e 2) — Checklist obrigatório antes de contratar: (a) CNPJ ativo na Receita Federal, (b) ausência de vínculo pessoal/familiar com diretores, (c) 3 orçamentos comparativos. A Lig Ação estava inapta na RF e vinculada ao Diretor Financeiro — isso seria bloqueado aqui.">
+<rect x="682" y="680" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="751" y="698" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Verificar conformidade</text>
+<text x="751" y="713" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">fornecedor (CNPJ</text>
+<text x="751" y="727" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">vínculo + 3 orçamentos)</text>
+<text x="751" y="745" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gaps 1+2</text>
+</g>
+
+<!-- GW vínculo? -->
+<polygon points="852,718 876,694 900,718 876,742" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+<text x="876" y="760" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#78350F">Vínculo / inapto?</text>
+
+<!-- T-NEW-7 Bloquear / comunicar Junta (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 2) — Se identificado vínculo familiar ou empresa inapta: contratação bloqueada, comunicação obrigatória à Junta e ao Conselho Fiscal com registro em ata. Cobre o caso Lig Ação (empresa do Dir. Financeiro) e Gabriela Binda (filha).">
+<rect x="682" y="780" width="138" height="66" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="751" y="798" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Bloquear contratação</text>
+<text x="751" y="813" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ comunicar Junta/CF</text>
+<text x="751" y="836" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 2</text>
+</g>
+
+<!-- T-NEW-8 Aprovação colegiada por alçada (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 1) — Aprovação conforme tabela de alçadas: até R$5k = Dir.Fin. + Ger.Adm.; R$5k–R$20k = + Comitê Finanças; acima de R$20k = + deliberação da Junta. Substitui a autorização unilateral pelo Art. 27. Todos os casos de obras sem aprovação coletiva seriam cobertos aqui.">
+<rect x="922" y="680" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="991" y="698" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Aprovação colegiada</text>
+<text x="991" y="713" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">conforme alçada</text>
+<text x="991" y="727" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">(Dir+Ger / +CF / +Junta)</text>
+<text x="991" y="745" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 1</text>
+</g>
+
+<!-- T-NEW-9 Formalizar contrato (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 2) — Formalização obrigatória de contrato antes do início do serviço, com NF exigida para pagamento. 5 prestadores sem contrato foram apontados na auditoria (Bruno Costa, Beatriz Braga, Emerson Assis, entre outros). Nenhum pagamento sem documento fiscal.">
+<rect x="1076" y="680" width="130" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="1141" y="698" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Formalizar contrato</text>
+<text x="1141" y="713" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ exigir NF antes</text>
+<text x="1141" y="727" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">do pagamento</text>
+<text x="1141" y="745" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 2</text>
+</g>
+
+<!-- T14 Executar pagamento -->
+<g class="task-g" data-tip="Diretoria executa o pagamento após aprovação colegiada, contrato e NF. Assinatura dupla obrigatória (Dir. Classe A + Dir. Classe B). — Reformulado: inclui assinatura dupla explícita.">
+<rect x="1222" y="680" width="128" height="76" rx="5" fill="#FAECE7" stroke="#993C1D" stroke-width="0.8"/>
+<text x="1286" y="699" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#4A1B0C" font-weight="bold">Executar</text>
+<text x="1286" y="714" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">pagamento</text>
+<text x="1286" y="728" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">assinatura dupla</text>
+<text x="1286" y="745" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#993C1D" font-style="italic">Dir. A + Dir. B</text>
+</g>
+
+<!-- T15 Publicar demonstrações financeiras -->
+<g class="task-g" data-tip="Diretoria publica balancetes mensais em até 10 dias. (Art. 38) — Herdado do AS IS.">
+<rect x="150" y="920" width="138" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="219" y="939" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#4A1B0C" font-weight="bold">Publicar balancetes</text>
+<text x="219" y="954" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">mensais</text>
+<text x="219" y="968" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#712B13">prazo: 10 dias</text>
+<text x="219" y="985" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#993C1D" font-style="italic">Art. 38 / CF acesso</text>
+</g>
+
+<!-- T-NEW-10 Monitorar desvio orçamentário mensal (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — Gerente Adm. + Comitê produzem relatório mensal de desvio orçamentário por rubrica, enviado automaticamente à Junta. Alerta amarelo: desvio &gt;15%. Alerta vermelho: desvio &gt;30%. No AS IS 9 meses de déficit passaram sem alarme formal.">
+<rect x="304" y="920" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="373" y="938" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Monitorar desvio</text>
+<text x="373" y="953" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">orçamentário mensal</text>
+<text x="373" y="967" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">→ alerta à Junta</text>
+<text x="373" y="985" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- Dir flows row 1 -->
+<line x1="133" y1="718" x2="150" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="288" y1="718" x2="304" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="434" y1="718" x2="450" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="580" y1="718" x2="610" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="658" y1="718" x2="682" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="664" y="712" font-size="8" fill="#888" text-anchor="middle" font-family="Georgia,serif">Ok</text>
+<!-- exceção orçamentária loop -->
+<path d="M634 742 L634 813 L580 813" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-n)"/>
+<text x="640" y="785" font-size="8" fill="#D97706" font-family="Georgia,serif">Não</text>
+<!-- vínculo bloqueio -->
+<path d="M876 742 L876 813 L820 813" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-n)"/>
+<text x="882" y="770" font-size="8" fill="#D97706" font-family="Georgia,serif">Sim</text>
+<line x1="900" y1="718" x2="922" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="906" y="712" font-size="8" fill="#888" text-anchor="middle" font-family="Georgia,serif">Ok</text>
+<line x1="1060" y1="718" x2="1076" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1206" y1="718" x2="1222" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<!-- publicar balancetes flow -->
+<line x1="133" y1="958" x2="150" y2="958" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="288" y1="958" x2="304" y2="958" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+
+<!-- End event — Diretoria Executiva + ESG -->
+<line x1="1350" y1="718" x2="1403" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<circle cx="1416" cy="718" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+
+<!-- T-NEW-11 Segregar funcoes (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 7) — Segregacao obrigatoria de funcoes: quem REQUISITA nao aprova; quem APROVA nao executa o pagamento; quem PAGA nao concilia. No AS IS o Diretor Financeiro originava a demanda, autorizava invocando o Art. 27 e acompanhava a execucao — a concentracao dessas quatro funcoes em um unico encargo foi o que viabilizou contratacoes sem contrato, sem orcamento comparativo e com vinculo pessoal. Baseia-se no COSO (Committee of Sponsoring Organizations of the Treadway Commission) — o referencial internacional mais adotado para estruturacao de controles internos, cujo principio 10 determina justamente a separacao de funcoes incompativeis para reduzir risco de erro e fraude. E pre-condicao verificada antes da liberacao do pagamento.">
+<rect x="1076" y="780" width="138" height="66" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="1145" y="798" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Segregar funções</text>
+<text x="1145" y="813" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">requisita ≠ aprova ≠ paga</text>
+<text x="1145" y="836" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 7</text>
+</g>
+<path d="M1214 813 L1286 813 L1286 756" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-n)"/>
+<text x="1244" y="807" font-size="8" fill="#D97706" text-anchor="middle" font-family="Georgia,serif">pré-condição</text>
+
+
+<!-- === CONECTORES FALTANTES — Diretoria Executiva + ESG === -->
+
+<!-- Verificar conformidade -> gateway Vinculo/inapto? -->
+<line x1="820" y1="718" x2="852" y2="718" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+<!-- Solicitar aprovacao (excecao deferida) -> retorna ao fluxo em Verificar conformidade -->
+<path d="M515 846 L515 880 L751 880 L751 756" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-n)"/>
+<text x="600" y="874" font-size="8" fill="#D97706" text-anchor="middle" font-family="Georgia,serif">exceção aprovada → retoma fluxo</text>
+
+<!-- Bloquear contratacao -> evento de fim (fluxo encerrado) -->
+<line x1="820" y1="813" x2="867" y2="813" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<circle cx="880" cy="813" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+<text x="880" y="840" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Georgia,serif">contratação encerrada</text>
+
+<!-- Formalizar contrato -> Segregar funcoes -->
+<line x1="1141" y1="756" x2="1141" y2="780" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+
+<!-- === COMUNICACAO OBRIGATORIA DO BLOQUEIO (fluxo de mensagem) === -->
+
+<!-- Bloquear contratacao -> Junta de Custodios (Supervisionar Diretoria) -->
+<path d="M682 813 L650 813 L650 490" stroke="#A32D2D" stroke-width="1.1" fill="none" stroke-dasharray="7 4" marker-end="url(#arr-r)"/>
+<text x="616" y="600" font-size="8" fill="#A32D2D" text-anchor="middle" font-family="Georgia,serif" transform="rotate(-90,616,600)">comunicação obrigatória → Junta</text>
+
+<!-- Bloquear contratacao -> Conselho Fiscal (Emitir parecer anual) -->
+<path d="M751 846 L751 870 L1160 870 L1160 1450 L1049 1450 L1049 1489" stroke="#A32D2D" stroke-width="1.1" fill="none" stroke-dasharray="7 4" marker-end="url(#arr-r)"/>
+<text x="1174" y="1160" font-size="8" fill="#A32D2D" text-anchor="middle" font-family="Georgia,serif" transform="rotate(-90,1174,1160)">comunicação obrigatória → Conselho Fiscal</text>
+
+<!-- ═══════════════════════════════
+     LANE 4 — GER. ADM. + COMITÊ FINANÇAS
+═══════════════════════════════ -->
+<circle cx="120" cy="1227" r="13" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+
+<!-- T16 Gerente participa do processo de compras (NOVO obrigatório) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 2) — Gerente Administrativo é participante mandatório em TODA aquisição, não apenas quando consultado. Inclui validação de orçamentos recebidos, verificação de documentação e emissão de parecer de viabilidade. Cap. V §XVI do Regimento — antes ignorado.">
+<rect x="150" y="1189" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="219" y="1207" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Ger. Adm. — participar</text>
+<text x="219" y="1222" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">obrigatório em compras</text>
+<text x="219" y="1236" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ emitir parecer</text>
+<text x="219" y="1254" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 2 · Cap.V §XVI</text>
+</g>
+
+<!-- T17 Comitê — acesso tempo real fluxo caixa (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4+5) — Comitê de Finanças tem acesso permanente ao fluxo de caixa diário no sistema Naveg, sem depender de relatórios periódicos entregues pela Diretoria. No AS IS o Comitê só via balancetes mensais — série de 9 déficits não gerou alerta em tempo real.">
+<rect x="304" y="1189" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="373" y="1207" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Comitê — acesso</text>
+<text x="373" y="1222" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">tempo real</text>
+<text x="373" y="1236" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">fluxo de caixa Naveg</text>
+<text x="373" y="1254" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gaps 4+5</text>
+</g>
+
+<!-- T18 Emitir alerta desvio orçamentário (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 4) — Comitê emite alerta formal à Junta quando detecta desvio orçamentário &gt;15% em qualquer rubrica, ou quando o caixa cair abaixo do mínimo operacional definido no plano de contingência.">
+<rect x="458" y="1189" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="527" y="1207" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Emitir alerta</text>
+<text x="527" y="1222" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">desvio orçamentário</text>
+<text x="527" y="1236" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">→ Junta (automático)</text>
+<text x="527" y="1254" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 4</text>
+</g>
+
+<!-- T19 Preparar relatório trimestral Comitê -->
+<g class="task-g" data-tip="Comitê de Finanças prepara relatório trimestral com resultado, projeção e análise de tendência. Obrigatório apresentar à Junta e disponibilizar às Áreas. — Reformulado: frequência trimestral (antes apenas anual).">
+<rect x="612" y="1189" width="138" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="681" y="1208" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#2C2C2A" font-weight="bold">Relatório trimestral</text>
+<text x="681" y="1223" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#444441">Comitê Finanças</text>
+<text x="681" y="1237" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#444441">→ Junta + Áreas</text>
+<text x="681" y="1254" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#5F5E5A" font-style="italic">Conceito XII</text>
+</g>
+
+<!-- T20 Ger. Adm. — compilar e registrar irregularidades (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 2+3) — Gerente Administrativo mantém registro formal de todas as irregularidades detectadas (contratações sem contrato, pagamentos sem NF, etc.) e as reporta mensalmente à Junta, independentemente de autorização da Diretoria. Corrige o silêncio do Gerente documentado na 5ª REJ.">
+<rect x="766" y="1189" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="835" y="1207" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Ger. Adm. — registrar</text>
+<text x="835" y="1222" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">irregularidades</text>
+<text x="835" y="1236" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">→ relatório mensal Junta</text>
+<text x="835" y="1254" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gaps 2+3</text>
+</g>
+
+<!-- Ger/Comitê flows -->
+<line x1="133" y1="1227" x2="150" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="288" y1="1227" x2="304" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="442" y1="1227" x2="458" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="596" y1="1227" x2="612" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="750" y1="1227" x2="766" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+
+<!-- End event — Ger. Adm. + Comite Financas -->
+<line x1="1056" y1="1227" x2="1109" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<circle cx="1122" cy="1227" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+
+<!-- T-NEW-12 Conciliar regimes contabil x financeiro (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 8) — Conciliacao mensal formal entre a escrituracao contabil (Regime de Competencia) e os relatorios financeiros (Regime de Caixa), com memoria de calculo datada e arquivada. A auditoria AudLink comparou as duas bases como se fossem equivalentes e apontou 'nao conciliacao' — erro metodologico ja refutado na Ata da Junta de Custodios de 05/05/2026 (p. 2 e p. 3). Esta atividade documenta formalmente a ponte entre os dois regimes e elimina a ambiguidade que originou a ressalva.">
+<rect x="918" y="1189" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="987" y="1207" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Conciliar regimes</text>
+<text x="987" y="1222" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">competência × caixa</text>
+<text x="987" y="1236" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">memória arquivada</text>
+<text x="987" y="1254" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 8</text>
+</g>
+<line x1="904" y1="1227" x2="918" y2="1227" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+<!-- ═══════════════════════════════
+     LANE 5 — CONSELHO FISCAL
+═══════════════════════════════ -->
+<circle cx="120" cy="1527" r="13" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/>
+
+<!-- T21 Fiscalizar contínuo (trimestral) -->
+<g class="task-g" data-tip="Conselho Fiscal realiza visitas trimestrais ao ESG: conferência do caixa físico, verificação de balancetes, controle de estoque. (Art. 38 e) — Reformulado: frequência trimestral explícita, com checklist padronizado.">
+<rect x="150" y="1489" width="138" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="219" y="1508" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#042C53" font-weight="bold">Fiscalizar contínuo</text>
+<text x="219" y="1523" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">visita trimestral ESG</text>
+<text x="219" y="1537" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">caixa + balancetes</text>
+<text x="219" y="1554" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#185FA5" font-style="italic">Art. 38 e — trim.</text>
+</g>
+
+<!-- T-NEW-11 Definir escopo auditoria com equipe (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 6) — Quando auditoria especial for contratada, o escopo é definido em conjunto: empresa auditora + CF + Ger.Adm. + representante da Junta. Inclui entrevistas obrigatórias com a equipe antes do parecer. Na auditoria de 2026 a empresa nunca conversou com o ESG — falha metodológica grave.">
+<rect x="304" y="1489" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="373" y="1507" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Definir escopo</text>
+<text x="373" y="1522" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">auditoria c/ equipe</text>
+<text x="373" y="1536" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ entrevistas obrig.</text>
+<text x="373" y="1554" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 6</text>
+</g>
+
+<!-- T22 Analisar balancetes -->
+<g class="task-g" data-tip="CF recebe balancetes em até 10 dias e tem 15 dias para analisar. (Art. 38 e) — Herdado do AS IS.">
+<rect x="458" y="1489" width="130" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="523" y="1508" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#042C53" font-weight="bold">Analisar balancetes</text>
+<text x="523" y="1523" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">mensais</text>
+<text x="523" y="1537" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">prazo 15 dias</text>
+<text x="523" y="1554" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#185FA5" font-style="italic">Art. 38 e</text>
+</g>
+
+<!-- GW irregular? -->
+<polygon points="622,1527 646,1503 670,1527 646,1551" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+<text x="646" y="1567" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#791F1F">Irregular?</text>
+
+<!-- T23 Advertir (prazo 5 dias) -->
+<g class="task-g" data-tip="CF comunica irregularidade por escrito com prazo de resposta de 5 dias úteis. Se não atendido, escalona à Junta. (Art. 38 IV) — Reformulado: prazo explícito de 5 dias.">
+<rect x="684" y="1489" width="130" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="749" y="1508" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#501313" font-weight="bold">Advertir</text>
+<text x="749" y="1523" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#791F1F">por escrito</text>
+<text x="749" y="1537" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#791F1F">prazo: 5 dias</text>
+<text x="749" y="1554" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#A32D2D" font-style="italic">Art. 38 IV</text>
+</g>
+
+<!-- T-NEW-12 Contraditório antes do parecer (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 6) — Antes de publicar o parecer de auditoria, a empresa auditora deve apresentar versão preliminar ao ESG para contraditório formal (prazo 10 dias). Resultado: eliminar conclusões baseadas em comparação indevida regime de caixa vs. competência, como ocorreu em 2026.">
+<rect x="830" y="1489" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="899" y="1507" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Contraditório</text>
+<text x="899" y="1522" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">antes do parecer</text>
+<text x="899" y="1536" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">ESG responde (10d)</text>
+<text x="899" y="1554" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 6</text>
+</g>
+
+<!-- T24 Emitir parecer anual -->
+<g class="task-g" data-tip="CF emite parecer sobre demonstrações financeiras anuais. (Art. 38 III) — Herdado do AS IS. No To Be inclui obrigatoriamente análise de tendência e relato de eventuais irregularidades detectadas no ano.">
+<rect x="984" y="1489" width="130" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="1049" y="1508" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#042C53" font-weight="bold">Emitir parecer anual</text>
+<text x="1049" y="1523" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">+ análise tendência</text>
+<text x="1049" y="1537" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">+ irregularidades</text>
+<text x="1049" y="1554" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#185FA5" font-style="italic">Art. 38 III</text>
+</g>
+
+<!-- T25 Enviar parecer Delegados -->
+<g class="task-g" data-tip="CF envia cópia do parecer a todos os Delegados de Área. (Art. 38 h) — Herdado do AS IS.">
+<rect x="1130" y="1489" width="130" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="1195" y="1508" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#042C53" font-weight="bold">Enviar parecer</text>
+<text x="1195" y="1523" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">a todos Delegados</text>
+<text x="1195" y="1537" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#0C447C">de Área</text>
+<text x="1195" y="1554" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#185FA5" font-style="italic">Art. 38 h</text>
+</g>
+
+<!-- CF flows -->
+<line x1="133" y1="1527" x2="150" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="288" y1="1527" x2="304" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="442" y1="1527" x2="458" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="588" y1="1527" x2="622" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="670" y1="1527" x2="684" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="676" y="1521" font-size="8" fill="#A32D2D" text-anchor="middle" font-family="Georgia,serif">Sim</text>
+<line x1="814" y1="1527" x2="830" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="968" y1="1527" x2="984" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1114" y1="1527" x2="1130" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<!-- não irregular → parecer -->
+<path d="M646 1551 L646 1600 L1049 1600 L1049 1565" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<text x="654" y="1592" font-size="8" fill="#888" font-family="Georgia,serif">Não</text>
+
+
+<!-- End event — Conselho Fiscal -->
+<line x1="1260" y1="1527" x2="1313" y2="1527" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<circle cx="1326" cy="1527" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+<!-- ═══════════════════════════════
+     LANE 6 — DELEGADO DE ÁREA
+═══════════════════════════════ -->
+<circle cx="120" cy="1814" r="13" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+
+<!-- T26 Participar CSG -->
+<g class="task-g" data-tip="Delegado representa a Área na CSG com voz e voto. Mandato 2 anos, não reelegível. (Reg. CSG) — Herdado do AS IS.">
+<rect x="150" y="1776" width="126" height="76" rx="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="213" y="1797" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#04342C" font-weight="bold">Participar CSG</text>
+<text x="213" y="1812" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">voz e voto</text>
+<text x="213" y="1826" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">mandato 2 anos</text>
+<text x="213" y="1843" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#0F6E56" font-style="italic">Reg. CSG</text>
+</g>
+
+<!-- T27 Votar eleições -->
+<g class="task-g" data-tip="Vota na eleição de Custódios regionais e membros do CF. Método do Terceiro Legado. (Art. 13, 24, 37) — Herdado do AS IS.">
+<rect x="290" y="1776" width="126" height="76" rx="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="353" y="1797" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#04342C" font-weight="bold">Votar eleições</text>
+<text x="353" y="1812" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">Custódios + CF</text>
+<text x="353" y="1826" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">3º Legado</text>
+<text x="353" y="1843" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#0F6E56" font-style="italic">Art. 13, 24, 37</text>
+</g>
+
+<!-- T28 Receber rel. trimestral financeiro (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 5) — Delegado recebe relatório financeiro trimestral (não apenas o anual), com status da Reserva Prudente e desvios orçamentários. No AS IS Delegados só tinham acesso ao balanço anual, o que os impedia de reagir a problemas em curso.">
+<rect x="430" y="1776" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="499" y="1794" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Receber rel. trim.</text>
+<text x="499" y="1809" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">financeiro + status</text>
+<text x="499" y="1823" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">Reserva Prudente</text>
+<text x="499" y="1841" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 5</text>
+</g>
+
+<!-- T29 Receber parecer CF anual -->
+<g class="task-g" data-tip="Recebe cópia do parecer anual do CF e o repassa à Área e grupos. (Art. 38 h) — Herdado do AS IS.">
+<rect x="584" y="1776" width="130" height="76" rx="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="649" y="1797" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#04342C" font-weight="bold">Receber parecer CF</text>
+<text x="649" y="1812" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">anual + balancetes</text>
+<text x="649" y="1826" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">repassar à Área</text>
+<text x="649" y="1843" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#0F6E56" font-style="italic">Art. 38 h</text>
+</g>
+
+<!-- T30 Repassar 15% JUNAAB -->
+<g class="task-g" data-tip="Área repassa 15% das contribuições para a JUNAAB. Plano 60/25/15. (Art. 42) — Herdado do AS IS.">
+<rect x="730" y="1776" width="130" height="76" rx="5" fill="#FFF9C4" stroke="#F9A825" stroke-width="0.8"/>
+<text x="795" y="1797" text-anchor="middle" font-size="10.5" font-family="Georgia,serif" fill="#04342C" font-weight="bold">Repassar 15%</text>
+<text x="795" y="1812" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">para JUNAAB</text>
+<text x="795" y="1826" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#085041">plano 60/25/15</text>
+<text x="795" y="1843" text-anchor="middle" font-size="8.5" font-family="Georgia,serif" fill="#0F6E56" font-style="italic">Art. 42</text>
+</g>
+
+<!-- T-NEW-13 Exercer direito de apelação formal (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO (Gap 5 + 4º e 5º Conceitos) — Delegado pode registrar formalmente questionamento ou apelação sobre gastos executados, com resposta obrigatória da Junta em 30 dias. No AS IS não havia mecanismo formal — as Áreas sabiam dos problemas mas não tinham canal estruturado de contestação.">
+<rect x="876" y="1776" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="945" y="1794" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Exercer apelação</text>
+<text x="945" y="1809" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">formal sobre gastos</text>
+<text x="945" y="1823" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">(resp. obrig. 30d)</text>
+<text x="945" y="1841" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · 4º+5º Conc.</text>
+</g>
+
+<!-- End event Delegado -->
+<circle cx="1080" cy="1814" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+<!-- Delegado flows -->
+<line x1="133" y1="1814" x2="150" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="276" y1="1814" x2="290" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="416" y1="1814" x2="430" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="568" y1="1814" x2="584" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="714" y1="1814" x2="730" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="860" y1="1814" x2="876" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+<line x1="1014" y1="1814" x2="1067" y2="1814" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arr)"/>
+
+<!-- ═══════════════════════════════
+     LANE 7 — SP: RESERVA PRUDENTE
+═══════════════════════════════ -->
+<!-- SP label -->
+<text x="320" y="1975" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold" font-style="italic">Subprocesso acionado pela Junta quando uso acumulado da Reserva Prudente supera 25% do saldo</text>
+
+<circle cx="120" cy="2088" r="13" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+
+<!-- SP-1 Formalizar solicitação justificada (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3) — Diretoria formaliza solicitação de resgate com: valor, finalidade, urgência comprovada e previsão de reposição. No AS IS saques eram feitos informalmente, sem documento de justificativa arquivado.">
+<rect x="150" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="219" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Formalizar solicitação</text>
+<text x="219" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">de resgate</text>
+<text x="219" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">com justificativa</text>
+<text x="219" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- SP-2 Comitê analisa viabilidade de reposição (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3) — Comitê de Finanças analisa se há previsão realista de reposição dentro de 12 meses. Se não houver, emite parecer contrário. Os R$650k sacados entre jun/24 e abr/25 não tinham plano de reposição — Comitê teria bloqueado.">
+<rect x="304" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="373" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Comitê analisa</text>
+<text x="373" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">viabilidade de</text>
+<text x="373" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">reposição</text>
+<text x="373" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- SP GW: urgência + viabilidade? -->
+<polygon points="476,2088 500,2064 524,2088 500,2112" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+<text x="500" y="2130" text-anchor="middle" font-size="9" font-family="Georgia,serif" fill="#78350F">Urgente + viável?</text>
+
+<!-- SP-3 Deliberação Junta com quórum 2/3 (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3) — Junta delibera sobre o resgate com quórum mínimo de 2/3. Valor máximo por deliberação: 30% do saldo da Reserva. Acima disso: requer aprovação na próxima CSG. No AS IS cada saque era aprovado informalmente, parcelado para não parecer grande.">
+<rect x="538" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="607" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Deliberação Junta</text>
+<text x="607" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">quórum 2/3</text>
+<text x="607" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">máx. 30% do saldo</text>
+<text x="607" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- SP-4 Comunicar Áreas antes do resgate (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3+5) — Antes de executar o resgate, Junta comunica formalmente todas as Áreas com: valor, finalidade, prazo de reposição. Garante a transparência prevista na 7ª Tradição. No AS IS as Áreas só souberam dos R$650k quando o problema já estava instalado.">
+<rect x="692" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="761" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Comunicar Áreas</text>
+<text x="761" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">antes do resgate</text>
+<text x="761" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">valor + prazo reposição</text>
+<text x="761" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gaps 3+5</text>
+</g>
+
+<!-- SP-5 Executar resgate + registrar (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3) — Resgate executado com assinatura dupla (Dir. A + Dir. B), registrado em ata com número de ordem, e lançado no sistema com data prevista de reposição. Monitoramento mensal do prazo de reposição pelo Comitê.">
+<rect x="846" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="915" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Executar resgate</text>
+<text x="915" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">ass. dupla + ata</text>
+<text x="915" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">+ prazo reposição</text>
+<text x="915" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- SP-6 Monitorar reposição (NOVO) -->
+<g class="task-g new-task" data-tip="NOVO SP (Gap 3) — Comitê monitora mensalmente a reposição da Reserva Prudente. Se prazo vencer sem reposição: alerta imediato à Junta e às Áreas. Encerra o subprocesso quando saldo original for restabelecido.">
+<rect x="1000" y="2050" width="138" height="76" rx="5" fill="#FFF3CD" stroke="#D97706" stroke-width="2"/>
+<text x="1069" y="2068" text-anchor="middle" font-size="10" font-family="Georgia,serif" fill="#78350F" font-weight="bold">Monitorar reposição</text>
+<text x="1069" y="2083" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">mensal</text>
+<text x="1069" y="2097" text-anchor="middle" font-size="9.5" font-family="Georgia,serif" fill="#92400E">alerta se atraso</text>
+<text x="1069" y="2115" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="#D97706" font-style="italic">⬛ Novo · Gap 3</text>
+</g>
+
+<!-- SP end -->
+<circle cx="1200" cy="2088" r="13" fill="#FCEBEB" stroke="#A32D2D" stroke-width="2"/>
+
+<!-- SP flows -->
+<line x1="133" y1="2088" x2="150" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="288" y1="2088" x2="304" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="442" y1="2088" x2="476" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="524" y1="2088" x2="538" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<text x="530" y="2082" font-size="8" fill="#D97706" text-anchor="middle" font-family="Georgia,serif">Ok</text>
+<line x1="676" y1="2088" x2="692" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="830" y1="2088" x2="846" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="984" y1="2088" x2="1000" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<line x1="1138" y1="2088" x2="1187" y2="2088" stroke="#D97706" stroke-width="1.2" fill="none" marker-end="url(#arr-n)"/>
+<!-- Não urgente / não viável → recusa -->
+<path d="M500 2112 L500 2170 L220 2170 L220 2126" stroke="#A32D2D" stroke-width="1" fill="none" stroke-dasharray="4 2" marker-end="url(#arr)"/>
+<text x="506" y="2155" font-size="8" fill="#A32D2D" font-family="Georgia,serif">Não</text>
+
+<!-- ═══════════════════════════════
+     FLUXOS ENTRE RAIAS
+═══════════════════════════════ -->
+<!-- CSG deliberação → Junta -->
+<path d="M851 167 L851 272 L795 272 L795 414" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-p)"/>
+<!-- CSG orçamento aprovado → Dir.Exec -->
+<path d="M1150 175 L1150 272 L1150 580 L1150 632 L990 632 L990 680" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-p)"/>
+<!-- CSG eleger → Junta homologar -->
+<path d="M1301 175 L1301 272 L1301 340 L280 340 L280 414" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-p)"/>
+<!-- Junta nomear Ger.Adm → Ger.Adm -->
+<path d="M358 490 L358 560 L358 632 L358 1072 L219 1072 L219 1189" stroke="#993C1D" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-c)"/>
+<!-- Junta alçadas → Diretoria -->
+<path d="M507 490 L507 632 L507 680" stroke="#D97706" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-n)"/>
+<!-- Dir.Exec publica balancetes → CF -->
+<path d="M219 996 L219 1382 L219 1489" stroke="#993C1D" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-c)"/>
+<!-- Dir.Exec balancetes → Comitê -->
+<path d="M373 996 L373 1072 L373 1189" stroke="#993C1D" stroke-width="1.2" fill="none" stroke-dasharray="4 2" marker-end="url(#arr-c)"/>
+<!-- Comitê alerta → Junta -->
+<path d="M527 1265 L527 1300 L1047 1300 L1047 1072 L805 1072 L805 490" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-n)"/>
+<!-- CF parecer → Delegados -->
+<path d="M1195 1565 L1195 1640 L649 1640 L649 1776" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-p)"/>
+<!-- Junta comunicar trimestral → Delegados -->
+<path d="M1047 490 L1047 580 L499 580 L499 1776" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-n)"/>
+<!-- Delegado contribuição → Financeiro -->
+<path d="M795 1852 L795 1900 L1286 1900 L1286 756" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="6 3" marker-end="url(#arr-p)"/>
+<!-- Ger.Adm irregularidades → CF -->
+<path d="M835 1265 L835 1300 L835 1382 L373 1382 L373 1489" stroke="#D97706" stroke-width="1" fill="none" stroke-dasharray="5 3" marker-end="url(#arr-n)"/>
+<!-- Comitê orçamento → CSG -->
+<path d="M681 1265 L681 1300 L1150 1300 L1150 1072 L1150 272 L1150 175" stroke="#534AB7" stroke-width="1" fill="none" stroke-dasharray="6 3" marker-end="url(#arr-p)"/>
+
+</svg>
+</div>
+
+<div class="legend">
+  <span style="font-weight:bold;color:#26215C;margin-right:4px">Atividades herdadas do AS IS:</span>
+  <span class="leg-item"><span class="leg-box" style="background:#EEEDFE;border-color:#534AB7"></span>CSG (deliberativo)</span>
+  <span class="leg-item"><span class="leg-box" style="background:#FAEEDA;border-color:#854F0B"></span>Junta de Custódios</span>
+  <span class="leg-item"><span class="leg-box" style="background:#FAECE7;border-color:#993C1D"></span>Diretoria Exec. / ESG</span>
+  <span class="leg-item"><span class="leg-box" style="background:#F1EFE8;border-color:#888780"></span>Ger. Adm. + Comitê</span>
+  <span class="leg-item"><span class="leg-box" style="background:#E6F1FB;border-color:#185FA5"></span>Conselho Fiscal</span>
+  <span class="leg-item"><span class="leg-box" style="background:#E1F5EE;border-color:#0F6E56"></span>Delegado de Área</span>
+  <span class="leg-item"><span class="leg-box" style="background:#FFF9C4;border-color:#F9A825;border-width:2px"></span>⭐ Atividade financeira</span>
+  <span style="margin-left:16px;font-weight:bold;color:#D97706">⬛ NOVAS (gap mitigado):</span>
+  <span class="leg-item"><span class="leg-box" style="background:#FFF3CD;border-color:#D97706;border-width:2px"></span>Atividade nova — mitiga gap do AS IS</span>
+  <span class="leg-item"><span class="leg-box" style="background:#FEF3C7;border-color:#F59E0B;border-width:2px"></span>SP — Subprocesso Reserva Prudente (todo novo)</span>
+  <span style="font-weight:bold;color:#26215C;margin-left:16px;margin-right:4px">Fluxos:</span>
+  <span class="leg-item"><span class="leg-line" style="background:#888"></span>Sequência interna</span>
+  <span class="leg-item"><span class="leg-line" style="background:none;border-top:1px dashed #534AB7"></span>Mensagem entre raias</span>
+  <span class="leg-item"><span class="leg-line" style="background:none;border-top:1px dashed #993C1D"></span>Subordinação / delegação</span>
+  <span class="leg-item"><span class="leg-line" style="background:none;border-top:1px dashed #D97706"></span>Fluxo de controle novo</span>
+  <span class="leg-item"><span class="leg-diamond" style="background:#FEF3C7;border-color:#D97706"></span>Gateway novo</span>
+</div>
+
+<div class="hint">
+  Gaps mitigados: Gap 1 = Controle apenas reativo | Gap 2 = Concentração de decisão no Dir. Financeiro | Gap 3 = Reserva Prudente sem protocolo | Gap 4 = Ausência de ciclo orçamentário | Gap 5 = Comitê desconectado da CSG | Gap 6 = Auditoria sem escopo e contraditório · © Elaborado com base no diagnóstico As Is vs. Relatórios JUNAAB 2024–2026
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+<script>
+const tip = document.getElementById('tooltip');
+document.querySelectorAll('.task-g').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    tip.textContent = el.dataset.tip;
+    tip.classList.remove('new-tip');
+    if (el.classList.contains('new-task')) tip.classList.add('new-tip');
+    tip.classList.add('show');
+  });
+  el.addEventListener('mousemove', e => {
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top  = (e.clientY - 10) + 'px';
+  });
+  el.addEventListener('mouseleave', () => tip.classList.remove('show'));
+});
+</script>
+
+<div class="casd-footer">Coletivo de Apadrinhamento em Serviço do Delegado — CASD — Área 01 · RJ — Julho 2026</div>
+</body>
+</html>

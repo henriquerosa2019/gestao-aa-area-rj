@@ -1,0 +1,5353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Controle Financeiro — ESL Área 27 CE</title>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script crossorigin src="https://unpkg.com/recharts@2/umd/Recharts.js"></script>
+
+<style>
+  html, body { margin: 0; padding: 0; background: #f7f3ea; }
+  #root-loading {
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh; font-family: -apple-system, sans-serif; color: #8a6d3b; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<div id="root"><div id="root-loading">Carregando painel financeiro…</div></div>
+
+<script>
+(function () {
+var useState = React.useState;
+var useMemo = React.useMemo;
+var useRef = React.useRef;
+var LineChart = Recharts.LineChart, Line = Recharts.Line, BarChart = Recharts.BarChart, Bar = Recharts.Bar,
+    AreaChart = Recharts.AreaChart, Area = Recharts.Area, PieChart = Recharts.PieChart, Pie = Recharts.Pie,
+    Cell = Recharts.Cell, XAxis = Recharts.XAxis, YAxis = Recharts.YAxis, CartesianGrid = Recharts.CartesianGrid,
+    Tooltip = Recharts.Tooltip, Legend = Recharts.Legend, ResponsiveContainer = Recharts.ResponsiveContainer,
+    ComposedChart = Recharts.ComposedChart;
+const RAW = {
+  "resumoMensal": [{
+    "mes": "Janeiro",
+    "ano": "2025",
+    "mes_num": "1",
+    "saldo_ant_caixa": "1133.24",
+    "saldo_ant_banco": "1834.00",
+    "saldo_ant_total": "2967.24",
+    "total_entradas_periodo": "15168.50",
+    "total_entradas_geral": "18135.74",
+    "total_saidas": "15198.16",
+    "saldo_caixa_fim": "1877.14",
+    "saldo_banco_fim": "2937.58",
+    "saldo_total_fim": "4814.72",
+    "reserva_prudente_ant": "32218.22",
+    "reserva_prudente_entradas": "208.89",
+    "reserva_prudente_saldo": "",
+    "convencao2027_saldo_ant": "9695.79",
+    "convencao2027_movimentacao": "3595.34",
+    "convencao2027_saldo_atual": "13291.13"
+  }, {
+    "mes": "Fevereiro",
+    "ano": "2025",
+    "mes_num": "2",
+    "saldo_ant_caixa": "1841.14",
+    "saldo_ant_banco": "1060.44",
+    "saldo_ant_total": "2901.58",
+    "total_entradas_periodo": "14533.60",
+    "total_entradas_geral": "17435.18",
+    "total_saidas": "15365.29",
+    "saldo_caixa_fim": "262.86",
+    "saldo_banco_fim": "1807.03",
+    "saldo_total_fim": "2069.89",
+    "reserva_prudente_ant": "32427.11",
+    "reserva_prudente_entradas": "207.45",
+    "reserva_prudente_saldo": "32634.56",
+    "convencao2027_saldo_ant": "13291.13",
+    "convencao2027_movimentacao": "4290.42",
+    "convencao2027_saldo_atual": "17581.55"
+  }, {
+    "mes": "Março",
+    "ano": "2025",
+    "mes_num": "3",
+    "saldo_ant_caixa": "262.86",
+    "saldo_ant_banco": "1807.03",
+    "saldo_ant_total": "2069.89",
+    "total_entradas_periodo": "18052.23",
+    "total_entradas_geral": "20122.12",
+    "total_saidas": "15479.33",
+    "saldo_caixa_fim": "2206.22",
+    "saldo_banco_fim": "2436.57",
+    "saldo_total_fim": "4642.79",
+    "reserva_prudente_ant": "32634.56",
+    "reserva_prudente_entradas": "38.04",
+    "reserva_prudente_saldo": "32672.60",
+    "convencao2027_saldo_ant": "17581.55",
+    "convencao2027_movimentacao": "6218.33",
+    "convencao2027_saldo_atual": "23799.88"
+  }, {
+    "mes": "Abril",
+    "ano": "2025",
+    "mes_num": "4",
+    "saldo_ant_caixa": "2206.22",
+    "saldo_ant_banco": "2436.57",
+    "saldo_ant_total": "4642.79",
+    "total_entradas_periodo": "25130.45",
+    "total_entradas_geral": "29773.24",
+    "total_saidas": "23936.97",
+    "saldo_caixa_fim": "3944.51",
+    "saldo_banco_fim": "1891.76",
+    "saldo_total_fim": "5836.27",
+    "reserva_prudente_ant": "32672.60",
+    "reserva_prudente_entradas": "358.46",
+    "reserva_prudente_saldo": "33031.06",
+    "convencao2027_saldo_ant": "23799.88",
+    "convencao2027_movimentacao": "3872.61",
+    "convencao2027_saldo_atual": "19927.27"
+  }, {
+    "mes": "Maio",
+    "ano": "2025",
+    "mes_num": "5",
+    "saldo_ant_caixa": "3944.51",
+    "saldo_ant_banco": "1891.76",
+    "saldo_ant_total": "5836.27",
+    "total_entradas_periodo": "16922.81",
+    "total_entradas_geral": "22759.08",
+    "total_saidas": "21335.91",
+    "saldo_caixa_fim": "1004.06",
+    "saldo_banco_fim": "419.11",
+    "saldo_total_fim": "1423.17",
+    "reserva_prudente_ant": "33031.06",
+    "reserva_prudente_entradas": "215.02",
+    "reserva_prudente_saldo": "33246.08",
+    "convencao2027_saldo_ant": "19927.27",
+    "convencao2027_movimentacao": "6375.11",
+    "convencao2027_saldo_atual": "26302.38"
+  }, {
+    "mes": "Junho",
+    "ano": "2025",
+    "mes_num": "6",
+    "saldo_ant_caixa": "1004.06",
+    "saldo_ant_banco": "419.11",
+    "saldo_ant_total": "1423.17",
+    "total_entradas_periodo": "23336.85",
+    "total_entradas_geral": "24760.02",
+    "total_saidas": "21853.69",
+    "saldo_caixa_fim": "625.67",
+    "saldo_banco_fim": "2280.66",
+    "saldo_total_fim": "2906.33",
+    "reserva_prudente_ant": "33246.08",
+    "reserva_prudente_entradas": "56.15",
+    "reserva_prudente_saldo": "33302.23",
+    "convencao2027_saldo_ant": "26302.38",
+    "convencao2027_movimentacao": "-12252.68",
+    "convencao2027_saldo_atual": "14049.70"
+  }, {
+    "mes": "Julho",
+    "ano": "2025",
+    "mes_num": "7",
+    "saldo_ant_caixa": "625.67",
+    "saldo_ant_banco": "2280.66",
+    "saldo_ant_total": "2906.33",
+    "total_entradas_periodo": "33220.82",
+    "total_entradas_geral": "36127.15",
+    "total_saidas": "35377.58",
+    "saldo_caixa_fim": "369.97",
+    "saldo_banco_fim": "379.60",
+    "saldo_total_fim": "749.57",
+    "reserva_prudente_ant": "33302.23",
+    "reserva_prudente_entradas": "203.77",
+    "reserva_prudente_saldo": "33506.00",
+    "convencao2027_saldo_ant": "14049.70",
+    "convencao2027_movimentacao": "-9708.23",
+    "convencao2027_saldo_atual": "4341.47"
+  }, {
+    "mes": "Agosto",
+    "ano": "2025",
+    "mes_num": "8",
+    "saldo_ant_caixa": "369.97",
+    "saldo_ant_banco": "379.60",
+    "saldo_ant_total": "749.57",
+    "total_entradas_periodo": "30049.47",
+    "total_entradas_geral": "30799.04",
+    "total_saidas": "27560.63",
+    "saldo_caixa_fim": "2533.06",
+    "saldo_banco_fim": "705.35",
+    "saldo_total_fim": "3238.41",
+    "reserva_prudente_ant": "33506.00",
+    "reserva_prudente_entradas": "202.66",
+    "reserva_prudente_saldo": "33708.66",
+    "convencao2027_saldo_ant": "4341.47",
+    "convencao2027_movimentacao": "8135.92",
+    "convencao2027_saldo_atual": "12477.39"
+  }, {
+    "mes": "Setembro",
+    "ano": "2025",
+    "mes_num": "9",
+    "saldo_ant_caixa": "2533.06",
+    "saldo_ant_banco": "705.35",
+    "saldo_ant_total": "3238.41",
+    "total_entradas_periodo": "21147.13",
+    "total_entradas_geral": "24385.54",
+    "total_saidas": "20283.86",
+    "saldo_caixa_fim": "3128.37",
+    "saldo_banco_fim": "973.31",
+    "saldo_total_fim": "4101.68",
+    "reserva_prudente_ant": "33708.66",
+    "reserva_prudente_entradas": "225.98",
+    "reserva_prudente_saldo": "33934.64",
+    "convencao2027_saldo_ant": "12477.39",
+    "convencao2027_movimentacao": "3781.52",
+    "convencao2027_saldo_atual": "16258.91"
+  }, {
+    "mes": "Outubro",
+    "ano": "2025",
+    "mes_num": "10",
+    "saldo_ant_caixa": "3128.37",
+    "saldo_ant_banco": "973.31",
+    "saldo_ant_total": "4101.68",
+    "total_entradas_periodo": "18424.70",
+    "total_entradas_geral": "22526.38",
+    "total_saidas": "18823.62",
+    "saldo_caixa_fim": "2947.56",
+    "saldo_banco_fim": "755.20",
+    "saldo_total_fim": "3702.76",
+    "reserva_prudente_ant": "33934.64",
+    "reserva_prudente_entradas": "381.71",
+    "reserva_prudente_saldo": "34316.35",
+    "convencao2027_saldo_ant": "16258.91",
+    "convencao2027_movimentacao": "6948.06",
+    "convencao2027_saldo_atual": "23206.97"
+  }, {
+    "mes": "Novembro",
+    "ano": "2025",
+    "mes_num": "11",
+    "saldo_ant_caixa": "2948.06",
+    "saldo_ant_banco": "755.20",
+    "saldo_ant_total": "3703.26",
+    "total_entradas_periodo": "19118.93",
+    "total_entradas_geral": "22822.19",
+    "total_saidas": "20654.52",
+    "saldo_caixa_fim": "1498.99",
+    "saldo_banco_fim": "668.68",
+    "saldo_total_fim": "2167.67",
+    "reserva_prudente_ant": "34316.35",
+    "reserva_prudente_entradas": "59.39",
+    "reserva_prudente_saldo": "34375.74",
+    "convencao2027_saldo_ant": "23206.97",
+    "convencao2027_movimentacao": "-16005.09",
+    "convencao2027_saldo_atual": "7201.88"
+  }, {
+    "mes": "Dezembro",
+    "ano": "2025",
+    "mes_num": "12",
+    "saldo_ant_caixa": "1498.99",
+    "saldo_ant_banco": "668.68",
+    "saldo_ant_total": "2167.67",
+    "total_entradas_periodo": "26462.89",
+    "total_entradas_geral": "28630.56",
+    "total_saidas": "26387.07",
+    "saldo_caixa_fim": "818.64",
+    "saldo_banco_fim": "1424.85",
+    "saldo_total_fim": "2243.49",
+    "reserva_prudente_ant": "34375.74",
+    "reserva_prudente_entradas": "362.14",
+    "reserva_prudente_saldo": "34737.88",
+    "convencao2027_saldo_ant": "7201.88",
+    "convencao2027_movimentacao": "8340.41",
+    "convencao2027_saldo_atual": "15542.29"
+  }, {
+    "mes": "Janeiro",
+    "ano": "2026",
+    "mes_num": "13",
+    "saldo_ant_caixa": "818.64",
+    "saldo_ant_banco": "1424.85",
+    "saldo_ant_total": "2243.49",
+    "total_entradas_periodo": "18905.50",
+    "total_entradas_geral": "21148.99",
+    "total_saidas": "14809.69",
+    "saldo_caixa_fim": "2127.00",
+    "saldo_banco_fim": "4212.30",
+    "saldo_total_fim": "6339.30",
+    "reserva_prudente_ant": "34737.88",
+    "reserva_prudente_entradas": "237.16",
+    "reserva_prudente_saldo": "34975.04",
+    "convencao2027_saldo_ant": "",
+    "convencao2027_movimentacao": "",
+    "convencao2027_saldo_atual": ""
+  }],
+  "despesasCategoria": [{
+    "mes_ano": "2025-01",
+    "categoria": "Funcionário",
+    "valor": "2741.37"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "641.30"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Copa e Limpeza",
+    "valor": "365.83"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Aluguel",
+    "valor": "1425.45"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Energia (ENEL)",
+    "valor": "95.40"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "883.80"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Telefone/Internet",
+    "valor": "373.64"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3161.76"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "5204.00"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Despesas Bancárias",
+    "valor": "189.61"
+  }, {
+    "mes_ano": "2025-01",
+    "categoria": "Outros",
+    "valor": "99.00"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Funcionário",
+    "valor": "2679.17"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "404.93"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Copa e Limpeza",
+    "valor": "349.65"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Aluguel",
+    "valor": "1425.45"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Energia (ENEL)",
+    "valor": "106.62"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "611.40"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Telefone/Internet",
+    "valor": "371.42"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3107.25"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "3872.00"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Despesas Bancárias",
+    "valor": "201.31"
+  }, {
+    "mes_ano": "2025-02",
+    "categoria": "Outros",
+    "valor": "2230.09"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Funcionário",
+    "valor": "2599.97"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "617.15"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Copa e Limpeza",
+    "valor": "361.07"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Aluguel",
+    "valor": "1425.45"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Energia (ENEL)",
+    "valor": "95.88"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "1720.80"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Telefone/Internet",
+    "valor": "371.42"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Aquisição de Literatura",
+    "valor": "1959.65"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "5849.00"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Despesas Bancárias",
+    "valor": "187.09"
+  }, {
+    "mes_ano": "2025-03",
+    "categoria": "Outros",
+    "valor": "291.85"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Funcionário",
+    "valor": "2679.17"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "232.20"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Copa e Limpeza",
+    "valor": "325.54"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Energia (ENEL)",
+    "valor": "93.92"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "925.00"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Telefone/Internet",
+    "valor": "371.42"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3070.73"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "8655.00"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Despesas Bancárias",
+    "valor": "342.21"
+  }, {
+    "mes_ano": "2025-04",
+    "categoria": "Outros",
+    "valor": "5696.03"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Funcionário",
+    "valor": "2713.37"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "292.90"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Copa e Limpeza",
+    "valor": "382.19"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Energia (ENEL)",
+    "valor": "101.93"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "647.00"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Telefone/Internet",
+    "valor": "377.66"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3165.52"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "8025.00"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Despesas Bancárias",
+    "valor": "240.06"
+  }, {
+    "mes_ano": "2025-05",
+    "categoria": "Outros",
+    "valor": "3844.53"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Funcionário",
+    "valor": "3336.80"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "375.80"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Copa e Limpeza",
+    "valor": "282.35"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Energia (ENEL)",
+    "valor": "105.28"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "1120.00"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Telefone/Internet",
+    "valor": "383.88"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Aquisição de Literatura",
+    "valor": "2698.62"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "6358.00"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Despesas Bancárias",
+    "valor": "196.45"
+  }, {
+    "mes_ano": "2025-06",
+    "categoria": "Outros",
+    "valor": "5450.76"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Funcionário",
+    "valor": "2908.11"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "512.97"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Copa e Limpeza",
+    "valor": "310.43"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Energia (ENEL)",
+    "valor": "91.23"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "382.00"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Telefone/Internet",
+    "valor": "379.81"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3815.05"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "5990.00"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Despesas Bancárias",
+    "valor": "267.59"
+  }, {
+    "mes_ano": "2025-07",
+    "categoria": "Outros",
+    "valor": "18174.64"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Funcionário",
+    "valor": "2688.77"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "423.80"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Copa e Limpeza",
+    "valor": "395.84"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Energia (ENEL)",
+    "valor": "115.68"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "879.66"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Telefone/Internet",
+    "valor": "382.19"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3858.56"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "8849.00"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Despesas Bancárias",
+    "valor": "234.52"
+  }, {
+    "mes_ano": "2025-08",
+    "categoria": "Outros",
+    "valor": "7186.86"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Funcionário",
+    "valor": "2703.77"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "524.55"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Copa e Limpeza",
+    "valor": "343.29"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Energia (ENEL)",
+    "valor": "106.45"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "1597.83"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Telefone/Internet",
+    "valor": "379.81"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Aquisição de Literatura",
+    "valor": "3743.22"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "8080.00"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Despesas Bancárias",
+    "valor": "303.14"
+  }, {
+    "mes_ano": "2025-09",
+    "categoria": "Outros",
+    "valor": "955.99"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Funcionário",
+    "valor": "2750.97"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "429.45"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Copa e Limpeza",
+    "valor": "285.30"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Energia (ENEL)",
+    "valor": "100.20"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "630.00"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Telefone/Internet",
+    "valor": "379.81"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Aquisição de Literatura",
+    "valor": "1009.80"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "5603.00"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Despesas Bancárias",
+    "valor": "291.41"
+  }, {
+    "mes_ano": "2025-10",
+    "categoria": "Outros",
+    "valor": "5797.93"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Funcionário",
+    "valor": "3451.60"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "347.54"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Copa e Limpeza",
+    "valor": "359.60"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Energia (ENEL)",
+    "valor": "98.40"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "509.96"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Telefone/Internet",
+    "valor": "382.85"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Aquisição de Literatura",
+    "valor": "4174.02"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "3373.00"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Despesas Bancárias",
+    "valor": "305.95"
+  }, {
+    "mes_ano": "2025-11",
+    "categoria": "Outros",
+    "valor": "6105.85"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Funcionário",
+    "valor": "4016.35"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "384.95"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Copa e Limpeza",
+    "valor": "489.50"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Energia (ENEL)",
+    "valor": "93.22"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "1086.55"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Telefone/Internet",
+    "valor": "381.63"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Aquisição de Literatura",
+    "valor": "4608.23"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "11292.00"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Despesas Bancárias",
+    "valor": "286.75"
+  }, {
+    "mes_ano": "2025-12",
+    "categoria": "Outros",
+    "valor": "2201.64"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Funcionário",
+    "valor": "2875.99"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Material Expediente/Fotocópias",
+    "valor": "340.20"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Copa e Limpeza",
+    "valor": "470.50"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Aluguel",
+    "valor": "1545.75"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Energia (ENEL)",
+    "valor": "88.44"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Despesas Eventuais/Serviços",
+    "valor": "588.81"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Telefone/Internet",
+    "valor": "393.63"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Aquisição de Literatura",
+    "valor": "2669.31"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Repasses (Plano/Vivência/Conv27/etc)",
+    "valor": "1831.00"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Despesas Bancárias",
+    "valor": "182.19"
+  }, {
+    "mes_ano": "2026-01",
+    "categoria": "Outros",
+    "valor": "3823.87"
+  }],
+  "convencao2027Mensal": [{
+    "mes_ano": "2025-01",
+    "total_arrecadado": "2040.00",
+    "qtd_inscricoes_estimada": "17",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-02",
+    "total_arrecadado": "2880.00",
+    "qtd_inscricoes_estimada": "24",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-03",
+    "total_arrecadado": "3360.00",
+    "qtd_inscricoes_estimada": "28",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-04",
+    "total_arrecadado": "4920.00",
+    "qtd_inscricoes_estimada": "41",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-05",
+    "total_arrecadado": "2400.00",
+    "qtd_inscricoes_estimada": "20",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-06",
+    "total_arrecadado": "4200.00",
+    "qtd_inscricoes_estimada": "35",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-07",
+    "total_arrecadado": "2400.00",
+    "qtd_inscricoes_estimada": "20",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-08",
+    "total_arrecadado": "3600.00",
+    "qtd_inscricoes_estimada": "30",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-09",
+    "total_arrecadado": "3360.00",
+    "qtd_inscricoes_estimada": "28",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-10",
+    "total_arrecadado": "4320.00",
+    "qtd_inscricoes_estimada": "36",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-11",
+    "total_arrecadado": "3960.00",
+    "qtd_inscricoes_estimada": "33",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2025-12",
+    "total_arrecadado": "5040.00",
+    "qtd_inscricoes_estimada": "42",
+    "valor_cota": "120"
+  }, {
+    "mes_ano": "2026-01",
+    "total_arrecadado": "1800.00",
+    "qtd_inscricoes_estimada": "15",
+    "valor_cota": "120"
+  }],
+  "convencao2027Nominal": [{
+    "data": "07/01/2025",
+    "recibo": "23834",
+    "contribuinte": "ROSINHA - (GRUPO BEIRA MAR)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "07/01/2025",
+    "recibo": "23835",
+    "contribuinte": "LIDUINO - (GRUPO N. SRA. DAS GRAÇAS)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "07/01/2025",
+    "recibo": "23836",
+    "contribuinte": "JOÃO IRINEU - (GRUPO JANGADEIRO)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "17/01/2025",
+    "recibo": "23844",
+    "contribuinte": "CD 28 - LITORAL NORTE",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "23/01/2025",
+    "recibo": "23859",
+    "contribuinte": "ROCHA - GRUPO CRIANÇA FELIZ",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "23/01/2025",
+    "recibo": "23860",
+    "contribuinte": "FIGUEIREDO - GRUPO COMUNICAÇÃO",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "23/01/2025",
+    "recibo": "23861",
+    "contribuinte": "ANTONIO CARLOS - GRUPO COMUNICAÇÃO",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "23/01/2025",
+    "recibo": "23862",
+    "contribuinte": "FABRÍCIO - (GRUPO LAGO AZUL)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "23/01/2025",
+    "recibo": "23865",
+    "contribuinte": "DJALMA - (GRUPO PACAJUS)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "24/01/2025",
+    "recibo": "23866",
+    "contribuinte": "JOANINHA - GRUPO PREVIDÊNCIA",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "25/01/2025",
+    "recibo": "23753",
+    "contribuinte": "SOCORRO MONTE",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "27/01/2025",
+    "recibo": "23869",
+    "contribuinte": "GRUPO GERAÇÃO CARIDADE - (JOSINO ALVES)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "28/01/2025",
+    "recibo": "23872",
+    "contribuinte": "GRUPO FIO DE ESPERANÇA",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "29/01/2025",
+    "recibo": "23875",
+    "contribuinte": "CD 12 - GRUPO MONTESE",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "30/01/2025",
+    "recibo": "23877",
+    "contribuinte": "GRUPO PAREI PARA VIVER",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "30/01/2025",
+    "recibo": "23883",
+    "contribuinte": "FRANCISCO DAS CHAGAS - (GRUPO ALVORADA)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "31/01/2025",
+    "recibo": "23885",
+    "contribuinte": "VANUSA - (GRUPO BEM ESTAR)",
+    "valor": "120.00",
+    "mes_ano": "2025-01"
+  }, {
+    "data": "02/02/2025",
+    "recibo": "23754",
+    "contribuinte": "GIRLANDIA - GRUPO ANTONIO DIOGO",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "03/02/2025",
+    "recibo": "23893",
+    "contribuinte": "LUCINDA - GRUPO PREVIDÊNCIA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "04/02/2025",
+    "recibo": "23894",
+    "contribuinte": "CD 16 - ZONA SUL",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "04/02/2025",
+    "recibo": "23895",
+    "contribuinte": "CD 16 - ZONA SUL",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "05/02/2025",
+    "recibo": "23898",
+    "contribuinte": "JOANA DARC",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "06/02/2025",
+    "recibo": "23899",
+    "contribuinte": "CITÔE",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "06/02/2025",
+    "recibo": "23900",
+    "contribuinte": "ALEXANDRE - (GRUPO PACAJUS)",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "06/02/2025",
+    "recibo": "23755",
+    "contribuinte": "FERNANDO GOMES",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "11/02/2025",
+    "recibo": "23907",
+    "contribuinte": "RAIMUNDO BRAZ - GRUPO MESSEJANA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "11/02/2025",
+    "recibo": "23908",
+    "contribuinte": "CHARLES MAGNO - GRUPO MESSEJANA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "12/02/2025",
+    "recibo": "23909",
+    "contribuinte": "ALEXANDRE - GRUPO MESSEJANA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "17/02/2025",
+    "recibo": "23917",
+    "contribuinte": "CD 21 - CAUCAIA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "18/02/2025",
+    "recibo": "23922",
+    "contribuinte": "GRUPO GERAÇÃO CARIDADE - (LEITE)",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "18/02/2025",
+    "recibo": "23923",
+    "contribuinte": "CD 11 - CENTRO SUL",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "18/02/2025",
+    "recibo": "23924",
+    "contribuinte": "EVANILDO",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "18/02/2025",
+    "recibo": "23925",
+    "contribuinte": "CD 19 - PALMEIRAS",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "22/02/2025",
+    "recibo": "23929",
+    "contribuinte": "GRUPO ALVORECER",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "24/02/2025",
+    "recibo": "23931",
+    "contribuinte": "GRUPO ALVORADA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "24/02/2025",
+    "recibo": "23932",
+    "contribuinte": "GRUPO ARATURI",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "25/02/2025",
+    "recibo": "23934",
+    "contribuinte": "GRUPO MANGABEIRA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "26/02/2025",
+    "recibo": "23944",
+    "contribuinte": "FLÁVIO - GRUPO ALVORADA",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "27/02/2025",
+    "recibo": "23945",
+    "contribuinte": "GRUPO PRIMEIRO PASSO",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "28/02/2025",
+    "recibo": "23952",
+    "contribuinte": "CD 28 - LITORAL NORTE",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "28/02/2025",
+    "recibo": "23957",
+    "contribuinte": "CD 12 - GRANDE MONTESE",
+    "valor": "120.00",
+    "mes_ano": "2025-02"
+  }, {
+    "data": "08/03/2025",
+    "recibo": "24001",
+    "contribuinte": "LEONARDO DE ARAUJO - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "09/03/2025",
+    "recibo": "24002",
+    "contribuinte": "PAULO CÉSAR FERREIRA - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "11/03/2025",
+    "recibo": "23968",
+    "contribuinte": "CD 16 - ZONA SUL",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "14/03/2025",
+    "recibo": "23970",
+    "contribuinte": "RAIMUNDO ALVES",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "14/03/2025",
+    "recibo": "23971",
+    "contribuinte": "LINDOMAR",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "17/03/2025",
+    "recibo": "23975",
+    "contribuinte": "GRUPO MESSEJANA - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "17/03/2025",
+    "recibo": "23978",
+    "contribuinte": "CD 19 - PALMEIRAS - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "17/03/2025",
+    "recibo": "23979",
+    "contribuinte": "CD 19 - PALMEIRAS",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "18/03/2025",
+    "recibo": "23986",
+    "contribuinte": "CD 28 - LITORAL NORTE - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "18/03/2025",
+    "recibo": "23987",
+    "contribuinte": "GRUPO GERAÇÃO CARIDADE - (PIX)",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "20/03/2025",
+    "recibo": "24003",
+    "contribuinte": "EMANUEL PYTITINGA - PIX",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "22/03/2025",
+    "recibo": "23992",
+    "contribuinte": "CD 16 - ZONA SUL",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "23/03/2025",
+    "recibo": "24054",
+    "contribuinte": "CD 01 - SOARES MORENO",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "27/03/2025",
+    "recibo": "24004",
+    "contribuinte": "ERIVALDO VIEIRA GUIMARÃES - PIX",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "27/03/2025",
+    "recibo": "24005",
+    "contribuinte": "ERIVALDO ADAIL P. GUIMARÃES",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "29/03/2025",
+    "recibo": "24000",
+    "contribuinte": "CD 21 - CAUCAIA",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "29/03/2025",
+    "recibo": "24065",
+    "contribuinte": "WALTER LEITE (GRUPO ALVORADA) - PIX",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "31/03/2025",
+    "recibo": "24175",
+    "contribuinte": "CD 26 - MACIÇO BATURITÉ - PIX",
+    "valor": "1200.00",
+    "mes_ano": "2025-03"
+  }, {
+    "data": "31/03/2025",
+    "recibo": "24071",
+    "contribuinte": "GRUPO RIO SIQUEIRA - PIX",
+    "valor": "120.00",
+    "mes_ano": "2025-03"
+  }],
+  "entradasRubrica": [{
+    "mes_ano": "2025-01",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4917.50"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Venda de Literatura",
+    "valor": "4764.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Relatório Anual",
+    "valor": "453.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Revista Vivência",
+    "valor": "660.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Receitas da Área",
+    "valor": "255.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "790.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "68.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "2040.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Camisas da Convenção - Vendas",
+    "valor": "250.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Depósito não identificado",
+    "valor": "65.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Sacola da Gratidão ESG",
+    "valor": "150.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "ENCMCD'S",
+    "valor": "384.00"
+  }, {
+    "mes_ano": "2025-01",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "372.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "5109.45"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Venda de Literatura",
+    "valor": "1900.15"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Relatório Anual",
+    "valor": "1172.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Revista Vivência",
+    "valor": "550.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "890.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "65.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "2880.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Depósito não identificado",
+    "valor": "20.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "330.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "ENCMCD'S",
+    "valor": "1130.00"
+  }, {
+    "mes_ano": "2025-02",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "487.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4132.87"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Venda de Literatura",
+    "valor": "5015.15"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Relatório Anual",
+    "valor": "1005.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Revista Vivência",
+    "valor": "770.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "680.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Receitas da Área",
+    "valor": "634.21"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "3360.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Depósito não identificado",
+    "valor": "220.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Encontro Estrutural RSGs",
+    "valor": "3050.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Camisas da Convenção - Vendas",
+    "valor": "350.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "ENCMCD'S",
+    "valor": "1450.00"
+  }, {
+    "mes_ano": "2025-03",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "220.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "5491.50"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Venda de Literatura",
+    "valor": "4203.80"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Relatório Anual",
+    "valor": "1476.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Revista Vivência",
+    "valor": "770.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "665.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Receitas da Área",
+    "valor": "364.15"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "170.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "4920.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Depósito não identificado",
+    "valor": "90.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Encontro Estrutural RSGs",
+    "valor": "2775.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "940.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "ENCMCD'S",
+    "valor": "3045.00"
+  }, {
+    "mes_ano": "2025-04",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "220.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4549.50"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Venda de Literatura",
+    "valor": "3423.10"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Relatório Anual",
+    "valor": "1365.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Revista Vivência",
+    "valor": "700.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1085.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Receitas da Área",
+    "valor": "235.80"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "2400.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Vendas Camisas Convenção",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Depósito não identificado",
+    "valor": "10.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "609.41"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Contribuição Específica Seminário",
+    "valor": "535.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "ENCMCD'S",
+    "valor": "1755.00"
+  }, {
+    "mes_ano": "2025-05",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "5988.25"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Venda de Literatura",
+    "valor": "2977.80"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Relatório Anual",
+    "valor": "2894.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Revista Vivência",
+    "valor": "470.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "462.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Receitas da Área",
+    "valor": "945.80"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "180.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "4200.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Depósito não identificado",
+    "valor": "10.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "610.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "Contribuição Específica Seminário",
+    "valor": "1662.00"
+  }, {
+    "mes_ano": "2025-06",
+    "rubrica": "ENCMCD'S",
+    "valor": "2832.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "5213.29"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Venda de Literatura",
+    "valor": "2702.70"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Relatório Anual",
+    "valor": "2176.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Revista Vivência",
+    "valor": "360.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1418.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Receitas da Área",
+    "valor": "1156.83"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "2400.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Depósito não identificado",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "1050.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "Resgate em Duplicidade (BB)",
+    "valor": "15000.00"
+  }, {
+    "mes_ano": "2025-07",
+    "rubrica": "ENCMCD'S",
+    "valor": "1644.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4861.02"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Venda de Literatura",
+    "valor": "4912.95"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Relatório Anual",
+    "valor": "2369.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Revista Vivência",
+    "valor": "600.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "9254.50"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Receitas da Área",
+    "valor": "598.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "410.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "3600.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Depósito não identificado",
+    "valor": "65.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "1640.00"
+  }, {
+    "mes_ano": "2025-08",
+    "rubrica": "ENCMCD'S",
+    "valor": "1689.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4739.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Venda de Literatura",
+    "valor": "4741.80"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Relatório Anual",
+    "valor": "3668.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Revista Vivência",
+    "valor": "360.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "2551.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Receitas da Área",
+    "valor": "313.50"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "230.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "3360.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Camisas da Convenção - Vendas",
+    "valor": "100.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Depósito não identificado",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "507.83"
+  }, {
+    "mes_ano": "2025-09",
+    "rubrica": "ENCMCD'S",
+    "valor": "476.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4959.30"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Venda de Literatura",
+    "valor": "3654.40"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Relatório Anual",
+    "valor": "2644.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1551.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Receitas da Área",
+    "valor": "651.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "70.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "4320.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "370.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "ENCMCD'S",
+    "valor": "200.00"
+  }, {
+    "mes_ano": "2025-10",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "5.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4870.50"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Venda de Literatura",
+    "valor": "2528.90"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Relatório Anual",
+    "valor": "2488.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1595.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "70.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Contribuição 13º Salário Funcionário",
+    "valor": "789.70"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "ENCMCD'S",
+    "valor": "150.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "3960.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Depósito não identificado",
+    "valor": "50.00"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Sacola da Gratidão",
+    "valor": "766.50"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "1532.23"
+  }, {
+    "mes_ano": "2025-11",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "130.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "5547.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Venda de Literatura",
+    "valor": "5597.70"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Relatório Anual",
+    "valor": "4135.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Revista Vivência",
+    "valor": "960.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1390.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Receitas da Área",
+    "valor": "309.87"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "330.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Contribuição 13º Salário Funcionário",
+    "valor": "555.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "ENCMCD'S",
+    "valor": "240.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "5040.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Depósito não identificado",
+    "valor": "20.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Sacola da Gratidão",
+    "valor": "1459.00"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "472.32"
+  }, {
+    "mes_ano": "2025-12",
+    "rubrica": "Contas a Receber (Pagas)",
+    "valor": "320.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Plano 60/25/15 (Contribuição Grupos)",
+    "valor": "4329.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Venda de Literatura",
+    "valor": "3881.20"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Relatório Anual",
+    "valor": "948.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Receitas da Área",
+    "valor": "171.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Revista Vivência",
+    "valor": "480.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "ENCMCD'S",
+    "valor": "966.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Seminário do Nordeste",
+    "valor": "1361.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Contribuição para o CTO",
+    "valor": "10.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Convenção Nacional 2027",
+    "valor": "1800.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Saque Conta Seminário Nordeste",
+    "valor": "2000.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Contribuição Específica ESL-Sede",
+    "valor": "696.80"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Recebimento Débitos",
+    "valor": "660.00"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Contribuição Específica AR-CONDICIONADO",
+    "valor": "1562.50"
+  }, {
+    "mes_ano": "2026-01",
+    "rubrica": "Depósito não identificado",
+    "valor": "40.00"
+  }],
+  "extratoBancarioJan2025": [{
+    "data": "13/01/2025",
+    "historico": "PIX - RECEBIDO - Maria de Fatim",
+    "documento": "367.822.212.461.891",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "1096.50"
+  }, {
+    "data": "13/01/2025",
+    "historico": "MENSALID SEGURO BB SEGUROS",
+    "documento": "12.695",
+    "valor": "50.49",
+    "tipo": "D",
+    "saldo": "1046.01"
+  }, {
+    "data": "14/01/2025",
+    "historico": "PIX - RECEBIDO - Agnelo Marq",
+    "documento": "141.518.228.643.982",
+    "valor": "26.80",
+    "tipo": "C",
+    "saldo": "1072.81"
+  }, {
+    "data": "14/01/2025",
+    "historico": "PIX - RECEBIDO - Raimundo Co",
+    "documento": "141.626.308.213.072",
+    "valor": "300.00",
+    "tipo": "C",
+    "saldo": "1372.81"
+  }, {
+    "data": "14/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.891",
+    "valor": "426.00",
+    "tipo": "D",
+    "saldo": "946.81"
+  }, {
+    "data": "15/01/2025",
+    "historico": "PIX - RECEBIDO - George Ande",
+    "documento": "150.943.046.277.282",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "996.81"
+  }, {
+    "data": "15/01/2025",
+    "historico": "PIX-REC QR CODE - Jose Joatan So",
+    "documento": "369.585.233.661.721",
+    "valor": "82.00",
+    "tipo": "C",
+    "saldo": "1078.81"
+  }, {
+    "data": "15/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.892",
+    "valor": "286.00",
+    "tipo": "D",
+    "saldo": "792.81"
+  }, {
+    "data": "15/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "880.151.200.129.420",
+    "valor": "0.81",
+    "tipo": "D",
+    "saldo": "792.00"
+  }, {
+    "data": "17/01/2025",
+    "historico": "PIX - RECEBIDO - Fernando Si",
+    "documento": "171.519.128.637.252",
+    "valor": "27.80",
+    "tipo": "C",
+    "saldo": "819.80"
+  }, {
+    "data": "17/01/2025",
+    "historico": "PIX - RECEBIDO - Francisco Orle",
+    "documento": "371.144.480.885.891",
+    "valor": "295.00",
+    "tipo": "C",
+    "saldo": "1114.80"
+  }, {
+    "data": "17/01/2025",
+    "historico": "PIX - RECEBIDO - Francisco Mace",
+    "documento": "371.175.831.122.761",
+    "valor": "74.00",
+    "tipo": "C",
+    "saldo": "1188.80"
+  }, {
+    "data": "20/01/2025",
+    "historico": "PIX-REC QR CODE - Vandeir Jos",
+    "documento": "180.954.305.059.262",
+    "valor": "59.00",
+    "tipo": "C",
+    "saldo": "1247.80"
+  }, {
+    "data": "20/01/2025",
+    "historico": "PIX - RECEBIDO - Nubia Maria",
+    "documento": "201.626.155.710.552",
+    "valor": "275.00",
+    "tipo": "C",
+    "saldo": "1522.80"
+  }, {
+    "data": "20/01/2025",
+    "historico": "PIX - RECEBIDO - Hernandes de A",
+    "documento": "373.769.351.073.991",
+    "valor": "80.00",
+    "tipo": "C",
+    "saldo": "1602.80"
+  }, {
+    "data": "20/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.894",
+    "valor": "688.40",
+    "tipo": "D",
+    "saldo": "914.40"
+  }, {
+    "data": "20/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "830.201.200.738.936",
+    "valor": "0.58",
+    "tipo": "D",
+    "saldo": "913.82"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX-REC QR CODE - Roberto Sil",
+    "documento": "211.400.393.806.332",
+    "valor": "26.80",
+    "tipo": "C",
+    "saldo": "940.62"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX - RECEBIDO - Alberto Jose D",
+    "documento": "374.555.726.007.801",
+    "valor": "232.50",
+    "tipo": "C",
+    "saldo": "1173.12"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX - RECEBIDO - Antonio Franci",
+    "documento": "374.618.330.676.291",
+    "valor": "10.00",
+    "tipo": "C",
+    "saldo": "1183.12"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX - RECEBIDO - Jose Mendes Ju",
+    "documento": "374.632.007.075.621",
+    "valor": "100.00",
+    "tipo": "C",
+    "saldo": "1283.12"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX-REC QR CODE - Roberto Silva",
+    "documento": "374.793.010.422.311",
+    "valor": "11.20",
+    "tipo": "C",
+    "saldo": "1294.32"
+  }, {
+    "data": "21/01/2025",
+    "historico": "PIX-REC QR CODE - Eduardo Amorim",
+    "documento": "374.859.627.225.231",
+    "valor": "275.00",
+    "tipo": "C",
+    "saldo": "1569.32"
+  }, {
+    "data": "21/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "890.211.200.272.204",
+    "valor": "3.09",
+    "tipo": "D",
+    "saldo": "1566.23"
+  }, {
+    "data": "22/01/2025",
+    "historico": "PIX - RECEBIDO - Antonio Car",
+    "documento": "220.229.398.011.752",
+    "valor": "340.00",
+    "tipo": "C",
+    "saldo": "1906.23"
+  }, {
+    "data": "22/01/2025",
+    "historico": "PIX - RECEBIDO - Liduina Bez",
+    "documento": "221.708.516.360.912",
+    "valor": "480.00",
+    "tipo": "C",
+    "saldo": "2386.23"
+  }, {
+    "data": "22/01/2025",
+    "historico": "PIX - RECEBIDO - Joao Paulo",
+    "documento": "222.108.220.075.212",
+    "valor": "10.00",
+    "tipo": "C",
+    "saldo": "2396.23"
+  }, {
+    "data": "22/01/2025",
+    "historico": "PIX - RECEBIDO - Eduardo Amorim",
+    "documento": "375.587.053.575.281",
+    "valor": "150.00",
+    "tipo": "C",
+    "saldo": "2546.23"
+  }, {
+    "data": "23/01/2025",
+    "historico": "PIX - RECEBIDO - Jose Mendes",
+    "documento": "231.603.038.711.272",
+    "valor": "101.70",
+    "tipo": "C",
+    "saldo": "2647.93"
+  }, {
+    "data": "23/01/2025",
+    "historico": "PIX - RECEBIDO - Rogerio Ara",
+    "documento": "231.630.102.058.122",
+    "valor": "120.00",
+    "tipo": "C",
+    "saldo": "2767.93"
+  }, {
+    "data": "23/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.895",
+    "valor": "930.00",
+    "tipo": "D",
+    "saldo": "1837.93"
+  }, {
+    "data": "23/01/2025",
+    "historico": "TAR PROCES CHEQ",
+    "documento": "810.231.100.110.884",
+    "valor": "16.80",
+    "tipo": "D",
+    "saldo": "1821.13"
+  }, {
+    "data": "24/01/2025",
+    "historico": "PIX - RECEBIDO - Jose Mendes",
+    "documento": "241.529.104.439.402",
+    "valor": "284.15",
+    "tipo": "C",
+    "saldo": "2105.28"
+  }, {
+    "data": "24/01/2025",
+    "historico": "PIX - RECEBIDO - Jose Ivan D",
+    "documento": "241.532.476.419.912",
+    "valor": "270.00",
+    "tipo": "C",
+    "saldo": "2375.28"
+  }, {
+    "data": "24/01/2025",
+    "historico": "PIX - RECEBIDO - Rogerio De",
+    "documento": "241.650.499.958.392",
+    "valor": "90.00",
+    "tipo": "C",
+    "saldo": "2465.28"
+  }, {
+    "data": "24/01/2025",
+    "historico": "PIX - RECEBIDO - Liduina Bezerr",
+    "documento": "377.197.593.462.801",
+    "valor": "120.00",
+    "tipo": "C",
+    "saldo": "2585.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "TRANSF RECEBIDA - Francisco Chagas Aniceto",
+    "documento": "600.613.000.005.037",
+    "valor": "120.00",
+    "tipo": "C",
+    "saldo": "2705.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "PIX-REC QR CODE - Felipe Barb",
+    "documento": "251.056.517.952.002",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "2755.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "PIX-REC QR CODE - Jose Ribama",
+    "documento": "251.130.216.239.262",
+    "valor": "285.00",
+    "tipo": "C",
+    "saldo": "3040.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "PIX - RECEBIDO - Erivaldo Vi",
+    "documento": "271.038.338.452.442",
+    "valor": "278.00",
+    "tipo": "C",
+    "saldo": "3318.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "PIX-REC QR CODE - Alexsandro Roc",
+    "documento": "378.109.682.610.571",
+    "valor": "62.00",
+    "tipo": "C",
+    "saldo": "3380.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "PIX - RECEBIDO - Francisco Mace",
+    "documento": "380.006.411.491.471",
+    "valor": "94.00",
+    "tipo": "C",
+    "saldo": "3474.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.896",
+    "valor": "3000.00",
+    "tipo": "D",
+    "saldo": "474.28"
+  }, {
+    "data": "27/01/2025",
+    "historico": "TAR PACOTE SERV",
+    "documento": "850.271.100.719.074",
+    "valor": "73.80",
+    "tipo": "D",
+    "saldo": "400.48"
+  }, {
+    "data": "27/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "890.271.200.225.022",
+    "valor": "3.92",
+    "tipo": "D",
+    "saldo": "396.56"
+  }, {
+    "data": "28/01/2025",
+    "historico": "PIX - RECEBIDO - Antonio Jos",
+    "documento": "281.152.441.461.192",
+    "valor": "30.00",
+    "tipo": "C",
+    "saldo": "426.56"
+  }, {
+    "data": "28/01/2025",
+    "historico": "PIX - RECEBIDO - Fabricio Ferre",
+    "documento": "380.719.728.086.271",
+    "valor": "90.00",
+    "tipo": "C",
+    "saldo": "516.56"
+  }, {
+    "data": "28/01/2025",
+    "historico": "TAR PROCES CHEQ",
+    "documento": "810.280.700.251.938",
+    "valor": "16.80",
+    "tipo": "D",
+    "saldo": "499.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "TRANSF RECEBIDA - Francisco Glauco G Basto",
+    "documento": "603.472.000.258.894",
+    "valor": "363.00",
+    "tipo": "C",
+    "saldo": "862.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "PIX - RECEBIDO - Julio Lima",
+    "documento": "291.946.382.651.762",
+    "valor": "15.00",
+    "tipo": "C",
+    "saldo": "877.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "PIX-REC QR CODE - Pedro Irineu D",
+    "documento": "381.602.449.528.991",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "927.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "PIX - RECEBIDO - Lasaro Oliveir",
+    "documento": "381.784.678.795.321",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "977.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "PIX - RECEBIDO - Maria Claudia",
+    "documento": "381.998.504.551.001",
+    "valor": "50.00",
+    "tipo": "C",
+    "saldo": "1027.76"
+  }, {
+    "data": "29/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "840.291.200.030.757",
+    "valor": "0.49",
+    "tipo": "D",
+    "saldo": "1027.27"
+  }, {
+    "data": "30/01/2025",
+    "historico": "PIX-REC QR CODE - Jose Valdir",
+    "documento": "301.028.305.378.212",
+    "valor": "580.00",
+    "tipo": "C",
+    "saldo": "1607.27"
+  }, {
+    "data": "30/01/2025",
+    "historico": "PIX - RECEBIDO - Raimundo No",
+    "documento": "301.113.445.879.872",
+    "valor": "10.00",
+    "tipo": "C",
+    "saldo": "1617.27"
+  }, {
+    "data": "30/01/2025",
+    "historico": "PIX - RECEBIDO - Jose Ribama",
+    "documento": "301.357.302.034.382",
+    "valor": "120.00",
+    "tipo": "C",
+    "saldo": "1737.27"
+  }, {
+    "data": "30/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "890.301.200.283.053",
+    "valor": "5.74",
+    "tipo": "D",
+    "saldo": "1731.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "PIX - RECEBIDO - Antoniel Am",
+    "documento": "310.801.560.993.742",
+    "valor": "110.00",
+    "tipo": "C",
+    "saldo": "1841.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "PIX - RECEBIDO - Erivaldo Vi",
+    "documento": "310.916.197.007.582",
+    "valor": "1006.00",
+    "tipo": "C",
+    "saldo": "2847.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "PIX - RECEBIDO - Francisco M",
+    "documento": "310.920.225.918.712",
+    "valor": "200.00",
+    "tipo": "C",
+    "saldo": "3047.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "PIX-REC QR CODE - BS Institui",
+    "documento": "383.206.532.232.931",
+    "valor": "30.00",
+    "tipo": "C",
+    "saldo": "3077.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "CH PAGO AG",
+    "documento": "850.898",
+    "valor": "2000.00",
+    "tipo": "D",
+    "saldo": "1077.53"
+  }, {
+    "data": "31/01/2025",
+    "historico": "TAR PROCES CHEQ",
+    "documento": "880.311.200.218.343",
+    "valor": "16.80",
+    "tipo": "D",
+    "saldo": "1060.73"
+  }, {
+    "data": "31/01/2025",
+    "historico": "TARIFA PIX",
+    "documento": "890.311.200.317.525",
+    "valor": "0.29",
+    "tipo": "D",
+    "saldo": "1060.44"
+  }],
+  "poupexJan2025": [{
+    "data": "03/01/2025",
+    "historico": "741-Reajuste Monetário BACEN",
+    "documento": "675-0",
+    "valor": "2.72",
+    "origem": "rendimento"
+  }, {
+    "data": "03/01/2025",
+    "historico": "737-Juros",
+    "documento": "675-0",
+    "valor": "15.58",
+    "origem": "rendimento"
+  }, {
+    "data": "03/01/2025",
+    "historico": "290-Imposto de Renda",
+    "documento": "675-0",
+    "valor": "-4.11",
+    "origem": "rendimento"
+  }, {
+    "data": "03/01/2025",
+    "historico": "741-Reajuste Monetário BACEN",
+    "documento": "675-0",
+    "valor": "0.18",
+    "origem": "rendimento"
+  }, {
+    "data": "03/01/2025",
+    "historico": "737-Juros",
+    "documento": "675-0",
+    "valor": "1.25",
+    "origem": "rendimento"
+  }, {
+    "data": "03/01/2025",
+    "historico": "290-Imposto de Renda",
+    "documento": "675-0",
+    "valor": "-0.32",
+    "origem": "rendimento"
+  }, {
+    "data": "06/01/2025",
+    "historico": "615-PIX Recebido QR Code - FAUSTO Z EL DI",
+    "documento": "947.348.401",
+    "valor": "500.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "09/01/2025",
+    "historico": "502-Dep dinheiro inter agência",
+    "documento": "16.938",
+    "valor": "1000.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "09/01/2025",
+    "historico": "615-PIX Recebido QR Code - ANTONIO ALE",
+    "documento": "495.256.582",
+    "valor": "500.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "10/01/2025",
+    "historico": "737-Juros",
+    "documento": "675-0",
+    "valor": "20.68",
+    "origem": "rendimento"
+  }, {
+    "data": "10/01/2025",
+    "historico": "290-Imposto de Renda",
+    "documento": "675-0",
+    "valor": "-5.66",
+    "origem": "rendimento"
+  }, {
+    "data": "10/01/2025",
+    "historico": "741-Reajuste Monetário BACEN",
+    "documento": "675-0",
+    "valor": "4.49",
+    "origem": "rendimento"
+  }, {
+    "data": "13/01/2025",
+    "historico": "615-PIX Recebido QR Code - FAUSTO Z EL DI",
+    "documento": "496.072.991",
+    "valor": "1000.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "13/01/2025",
+    "historico": "615-PIX Recebido - ROGERIO ARA",
+    "documento": "431.081.142",
+    "valor": "100.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "23/01/2025",
+    "historico": "615-PIX Recebido - ROGERIO ARAUJO",
+    "documento": "667.189.281",
+    "valor": "50.00",
+    "origem": "deposito_direto"
+  }, {
+    "data": "24/01/2025",
+    "historico": "741-Reajuste Monetário BACEN",
+    "documento": "675-0",
+    "valor": "2.57",
+    "origem": "rendimento"
+  }, {
+    "data": "24/01/2025",
+    "historico": "737-Juros",
+    "documento": "675-0",
+    "valor": "11.01",
+    "origem": "rendimento"
+  }, {
+    "data": "24/01/2025",
+    "historico": "290-Imposto de Renda",
+    "documento": "675-0",
+    "valor": "-3.05",
+    "origem": "rendimento"
+  }, {
+    "data": "30/01/2025",
+    "historico": "615-PIX Recebido - FAUSTO Z EL",
+    "documento": "376.741.972",
+    "valor": "400.00",
+    "origem": "deposito_direto"
+  }],
+  "inconsistencias": [{
+    "mes_ano": "2025-01",
+    "severidade": "alta",
+    "titulo": "Depósitos diretos na poupança Conv. 2027 sem registro nominal",
+    "descricao": "R$ 3.550,00 entraram via PIX/depósito direto na Poupança Poupex (Variação 96 - Convenção 2027) em janeiro/2025, sem passar pela conta corrente. Desses, apenas R$ 2.040,00 (17 inscrições x R$120) constam na tabela nominal de contribuintes da rubrica 'Convenção Nacional 2027'. Os depositantes Fausto Z El Di (R$1.900,00 em 3 PIX), Antonio Ale (R$500,00), Rogério Ara/Araújo (R$150,00) e um depósito em espécie inter-agência de R$1.000,00 não aparecem na lista de contribuintes divulgada.",
+    "valor_envolvido": "1510.00",
+    "paginas_origem": "21-24 (extrato bancário e poupanças)"
+  }, {
+    "mes_ano": "2025-06",
+    "severidade": "media",
+    "titulo": "Saque de R$19.000 da poupança sem destino identificável",
+    "descricao": "Duas transferências de R$9.500,00 (13/06 e 24/06) saíram da Poupança Poupex (Convenção 2027) para a conta corrente, somando R$19.000,00. Ao cair na conta corrente, o valor se mistura ao caixa geral do ESL/Área 27 e não é mais rastreável como gasto específico da Convenção. Nos dias seguintes houve R$15.176,00 em cheques pagos em agência, mas nenhum documento ou nota identifica se esses cheques têm relação com a Convenção ou com despesas correntes da Área (literatura, aluguel, funcionário).",
+    "valor_envolvido": "19000.00",
+    "paginas_origem": "21-30 (extrato conta corrente e poupança Poupex)"
+  }, {
+    "mes_ano": "2025-07",
+    "severidade": "baixa",
+    "titulo": "Saída da poupança com destino identificado e plausível",
+    "descricao": "R$15.000,00 saíram da Poupança Poupex (Convenção 2027) em 17/07/2025 e foram registrados como 'RESGATE EM DUPLICIDADE' no Demonstrativo, com estorno do mesmo valor no mesmo mês -- ou seja, o próprio ESL identificou e corrigiu uma duplicidade bancária. Já em 22/07/2025, uma TED de R$15.000,00 foi enviada para uma conta identificada como 'JUNTA DE SERV...' (Banco 341, Ag 0180) -- compatível com repasse a uma Junta de Serviços Gerais de AA (JUNAAB ou Tesouraria Nacional/CNAAB). Este é o único dos três meses analisados com destino claramente identificável e plausível para o repasse.",
+    "valor_envolvido": "15000.00",
+    "paginas_origem": "22-31 (extrato conta corrente e poupança Poupex)"
+  }, {
+    "mes_ano": "2025-11",
+    "severidade": "alta",
+    "titulo": "Saque de R$20.000,00 via cheque sem qualquer documentação ou referência",
+    "descricao": "Em 13/11/2025, R$22.700,00 saíram da Poupança Poupex (Convenção 2027) para a conta corrente. No mesmo dia, dois débitos consumiram quase todo o valor: R$3.400,00 em 'CH PAGO AG' e R$20.000,00 em 'CHEQ COMPENSADO' -- o maior saque isolado identificado em todo o período analisado. Nenhuma tabela do Demonstrativo de Novembro (Demonstração dos Repasses, despesas, ou notas do Conselho Fiscal) menciona, referencia ou explica este valor. É o alerta de maior severidade e maior valor encontrado até agora -- recomenda-se solicitar ao Conselho Fiscal o comprovante/cópia do cheque nº correspondente ao documento 851.026.",
+    "valor_envolvido": "20000.00",
+    "paginas_origem": "26-36 (extrato conta corrente e poupança Poupex)"
+  }],
+  "auditoriaTransferencias": [{
+    "mes_ano": "2025-06",
+    "data": "13/06/2025",
+    "valor_transferido": "9500.00",
+    "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+    "destino_final": "Caixa geral do ESL",
+    "status": "nao_rastreavel",
+    "detalhe": "Somou-se ao caixa geral; não há nota vinculando a saques específicos a esta transferência"
+  }, {
+    "mes_ano": "2025-06",
+    "data": "24/06/2025",
+    "valor_transferido": "9500.00",
+    "destino_imediato": "Conta Corrente (Acerto de Movimentos)",
+    "destino_final": "Caixa geral do ESL",
+    "status": "nao_rastreavel",
+    "detalhe": "Somou-se ao caixa geral; em junho houve R$15.176",
+    "null": ["00 em cheques pagos após as transferências"]
+  }, {
+    "mes_ano": "2025-07",
+    "data": "17/07/2025",
+    "valor_transferido": "15000.00",
+    "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+    "destino_final": "Estornado no mesmo mês",
+    "status": "resolvido",
+    "detalhe": "Identificado pelo próprio ESL como 'Resgate em Duplicidade' e estornado integralmente"
+  }, {
+    "mes_ano": "2025-07",
+    "data": "22/07/2025",
+    "valor_transferido": "15000.00",
+    "destino_imediato": "TED para \"JUNTA DE SERV...\" (Banco 341 Ag 0180)",
+    "destino_final": "Provável JUNAAB/Tesouraria Nacional",
+    "status": "provavel_ok",
+    "detalhe": "TED com destinatário identificável no extrato; padrão compatível com repasse oficial a Junta de Serviços"
+  }, {
+    "mes_ano": "2025-11",
+    "data": "13/11/2025",
+    "valor_transferido": "22700.00",
+    "destino_imediato": "Conta Corrente (TRF POUPANCA)",
+    "destino_final": "Não identificado",
+    "status": "sem_documentacao",
+    "detalhe": "R$3.400,00 em CH PAGO AG + R$20.000,00 em CHEQ COMPENSADO no mesmo dia, sem nenhuma referência em nenhuma tabela do Demonstrativo de Novembro"
+  }]
+};
+
+// MESES_ORDEM era uma lista fixa (jan/25–jan/26); agora é gerada dinamicamente a
+// partir dos meses realmente presentes em rawData.resumoMensal, para suportar a
+// importação de novos meses (fev/2026 em diante) sem precisar editar este array.
+const MES_NOME_PARA_NUM = {
+  "Janeiro": 1,
+  "Fevereiro": 2,
+  "Março": 3,
+  "Abril": 4,
+  "Maio": 5,
+  "Junho": 6,
+  "Julho": 7,
+  "Agosto": 8,
+  "Setembro": 9,
+  "Outubro": 10,
+  "Novembro": 11,
+  "Dezembro": 12
+};
+const MES_NUM_PARA_ABREV3 = {
+  1: "Jan",
+  2: "Fev",
+  3: "Mar",
+  4: "Abr",
+  5: "Mai",
+  6: "Jun",
+  7: "Jul",
+  8: "Ago",
+  9: "Set",
+  10: "Out",
+  11: "Nov",
+  12: "Dez"
+};
+const MES_NUM_PARA_NOME = {
+  1: "Janeiro",
+  2: "Fevereiro",
+  3: "Março",
+  4: "Abril",
+  5: "Maio",
+  6: "Junho",
+  7: "Julho",
+  8: "Agosto",
+  9: "Setembro",
+  10: "Outubro",
+  11: "Novembro",
+  12: "Dezembro"
+};
+function buildMesesOrdem(rawData) {
+  return rawData.resumoMensal.map(r => ({
+    key: `${r.mes} ${r.ano}`,
+    ano: parseInt(r.ano, 10),
+    mesNum: MES_NOME_PARA_NUM[r.mes] || parseInt(r.mes_num, 10)
+  })).sort((a, b) => a.ano - b.ano || a.mesNum - b.mesNum).map(x => x.key);
+}
+function buildMesAbrev(rawData) {
+  const map = {};
+  rawData.resumoMensal.forEach(r => {
+    map[`${r.mes} ${r.ano}`] = `${MES_NUM_PARA_ABREV3[MES_NOME_PARA_NUM[r.mes]] || r.mes.slice(0, 3)}/${String(r.ano).slice(2)}`;
+  });
+  return map;
+}
+let MESES_ORDEM = [];
+let MES_ABREV = {};
+function num(v) {
+  if (v === undefined || v === null || v === "") return 0;
+  return parseFloat(v);
+}
+function fmtBRL(v, opts) {
+  const n = typeof v === "number" ? v : num(v);
+  return n.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    ...opts
+  });
+}
+function fmtCompact(v) {
+  const n = typeof v === "number" ? v : num(v);
+  if (Math.abs(n) >= 1000) return (n / 1000).toLocaleString('pt-BR', {
+    maximumFractionDigits: 1
+  }) + 'k';
+  return n.toLocaleString('pt-BR', {
+    maximumFractionDigits: 0
+  });
+}
+
+// Rubricas de venda de camisas aparecem no relatório com nomenclatura inconsistente
+// ("Camisas da Convenção - Vendas" e "Vendas Camisas Convenção"). Normalizamos para
+// um único rótulo e marcamos a linha para que possa ser destacada na UI.
+const RUBRICA_CAMISAS_REGEX = /camisa/i;
+const RUBRICA_CAMISAS_LABEL = "Camisas da Convenção — Vendas";
+
+// ---- Data derivation (recomputed whenever RAW changes via import/backup) ----
+// These are intentionally `let` (not `const`) because every Tab component reads
+// them directly as module-level globals. deriveAll() reassigns them in place and
+// App calls a re-render (via dataVersion state) afterward, so all Tabs see fresh data
+// without needing prop-drilling through the entire component tree.
+let resumo, despesasCat, entradasRub, totalCamisasGeral, mesesComVendaCamisas, saidasCamisas, totalCamisasSaidas, conv2027Mensal, conv2027Nominal, extratoJan, poupexJan, inconsistencias, auditoriaTransferencias, totalGeralEntradas2025, totalGeralSaidas2025, saldoFinalAtual, totalConv2027Arrecadado, totalConv2027Inscricoes, importacoes;
+function deriveAll(rawData) {
+  MESES_ORDEM = buildMesesOrdem(rawData);
+  MES_ABREV = buildMesAbrev(rawData);
+  resumo = rawData.resumoMensal.map(r => ({
+    ...r,
+    key: `${r.mes} ${r.ano}`,
+    label: MES_ABREV[`${r.mes} ${r.ano}`] || r.mes,
+    saldo_ant_total: num(r.saldo_ant_total),
+    total_entradas_periodo: num(r.total_entradas_periodo),
+    total_entradas_geral: num(r.total_entradas_geral),
+    total_saidas: num(r.total_saidas),
+    saldo_caixa_fim: num(r.saldo_caixa_fim),
+    saldo_banco_fim: num(r.saldo_banco_fim),
+    saldo_total_fim: num(r.saldo_total_fim),
+    reserva_prudente_saldo: num(r.reserva_prudente_saldo) || num(r.reserva_prudente_ant) + num(r.reserva_prudente_entradas),
+    convencao2027_saldo_ant: num(r.convencao2027_saldo_ant),
+    convencao2027_movimentacao: num(r.convencao2027_movimentacao),
+    convencao2027_saldo_atual: num(r.convencao2027_saldo_atual),
+    resultado_mes: num(r.total_entradas_geral) - num(r.total_saidas)
+  })).sort((a, b) => MESES_ORDEM.indexOf(a.key) - MESES_ORDEM.indexOf(b.key));
+  despesasCat = rawData.despesasCategoria.map(d => ({
+    ...d,
+    valor: num(d.valor)
+  }));
+  entradasRub = rawData.entradasRubrica.map(d => {
+    const isCamisa = RUBRICA_CAMISAS_REGEX.test(d.rubrica);
+    return {
+      ...d,
+      valor: num(d.valor),
+      rubricaOriginal: d.rubrica,
+      rubrica: isCamisa ? RUBRICA_CAMISAS_LABEL : d.rubrica,
+      isCamisa
+    };
+  });
+  totalCamisasGeral = entradasRub.filter(d => d.isCamisa).reduce((s, d) => s + d.valor, 0);
+  mesesComVendaCamisas = entradasRub.filter(d => d.isCamisa).length;
+  saidasCamisas = rawData.saidasCamisas || [{
+    mes_ano: "2025-10",
+    descricao: "Camisas da Convenção - Saídas",
+    valor: 141.00
+  }];
+  totalCamisasSaidas = saidasCamisas.reduce((s, d) => s + d.valor, 0);
+  conv2027Mensal = rawData.convencao2027Mensal.map(d => ({
+    ...d,
+    total_arrecadado: num(d.total_arrecadado),
+    qtd_inscricoes_estimada: num(d.qtd_inscricoes_estimada)
+  }));
+  conv2027Nominal = rawData.convencao2027Nominal.map(d => ({
+    ...d,
+    valor: num(d.valor)
+  }));
+  extratoJan = rawData.extratoBancarioJan2025.map(d => ({
+    ...d,
+    valor: num(d.valor),
+    saldo: num(d.saldo)
+  }));
+  poupexJan = (rawData.poupexJan2025 || []).map(d => ({
+    ...d,
+    valor: num(d.valor)
+  }));
+  inconsistencias = (rawData.inconsistencias || []).map(d => ({
+    ...d,
+    valor_envolvido: num(d.valor_envolvido)
+  }));
+  auditoriaTransferencias = (rawData.auditoriaTransferencias || []).map(d => ({
+    ...d,
+    valor_transferido: num(d.valor_transferido)
+  }));
+  totalGeralEntradas2025 = resumo.filter(r => r.ano === "2025").reduce((s, r) => s + r.total_entradas_geral, 0);
+  totalGeralSaidas2025 = resumo.filter(r => r.ano === "2025").reduce((s, r) => s + r.total_saidas, 0);
+  saldoFinalAtual = resumo[resumo.length - 1];
+  totalConv2027Arrecadado = conv2027Mensal.reduce((s, r) => s + r.total_arrecadado, 0);
+  totalConv2027Inscricoes = conv2027Mensal.reduce((s, r) => s + r.qtd_inscricoes_estimada, 0);
+
+  // Recibos de importação: apenas metadados do PDF original (nome, tamanho, data),
+  // nunca o conteúdo do arquivo em si — evita estourar o limite de localStorage
+  // (PDFs reais chegam a 30+ MB) mantendo rastreabilidade de qual arquivo originou
+  // os dados de cada mês.
+  importacoes = (rawData.importacoes || []).map(imp => ({
+    ...imp
+  })).sort((a, b) => MESES_ORDEM.indexOf(mesAnoToKey(a.mes_ano)) - MESES_ORDEM.indexOf(mesAnoToKey(b.mes_ano)));
+}
+
+// ---- Persistence: localStorage with the embedded RAW as seed ----
+const STORAGE_KEY = "aa_area27_dashboard_data_v1";
+function loadInitialRaw() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && parsed.resumoMensal) return parsed;
+    }
+  } catch (e) {
+    console.warn("Não foi possível ler dados salvos, usando dados originais.", e);
+  }
+  return RAW;
+}
+function persistRaw(rawData) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rawData));
+    return true;
+  } catch (e) {
+    console.warn("Não foi possível salvar no localStorage.", e);
+    return false;
+  }
+}
+
+// Registra (ou substitui) o "recibo" de importação de um mês: apenas metadados
+// do(s) arquivo(s) PDF original(is) usado(s) como referência ao preencher o
+// formulário — nome, tamanho e data — nunca o conteúdo do PDF.
+function registrarImportacao(rawData, {
+  mesAno,
+  arquivos,
+  totalEntradas,
+  totalDespesas
+}) {
+  if (!rawData.importacoes) rawData.importacoes = [];
+  rawData.importacoes = rawData.importacoes.filter(imp => imp.mes_ano !== mesAno);
+  rawData.importacoes.push({
+    mes_ano: mesAno,
+    arquivos: arquivos.map(f => ({
+      nome: f.name,
+      tamanho: f.size
+    })),
+    importado_em: new Date().toISOString(),
+    qtd_rubricas_entrada: totalEntradas,
+    qtd_categorias_despesa: totalDespesas
+  });
+  return rawData;
+}
+function fmtFileSize(bytes) {
+  if (!bytes && bytes !== 0) return "—";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+function fmtDataHora(isoString) {
+  if (!isoString) return "—";
+  const d = new Date(isoString);
+  return d.toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+let CURRENT_RAW = loadInitialRaw();
+deriveAll(CURRENT_RAW);
+const CATEGORIAS_COLOR = {
+  "Funcionário": "#8a6d3b",
+  "Material Expediente/Fotocópias": "#a8927a",
+  "Copa e Limpeza": "#7a9b8e",
+  "Aluguel": "#c0794f",
+  "Energia (ENEL)": "#d4a843",
+  "Despesas Eventuais/Serviços": "#9c8a5e",
+  "Telefone/Internet": "#6b8a9e",
+  "Aquisição de Literatura": "#1e4d5c",
+  "Repasses (Plano/Vivência/Conv27/etc)": "#2d6e63",
+  "Despesas Bancárias": "#b85c5c",
+  "Outros": "#a3a3a3"
+};
+// ---- UI primitives ----
+function StatCard({
+  label,
+  value,
+  sub,
+  accent,
+  trend
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, label), /*#__PURE__*/React.createElement("div", {
+    className: "stat-value",
+    style: accent ? {
+      color: accent
+    } : undefined
+  }, value), sub && /*#__PURE__*/React.createElement("div", {
+    className: "stat-sub"
+  }, sub), trend !== undefined && /*#__PURE__*/React.createElement("div", {
+    className: `stat-trend ${trend >= 0 ? 'pos' : 'neg'}`
+  }, trend >= 0 ? '▲' : '▼', " ", Math.abs(trend).toFixed(1), "%"));
+}
+function SealBadge() {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "seal"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 120 120",
+    width: "64",
+    height: "64"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "60",
+    cy: "60",
+    r: "56",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeDasharray: "3 3"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "60",
+    cy: "60",
+    r: "46",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.5"
+  }), /*#__PURE__*/React.createElement("text", {
+    x: "60",
+    y: "48",
+    textAnchor: "middle",
+    fontSize: "9",
+    fontWeight: "700",
+    fill: "currentColor",
+    fontFamily: "serif",
+    letterSpacing: "1"
+  }, "CONSELHO"), /*#__PURE__*/React.createElement("text", {
+    x: "60",
+    y: "60",
+    textAnchor: "middle",
+    fontSize: "9",
+    fontWeight: "700",
+    fill: "currentColor",
+    fontFamily: "serif",
+    letterSpacing: "1"
+  }, "FISCAL"), /*#__PURE__*/React.createElement("text", {
+    x: "60",
+    y: "78",
+    textAnchor: "middle",
+    fontSize: "8",
+    fill: "currentColor",
+    fontFamily: "serif"
+  }, "ESL ÁREA 27"), /*#__PURE__*/React.createElement("text", {
+    x: "60",
+    y: "90",
+    textAnchor: "middle",
+    fontSize: "7",
+    fill: "currentColor",
+    fontFamily: "serif"
+  }, "CEARÁ")));
+}
+function CustomTooltip({
+  active,
+  payload,
+  label,
+  formatter
+}) {
+  if (!active || !payload || !payload.length) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "chart-tooltip"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "chart-tooltip-label"
+  }, label), payload.map((p, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "chart-tooltip-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: p.color || p.fill
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "name"
+  }, p.name, ":"), /*#__PURE__*/React.createElement("span", {
+    className: "val"
+  }, formatter ? formatter(p.value) : fmtBRL(p.value)))));
+}
+function InconsistencyAlert({
+  item
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "alert-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-icon"
+  }, "!"), /*#__PURE__*/React.createElement("div", {
+    className: "alert-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-head"
+  }, /*#__PURE__*/React.createElement("h4", null, item.titulo), /*#__PURE__*/React.createElement("span", {
+    className: "alert-value"
+  }, fmtBRL(item.valor_envolvido))), /*#__PURE__*/React.createElement("p", null, item.descricao), /*#__PURE__*/React.createElement("div", {
+    className: "alert-meta"
+  }, "Fonte: páginas ", item.paginas_origem, " do Demonstrativo de ", mesAnoToKey(item.mes_ano))));
+}
+function StatusPill({
+  status
+}) {
+  const map = {
+    resolvido: {
+      label: "Resolvido",
+      cls: "status-resolved"
+    },
+    provavel_ok: {
+      label: "Destino identificado",
+      cls: "status-ok"
+    },
+    nao_rastreavel: {
+      label: "Não rastreável",
+      cls: "status-warn"
+    },
+    sem_documentacao: {
+      label: "Sem documentação",
+      cls: "status-danger"
+    }
+  };
+  const s = map[status] || {
+    label: status,
+    cls: ""
+  };
+  return /*#__PURE__*/React.createElement("span", {
+    className: `status-pill ${s.cls}`
+  }, s.label);
+}
+
+// ---- Tab: Visão Geral ----
+function TabVisaoGeral() {
+  const ultimo = resumo[resumo.length - 1];
+  const penultimo = resumo[resumo.length - 2];
+  const trendEntradas = (ultimo.total_entradas_geral - penultimo.total_entradas_geral) / penultimo.total_entradas_geral * 100;
+  const trendSaidas = (ultimo.total_saidas - penultimo.total_saidas) / penultimo.total_saidas * 100;
+  const fluxoData = resumo.map(r => ({
+    label: r.label,
+    Entradas: r.total_entradas_geral,
+    Saídas: r.total_saidas,
+    Resultado: r.resultado_mes
+  }));
+  const saldoData = resumo.map(r => ({
+    label: r.label,
+    "Saldo Total": r.saldo_total_fim,
+    "Reserva Prudente": r.reserva_prudente_saldo,
+    "Convenção 2027": r.convencao2027_saldo_atual
+  }));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Saldo Atual (Caixa + Banco)",
+    value: fmtBRL(ultimo.saldo_total_fim),
+    sub: `Janeiro 2026 · Caixa ${fmtBRL(ultimo.saldo_caixa_fim)} + Banco ${fmtBRL(ultimo.saldo_banco_fim)}`,
+    accent: "#1e4d5c"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Reserva Prudente",
+    value: fmtBRL(ultimo.reserva_prudente_saldo),
+    sub: "Poupança institucional acumulada",
+    accent: "#8a6d3b"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Entradas — Janeiro 2026",
+    value: fmtBRL(ultimo.total_entradas_geral),
+    trend: trendEntradas,
+    sub: "vs. mês anterior"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Saídas — Janeiro 2026",
+    value: fmtBRL(ultimo.total_saidas),
+    trend: trendSaidas,
+    sub: "vs. mês anterior"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid-2"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total Arrecadado em 2025",
+    value: fmtBRL(totalGeralEntradas2025),
+    sub: "Soma de todas as entradas, jan–dez/2025",
+    accent: "#2d6e63"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total de Despesas em 2025",
+    value: fmtBRL(totalGeralSaidas2025),
+    sub: "Soma de todas as saídas, jan–dez/2025",
+    accent: "#b85c5c"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Fluxo Mensal — Entradas vs. Saídas"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Jan/2025 a Jan/2026 · valores em R$")), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 320
+  }, /*#__PURE__*/React.createElement(ComposedChart, {
+    data: fluxoData,
+    margin: {
+      top: 10,
+      right: 20,
+      left: 0,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(CartesianGrid, {
+    strokeDasharray: "2 4",
+    stroke: "#e4ddd0",
+    vertical: false
+  }), /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: {
+      stroke: '#cbbfa8'
+    },
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tickFormatter: fmtCompact,
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: false,
+    tickLine: false,
+    width: 48
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  }), /*#__PURE__*/React.createElement(Legend, {
+    wrapperStyle: {
+      fontSize: 12,
+      paddingTop: 8
+    }
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "Entradas",
+    fill: "#2d6e63",
+    radius: [3, 3, 0, 0],
+    barSize: 16
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "Saídas",
+    fill: "#c0794f",
+    radius: [3, 3, 0, 0],
+    barSize: 16
+  }), /*#__PURE__*/React.createElement(Line, {
+    type: "monotone",
+    dataKey: "Resultado",
+    stroke: "#1e4d5c",
+    strokeWidth: 2.5,
+    dot: {
+      r: 3
+    }
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Evolução dos Saldos e Reservas"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Saldo operacional, Reserva Prudente e poupança da Convenção 2027")), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 300
+  }, /*#__PURE__*/React.createElement(LineChart, {
+    data: saldoData,
+    margin: {
+      top: 10,
+      right: 20,
+      left: 0,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(CartesianGrid, {
+    strokeDasharray: "2 4",
+    stroke: "#e4ddd0",
+    vertical: false
+  }), /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: {
+      stroke: '#cbbfa8'
+    },
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tickFormatter: fmtCompact,
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: false,
+    tickLine: false,
+    width: 48
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  }), /*#__PURE__*/React.createElement(Legend, {
+    wrapperStyle: {
+      fontSize: 12,
+      paddingTop: 8
+    }
+  }), /*#__PURE__*/React.createElement(Line, {
+    type: "monotone",
+    dataKey: "Saldo Total",
+    stroke: "#1e4d5c",
+    strokeWidth: 2.5,
+    dot: {
+      r: 3
+    }
+  }), /*#__PURE__*/React.createElement(Line, {
+    type: "monotone",
+    dataKey: "Reserva Prudente",
+    stroke: "#8a6d3b",
+    strokeWidth: 2,
+    dot: {
+      r: 2
+    },
+    strokeDasharray: "0"
+  }), /*#__PURE__*/React.createElement(Line, {
+    type: "monotone",
+    dataKey: "Convenção 2027",
+    stroke: "#2d6e63",
+    strokeWidth: 2,
+    dot: {
+      r: 2
+    }
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "panel-note"
+  }, /*#__PURE__*/React.createElement(SealBadge, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Sobre estes dados"), /*#__PURE__*/React.createElement("p", null, "Consolidado a partir dos 13 Demonstrativos Financeiros mensais do ESL/Área 27‑CE (Janeiro/2025 a Janeiro/2026), todos aprovados e assinados pelo Conselho Fiscal. Os totais de cada mês são fiéis aos relatórios originais; o detalhamento nominal (contribuinte a contribuinte) está disponível para Jan–Mar/2025 e pode ser completado enviando os PDFs restantes na aba ", /*#__PURE__*/React.createElement("strong", null, "Importar Dados"), ".", inconsistencias.length > 0 ? ` Foi identificada ${inconsistencias.length === 1 ? '1 divergência' : `${inconsistencias.length} divergências`} de conciliação — veja a aba Convenção 2027 para detalhes.` : ''))));
+}
+
+// ---- Tab: Convenção 2027 ----
+function TabConvencao2027() {
+  const [mesSelecionado, setMesSelecionado] = useState("2025-01");
+  const arrecadacaoData = conv2027Mensal.map(r => ({
+    label: MES_ABREV[mesAnoToKey(r.mes_ano)] || r.mes_ano,
+    mes_ano: r.mes_ano,
+    Arrecadado: r.total_arrecadado,
+    Inscrições: r.qtd_inscricoes_estimada
+  }));
+  const saldoConv = resumo.filter(r => r.convencao2027_saldo_atual !== 0).map(r => ({
+    label: r.label,
+    Saldo: r.convencao2027_saldo_atual,
+    Movimentação: r.convencao2027_movimentacao
+  }));
+  const nominalDoMes = conv2027Nominal.filter(n => n.mes_ano === mesSelecionado);
+  const totalNominalMes = nominalDoMes.reduce((s, n) => s + n.valor, 0);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total Arrecadado (acumulado)",
+    value: fmtBRL(totalConv2027Arrecadado),
+    sub: "Jan/2025 – Jan/2026 · rubrica Convenção Nacional 2027",
+    accent: "#2d6e63"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Inscrições Quitadas (estimado)",
+    value: `${totalConv2027Inscricoes} cotas`,
+    sub: "Cota padrão de R$ 120,00 por inscrição"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Saldo na Poupança (Dez/2025)",
+    value: fmtBRL(15542.29),
+    sub: "Variação 96 — Convenção 2027",
+    accent: "#8a6d3b"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Divergências Encontradas",
+    value: inconsistencias.length > 0 ? fmtBRL(inconsistencias.reduce((s, i) => s + i.valor_envolvido, 0)) : "Nenhuma",
+    sub: inconsistencias.length > 0 ? `${inconsistencias.length} alerta(s) de conciliação` : "Conciliação ok",
+    accent: inconsistencias.length > 0 ? "#b85c5c" : "#2d6e63"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Arrecadação Mensal — Convenção Nacional 2027"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Contribuições individuais de delegados/grupos a R$ 120,00 por inscrição")), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 300
+  }, /*#__PURE__*/React.createElement(BarChart, {
+    data: arrecadacaoData,
+    margin: {
+      top: 10,
+      right: 20,
+      left: 0,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(CartesianGrid, {
+    strokeDasharray: "2 4",
+    stroke: "#e4ddd0",
+    vertical: false
+  }), /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: {
+      stroke: '#cbbfa8'
+    },
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tickFormatter: fmtCompact,
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: false,
+    tickLine: false,
+    width: 48
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "Arrecadado",
+    fill: "#2d6e63",
+    radius: [3, 3, 0, 0],
+    barSize: 22
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Saldo da Poupança Dedicada (Variação 96)"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Conta segregada — entradas mensais menos repasses/saques para a Tesouraria Nacional")), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 280
+  }, /*#__PURE__*/React.createElement(ComposedChart, {
+    data: saldoConv,
+    margin: {
+      top: 10,
+      right: 20,
+      left: 0,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(CartesianGrid, {
+    strokeDasharray: "2 4",
+    stroke: "#e4ddd0",
+    vertical: false
+  }), /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: {
+      stroke: '#cbbfa8'
+    },
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tickFormatter: fmtCompact,
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: false,
+    tickLine: false,
+    width: 48
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  }), /*#__PURE__*/React.createElement(Legend, {
+    wrapperStyle: {
+      fontSize: 12,
+      paddingTop: 8
+    }
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "Movimentação",
+    fill: "#a8927a",
+    radius: [3, 3, 0, 0],
+    barSize: 18
+  }), /*#__PURE__*/React.createElement(Line, {
+    type: "monotone",
+    dataKey: "Saldo",
+    stroke: "#1e4d5c",
+    strokeWidth: 2.5,
+    dot: {
+      r: 3
+    }
+  }))), /*#__PURE__*/React.createElement("p", {
+    className: "panel-footnote"
+  }, "Quedas acentuadas em Jun, Jul e Nov/2025 indicam repasses/saques relevantes da poupança — provavelmente envios à Tesouraria Nacional da Convenção. Recomenda-se confirmar cada repasse com o comprovante correspondente na aba Conciliação.")), auditoriaTransferencias.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Auditoria das Transferências Grandes"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Rastro de cada saída relevante da poupança: de onde saiu, para onde foi, e se há documentação")), /*#__PURE__*/React.createElement("table", {
+    className: "data-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Mês"), /*#__PURE__*/React.createElement("th", null, "Data"), /*#__PURE__*/React.createElement("th", {
+    className: "num"
+  }, "Valor"), /*#__PURE__*/React.createElement("th", null, "Destino imediato"), /*#__PURE__*/React.createElement("th", null, "Destino final"), /*#__PURE__*/React.createElement("th", null, "Status"))), /*#__PURE__*/React.createElement("tbody", null, auditoriaTransferencias.map((t, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i
+  }, /*#__PURE__*/React.createElement("td", null, mesAnoToKey(t.mes_ano)), /*#__PURE__*/React.createElement("td", null, t.data), /*#__PURE__*/React.createElement("td", {
+    className: "num text-neg"
+  }, "− ", fmtBRL(t.valor_transferido)), /*#__PURE__*/React.createElement("td", null, t.destino_imediato), /*#__PURE__*/React.createElement("td", null, t.destino_final), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(StatusPill, {
+    status: t.status
+  })))))), /*#__PURE__*/React.createElement("div", {
+    className: "audit-detail-list"
+  }, auditoriaTransferencias.map((t, i) => /*#__PURE__*/React.createElement("p", {
+    key: i,
+    className: "audit-detail-row"
+  }, /*#__PURE__*/React.createElement("strong", null, mesAnoToKey(t.mes_ano), ", ", t.data, ":"), " ", t.detalhe)))), inconsistencias.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Alertas de Conciliação"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Divergências encontradas ao cruzar o extrato bancário com a arrecadação reportada")), inconsistencias.map((item, i) => /*#__PURE__*/React.createElement(InconsistencyAlert, {
+    key: i,
+    item: item
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Extrato da Poupança Dedicada — Janeiro/2025"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Banco do Brasil · Poupança Poupex · Variação 96 · Conta 109.506-4")), /*#__PURE__*/React.createElement("table", {
+    className: "data-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Data"), /*#__PURE__*/React.createElement("th", null, "Histórico"), /*#__PURE__*/React.createElement("th", null, "Documento"), /*#__PURE__*/React.createElement("th", {
+    className: "num"
+  }, "Valor"), /*#__PURE__*/React.createElement("th", null, "Origem"))), /*#__PURE__*/React.createElement("tbody", null, poupexJan.map((p, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i,
+    className: p.origem === 'deposito_direto' ? 'row-highlight' : ''
+  }, /*#__PURE__*/React.createElement("td", null, p.data), /*#__PURE__*/React.createElement("td", null, p.historico), /*#__PURE__*/React.createElement("td", {
+    className: "mono"
+  }, p.documento), /*#__PURE__*/React.createElement("td", {
+    className: `num ${p.valor >= 0 ? 'text-pos' : 'text-neg'}`
+  }, p.valor >= 0 ? '+' : '−', " ", fmtBRL(Math.abs(p.valor))), /*#__PURE__*/React.createElement("td", null, p.origem === 'deposito_direto' ? /*#__PURE__*/React.createElement("span", {
+    className: "tag-direct"
+  }, "depósito direto") : /*#__PURE__*/React.createElement("span", {
+    className: "tag-yield"
+  }, "rendimento")))))), /*#__PURE__*/React.createElement("p", {
+    className: "panel-footnote"
+  }, "Linhas destacadas são depósitos (PIX ou em espécie) recebidos diretamente na poupança, fora da conta corrente — por isso não passam pelo fluxo normal de emissão de recibo e registro nominal de contribuinte.")), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Detalhamento Nominal de Contribuintes"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Lista individual de quem pagou a inscrição da Convenção 2027")), /*#__PURE__*/React.createElement("div", {
+    className: "month-pills"
+  }, ["2025-01", "2025-02", "2025-03"].map(m => /*#__PURE__*/React.createElement("button", {
+    key: m,
+    className: `pill ${mesSelecionado === m ? 'active' : ''}`,
+    onClick: () => setMesSelecionado(m)
+  }, MES_ABREV[mesAnoToKey(m)])), /*#__PURE__*/React.createElement("span", {
+    className: "pill disabled",
+    title: "Envie o PDF deste mês na aba Importar Dados"
+  }, "Abr/25 – Jan/26 (importar)")), nominalDoMes.length > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("table", {
+    className: "data-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Data"), /*#__PURE__*/React.createElement("th", null, "Recibo"), /*#__PURE__*/React.createElement("th", null, "Contribuinte"), /*#__PURE__*/React.createElement("th", {
+    className: "num"
+  }, "Valor"))), /*#__PURE__*/React.createElement("tbody", null, nominalDoMes.map((n, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i
+  }, /*#__PURE__*/React.createElement("td", null, n.data), /*#__PURE__*/React.createElement("td", {
+    className: "mono"
+  }, n.recibo), /*#__PURE__*/React.createElement("td", null, n.contribuinte), /*#__PURE__*/React.createElement("td", {
+    className: "num"
+  }, fmtBRL(n.valor))))), /*#__PURE__*/React.createElement("tfoot", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: 3
+  }, "Total — ", nominalDoMes.length, " inscrições"), /*#__PURE__*/React.createElement("td", {
+    className: "num"
+  }, fmtBRL(totalNominalMes)))))) : /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, "Sem dados nominais para este mês ainda.")));
+}
+function mesAnoToKey(mesAno) {
+  const [ano, mes] = mesAno.split("-");
+  const meses = {
+    "01": "Janeiro",
+    "02": "Fevereiro",
+    "03": "Março",
+    "04": "Abril",
+    "05": "Maio",
+    "06": "Junho",
+    "07": "Julho",
+    "08": "Agosto",
+    "09": "Setembro",
+    "10": "Outubro",
+    "11": "Novembro",
+    "12": "Dezembro"
+  };
+  return `${meses[mes]} ${ano}`;
+}
+// ---- Tab: Conciliação Bancária ----
+function TabConciliacao() {
+  const [filtro, setFiltro] = useState("todos");
+  const creditos = extratoJan.filter(e => e.tipo === "C");
+  const debitos = extratoJan.filter(e => e.tipo === "D");
+  const totalCreditos = creditos.reduce((s, e) => s + e.valor, 0);
+  const totalDebitos = debitos.reduce((s, e) => s + e.valor, 0);
+  const cheques = extratoJan.filter(e => e.historico.includes("CH PAGO"));
+  const totalCheques = cheques.reduce((s, e) => s + e.valor, 0);
+  const tarifas = extratoJan.filter(e => e.historico.includes("TARIFA") || e.historico.includes("TAR ") || e.historico.includes("MENSALID"));
+  const totalTarifas = tarifas.reduce((s, e) => s + e.valor, 0);
+  const filtrado = extratoJan.filter(e => {
+    if (filtro === "creditos") return e.tipo === "C";
+    if (filtro === "debitos") return e.tipo === "D";
+    if (filtro === "cheques") return e.historico.includes("CH PAGO");
+    if (filtro === "tarifas") return e.historico.includes("TARIFA") || e.historico.includes("TAR ") || e.historico.includes("MENSALID");
+    return true;
+  });
+  const saldoOficialJan = resumo.find(r => r.key === "Janeiro 2025");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total de Créditos (PIX recebidos)",
+    value: fmtBRL(totalCreditos),
+    sub: `${creditos.length} lançamentos`,
+    accent: "#2d6e63"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total de Débitos",
+    value: fmtBRL(totalDebitos),
+    sub: `${debitos.length} lançamentos`,
+    accent: "#b85c5c"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Saques / Cheques Pagos em Agência",
+    value: fmtBRL(totalCheques),
+    sub: `${cheques.length} cheques compensados`,
+    accent: "#c0794f"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Tarifas Bancárias",
+    value: fmtBRL(totalTarifas),
+    sub: `${tarifas.length} cobranças do BB`
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "panel reconciliation-banner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recon-icon"
+  }, "✓"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Conciliação batida — Janeiro/2025"), /*#__PURE__*/React.createElement("p", null, "Saldo final do extrato bancário do Banco do Brasil: ", /*#__PURE__*/React.createElement("strong", null, fmtBRL(1060.44)), ". Saldo final no Demonstrativo Financeiro (Banco): ", /*#__PURE__*/React.createElement("strong", null, fmtBRL(saldoOficialJan ? saldoOficialJan.saldo_banco_fim : 0)), ". Os valores conferem integralmente."))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Extrato de Conta Corrente — Banco do Brasil"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Ag: 0675-0 · C/C: 109.506-4 · Janeiro/2025 (amostra completa do mês)")), /*#__PURE__*/React.createElement("div", {
+    className: "filter-pills"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtro === 'todos' ? 'active' : ''}`,
+    onClick: () => setFiltro('todos')
+  }, "Todos (", extratoJan.length, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtro === 'creditos' ? 'active' : ''}`,
+    onClick: () => setFiltro('creditos')
+  }, "Créditos (", creditos.length, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtro === 'debitos' ? 'active' : ''}`,
+    onClick: () => setFiltro('debitos')
+  }, "Débitos (", debitos.length, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtro === 'cheques' ? 'active' : ''}`,
+    onClick: () => setFiltro('cheques')
+  }, "Cheques/Saques (", cheques.length, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtro === 'tarifas' ? 'active' : ''}`,
+    onClick: () => setFiltro('tarifas')
+  }, "Tarifas (", tarifas.length, ")")), /*#__PURE__*/React.createElement("div", {
+    className: "table-scroll"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "data-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Data"), /*#__PURE__*/React.createElement("th", null, "Histórico"), /*#__PURE__*/React.createElement("th", null, "Documento"), /*#__PURE__*/React.createElement("th", {
+    className: "num"
+  }, "Valor"), /*#__PURE__*/React.createElement("th", {
+    className: "num"
+  }, "Saldo"))), /*#__PURE__*/React.createElement("tbody", null, filtrado.map((e, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i,
+    className: e.historico.includes("CH PAGO") ? "row-highlight" : ""
+  }, /*#__PURE__*/React.createElement("td", null, e.data), /*#__PURE__*/React.createElement("td", null, e.historico), /*#__PURE__*/React.createElement("td", {
+    className: "mono"
+  }, e.documento), /*#__PURE__*/React.createElement("td", {
+    className: `num ${e.tipo === 'C' ? 'text-pos' : 'text-neg'}`
+  }, e.tipo === 'C' ? '+' : '−', " ", fmtBRL(e.valor)), /*#__PURE__*/React.createElement("td", {
+    className: "num"
+  }, fmtBRL(e.saldo)))))))), /*#__PURE__*/React.createElement("div", {
+    className: "panel-note"
+  }, /*#__PURE__*/React.createElement(SealBadge, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Como funciona a conciliação aqui"), /*#__PURE__*/React.createElement("p", null, "Cada lançamento do extrato bancário do BB é comparado ao total de entradas/saídas reportado no Demonstrativo Financeiro do mês. Os ", /*#__PURE__*/React.createElement("strong", null, "\"CH PAGO AG\""), " são cheques compensados/sacados em agência — geralmente referentes aos repasses semanais de literatura. Para os demais 12 meses, basta enviar o PDF na aba ", /*#__PURE__*/React.createElement("strong", null, "Importar Dados"), " para que a tabela de extrato seja preenchida automaticamente."))));
+}
+
+// ---- Tab: Despesas & Receitas ----
+function TabDespesas() {
+  const [mesSelecionado, setMesSelecionado] = useState("2025-12");
+  const despesasDoMes = despesasCat.filter(d => d.mes_ano === mesSelecionado);
+  const totalMes = despesasDoMes.reduce((s, d) => s + d.valor, 0);
+  const pieData = despesasDoMes.map(d => ({
+    name: d.categoria,
+    value: d.valor
+  }));
+
+  // Total por categoria ao longo do ano
+  const categorias = [...new Set(despesasCat.map(d => d.categoria))];
+  const evolCategoria = resumo.map(r => {
+    const mesAno = `${r.ano}-${String(r.mes_num).padStart(2, '0')}`;
+    const row = {
+      label: r.label
+    };
+    categorias.forEach(c => {
+      const item = despesasCat.find(d => d.mes_ano === mesAno && d.categoria === c);
+      row[c] = item ? item.valor : 0;
+    });
+    return row;
+  });
+  const entradasDoMes = entradasRub.filter(d => d.mes_ano === mesSelecionado).sort((a, b) => b.valor - a.valor);
+  const totalEntradasMes = entradasDoMes.reduce((s, d) => s + d.valor, 0);
+  const mesesDisponiveis = [...new Set(despesasCat.map(d => d.mes_ano))].sort();
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Despesas por Categoria — Evolução Mensal"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Composição do gasto mês a mês (área empilhada)")), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 340
+  }, /*#__PURE__*/React.createElement(AreaChart, {
+    data: evolCategoria,
+    margin: {
+      top: 10,
+      right: 20,
+      left: 0,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(CartesianGrid, {
+    strokeDasharray: "2 4",
+    stroke: "#e4ddd0",
+    vertical: false
+  }), /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: {
+      stroke: '#cbbfa8'
+    },
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tickFormatter: fmtCompact,
+    tick: {
+      fontSize: 11,
+      fill: '#6b6258'
+    },
+    axisLine: false,
+    tickLine: false,
+    width: 48
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  }), categorias.map(c => /*#__PURE__*/React.createElement(Area, {
+    key: c,
+    type: "monotone",
+    dataKey: c,
+    stackId: "1",
+    stroke: CATEGORIAS_COLOR[c],
+    fill: CATEGORIAS_COLOR[c],
+    fillOpacity: 0.85
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "legend-manual"
+  }, categorias.map(c => /*#__PURE__*/React.createElement("span", {
+    key: c,
+    className: "legend-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: CATEGORIAS_COLOR[c]
+    }
+  }), c)))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Raio-X de um Mês"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Selecione o mês para ver a composição de entradas e saídas")), /*#__PURE__*/React.createElement("div", {
+    className: "month-pills scrollable"
+  }, mesesDisponiveis.map(m => /*#__PURE__*/React.createElement("button", {
+    key: m,
+    className: `pill ${mesSelecionado === m ? 'active' : ''}`,
+    onClick: () => setMesSelecionado(m)
+  }, MES_ABREV[mesAnoToKey(m)]))), /*#__PURE__*/React.createElement("div", {
+    className: "split-panel"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title"
+  }, "Saídas — ", fmtBRL(totalMes)), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 260
+  }, /*#__PURE__*/React.createElement(PieChart, null, /*#__PURE__*/React.createElement(Pie, {
+    data: pieData,
+    dataKey: "value",
+    nameKey: "name",
+    cx: "50%",
+    cy: "50%",
+    outerRadius: 90,
+    innerRadius: 50
+  }, pieData.map((entry, i) => /*#__PURE__*/React.createElement(Cell, {
+    key: i,
+    fill: CATEGORIAS_COLOR[entry.name] || '#999'
+  }))), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(CustomTooltip, null)
+  })))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title"
+  }, "Entradas — ", fmtBRL(totalEntradasMes)), entradasDoMes.some(d => d.isCamisa) && /*#__PURE__*/React.createElement("div", {
+    className: "camisa-callout"
+  }, "👕 ", /*#__PURE__*/React.createElement("strong", null, fmtBRL(entradasDoMes.filter(d => d.isCamisa).reduce((s, d) => s + d.valor, 0))), " em venda de camisas da Convenção neste mês"), saidasCamisas.some(d => d.mes_ano === mesSelecionado) && /*#__PURE__*/React.createElement("div", {
+    className: "camisa-callout camisa-callout-saida"
+  }, "👕 ", /*#__PURE__*/React.createElement("strong", null, fmtBRL(saidasCamisas.filter(d => d.mes_ano === mesSelecionado).reduce((s, d) => s + d.valor, 0))), " em despesa com camisas (saída) neste mês — não consta nas Entradas, ver aba Saídas"), /*#__PURE__*/React.createElement("div", {
+    className: "rubrica-list"
+  }, entradasDoMes.map((d, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `rubrica-row ${d.isCamisa ? 'rubrica-camisa' : ''}`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "rubrica-name"
+  }, d.isCamisa && '👕 ', d.rubrica), /*#__PURE__*/React.createElement("span", {
+    className: "rubrica-bar-track"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `rubrica-bar ${d.isCamisa ? 'rubrica-bar-camisa' : ''}`,
+    style: {
+      width: `${d.valor / totalEntradasMes * 100}%`
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "rubrica-val"
+  }, fmtBRL(d.valor))))), /*#__PURE__*/React.createElement("div", {
+    className: "camisa-total-geral"
+  }, /*#__PURE__*/React.createElement("span", null, "👕 Vendas de camisas (jan/2025–jan/2026)"), /*#__PURE__*/React.createElement("strong", null, fmtBRL(totalCamisasGeral)), /*#__PURE__*/React.createElement("span", {
+    className: "camisa-total-sub"
+  }, mesesComVendaCamisas, " ", mesesComVendaCamisas === 1 ? 'mês com receita' : 'meses com receita', " · Confirmado contra PDFs originais (jan, mar, mai, set/2025; ausente em fev, abr, jun, ago, out, nov, dez/2025 e jan/2026)"), totalCamisasSaidas > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginTop: 6
+    }
+  }, "👕 Despesas com camisas (compra/saída)"), /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: '#b85c5c'
+    }
+  }, fmtBRL(totalCamisasSaidas)), /*#__PURE__*/React.createElement("span", {
+    className: "camisa-total-sub"
+  }, "Out/2025 — registrado nas Saídas, não nas Entradas")))))));
+}
+
+// ---- Tab: Importar Dados ----
+function TabImportar({
+  onDataChanged
+}) {
+  const [arquivos, setArquivos] = useState([]);
+  const [mesNum, setMesNum] = useState(2);
+  const [ano, setAno] = useState(2026);
+  const [form, setForm] = useState(() => makeEmptyForm());
+  const [feedback, setFeedback] = useState(null); // {type: 'ok'|'erro'|'aviso', text}
+
+  const mesAnoKey = `${ano}-${String(mesNum).padStart(2, '0')}`;
+  const jaExiste = resumo.some(r => r.ano === String(ano) && Number(r.mes_num) === mesNum && MES_NOME_PARA_NUM[r.mes] === mesNum);
+  // resumo.mes_num nem sempre é confiável (jan/26 usa "13"), então cruzamos pelo nome do mês também
+  const mesExistente = resumo.find(r => r.ano === String(ano) && MES_NOME_PARA_NUM[r.mes] === mesNum);
+  function makeEmptyForm() {
+    return {
+      saldoCaixaAnt: "",
+      saldoBancoAnt: "",
+      entradas: [{
+        rubrica: "",
+        valor: ""
+      }],
+      despesas: Object.keys(CATEGORIAS_COLOR).map(cat => ({
+        categoria: cat,
+        valor: ""
+      })),
+      saldoCaixaFim: "",
+      saldoBancoFim: ""
+    };
+  }
+  function carregarMesExistente() {
+    if (!mesExistente) return;
+    const mesAno = `${mesExistente.ano}-${String(MES_NOME_PARA_NUM[mesExistente.mes]).padStart(2, '0')}`;
+    const entradasDoMes = entradasRub.filter(d => d.mes_ano === mesAno).map(d => ({
+      rubrica: d.rubricaOriginal || d.rubrica,
+      valor: String(d.valor)
+    }));
+    const despesasDoMes = Object.keys(CATEGORIAS_COLOR).map(cat => {
+      const item = despesasCat.find(d => d.mes_ano === mesAno && d.categoria === cat);
+      return {
+        categoria: cat,
+        valor: item ? String(item.valor) : ""
+      };
+    });
+    setForm({
+      saldoCaixaAnt: String(mesExistente.saldo_ant_caixa ?? ""),
+      saldoBancoAnt: String(mesExistente.saldo_ant_banco ?? ""),
+      entradas: entradasDoMes.length ? entradasDoMes : [{
+        rubrica: "",
+        valor: ""
+      }],
+      despesas: despesasDoMes,
+      saldoCaixaFim: String(mesExistente.saldo_caixa_fim ?? ""),
+      saldoBancoFim: String(mesExistente.saldo_banco_fim ?? "")
+    });
+    setFeedback({
+      type: "aviso",
+      text: `Carregado o que já está salvo para ${MES_NUM_PARA_NOME[mesNum]}/${ano}. Editar e salvar vai SOBRESCREVER esses dados.`
+    });
+  }
+  function handleFiles(e) {
+    const files = Array.from(e.target.files || []).map(f => ({
+      name: f.name,
+      size: f.size
+    }));
+    setArquivos(prev => [...prev, ...files]);
+  }
+
+  // Anexa o(s) PDF(s) como comprovante do mês SEM tocar em nenhum valor já salvo —
+  // só grava o recibo (nome, tamanho, data) na aba Importações. Usado quando o mês
+  // já está correto no dashboard e a pessoa só quer documentar a origem.
+  function anexarComprovante() {
+    if (!mesExistente) {
+      setFeedback({
+        type: "erro",
+        text: "Este mês ainda não existe no dashboard — preencha o formulário e salve normalmente antes de anexar um comprovante."
+      });
+      return;
+    }
+    if (arquivos.length === 0) {
+      setFeedback({
+        type: "erro",
+        text: "Anexe pelo menos um PDF antes de registrar o comprovante."
+      });
+      return;
+    }
+    const novoRaw = JSON.parse(JSON.stringify(CURRENT_RAW));
+    const mesAno = `${mesExistente.ano}-${String(MES_NOME_PARA_NUM[mesExistente.mes]).padStart(2, '0')}`;
+    const qtdEntradas = entradasRub.filter(d => d.mes_ano === mesAno).length;
+    const qtdDespesas = despesasCat.filter(d => d.mes_ano === mesAno).length;
+    registrarImportacao(novoRaw, {
+      mesAno,
+      arquivos,
+      totalEntradas: qtdEntradas,
+      totalDespesas: qtdDespesas
+    });
+    CURRENT_RAW = novoRaw;
+    persistRaw(CURRENT_RAW);
+    deriveAll(CURRENT_RAW);
+    setFeedback({
+      type: "ok",
+      text: `Comprovante registrado para ${MES_NUM_PARA_NOME[mesNum]}/${ano} — nenhum valor foi alterado, apenas o(s) ${arquivos.length} PDF(s) ficaram documentados na aba Importações.`
+    });
+    setArquivos([]);
+    if (onDataChanged) onDataChanged();
+  }
+  function updateEntrada(i, field, value) {
+    setForm(f => {
+      const entradas = [...f.entradas];
+      entradas[i] = {
+        ...entradas[i],
+        [field]: value
+      };
+      return {
+        ...f,
+        entradas
+      };
+    });
+  }
+  function addEntradaRow() {
+    setForm(f => ({
+      ...f,
+      entradas: [...f.entradas, {
+        rubrica: "",
+        valor: ""
+      }]
+    }));
+  }
+  function removeEntradaRow(i) {
+    setForm(f => ({
+      ...f,
+      entradas: f.entradas.filter((_, idx) => idx !== i)
+    }));
+  }
+  function updateDespesa(i, value) {
+    setForm(f => {
+      const despesas = [...f.despesas];
+      despesas[i] = {
+        ...despesas[i],
+        valor: value
+      };
+      return {
+        ...f,
+        despesas
+      };
+    });
+  }
+  function validar() {
+    const entradasValidas = form.entradas.filter(e => e.rubrica.trim() && e.valor !== "");
+    if (entradasValidas.length === 0) {
+      return "Adicione pelo menos uma rubrica de entrada com valor antes de salvar.";
+    }
+    for (const e of form.entradas) {
+      if (e.rubrica.trim() && (e.valor === "" || isNaN(num(e.valor)))) {
+        return `A rubrica "${e.rubrica}" precisa de um valor numérico válido.`;
+      }
+    }
+    return null;
+  }
+  function salvar() {
+    const erro = validar();
+    if (erro) {
+      setFeedback({
+        type: "erro",
+        text: erro
+      });
+      return;
+    }
+    const mesNome = MES_NUM_PARA_NOME[mesNum];
+    const novoRaw = JSON.parse(JSON.stringify(CURRENT_RAW)); // cópia profunda
+
+    // 1) resumoMensal: insere ou substitui o mês
+    const idxResumo = novoRaw.resumoMensal.findIndex(r => r.ano === String(ano) && MES_NOME_PARA_NUM[r.mes] === mesNum);
+    const entradasValidas = form.entradas.filter(e => e.rubrica.trim() && e.valor !== "");
+    const totalEntradasPeriodo = entradasValidas.reduce((s, e) => s + num(e.valor), 0);
+    const despesasValidas = form.despesas.filter(d => d.valor !== "" && !isNaN(num(d.valor)));
+    const totalSaidas = despesasValidas.reduce((s, d) => s + num(d.valor), 0);
+    const saldoCaixaAnt = num(form.saldoCaixaAnt);
+    const saldoBancoAnt = num(form.saldoBancoAnt);
+    const novoResumo = {
+      mes: mesNome,
+      ano: String(ano),
+      mes_num: String(mesNum),
+      saldo_ant_caixa: String(saldoCaixaAnt),
+      saldo_ant_banco: String(saldoBancoAnt),
+      saldo_ant_total: String(saldoCaixaAnt + saldoBancoAnt),
+      total_entradas_periodo: String(totalEntradasPeriodo),
+      total_entradas_geral: String(totalEntradasPeriodo + saldoCaixaAnt + saldoBancoAnt),
+      total_saidas: String(totalSaidas),
+      saldo_caixa_fim: form.saldoCaixaFim || "0",
+      saldo_banco_fim: form.saldoBancoFim || "0",
+      saldo_total_fim: String(num(form.saldoCaixaFim) + num(form.saldoBancoFim)),
+      reserva_prudente_ant: "",
+      reserva_prudente_entradas: "",
+      reserva_prudente_saldo: "",
+      convencao2027_saldo_ant: "",
+      convencao2027_movimentacao: "",
+      convencao2027_saldo_atual: ""
+    };
+    if (idxResumo >= 0) novoRaw.resumoMensal[idxResumo] = novoResumo;else novoRaw.resumoMensal.push(novoResumo);
+
+    // 2) entradasRubrica: remove entradas antigas desse mês_ano, insere as novas
+    novoRaw.entradasRubrica = novoRaw.entradasRubrica.filter(d => d.mes_ano !== mesAnoKey);
+    entradasValidas.forEach(e => {
+      novoRaw.entradasRubrica.push({
+        mes_ano: mesAnoKey,
+        rubrica: e.rubrica.trim(),
+        valor: String(num(e.valor))
+      });
+    });
+
+    // 3) despesasCategoria: remove despesas antigas desse mês_ano, insere as novas
+    novoRaw.despesasCategoria = novoRaw.despesasCategoria.filter(d => d.mes_ano !== mesAnoKey);
+    despesasValidas.forEach(d => {
+      novoRaw.despesasCategoria.push({
+        mes_ano: mesAnoKey,
+        categoria: d.categoria,
+        valor: String(num(d.valor))
+      });
+    });
+
+    // 4) importacoes: registra o(s) PDF(s) anexado(s) como referência para este mês
+    //    (somente metadados — nome, tamanho, data — nunca o conteúdo do arquivo)
+    if (arquivos.length > 0) {
+      registrarImportacao(novoRaw, {
+        mesAno: mesAnoKey,
+        arquivos,
+        totalEntradas: entradasValidas.length,
+        totalDespesas: despesasValidas.length
+      });
+    }
+    CURRENT_RAW = novoRaw;
+    persistRaw(CURRENT_RAW);
+    deriveAll(CURRENT_RAW);
+    setFeedback({
+      type: "ok",
+      text: `${mesNome}/${ano} salvo com sucesso. ${entradasValidas.length} rubrica(s) de entrada e ${despesasValidas.length} categoria(s) de despesa registradas.${arquivos.length ? ` ${arquivos.length} PDF(s) registrado(s) na aba Importações.` : ''}`
+    });
+    setForm(makeEmptyForm());
+    setArquivos([]);
+    if (onDataChanged) onDataChanged();
+  }
+  const statusPorMes = MESES_ORDEM.map(key => {
+    const r = resumo.find(x => x.key === key);
+    const mesAno = r ? `${r.ano}-${String(MES_NOME_PARA_NUM[r.mes]).padStart(2, '0')}` : null;
+    const temNominal = mesAno ? conv2027Nominal.some(n => n.mes_ano === mesAno) : false;
+    const mesesComExtrato = ["Janeiro 2025", "Junho 2025", "Julho 2025", "Novembro 2025"];
+    return {
+      key,
+      label: MES_ABREV[key],
+      temResumo: !!r,
+      temNominal,
+      temExtrato: mesesComExtrato.includes(key)
+    };
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel upload-panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Importar Novo Demonstrativo"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Anexe o PDF como referência e digite os valores abaixo — o navegador não lê o PDF sozinho, então a conferência manual evita erro de transcrição")), /*#__PURE__*/React.createElement("label", {
+    className: "dropzone"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    accept: "application/pdf",
+    multiple: true,
+    onChange: handleFiles,
+    style: {
+      display: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "dropzone-icon"
+  }, "⬆"), /*#__PURE__*/React.createElement("div", {
+    className: "dropzone-text"
+  }, "Clique para anexar o PDF do Demonstrativo Financeiro (apenas como referência visual)"), /*#__PURE__*/React.createElement("div", {
+    className: "dropzone-sub"
+  }, "O arquivo fica listado abaixo para você conferir os valores enquanto preenche o formulário — ele não é processado automaticamente")), arquivos.length > 0 && /*#__PURE__*/React.createElement("ul", {
+    className: "file-list"
+  }, arquivos.map((f, i) => /*#__PURE__*/React.createElement("li", {
+    key: i
+  }, /*#__PURE__*/React.createElement("span", null, f.name), /*#__PURE__*/React.createElement("span", {
+    className: "file-status"
+  }, "anexado para conferência")))), arquivos.length > 0 && mesExistente && /*#__PURE__*/React.createElement("div", {
+    className: "anexar-comprovante-box"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, MES_NUM_PARA_NOME[mesNum], "/", ano), " já está salvo no dashboard. Se os valores já estão certos e você só quer documentar a origem, anexe sem mexer em nada abaixo:"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: anexarComprovante
+  }, "📎 Apenas Anexar Comprovante (não altera nenhum valor)"))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Dados do Mês"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Selecione o mês/ano e preencha os valores do Demonstrativo")), /*#__PURE__*/React.createElement("div", {
+    className: "import-form-row"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Mês"), /*#__PURE__*/React.createElement("select", {
+    value: mesNum,
+    onChange: e => setMesNum(Number(e.target.value))
+  }, Object.entries(MES_NUM_PARA_NOME).map(([n, nome]) => /*#__PURE__*/React.createElement("option", {
+    key: n,
+    value: n
+  }, nome)))), /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Ano"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    value: ano,
+    onChange: e => setAno(Number(e.target.value))
+  }))), jaExiste && /*#__PURE__*/React.createElement("div", {
+    className: "import-duplicate-warning"
+  }, "⚠️ ", /*#__PURE__*/React.createElement("strong", null, MES_NUM_PARA_NOME[mesNum], "/", ano), " já existe no dashboard. Salvar vai ", /*#__PURE__*/React.createElement("strong", null, "sobrescrever"), " os dados atuais desse mês.", /*#__PURE__*/React.createElement("button", {
+    className: "btn-link",
+    onClick: carregarMesExistente
+  }, "Carregar dados atuais para editar")), !jaExiste && /*#__PURE__*/React.createElement("div", {
+    className: "import-new-notice"
+  }, "✓ ", MES_NUM_PARA_NOME[mesNum], "/", ano, " ainda não está no dashboard — será adicionado como novo mês."), /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title",
+    style: {
+      textAlign: 'left',
+      marginTop: 18
+    }
+  }, "Saldo Anterior"), /*#__PURE__*/React.createElement("div", {
+    className: "import-form-row"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Saldo Caixa (anterior)"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    value: form.saldoCaixaAnt,
+    onChange: e => setForm(f => ({
+      ...f,
+      saldoCaixaAnt: e.target.value
+    })),
+    placeholder: "0,00"
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Saldo Banco (anterior)"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    value: form.saldoBancoAnt,
+    onChange: e => setForm(f => ({
+      ...f,
+      saldoBancoAnt: e.target.value
+    })),
+    placeholder: "0,00"
+  }))), /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title",
+    style: {
+      textAlign: 'left',
+      marginTop: 18
+    }
+  }, "Entradas do Período (rubricas)"), /*#__PURE__*/React.createElement("p", {
+    className: "panel-sub",
+    style: {
+      marginBottom: 10
+    }
+  }, "Inclua a linha de camisas se houver — qualquer rubrica contendo \"camisa\" é automaticamente destacada no painel"), form.entradas.map((e, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "import-entrada-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Nome da rubrica (ex: Camisas da Convenção - Vendas)",
+    value: e.rubrica,
+    onChange: ev => updateEntrada(i, 'rubrica', ev.target.value),
+    className: "import-rubrica-input"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    placeholder: "Valor",
+    value: e.valor,
+    onChange: ev => updateEntrada(i, 'valor', ev.target.value),
+    className: "import-valor-input"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-icon-remove",
+    onClick: () => removeEntradaRow(i),
+    title: "Remover linha"
+  }, "✕"))), /*#__PURE__*/React.createElement("button", {
+    className: "btn-secondary",
+    onClick: addEntradaRow
+  }, "+ Adicionar rubrica de entrada"), /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title",
+    style: {
+      textAlign: 'left',
+      marginTop: 18
+    }
+  }, "Despesas por Categoria"), /*#__PURE__*/React.createElement("div", {
+    className: "import-despesas-grid"
+  }, form.despesas.map((d, i) => /*#__PURE__*/React.createElement("label", {
+    key: d.categoria,
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, d.categoria), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    value: d.valor,
+    onChange: e => updateDespesa(i, e.target.value),
+    placeholder: "0,00"
+  })))), /*#__PURE__*/React.createElement("h4", {
+    className: "mini-title",
+    style: {
+      textAlign: 'left',
+      marginTop: 18
+    }
+  }, "Saldo para o Mês Seguinte"), /*#__PURE__*/React.createElement("div", {
+    className: "import-form-row"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Saldo Caixa (fim do mês)"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    value: form.saldoCaixaFim,
+    onChange: e => setForm(f => ({
+      ...f,
+      saldoCaixaFim: e.target.value
+    })),
+    placeholder: "0,00"
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "import-field"
+  }, /*#__PURE__*/React.createElement("span", null, "Saldo Banco (fim do mês)"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.01",
+    value: form.saldoBancoFim,
+    onChange: e => setForm(f => ({
+      ...f,
+      saldoBancoFim: e.target.value
+    })),
+    placeholder: "0,00"
+  }))), feedback && /*#__PURE__*/React.createElement("div", {
+    className: `import-feedback import-feedback-${feedback.type}`
+  }, feedback.text), /*#__PURE__*/React.createElement("div", {
+    className: "import-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-primary",
+    onClick: salvar
+  }, jaExiste ? "Sobrescrever Mês Existente" : "Salvar Novo Mês"))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Status de Cobertura dos Dados"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "O que já está completo em cada mês")), /*#__PURE__*/React.createElement("table", {
+    className: "data-table status-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Mês"), /*#__PURE__*/React.createElement("th", null, "Resumo Mensal"), /*#__PURE__*/React.createElement("th", null, "Detalhamento Nominal"), /*#__PURE__*/React.createElement("th", null, "Extrato Bancário"))), /*#__PURE__*/React.createElement("tbody", null, statusPorMes.map(s => /*#__PURE__*/React.createElement("tr", {
+    key: s.key
+  }, /*#__PURE__*/React.createElement("td", null, s.label), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(StatusDot, {
+    ok: s.temResumo
+  })), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(StatusDot, {
+    ok: s.temNominal,
+    label: s.temNominal ? "completo" : "importar"
+  })), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(StatusDot, {
+    ok: s.temExtrato,
+    label: s.temExtrato ? "completo" : "importar"
+  }))))))));
+}
+
+// ---- Tab: Alertas e Inconsistências ----
+function TabAlertas() {
+  const [filtroSeveridade, setFiltroSeveridade] = useState("todas");
+  const severidadeOrdem = {
+    alta: 0,
+    media: 1,
+    baixa: 2
+  };
+  const todasOrdenadas = [...inconsistencias].sort((a, b) => (severidadeOrdem[a.severidade] ?? 9) - (severidadeOrdem[b.severidade] ?? 9));
+  const filtradas = filtroSeveridade === "todas" ? todasOrdenadas : todasOrdenadas.filter(i => i.severidade === filtroSeveridade);
+  const totalValor = inconsistencias.reduce((s, i) => s + i.valor_envolvido, 0);
+  const porSeveridade = {
+    alta: 0,
+    media: 0,
+    baixa: 0
+  };
+  inconsistencias.forEach(i => {
+    porSeveridade[i.severidade] = (porSeveridade[i.severidade] || 0) + 1;
+  });
+  const mesesAnalisados = [...new Set(inconsistencias.map(i => i.mes_ano))];
+  const totalMesesNoSistema = MESES_ORDEM.length;
+  const coberturaPct = Math.round(mesesAnalisados.length / totalMesesNoSistema * 100);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total de Alertas Abertos",
+    value: String(inconsistencias.length),
+    sub: inconsistencias.length === 0 ? "Nenhuma divergência encontrada" : "Aguardando esclarecimento do Conselho Fiscal",
+    accent: inconsistencias.length > 0 ? "#b85c5c" : "#2d6e63"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Valor Total Envolvido",
+    value: fmtBRL(totalValor),
+    sub: "Soma de todos os alertas, todos os meses",
+    accent: "#c0794f"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Severidade Alta",
+    value: String(porSeveridade.alta || 0),
+    sub: "Requer ação prioritária",
+    accent: "#b85c5c"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Cobertura da Auditoria",
+    value: `${coberturaPct}%`,
+    sub: `${mesesAnalisados.length} de ${totalMesesNoSistema} meses verificados em detalhe`
+  })), inconsistencias.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "panel reconciliation-banner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recon-icon"
+  }, "✓"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Nenhuma inconsistência registrada"), /*#__PURE__*/React.createElement("p", null, "Os meses já auditados em detalhe não apresentaram divergências entre extrato bancário e demonstrativo."))) : /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Lista de Alertas"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Divergências encontradas ao cruzar extratos bancários com os demonstrativos mensais")), /*#__PURE__*/React.createElement("div", {
+    className: "filter-pills"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtroSeveridade === 'todas' ? 'active' : ''}`,
+    onClick: () => setFiltroSeveridade('todas')
+  }, "Todas (", inconsistencias.length, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtroSeveridade === 'alta' ? 'active' : ''}`,
+    onClick: () => setFiltroSeveridade('alta')
+  }, "Alta (", porSeveridade.alta || 0, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtroSeveridade === 'media' ? 'active' : ''}`,
+    onClick: () => setFiltroSeveridade('media')
+  }, "Média (", porSeveridade.media || 0, ")"), /*#__PURE__*/React.createElement("button", {
+    className: `pill ${filtroSeveridade === 'baixa' ? 'active' : ''}`,
+    onClick: () => setFiltroSeveridade('baixa')
+  }, "Baixa (", porSeveridade.baixa || 0, ")")), filtradas.map((item, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "alert-list-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `sev-badge sev-${item.severidade}`
+  }, item.severidade), /*#__PURE__*/React.createElement("div", {
+    className: "alert-list-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "alert-list-head"
+  }, /*#__PURE__*/React.createElement("h4", null, item.titulo), /*#__PURE__*/React.createElement("span", {
+    className: "alert-value"
+  }, fmtBRL(item.valor_envolvido))), /*#__PURE__*/React.createElement("p", null, item.descricao), /*#__PURE__*/React.createElement("div", {
+    className: "alert-meta"
+  }, mesAnoToKey(item.mes_ano), " · páginas ", item.paginas_origem))))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Cobertura da Auditoria por Mês"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Quais meses já tiveram extrato bancário cruzado linha a linha com o demonstrativo")), /*#__PURE__*/React.createElement("div", {
+    className: "month-pills scrollable"
+  }, MESES_ORDEM.map(key => {
+    const r = resumo.find(x => x.key === key);
+    const mesAno = r ? `${r.ano}-${String(r.mes_num).padStart(2, '0')}` : null;
+    const auditado = mesesAnalisados.includes(mesAno);
+    const temAlerta = inconsistencias.some(i => i.mes_ano === mesAno);
+    return /*#__PURE__*/React.createElement("span", {
+      key: key,
+      className: `pill audit-pill ${auditado ? temAlerta ? 'audit-alert' : 'audit-ok' : 'audit-pending'}`
+    }, MES_ABREV[key]);
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "panel-footnote"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "legend-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: '#2d6e63'
+    }
+  }), "Auditado, sem alertas"), " · ", /*#__PURE__*/React.createElement("span", {
+    className: "legend-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: '#c0794f'
+    }
+  }), "Auditado, com alerta"), " · ", /*#__PURE__*/React.createElement("span", {
+    className: "legend-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot",
+    style: {
+      background: '#cbbfa8'
+    }
+  }), "Ainda não auditado"))), /*#__PURE__*/React.createElement("div", {
+    className: "panel-note"
+  }, /*#__PURE__*/React.createElement(SealBadge, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Como esta auditoria funciona"), /*#__PURE__*/React.createElement("p", null, "Para cada mês, comparamos o extrato bancário (conta corrente e poupanças) linha a linha com os totais e listas nominais do Demonstrativo Financeiro correspondente. Quando um valor creditado não tem contrapartida identificável no relatório de arrecadação, é registrado aqui como alerta para o Conselho Fiscal esclarecer. Envie os PDFs restantes na aba ", /*#__PURE__*/React.createElement("strong", null, "Importar Dados"), " para ampliar a cobertura."))));
+}
+function StatusDot({
+  ok,
+  label
+}) {
+  return /*#__PURE__*/React.createElement("span", {
+    className: `status-dot ${ok ? 'ok' : 'pending'}`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dot"
+  }), label || (ok ? 'completo' : '—'));
+}
+
+// ---- Tab: Importações (capa de documentos de origem) ----
+function TabImportacoes() {
+  const totalMesesComDocumento = importacoes.length;
+  const totalMesesNoSistema = MESES_ORDEM.length;
+  const coberturaPct = totalMesesNoSistema ? Math.round(totalMesesComDocumento / totalMesesNoSistema * 100) : 0;
+
+  // Mapa rápido mes_ano -> recibo de importação, para casar com a ordem cronológica de MESES_ORDEM
+  const porMesAno = {};
+  importacoes.forEach(imp => {
+    porMesAno[imp.mes_ano] = imp;
+  });
+  const cards = MESES_ORDEM.map(key => {
+    const r = resumo.find(x => x.key === key);
+    if (!r) return null;
+    const mesAno = `${r.ano}-${String(MES_NOME_PARA_NUM[r.mes]).padStart(2, '0')}`;
+    const recibo = porMesAno[mesAno];
+    return {
+      key,
+      label: MES_ABREV[key] || key,
+      mesAno,
+      recibo
+    };
+  }).filter(Boolean);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tab-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid"
+  }, /*#__PURE__*/React.createElement(StatCard, {
+    label: "Meses com Documento de Origem",
+    value: `${totalMesesComDocumento} / ${totalMesesNoSistema}`,
+    sub: `${coberturaPct}% dos meses no dashboard têm PDF registrado como referência`,
+    accent: coberturaPct === 100 ? "#2d6e63" : "#c0794f"
+  }), /*#__PURE__*/React.createElement(StatCard, {
+    label: "Total de Arquivos Registrados",
+    value: String(importacoes.reduce((s, i) => s + (i.arquivos?.length || 0), 0)),
+    sub: "Soma de todos os PDFs anexados em todas as importações"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "panel-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Importações: Demonstrativos por Mês"), /*#__PURE__*/React.createElement("span", {
+    className: "panel-sub"
+  }, "Capa dos documentos de origem usados para preencher cada mês — clique em \"Importar Dados\" para anexar o que estiver faltando")), cards.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "panel-footnote"
+  }, "Nenhum mês cadastrado ainda.") : /*#__PURE__*/React.createElement("div", {
+    className: "importacoes-grid"
+  }, cards.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.key,
+    className: `importacao-card ${c.recibo ? 'tem-documento' : 'sem-documento'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "importacao-card-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "importacao-card-title"
+  }, "Demonstrativo ", c.label), c.recibo ? /*#__PURE__*/React.createElement("span", {
+    className: "importacao-badge importacao-badge-ok"
+  }, "✓ documentado") : /*#__PURE__*/React.createElement("span", {
+    className: "importacao-badge importacao-badge-pending"
+  }, "sem PDF")), c.recibo ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("ul", {
+    className: "importacao-file-list"
+  }, (c.recibo.arquivos || []).map((f, i) => /*#__PURE__*/React.createElement("li", {
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "importacao-file-name"
+  }, "📄 ", f.nome), /*#__PURE__*/React.createElement("span", {
+    className: "importacao-file-size"
+  }, fmtFileSize(f.tamanho))))), /*#__PURE__*/React.createElement("div", {
+    className: "importacao-card-meta"
+  }, /*#__PURE__*/React.createElement("span", null, "Importado em ", fmtDataHora(c.recibo.importado_em)), /*#__PURE__*/React.createElement("span", null, c.recibo.qtd_rubricas_entrada, " entrada(s) · ", c.recibo.qtd_categorias_despesa, " categoria(s) de despesa"))) : /*#__PURE__*/React.createElement("p", {
+    className: "importacao-card-empty"
+  }, "Nenhum PDF anexado para este mês ainda. Os dados podem ter sido digitados sem referência documental, ou importados antes desta funcionalidade existir."))))), /*#__PURE__*/React.createElement("div", {
+    className: "panel-note"
+  }, /*#__PURE__*/React.createElement(SealBadge, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", null, "Sobre esta aba"), /*#__PURE__*/React.createElement("p", null, "Esta aba guarda apenas os ", /*#__PURE__*/React.createElement("strong", null, "metadados"), " (nome do arquivo, tamanho, data) dos PDFs anexados ao preencher cada mês na aba ", /*#__PURE__*/React.createElement("strong", null, "Importar Dados"), " — não o conteúdo do PDF em si, que costuma ser grande demais para o armazenamento do navegador. Ela serve como recibo de auditoria: comprova qual documento originou os números de cada mês, mesmo que o arquivo precise ser guardado separadamente (pasta local, Google Drive, etc)."))));
+}
+
+// ---- Main App ----
+const TABS = [{
+  id: "geral",
+  label: "Visão Geral"
+}, {
+  id: "convencao",
+  label: "Convenção 2027"
+}, {
+  id: "conciliacao",
+  label: "Conciliação Bancária"
+}, {
+  id: "despesas",
+  label: "Despesas & Receitas"
+}, {
+  id: "alertas",
+  label: "Alertas e Inconsistências"
+}, {
+  id: "importar",
+  label: "Importar Dados"
+}, {
+  id: "importacoes",
+  label: "Importações"
+}];
+function App() {
+  const [tab, setTab] = useState("geral");
+  const [dataVersion, setDataVersion] = useState(0);
+  const [restoreFeedback, setRestoreFeedback] = useState(null);
+  const fileInputRef = React.useRef(null);
+  function handleDataChanged() {
+    setDataVersion(v => v + 1);
+  }
+  function handleBackup() {
+    const dataStr = JSON.stringify(CURRENT_RAW, null, 2);
+    const blob = new Blob([dataStr], {
+      type: "application/json"
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const hoje = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `backup_dashboard_aa_area27_${hoje}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function handleRestoreClick() {
+    if (fileInputRef.current) fileInputRef.current.click();
+  }
+  function handleRestoreFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+      try {
+        const parsed = JSON.parse(evt.target.result);
+        if (!parsed || !Array.isArray(parsed.resumoMensal)) {
+          setRestoreFeedback({
+            type: "erro",
+            text: "Arquivo inválido: não parece ser um backup deste dashboard."
+          });
+          return;
+        }
+        CURRENT_RAW = parsed;
+        persistRaw(CURRENT_RAW);
+        deriveAll(CURRENT_RAW);
+        setDataVersion(v => v + 1);
+        setRestoreFeedback({
+          type: "ok",
+          text: `Backup restaurado com sucesso: ${parsed.resumoMensal.length} mês(es) carregado(s).`
+        });
+      } catch (err) {
+        setRestoreFeedback({
+          type: "erro",
+          text: "Não foi possível ler o arquivo. Confirme que é um .json de backup gerado por este dashboard."
+        });
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+  const periodoLabel = MESES_ORDEM.length ? `${MES_ABREV[MESES_ORDEM[0]]} — ${MES_ABREV[MESES_ORDEM[MESES_ORDEM.length - 1]]}` : "—";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "app",
+    key: dataVersion
+  }, /*#__PURE__*/React.createElement("style", null, CSS), /*#__PURE__*/React.createElement("header", {
+    className: "app-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header-inner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "brand"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "brand-mark"
+  }, "AA"), /*#__PURE__*/React.createElement("div", {
+    className: "brand-text"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "brand-title"
+  }, "Controle Financeiro"), /*#__PURE__*/React.createElement("div", {
+    className: "brand-sub"
+  }, "Escritório de Serviços Locais · Área 27 — Ceará"))), /*#__PURE__*/React.createElement("div", {
+    className: "header-right"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header-period"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "period-label"
+  }, "Período"), /*#__PURE__*/React.createElement("span", {
+    className: "period-value"
+  }, periodoLabel)), /*#__PURE__*/React.createElement("div", {
+    className: "header-backup-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-header-action",
+    onClick: handleBackup,
+    title: "Baixar todos os dados como arquivo .json"
+  }, "⬇ Backup"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-header-action",
+    onClick: handleRestoreClick,
+    title: "Carregar dados de um arquivo .json de backup"
+  }, "⬆ Restaurar"), /*#__PURE__*/React.createElement("input", {
+    ref: fileInputRef,
+    type: "file",
+    accept: "application/json",
+    style: {
+      display: 'none'
+    },
+    onChange: handleRestoreFile
+  })))), restoreFeedback && /*#__PURE__*/React.createElement("div", {
+    className: `restore-banner restore-banner-${restoreFeedback.type}`
+  }, restoreFeedback.text, /*#__PURE__*/React.createElement("button", {
+    className: "restore-banner-close",
+    onClick: () => setRestoreFeedback(null)
+  }, "✕")), /*#__PURE__*/React.createElement("nav", {
+    className: "tab-nav"
+  }, TABS.map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    className: `tab-btn ${tab === t.id ? 'active' : ''}`,
+    onClick: () => setTab(t.id)
+  }, t.label)))), /*#__PURE__*/React.createElement("main", {
+    className: "app-main"
+  }, tab === "geral" && /*#__PURE__*/React.createElement(TabVisaoGeral, null), tab === "convencao" && /*#__PURE__*/React.createElement(TabConvencao2027, null), tab === "conciliacao" && /*#__PURE__*/React.createElement(TabConciliacao, null), tab === "despesas" && /*#__PURE__*/React.createElement(TabDespesas, null), tab === "alertas" && /*#__PURE__*/React.createElement(TabAlertas, null), tab === "importar" && /*#__PURE__*/React.createElement(TabImportar, {
+    onDataChanged: handleDataChanged
+  }), tab === "importacoes" && /*#__PURE__*/React.createElement(TabImportacoes, null)), /*#__PURE__*/React.createElement("footer", {
+    className: "app-footer"
+  }, "Dados extraídos dos Demonstrativos Financeiros mensais aprovados pelo Conselho Fiscal do ESL/Área 27‑CE. Uso interno para acompanhamento e transparência."));
+}
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --ink: #2a2420;
+  --paper: #f7f3ea;
+  --paper-raised: #ffffff;
+  --line: #e4ddd0;
+  --line-strong: #cbbfa8;
+  --petrol: #1e4d5c;
+  --petrol-dark: #143540;
+  --gold: #8a6d3b;
+  --gold-light: #c9a456;
+  --green: #2d6e63;
+  --terracotta: #c0794f;
+  --red: #b85c5c;
+  --muted: #6b6258;
+}
+
+* { box-sizing: border-box; }
+
+.app {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  width: 100%;
+}
+
+.app-header {
+  background: var(--petrol-dark);
+  color: #f2ece0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 14px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.brand-mark {
+  width: 42px; height: 42px;
+  border: 1.5px solid var(--gold-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Source Serif 4', serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  color: var(--gold-light);
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: #b8c4c8;
+  margin-top: 1px;
+}
+
+.header-period {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.period-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8fa3a9;
+}
+
+.period-value {
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  color: var(--gold-light);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-backup-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-header-action {
+  background: transparent;
+  border: 1px solid #3d4f54;
+  color: #c9d4d7;
+  font-size: 11.5px;
+  padding: 6px 11px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.btn-header-action:hover { background: #2a3a3e; border-color: var(--gold-light); color: var(--gold-light); }
+
+.restore-banner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 24px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.restore-banner-ok { background: #1f3a30; color: #a8d8bd; }
+.restore-banner-erro { background: #3a1f1f; color: #d8a8a8; }
+.restore-banner-close {
+  background: none; border: none; color: inherit; cursor: pointer; font-size: 13px; opacity: 0.7;
+}
+.restore-banner-close:hover { opacity: 1; }
+
+.tab-nav {
+  display: flex;
+  gap: 2px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #c3cdd0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 11px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover { color: #f2ece0; }
+
+.tab-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold-light);
+}
+
+.app-main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.tab-content { display: flex; flex-direction: column; gap: 22px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stats-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid-2 { grid-template-columns: 1fr; }
+}
+
+.stat-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px 18px;
+  position: relative;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--gold-light);
+  border-radius: 6px 0 0 6px;
+}
+
+.stat-label {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-family: 'Source Serif 4', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--petrol);
+  line-height: 1.1;
+}
+
+.stat-sub {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.stat-trend {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.stat-trend.pos { color: var(--green); }
+.stat-trend.neg { color: var(--red); }
+
+.panel {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 22px 22px;
+}
+
+.panel-header { margin-bottom: 14px; }
+
+.panel-header h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 3px;
+  color: var(--ink);
+}
+
+.panel-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.panel-footnote {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  line-height: 1.5;
+}
+
+.panel-note {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: #fbf8f1;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  padding: 18px 20px;
+}
+
+.panel-note h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 14.5px;
+  margin: 0 0 6px;
+  color: var(--petrol);
+}
+
+.panel-note p {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.seal { color: var(--gold); flex-shrink: 0; opacity: 0.85; }
+
+.chart-tooltip {
+  background: var(--petrol-dark);
+  color: #f2ece0;
+  border-radius: 5px;
+  padding: 10px 12px;
+  font-size: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.chart-tooltip-label { font-weight: 600; margin-bottom: 5px; color: var(--gold-light); }
+.chart-tooltip-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+.chart-tooltip-row .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.chart-tooltip-row .name { color: #c3cdd0; }
+.chart-tooltip-row .val { margin-left: auto; font-weight: 600; }
+
+.legend-manual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.legend-chip { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); }
+.legend-chip .dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+.reconciliation-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #eef5f1;
+  border-color: #bcd9c9;
+}
+.recon-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.reconciliation-banner h4 { font-family: 'Source Serif 4', serif; font-size: 14.5px; margin: 0 0 3px; color: var(--green); }
+.reconciliation-banner p { font-size: 12.5px; color: var(--muted); margin: 0; }
+
+.alert-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: #fdf2ee;
+  border: 1px solid #e8b8a4;
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.alert-card + .alert-card { margin-top: 10px; }
+.alert-icon {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.alert-body { flex: 1; }
+.alert-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.alert-head h4 { font-family: 'Source Serif 4', serif; font-size: 14.5px; margin: 0; color: #8a3f23; }
+.alert-value { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 700; color: var(--terracotta); white-space: nowrap; }
+.alert-body p { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+.alert-meta { font-size: 11px; color: var(--muted); font-style: italic; }
+
+.tag-direct {
+  background: #fdf2ee;
+  color: #8a3f23;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.tag-yield {
+  background: #eef5f1;
+  color: var(--green);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.alert-list-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.alert-list-item:last-child { border-bottom: none; padding-bottom: 0; }
+.alert-list-item:first-child { padding-top: 0; }
+
+.sev-badge {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-top: 1px;
+}
+.sev-alta { background: #fdf2ee; color: #8a3f23; }
+.sev-media { background: #fdf6e3; color: #8a6d1f; }
+.sev-baixa { background: #eef5f1; color: var(--green); }
+
+.alert-list-body { flex: 1; }
+.alert-list-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 5px; }
+.alert-list-head h4 { font-family: 'Source Serif 4', serif; font-size: 14px; margin: 0; color: var(--ink); }
+.alert-list-body p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0 0 6px; }
+.alert-value { font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 700; color: var(--terracotta); white-space: nowrap; }
+
+.audit-pill { cursor: default; }
+.audit-pill.audit-ok { background: #eef5f1; border-color: #bcd9c9; color: var(--green); }
+.audit-pill.audit-alert { background: #fdf2ee; border-color: #e8b8a4; color: #8a3f23; }
+.audit-pill.audit-pending { background: transparent; border-style: dashed; color: var(--muted); }
+
+.audit-detail-list {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.audit-detail-row {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.audit-detail-row strong { color: var(--ink); }
+
+.status-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.status-pill.status-resolved { background: #eef5f1; color: var(--green); }
+.status-pill.status-ok { background: #e8f0f5; color: var(--petrol); }
+.status-pill.status-warn { background: #fdf6e3; color: #8a6d1f; }
+.status-pill.status-danger { background: #fdf2ee; color: #8a3f23; }
+
+.filter-pills, .month-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+.month-pills.scrollable { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+
+.pill {
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 13px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.pill:hover { border-color: var(--petrol); }
+.pill.active { background: var(--petrol); border-color: var(--petrol); color: white; }
+.pill.disabled { opacity: 0.55; cursor: default; background: transparent; border-style: dashed; }
+
+.table-scroll { max-height: 520px; overflow-y: auto; border: 1px solid var(--line); border-radius: 5px; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.data-table thead th {
+  position: sticky; top: 0;
+  background: var(--petrol);
+  color: #f2ece0;
+  text-align: left;
+  padding: 9px 12px;
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  z-index: 1;
+}
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.data-table tbody tr:hover { background: #faf6ee; }
+.data-table tfoot td {
+  font-weight: 700;
+  background: #f1ece1;
+  border-top: 2px solid var(--line-strong);
+}
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table .mono { font-family: 'Source Serif 4', serif; font-size: 11.5px; color: var(--muted); }
+.data-table .text-pos { color: var(--green); font-weight: 600; }
+.data-table .text-neg { color: var(--red); font-weight: 600; }
+.row-highlight { background: #fdf3ea; }
+.row-highlight:hover { background: #fbe9d8 !important; }
+
+.status-table td { vertical-align: middle; }
+
+.status-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.status-dot .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }
+.status-dot.ok .dot { background: var(--green); }
+.status-dot.ok { color: var(--green); font-weight: 500; }
+
+.empty-state {
+  padding: 30px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+}
+
+.split-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 800px) { .split-panel { grid-template-columns: 1fr; } }
+
+.mini-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  margin: 0 0 10px;
+  color: var(--petrol);
+  text-align: center;
+}
+
+.rubrica-list { display: flex; flex-direction: column; gap: 8px; }
+.rubrica-row { display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; align-items: center; padding: 3px 6px; border-radius: 5px; }
+.rubrica-name { font-size: 11.5px; color: var(--ink); }
+.rubrica-bar-track { background: #efe9db; border-radius: 3px; height: 7px; overflow: hidden; }
+.rubrica-bar { background: var(--gold-light); height: 100%; border-radius: 3px; display: block; }
+.rubrica-val { font-size: 11.5px; font-weight: 600; color: var(--petrol); text-align: right; font-variant-numeric: tabular-nums; }
+
+.rubrica-row.rubrica-camisa { background: #fdf1e3; box-shadow: inset 0 0 0 1px #e8c896; }
+.rubrica-row.rubrica-camisa .rubrica-name { font-weight: 700; color: #8a5a1f; }
+.rubrica-row.rubrica-camisa .rubrica-val { color: #8a5a1f; }
+.rubrica-bar-camisa { background: #d4912f !important; }
+
+.camisa-callout {
+  background: #fdf1e3;
+  border: 1px solid #e8c896;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 11.5px;
+  color: #8a5a1f;
+  margin-bottom: 10px;
+}
+.camisa-callout-saida {
+  background: #fbeaea;
+  border-color: #e0b3b3;
+  color: #a14242;
+}
+.camisa-total-geral {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: #fdf1e3;
+  border: 1px dashed #d4912f;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11.5px;
+  color: #8a5a1f;
+}
+.camisa-total-geral strong { font-size: 16px; color: #8a5a1f; }
+.camisa-total-sub { font-size: 10px; opacity: 0.75; }
+
+.upload-panel .dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 2px dashed var(--line-strong);
+  border-radius: 8px;
+  padding: 38px 20px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.dropzone:hover { border-color: var(--petrol); background: #fbf8f1; }
+.dropzone-icon { font-size: 26px; color: var(--gold); margin-bottom: 4px; }
+.dropzone-text { font-size: 14px; font-weight: 500; color: var(--ink); }
+.dropzone-sub { font-size: 12px; color: var(--muted); max-width: 440px; }
+
+.file-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.file-list li { display: flex; justify-content: space-between; font-size: 12.5px; padding: 8px 12px; background: var(--paper); border-radius: 4px; border: 1px solid var(--line); }
+.file-status { color: var(--gold); font-weight: 500; }
+
+.anexar-comprovante-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #eef5f0;
+  border: 1px solid #b9d6c4;
+  border-radius: 7px;
+}
+.anexar-comprovante-box p {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: #2d6e63;
+  line-height: 1.5;
+}
+.anexar-comprovante-box .btn-secondary {
+  background: #2d6e63;
+  color: #fff;
+  border: none;
+  margin-top: 0;
+}
+.anexar-comprovante-box .btn-secondary:hover { background: #1f4f47; }
+
+
+.import-form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.import-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--muted);
+  flex: 1;
+  min-width: 160px;
+}
+.import-field span { font-weight: 500; color: var(--ink); }
+.import-field input, .import-field select {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+.import-field input:focus, .import-field select:focus {
+  outline: none;
+  border-color: var(--petrol);
+}
+
+.import-duplicate-warning {
+  background: #fbeaea;
+  border: 1px solid #e0b3b3;
+  color: #a14242;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.import-new-notice {
+  background: #eef5f0;
+  border: 1px solid #b9d6c4;
+  color: #2d6e63;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin: 10px 0;
+}
+
+.btn-link {
+  background: none;
+  border: 1px solid #a14242;
+  color: #a14242;
+  border-radius: 4px;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-link:hover { background: #a14242; color: #fff; }
+
+.import-entrada-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.import-rubrica-input { flex: 3; }
+.import-valor-input { flex: 1; min-width: 110px; }
+.import-entrada-row input {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+.import-entrada-row input:focus { outline: none; border-color: var(--petrol); }
+
+.btn-icon-remove {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  width: 30px; height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.btn-icon-remove:hover { border-color: #a14242; color: #a14242; }
+
+.btn-secondary {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--petrol);
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 4px;
+}
+.btn-secondary:hover { border-color: var(--petrol); }
+
+.import-despesas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px 16px;
+}
+
+.import-feedback {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+}
+.import-feedback-ok { background: #eef5f0; border: 1px solid #b9d6c4; color: #2d6e63; }
+.import-feedback-erro { background: #fbeaea; border: 1px solid #e0b3b3; color: #a14242; }
+.import-feedback-aviso { background: #fdf1e3; border: 1px solid #e8c896; color: #8a5a1f; }
+
+.import-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-primary {
+  background: var(--petrol);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary:hover { background: #1a4048; }
+
+.importacoes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.importacao-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--paper-raised);
+}
+.importacao-card.tem-documento { border-color: #b9d6c4; background: #f7fbf8; }
+.importacao-card.sem-documento { border-style: dashed; }
+
+.importacao-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.importacao-card-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.importacao-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.importacao-badge-ok { background: #eef5f0; color: #2d6e63; }
+.importacao-badge-pending { background: #f1ece2; color: var(--muted); }
+
+.importacao-file-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.importacao-file-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11.5px;
+  padding: 5px 8px;
+  background: var(--paper);
+  border-radius: 4px;
+}
+.importacao-file-name { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.importacao-file-size { color: var(--muted); flex-shrink: 0; }
+
+.importacao-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.importacao-card-empty {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--muted);
+  padding: 22px 24px 30px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+`;
+const rootEl = document.getElementById('root');
+const root = ReactDOM.createRoot(rootEl);
+root.render(React.createElement(App));})();
+</script>
+</body>
+</html>
