@@ -1303,8 +1303,7 @@ main.app-main {
 }
 
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
+  </head>
 <body>
 
 <!-- Header -->
@@ -1336,12 +1335,6 @@ main.app-main {
 
     <!-- Header Actions & Actor Switcher -->
     <div class="header-actions">
-      <!-- Botão Status do Supabase -->
-      <button class="btn-supabase-status" id="btnSupabaseStatus" onclick="abrirModalSupabase()" title="Configuração e sincronização com Supabase">
-        <span class="status-dot" id="supabaseDot"></span>
-        <span id="supabaseLabel">Supabase: Offline</span>
-      </button>
-
       <!-- Botão Auditoria & Segurança -->
       <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="abrirModalAuditoria()" title="Ver trilha de auditoria completa e segurança dos documentos">
         🛡️ Trilha de Auditoria
@@ -1740,67 +1733,6 @@ main.app-main {
     </div>
   </section>
 
-
-<!-- ============================================================== -->
-<!-- MODAL: CONEXÃO COM SUPABASE & PERSISTÊNCIA EM NUVEM             -->
-<!-- ============================================================== -->
-<div id="supabaseModal" class="modal-overlay">
-  <div class="modal-box" style="max-width: 620px;">
-    <div class="modal-header">
-      <div>
-        <h3 style="margin: 0; color: var(--navy); display: flex; align-items: center; gap: 8px;">
-          ⚡ Conexão Supabase (Banco de Dados & Storage)
-        </h3>
-        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 0;">
-          Persistência segura em nuvem de documentos, versionamento, atores e tarefas.
-        </p>
-      </div>
-      <button class="modal-close-btn" onclick="fecharModalSupabase()">✕</button>
-    </div>
-
-    <div class="modal-body">
-      <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 12px; border-radius: var(--radius); margin-bottom: 16px; font-size: 12.5px; color: #166534;">
-        <b>💡 Como conectar seu projeto Supabase:</b><br>
-        1. Crie seu projeto gratuito em <b>supabase.com</b><br>
-        2. Vá em <b>Project Settings &gt; API</b> e copie a <b>Project URL</b> e a chave <b>anon / public key</b><br>
-        3. Execute o script <code>supabase_schema.sql</code> no <b>SQL Editor</b> do Supabase para criar as tabelas.<br>
-        4. Insira as credenciais abaixo e clique em <b>Conectar & Sincronizar</b>.
-      </div>
-
-      <div class="form-group" style="margin-bottom: 14px;">
-        <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
-          Supabase Project URL
-        </label>
-        <input type="text" id="supabaseUrlInput" placeholder="https://xyzproject.supabase.co" style="width: 100%; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: var(--mono); font-size: 13px;">
-      </div>
-
-      <div class="form-group" style="margin-bottom: 14px;">
-        <label style="display:block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--navy);">
-          Supabase Anon / Public API Key
-        </label>
-        <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsIn..." style="width: 100%; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: var(--mono); font-size: 13px;">
-      </div>
-
-      <div id="supabaseStatusAlert" style="display:none; padding: 10px 12px; border-radius: var(--radius); font-size: 12px; margin-bottom: 14px;"></div>
-
-      <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid var(--rule); padding-top: 14px;">
-        <div>
-          <button type="button" class="btn-secondary" style="font-size: 12px; color: var(--accent-rose);" onclick="desconectarSupabase()">
-            Desconectar (Modo Local)
-          </button>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button type="button" class="btn-secondary" style="font-size: 12px;" onclick="testarConexaoSupabaseUI()">
-            🔍 Testar Conexão
-          </button>
-          <button type="button" class="btn-primary" style="font-size: 12px; padding: 8px 16px;" onclick="salvarConexaoSupabase()">
-            💾 Salvar & Sincronizar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ============================================================== -->
 <!-- MODAL: HISTÓRICO DE VERSÕES & SEGURANÇA DO DOCUMENTO           -->
@@ -4518,16 +4450,7 @@ function showToast(msg) {
 // ==============================================================================
 
 // Estado do Supabase
-let supabaseClient = null;
-let supabaseConfig = {
-  url: localStorage.getItem('delegado_aa_supabase_url') || '',
-  key: localStorage.getItem('delegado_aa_supabase_key') || ''
-};
-
-// Chaves de Armazenamento Local para Fallback Offline
-const STORAGE_VERSIONS_KEY = 'delegado_aa_doc_versions_v2';
-const STORAGE_AUDIT_KEY = 'delegado_aa_audit_trail_v2';
-
+// Armazenamento Local de Versionamento e Auditoria (Modo Puro HTML / LocalStorage)
 let docVersionsStore = {};
 let auditTrailStore = [];
 
@@ -4535,22 +4458,7 @@ let selectedDocIdForVersion = null;
 
 // Inicialização do Supabase
 function initSupabase() {
-  if (supabaseConfig.url && supabaseConfig.key && typeof supabase !== 'undefined') {
-    try {
-      supabaseClient = supabase.createClient(supabaseConfig.url, supabaseConfig.key);
-      atualizarBadgeSupabase(true, 'Supabase: Conectado');
-      console.log('✅ Supabase Client inicializado com sucesso.');
-      // Sincronizar dados em segundo plano
-      sincronizarDadosSupabase();
-    } catch (err) {
-      console.warn('⚠️ Falha ao inicializar Supabase Client:', err);
-      atualizarBadgeSupabase(false, 'Supabase: Erro de Conexão');
-    }
-  } else {
-    atualizarBadgeSupabase(false, 'Modo Local (Offline)');
-  }
-
-  // Carregar armazenamento local
+  // Carregar armazenamento local de versões e auditoria
   try {
     const rawVersions = localStorage.getItem(STORAGE_VERSIONS_KEY);
     if (rawVersions) docVersionsStore = JSON.parse(rawVersions);
@@ -4561,205 +4469,8 @@ function initSupabase() {
     console.warn('Erro ao carregar storage local de versões/auditoria:', e);
   }
 
-  // Garantir que todo documento tenha ao menos a versão v1.0 registrada
+  // Inicializar versões v1.0 para todo o acervo
   inicializarVersoesPadrao();
-}
-
-function atualizarBadgeSupabase(conectado, label) {
-  const dot = document.getElementById('supabaseDot');
-  const txt = document.getElementById('supabaseLabel');
-  if (dot) {
-    if (conectado) dot.classList.add('connected');
-    else dot.classList.remove('connected');
-  }
-  if (txt) txt.textContent = label;
-}
-
-function abrirModalSupabase() {
-  document.getElementById('supabaseUrlInput').value = supabaseConfig.url;
-  document.getElementById('supabaseKeyInput').value = supabaseConfig.key;
-  document.getElementById('supabaseStatusAlert').style.display = 'none';
-  document.getElementById('supabaseModal').classList.add('open');
-}
-
-function fecharModalSupabase() {
-  document.getElementById('supabaseModal').classList.remove('open');
-}
-
-async function testarConexaoSupabaseUI() {
-  const url = document.getElementById('supabaseUrlInput').value.trim();
-  const key = document.getElementById('supabaseKeyInput').value.trim();
-  const alertBox = document.getElementById('supabaseStatusAlert');
-
-  if (!url || !key) {
-    alertBox.style.display = 'block';
-    alertBox.style.background = '#FEF2F2';
-    alertBox.style.color = '#991B1B';
-    alertBox.style.border = '1px solid #FECACA';
-    alertBox.innerHTML = '⚠️ Por favor, informe a URL e a Anon Key do projeto Supabase.';
-    return;
-  }
-
-  alertBox.style.display = 'block';
-  alertBox.style.background = '#EFF6FF';
-  alertBox.style.color = '#1E40AF';
-  alertBox.style.border = '1px solid #BFDBFE';
-  alertBox.innerHTML = '⏳ Testando conexão com Supabase...';
-
-  try {
-    const testClient = supabase.createClient(url, key);
-    const { data, error } = await testClient.from('documents').select('count', { count: 'exact', head: true });
-    
-    if (error) {
-      // Se a tabela ainda não existir, mas a conexão foi bem-sucedida
-      if (error.code === '42P01') {
-        alertBox.style.background = '#FEF3C7';
-        alertBox.style.color = '#92400E';
-        alertBox.style.border = '1px solid #FDE68A';
-        alertBox.innerHTML = '⚠️ Conectado ao Supabase! Porém a tabela <b>documents</b> ainda não existe. Execute o arquivo <code>supabase_schema.sql</code> no SQL Editor.';
-        return;
-      }
-      throw error;
-    }
-
-    alertBox.style.background = '#F0FDF4';
-    alertBox.style.color = '#166534';
-    alertBox.style.border = '1px solid #BBF7D0';
-    alertBox.innerHTML = '✅ Conexão bem-sucedida! Banco de dados e tabelas encontrados.';
-  } catch (err) {
-    alertBox.style.background = '#FEF2F2';
-    alertBox.style.color = '#991B1B';
-    alertBox.style.border = '1px solid #FECACA';
-    alertBox.innerHTML = '❌ Falha ao conectar: ' + (err.message || err);
-  }
-}
-
-async function salvarConexaoSupabase() {
-  const url = document.getElementById('supabaseUrlInput').value.trim();
-  const key = document.getElementById('supabaseKeyInput').value.trim();
-
-  supabaseConfig.url = url;
-  supabaseConfig.key = key;
-
-  localStorage.setItem('delegado_aa_supabase_url', url);
-  localStorage.setItem('delegado_aa_supabase_key', key);
-
-  initSupabase();
-  fecharModalSupabase();
-  showToast('Configurações do Supabase salvas!');
-}
-
-function desconectarSupabase() {
-  if (confirm('Deseja desconectar do Supabase e voltar para o Modo Local?')) {
-    supabaseConfig.url = '';
-    supabaseConfig.key = '';
-    localStorage.removeItem('delegado_aa_supabase_url');
-    localStorage.removeItem('delegado_aa_supabase_key');
-    supabaseClient = null;
-    atualizarBadgeSupabase(false, 'Modo Local (Offline)');
-    fecharModalSupabase();
-    showToast('Desconectado do Supabase. Operando em Modo Local.');
-  }
-}
-
-// Sincronização com Supabase (Carrega e envia dados)
-async function sincronizarDadosSupabase() {
-  if (!supabaseClient) return;
-
-  try {
-    // 1. Sincronizar documentos
-    const { data: remoteDocs, error: docErr } = await supabaseClient
-      .from('documents')
-      .select('*');
-
-    if (!docErr && remoteDocs && remoteDocs.length > 0) {
-      console.log('Sincronizados ' + remoteDocs.length + ' documentos do Supabase.');
-      // Mesclar documentos remotos
-      remoteDocs.forEach(rd => {
-        const localIdx = docsData.findIndex(d => d.id === rd.id);
-        const mapped = {
-          id: rd.id,
-          titulo: rd.titulo,
-          arquivo: rd.arquivo_nome,
-          caminhoRelativo: rd.caminho_relativo,
-          categoria: rd.categoria,
-          subcategoria: rd.subcategoria,
-          tipo: rd.tipo,
-          periodo: rd.periodo,
-          ano: rd.ano,
-          tamanho: rd.tamanho,
-          status: rd.status,
-          kanbanStatus: rd.kanban_status,
-          tags: rd.tags || [],
-          resumo: rd.resumo,
-          destaque: rd.destaque,
-          versao: 'v' + (rd.versao_atual || 1) + '.0',
-          versaoAtualNum: rd.versao_atual || 1,
-          urlPublica: rd.url_publica
-        };
-
-        if (localIdx >= 0) {
-          docsData[localIdx] = { ...docsData[localIdx], ...mapped };
-        } else {
-          docsData.push(mapped);
-        }
-      });
-      renderizarTudo();
-    }
-
-    // 2. Carregar versões
-    const { data: remoteVersions, error: verErr } = await supabaseClient
-      .from('document_versions')
-      .select('*')
-      .order('versao', { ascending: false });
-
-    if (!verErr && remoteVersions) {
-      remoteVersions.forEach(rv => {
-        if (!docVersionsStore[rv.documento_id]) docVersionsStore[rv.documento_id] = [];
-        const exists = docVersionsStore[rv.documento_id].some(v => v.versao === rv.versao);
-        if (!exists) {
-          docVersionsStore[rv.documento_id].push({
-            versao: rv.versao,
-            numeroVersao: rv.numero_versao,
-            arquivo: rv.arquivo_nome,
-            tamanho: rv.tamanho,
-            notas: rv.notas_alteracao,
-            autor: rv.modificado_por_nome,
-            cargo: rv.modificado_por_cargo,
-            checksum: rv.checksum_sha256,
-            criadoEm: rv.criado_em,
-            url: rv.url_arquivo
-          });
-        }
-      });
-      localStorage.setItem(STORAGE_VERSIONS_KEY, JSON.stringify(docVersionsStore));
-    }
-  } catch (err) {
-    console.warn('Erro durante sincronização com Supabase:', err);
-  }
-}
-
-// Inicializar versões padrão v1.0 para todos os documentos catalogados
-function inicializarVersoesPadrao() {
-  docsData.forEach(doc => {
-    if (!docVersionsStore[doc.id] || docVersionsStore[doc.id].length === 0) {
-      docVersionsStore[doc.id] = [{
-        versao: 1,
-        numeroVersao: "v1.0",
-        arquivo: doc.arquivo,
-        tamanho: doc.tamanho || "1 MB",
-        notas: "Versão inicial homologada e catalogada no acervo do Delegado.",
-        autor: "Henrique",
-        cargo: "Analista de Processos",
-        area: "Área 27 - CE",
-        checksum: "sha256:" + pseudoHash(doc.id + doc.arquivo),
-        criadoEm: new Date().toISOString()
-      }];
-    }
-    if (!doc.versao) doc.versao = "v1.0";
-    if (!doc.versaoAtualNum) doc.versaoAtualNum = 1;
-  });
-  localStorage.setItem(STORAGE_VERSIONS_KEY, JSON.stringify(docVersionsStore));
 }
 
 function pseudoHash(str) {
