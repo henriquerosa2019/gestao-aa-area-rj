@@ -3044,10 +3044,7 @@ p, .card-desc, .doc-summary {
           </select>
         </div>
       </div>
-      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="backupData()">
-        💾 Backup
-      </button>
-    </div>
+      </div>
   </div>
 </header>
 
@@ -3338,6 +3335,9 @@ p, .card-desc, .doc-summary {
             <button type="button" class="sub-tab-gestao-btn" data-sub="audit" onclick="alternarSubAbaGestao('audit')">
               🛡️ Trilha de Auditoria
             </button>
+            <button type="button" class="sub-tab-gestao-btn" data-sub="backup" onclick="alternarSubAbaGestao('backup')">
+              💾 Backup & Restore
+            </button>
           </div>
 
           <button type="button" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; color: #dc2626; border-color: #fca5a5;" onclick="bloquearAcessoGestao()" title="Encerrar sessão protegida">
@@ -3427,6 +3427,79 @@ p, .card-desc, .doc-summary {
           </div>
         </div>
       </div>
+
+      <!-- SUB-SEÇÃO 3: BACKUP & RESTAURAÇÃO DE DADOS (DISASTER RECOVERY) -->
+      <div id="gestao-sec-backup" style="display: none;">
+        <div class="matrix-card" style="padding: 24px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px;">
+            <div>
+              <h3 class="section-heading" style="display: flex; align-items: center; gap: 8px; margin: 0 0 4px;">
+                💾 Backup & Restauração de Dados (Disaster Recovery)
+              </h3>
+              <p class="section-sub" style="margin: 0;">
+                Gere cópias de segurança integrais de todas as tarefas, atores, permissões, trilhas de auditoria e configurações da Delegação Carlos S.R., ou restaure um ponto anterior com proteção por senha.
+              </p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            <!-- Card 1: Gerar e Baixar Backup -->
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                  <span style="font-size: 24px;">📥</span>
+                  <div>
+                    <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: #0f172a;">Gerar Cópia de Segurança (Backup)</h4>
+                    <span style="font-size: 11.5px; color: #64748b;">Exportação completa em arquivo JSON</span>
+                  </div>
+                </div>
+                <p style="font-size: 12.5px; color: #475569; line-height: 1.5; margin: 0 0 14px;">
+                  Baixa um arquivo JSON consolidado contendo:
+                </p>
+                <ul style="font-size: 12px; color: #475569; margin: 0 0 16px; padding-left: 18px; line-height: 1.6;">
+                  <li>Todas as tarefas do Kanban Administrativo (incluindo status e checklists)</li>
+                  <li>Atores cadastrados e Matriz de Permissões RACI</li>
+                  <li>Catálogo e metadados de documentos</li>
+                  <li>Trilha Geral de Auditoria cronológica</li>
+                  <li>Tags de busca rápida e preferências</li>
+                </ul>
+              </div>
+              <button type="button" class="btn-primary" style="padding: 10px 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;" onclick="backupData()">
+                💾 Baixar Backup Oficial (JSON)
+              </button>
+            </div>
+
+            <!-- Card 2: Restaurar Dados (Restore) -->
+            <div style="background: #fefce8; border: 1px solid #fef08a; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                  <span style="font-size: 24px;">🔄</span>
+                  <div>
+                    <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: #854d0e;">Restaurar Dados (Restore)</h4>
+                    <span style="font-size: 11.5px; color: #a16207;">Reversão segura com proteção por senha master (2026)</span>
+                  </div>
+                </div>
+                <p style="font-size: 12.5px; color: #713f12; line-height: 1.5; margin: 0 0 12px;">
+                  Importa um arquivo de backup previamente gerado e restabelece a base de dados do sistema.
+                </p>
+                <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 12px; margin-bottom: 16px; font-size: 11.5px; color: #92400e; line-height: 1.45;">
+                  🛡️ <b>Mecanismos de Segurança Ativos:</b>
+                  <div style="margin-top: 4px;">• Exigência de senha master (2026).</div>
+                  <div>• Verificação automática de defasagem de dados (&gt; 1 dia).</div>
+                  <div>• Download preventivo de cópia de emergência caso haja defasagem.</div>
+                </div>
+              </div>
+              <div>
+                <input type="file" id="inputArquivoRestore" accept=".json,application/json" style="display: none;" onchange="processarArquivoRestore(event)">
+                <button type="button" class="btn-secondary" style="padding: 10px 16px; font-size: 13px; font-weight: 700; color: #854d0e; border-color: #ca8a04; background: #fef08a; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; cursor: pointer;" onclick="iniciarFluxoRestore()">
+                  🔄 Selecionar Arquivo para Restore...
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -4494,6 +4567,65 @@ p, .card-desc, .doc-summary {
         <button type="submit" class="btn-primary" id="btnSalvarTarefaModal">Criar Tarefa</button>
       </div>
     </form>
+  </div>
+</div>
+
+
+<!-- MODAL: RESTAURAÇÃO DE BASE DE DADOS (RESTORE COM SENHA 2026) -->
+<div id="modal-restore-dados" class="modal-overlay" style="display: none;">
+  <div class="modal-box" style="max-width: 500px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid #e2e8f0; padding-bottom:10px;">
+      <h3 style="margin:0; font-size:1.2rem; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:8px;">
+        🔄 Restauração de Base de Dados (Restore)
+      </h3>
+      <button type="button" class="modal-close-btn" onclick="fecharModalRestore()" title="Fechar">✕</button>
+    </div>
+
+    <!-- Informações do Backup Lido -->
+    <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 14px; margin-bottom:14px; font-size:12.5px; color:#334155;">
+      <div style="margin-bottom:4px;">📁 <b>Arquivo:</b> <span id="restore-info-nome-arquivo" style="font-family:var(--mono); color:#1e293b;">-</span></div>
+      <div style="margin-bottom:4px;">📅 <b>Data do Backup:</b> <span id="restore-info-data-backup" style="font-weight:700; color:#1e3a8a;">-</span></div>
+      <div>📊 <b>Conteúdo:</b> <span id="restore-info-resumo">-</span></div>
+    </div>
+
+    <!-- Alerta de Defasagem (> 1 dia) -->
+    <div id="restore-aviso-defasagem" style="display: none; background: #fff7ed; border: 2px solid #f97316; border-radius: 8px; padding: 14px; margin-bottom: 14px; color: #9a3412;">
+      <div style="font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+        ⚠️ ALERTA DE DEFASAGEM DE DADOS DETECTADA
+      </div>
+      <div style="font-size: 12px; line-height: 1.5; margin-bottom: 10px;">
+        A data atual do sistema é <b><span id="restore-dias-defasagem">0</span> dia(s) mais recente</b> que a data de geração deste backup.
+        Restaurá-lo poderá sobrescrever informações e tarefas cadastradas recentemente.
+      </div>
+      <div style="background: rgba(249, 115, 22, 0.1); border-left: 3px solid #ea580c; padding: 6px 10px; border-radius: 4px; font-size: 11.5px; margin-bottom: 12px; line-height: 1.4;">
+        🛡️ <b>Backup Preventivo Automático:</b> Antes de restaurar, o sistema fará o download de uma cópia de segurança completa do estado atual para o seu dispositivo.
+      </div>
+      <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 12px; font-weight: 600; cursor: pointer; color: #7c2d12;">
+        <input type="checkbox" id="chkConfirmaSobrescritaDefasagem" style="margin-top: 2px;">
+        <span>Tenho certeza de que desejo prosseguir e sobrescrever os dados atuais com este backup.</span>
+      </label>
+    </div>
+
+    <!-- Campo de Senha Master (2026) -->
+    <div class="form-group" style="margin-bottom: 14px;">
+      <label style="font-weight: 700; font-size: 13px; color: #0f172a; margin-bottom: 6px; display: block;">
+        🔒 Senha de Autorização Master (2026) *
+      </label>
+      <div style="position: relative; display: flex; align-items: center;">
+        <input type="password" id="inputSenhaRestore" placeholder="Digite a senha master para restaurar..." style="width: 100%; padding: 10px 42px 10px 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13.5px;" onkeydown="if(event.key==='Enter'){event.preventDefault();executarRestoreConfirmado();}">
+        <button type="button" onclick="toggleVisibilidadeSenhaRestore()" style="position: absolute; right: 10px; background: transparent; border: none; cursor: pointer; font-size: 16px; color: #64748b; padding: 2px;" title="Visualizar / Ocultar Senha">👁️</button>
+      </div>
+      <div id="erroSenhaRestore" style="display: none; color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px;">
+        ⚠️ Senha incorreta. A restauração foi cancelada.
+      </div>
+    </div>
+
+    <div class="modal-footer" style="padding-top: 10px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+      <button type="button" class="btn-secondary" onclick="fecharModalRestore()">Cancelar</button>
+      <button type="button" class="btn-primary" id="btnConfirmarRestore" style="background: #dc2626; border-color: #b91c1c; font-weight: 700;" onclick="executarRestoreConfirmado()">
+        🔄 Confirmar Restauração
+      </button>
+    </div>
   </div>
 </div>
 
@@ -5585,12 +5717,13 @@ function alternarSubAbaGestao(subAba) {
 
   const secRbac = document.getElementById("gestao-sec-rbac");
   const secAudit = document.getElementById("gestao-sec-audit");
-  if (subAba === 'rbac') {
-    if (secRbac) secRbac.style.display = "block";
-    if (secAudit) secAudit.style.display = "none";
-  } else {
-    if (secRbac) secRbac.style.display = "none";
-    if (secAudit) secAudit.style.display = "block";
+  const secBackup = document.getElementById("gestao-sec-backup");
+
+  if (secRbac) secRbac.style.display = (subAba === 'rbac') ? "block" : "none";
+  if (secAudit) secAudit.style.display = (subAba === 'audit') ? "block" : "none";
+  if (secBackup) secBackup.style.display = (subAba === 'backup') ? "block" : "none";
+
+  if (subAba === 'audit') {
     renderizarAuditoriaGestao();
   }
 }
@@ -7318,23 +7451,234 @@ function deleteTask(taskId) {
   }
 }
 
-// Backup e Exportação
-function backupData() {
+// Backup e Exportação Completa
+function backupData(customFileName = null) {
   const payload = {
-    versao: "3.0",
+    versao: "3.2",
     dataExportacao: new Date().toISOString(),
-    atores: ATORES,
-    tarefas: kanbanTasks,
-    documentos: docsData
+    origem: "Gestão AA - Área RJ",
+    delegacao: "Carlos S.R. (Área 01 RJ)",
+    tarefasAdmin: (typeof tarefasAdmin !== 'undefined') ? tarefasAdmin : [],
+    tarefas: (typeof tarefasAdmin !== 'undefined') ? tarefasAdmin : ((typeof kanbanTasks !== 'undefined') ? kanbanTasks : []),
+    atores: (typeof ATORES !== 'undefined') ? ATORES : [],
+    documentos: (typeof docsData !== 'undefined') ? docsData : [],
+    auditTrailStore: (typeof auditTrailStore !== 'undefined') ? auditTrailStore : [],
+    customSearchTags: (typeof obterTagsCustomizadas === 'function') ? obterTagsCustomizadas() : []
   };
+
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "backup_gestao_delegado_aa_" + (new Date().toISOString().split("T")[0]) + ".json";
+  const fileName = customFileName || ("backup_gestao_delegado_aa_" + (new Date().toISOString().split("T")[0]) + ".json");
+  a.download = fileName;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast("Backup baixado com sucesso!");
+
+  if (!customFileName) {
+    showToast("💾 Backup baixado com sucesso!");
+    if (typeof logAuditAction === 'function') {
+      logAuditAction('download_backup', null, { versao: payload.versao, data: payload.dataExportacao });
+    }
+  }
+  return payload;
+}
+
+// ==============================================================================
+// FLUXO DE RESTAURAÇÃO DE DADOS (RESTORE COM SENHA 2026 E PROTEÇÃO CONTRA DEFASAGEM)
+// ==============================================================================
+let restorePayloadPendente = null;
+let restoreDiffDias = 0;
+
+function iniciarFluxoRestore() {
+  const inp = document.getElementById('inputArquivoRestore');
+  if (inp) {
+    inp.value = '';
+    inp.click();
+  }
+}
+
+function processarArquivoRestore(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed || typeof parsed !== 'object') {
+        showToast('⚠️ Arquivo de backup inválido.');
+        return;
+      }
+
+      restorePayloadPendente = parsed;
+      const dataIso = parsed.dataExportacao || parsed.dataHora || null;
+      restoreDiffDias = calcularDiferencaDias(dataIso);
+
+      const nomeArqEl = document.getElementById('restore-info-nome-arquivo');
+      const dataBkpEl = document.getElementById('restore-info-data-backup');
+      const resumoEl = document.getElementById('restore-info-resumo');
+
+      if (nomeArqEl) nomeArqEl.textContent = file.name;
+      if (dataBkpEl) {
+        dataBkpEl.textContent = dataIso ? new Date(dataIso).toLocaleString('pt-BR') : 'Data não informada';
+      }
+      if (resumoEl) {
+        const qTarefas = (parsed.tarefasAdmin || parsed.tarefas || []).length;
+        const qAtores = (parsed.atores || []).length;
+        const qDocs = (parsed.documentos || []).length;
+        resumoEl.textContent = qTarefas + ' tarefas, ' + qAtores + ' atores, ' + qDocs + ' documentos';
+      }
+
+      const avisoDefasagem = document.getElementById('restore-aviso-defasagem');
+      const diasDefEl = document.getElementById('restore-dias-defasagem');
+      const chkSobrescrita = document.getElementById('chkConfirmaSobrescritaDefasagem');
+
+      if (restoreDiffDias > 1) {
+        if (avisoDefasagem) avisoDefasagem.style.display = 'block';
+        if (diasDefEl) diasDefEl.textContent = restoreDiffDias;
+        if (chkSobrescrita) chkSobrescrita.checked = false;
+      } else {
+        if (avisoDefasagem) avisoDefasagem.style.display = 'none';
+      }
+
+      const inpSenha = document.getElementById('inputSenhaRestore');
+      if (inpSenha) inpSenha.value = '';
+      const errSenha = document.getElementById('erroSenhaRestore');
+      if (errSenha) errSenha.style.display = 'none';
+
+      const modal = document.getElementById('modal-restore-dados');
+      if (modal) modal.style.display = 'flex';
+
+    } catch(err) {
+      showToast('⚠️ Erro ao processar arquivo JSON de backup: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function fecharModalRestore() {
+  const modal = document.getElementById('modal-restore-dados');
+  if (modal) modal.style.display = 'none';
+  restorePayloadPendente = null;
+  restoreDiffDias = 0;
+  const inp = document.getElementById('inputArquivoRestore');
+  if (inp) inp.value = '';
+}
+
+function toggleVisibilidadeSenhaRestore() {
+  const inp = document.getElementById('inputSenhaRestore');
+  if (!inp) return;
+  inp.type = (inp.type === 'password') ? 'text' : 'password';
+}
+
+function calcularDiferencaDias(dataIsoBackup) {
+  if (!dataIsoBackup) return 0;
+  const dataBkp = new Date(dataIsoBackup);
+  if (isNaN(dataBkp.getTime())) return 0;
+  const agora = new Date();
+  const d1 = new Date(dataBkp.getFullYear(), dataBkp.getMonth(), dataBkp.getDate());
+  const d2 = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+  const diffMs = d2.getTime() - d1.getTime();
+  const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24));
+  return Math.max(0, diffDias);
+}
+
+function executarRestoreConfirmado() {
+  if (!restorePayloadPendente) {
+    showToast('⚠️ Nenhum backup carregado para restauração.');
+    return;
+  }
+
+  const inpSenha = document.getElementById('inputSenhaRestore');
+  const errSenha = document.getElementById('erroSenhaRestore');
+  const senha = inpSenha ? inpSenha.value.trim() : '';
+
+  if (senha !== '2026') {
+    if (errSenha) errSenha.style.display = 'block';
+    return;
+  }
+  if (errSenha) errSenha.style.display = 'none';
+
+  // Se a defasagem for maior que 1 dia, exigir confirmação expressa do usuário
+  if (restoreDiffDias > 1) {
+    const chk = document.getElementById('chkConfirmaSobrescritaDefasagem');
+    if (chk && !chk.checked) {
+      showToast('⚠️ Por favor, confirme a ciência da defasagem marcando a opção indicada.');
+      return;
+    }
+
+    // Fazer cópia de emergência dos dados atuais antes de restaurar
+    const hojeStr = new Date().toISOString().split('T')[0];
+    const nomeCopiaSeguranca = 'copia_seguranca_pre_restore_' + hojeStr + '.json';
+    backupData(nomeCopiaSeguranca);
+    showToast('💾 Cópia preventiva dos dados atuais baixada antes da restauração!');
+  }
+
+  // Restauração das Tarefas Administrativas
+  if (Array.isArray(restorePayloadPendente.tarefasAdmin) || Array.isArray(restorePayloadPendente.tarefas)) {
+    tarefasAdmin = restorePayloadPendente.tarefasAdmin || restorePayloadPendente.tarefas || [];
+    try {
+      localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
+    } catch(e) {}
+  }
+
+  // Restauração dos Atores e Permissões
+  if (Array.isArray(restorePayloadPendente.atores) && restorePayloadPendente.atores.length > 0) {
+    ATORES = restorePayloadPendente.atores;
+    try {
+      localStorage.setItem('delegado_aa_atores_v3', JSON.stringify(ATORES));
+    } catch(e) {}
+  }
+
+  // Restauração do Catálogo de Documentos
+  if (Array.isArray(restorePayloadPendente.documentos) && restorePayloadPendente.documentos.length > 0) {
+    docsData = restorePayloadPendente.documentos;
+    try {
+      localStorage.setItem('delegado_aa_docs_v1', JSON.stringify(docsData));
+    } catch(e) {}
+  }
+
+  // Restauração da Trilha de Auditoria
+  if (Array.isArray(restorePayloadPendente.auditTrailStore)) {
+    auditTrailStore = restorePayloadPendente.auditTrailStore;
+    try {
+      localStorage.setItem(STORAGE_AUDIT_KEY, JSON.stringify(auditTrailStore));
+    } catch(e) {}
+  }
+
+  // Restauração das Tags de Busca Rápida
+  if (Array.isArray(restorePayloadPendente.customSearchTags)) {
+    if (typeof salvarTagsCustomizadasStorage === 'function') {
+      salvarTagsCustomizadasStorage(restorePayloadPendente.customSearchTags);
+    }
+  }
+
+  // Registrar auditoria do restore
+  if (typeof logAuditAction === 'function') {
+    logAuditAction('restauracao_versao', null, {
+      versao: restorePayloadPendente.versao || 'v3.2',
+      dataBackupOriginal: restorePayloadPendente.dataExportacao,
+      defasagemDias: restoreDiffDias,
+      notas: 'Restore geral de sistema executado com sucesso com autenticação master'
+    });
+  }
+
+  // Atualizar visualizações
+  if (typeof renderDocs === 'function') renderDocs();
+  if (typeof renderizarKanban === 'function') renderizarKanban();
+  if (typeof renderKanban === 'function') renderKanban();
+  if (typeof renderActorsList === 'function') renderActorsList();
+  if (typeof renderPermissionMatrix === 'function') renderPermissionMatrix();
+  if (typeof carregarTrilhaAuditoria === 'function') carregarTrilhaAuditoria();
+  if (typeof renderizarTagsCustomizadas === 'function') renderizarTagsCustomizadas();
+  if (typeof updateStatsKPIs === 'function') updateStatsKPIs();
+  if (typeof sincronizarMarcosComKanban === 'function') sincronizarMarcosComKanban();
+
+  fecharModalRestore();
+  showToast('✅ Restauração concluída com sucesso! Os dados foram restabelecidos.');
 }
 
 function exportKanbanData() {
