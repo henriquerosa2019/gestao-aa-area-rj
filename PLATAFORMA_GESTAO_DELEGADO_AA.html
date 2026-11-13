@@ -2833,6 +2833,46 @@ p, .card-desc, .doc-summary {
   color: #64748b;
 }
 
+
+/* Pílulas de Filtro (Segmented Control) do Painel Executivo */
+.faixa-selector {
+  display: flex;
+  gap: 8px;
+  background: #e2e8f0;
+  padding: 6px;
+  border-radius: 10px;
+  margin: 18px 0 22px;
+  flex-wrap: wrap;
+}
+.faixa-btn {
+  flex: 1;
+  min-width: 150px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.faixa-btn:hover {
+  background: rgba(255,255,255,0.6);
+  color: #0f172a;
+}
+.faixa-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  font-weight: 700;
+}
+
 </style>
   </head>
 <body>
@@ -3160,110 +3200,10 @@ p, .card-desc, .doc-summary {
     <!-- ==================== TAB 4: PAINEL EXECUTIVO & GOVERNANÇA ==================== -->
   <section id="view-executivo" class="view-panel">
     <div class="exec-dashboard-container">
-      <!-- BARRA DE CONTROLE EXECUTIVO & FILTRO DE FAIXAS -->
-      <div class="exec-toolbar">
-        <div class="exec-toolbar-left">
-          <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-            📊 Cockpit Executivo de Tomada de Decisão
-          </h3>
-          <span style="font-size: 12px; color: #64748b;">Faixa A e Resumo de Governança fixos. Marque abaixo as faixas complementares que deseja exibir:</span>
-        </div>
-
-        <div class="exec-toolbar-right">
-          <!-- Dropdown com Caixas de Seleção -->
-          <div class="dropdown-faixas-wrapper">
-            <button type="button" class="btn-dropdown-faixas" id="btnToggleDropdownFaixas" onclick="alternarDropdownFaixas()">
-              <span>👁️ Exibir Faixas Complementares</span>
-              <span class="badge-faixas-count" id="badgeFaixasCount">3 de 3</span>
-              <span style="font-size: 10px;">▾</span>
-            </button>
-
-            <!-- Menu Suspenso -->
-            <div class="dropdown-faixas-menu" id="dropdownFaixasMenu" style="display: none;">
-              <div class="dropdown-faixas-header">
-                <span>Faixas Complementares</span>
-                <div style="display: flex; gap: 6px;">
-                  <button type="button" class="btn-link-action" onclick="selecionarTodasFaixas(true)">Todas</button>
-                  <span>•</span>
-                  <button type="button" class="btn-link-action" onclick="selecionarApenasArea01()">Área 01</button>
-                  <span>•</span>
-                  <button type="button" class="btn-link-action" onclick="selecionarApenasConvencao()">Conv. 2027</button>
-                  <span>•</span>
-                  <button type="button" class="btn-link-action" onclick="selecionarTodasFaixas(false)">Ocultar</button>
-                </div>
-              </div>
-
-              <div class="dropdown-faixas-list">
-                <!-- Faixa A (Fixa) -->
-                <div class="dropdown-faixa-item" style="opacity: 0.85; cursor: default; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <input type="checkbox" checked disabled title="Faixa A é a base executiva e permanece fixa no topo">
-                  <div class="faixa-item-desc">
-                    <strong style="color: #1e3a8a;">🏛️ Faixa A — Governança Nacional (Fixa)</strong>
-                    <small>Sempre visível no topo com os 6 KPIs</small>
-                  </div>
-                </div>
-
-                <!-- Faixa B -->
-                <label class="dropdown-faixa-item">
-                  <input type="checkbox" id="chk-faixa-B" checked onchange="toggleVisibilidadeFaixa('B', this.checked)">
-                  <div class="faixa-item-desc">
-                    <strong>🏢 Faixa B — Gestão Área 01 (RJ)</strong>
-                    <small>Apresentação e Prestação de Contas</small>
-                  </div>
-                </label>
-
-                <!-- Faixa C -->
-                <label class="dropdown-faixa-item">
-                  <input type="checkbox" id="chk-faixa-C" checked onchange="toggleVisibilidadeFaixa('C', this.checked)">
-                  <div class="faixa-item-desc">
-                    <strong>🎪 Faixa C — Convenção 2027</strong>
-                    <small>Dashboard ESL Área 27 e Camisas PIX</small>
-                  </div>
-                </label>
-
-                <!-- Faixa D -->
-                <label class="dropdown-faixa-item">
-                  <input type="checkbox" id="chk-faixa-D" checked onchange="toggleVisibilidadeFaixa('D', this.checked)">
-                  <div class="faixa-item-desc">
-                    <strong>🔄 Faixa D — Processos & Melhorias</strong>
-                    <small>Macroprocessos BPMN AS IS e TO BE</small>
-                  </div>
-                </label>
-
-                <!-- Resumo de Governança (Fixo) -->
-                <div class="dropdown-faixa-item" style="opacity: 0.85; cursor: default; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <input type="checkbox" checked disabled title="Resumo de Governança permanece fixo no rodapé do painel">
-                  <div class="faixa-item-desc">
-                    <strong style="color: #1e3a8a;">🗓️ Resumo de Governança & Marcos (Fixo)</strong>
-                    <small>Sempre visível logo abaixo das faixas</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-            <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
-      <div class="exec-section-banner" id="banner-faixa-A">
-        <div class="exec-section-title-row">
-          <div>
-            <h3>🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</h3>
-            <p>Diagnósticos contábeis, estudos estatutários de déficit e modernização de processos da estrutura nacional.</p>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span class="exec-card-badge badge-gray">JUNAAB Nacional</span>
-            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('A')">
-              ➕ Adicionar Material
-            </button>
-          </div>
-        </div>
-
-        
-        <!-- 1. BLOCO DE INDICADORES-CHAVE (KPIS) EXECUTIVOS NO TOPO (REALIDADE JUNAAB & ÁREA 01 RJ) -->
+            <!-- BLOCO DE INDICADORES-CHAVE (KPIS) EXECUTIVOS (ALINHAMENTO INTELIGENTE POR FAIXA) -->
       <div class="exec-kpis-grid">
         <!-- KPI 1: Déficit Consolidado JUNAAB -->
-        <div class="exec-kpi-card highlight-red">
+        <div class="exec-kpi-card highlight-red" data-faixa="A">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Déficit JUNAAB (Consolidado)</span>
             <span class="exec-badge-trend negative">−US$ 4,77 mi</span>
@@ -3273,7 +3213,7 @@ p, .card-desc, .doc-summary {
         </div>
 
         <!-- KPI 2: Fundo de Reserva Prudente JUNAAB -->
-        <div class="exec-kpi-card highlight-alert">
+        <div class="exec-kpi-card highlight-alert" data-faixa="A">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Reserva Prudente (JUNAAB)</span>
             <span class="exec-badge-alert">⚠️ Alerta Crítico</span>
@@ -3283,7 +3223,7 @@ p, .card-desc, .doc-summary {
         </div>
 
         <!-- KPI 3: Receitas da Literatura e 7ª Tradição -->
-        <div class="exec-kpi-card highlight-blue">
+        <div class="exec-kpi-card highlight-blue" data-faixa="A">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Receitas JUNAAB (Tendência)</span>
             <span class="exec-badge-trend negative">−34,6% Lit.</span>
@@ -3293,7 +3233,7 @@ p, .card-desc, .doc-summary {
         </div>
 
         <!-- KPI 4: Saldo Líquido Área 01 - RJ (Delegado Carlos) -->
-        <div class="exec-kpi-card highlight-green">
+        <div class="exec-kpi-card highlight-green" data-faixa="B">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Saldo Líquido Área 01 - RJ</span>
             <span class="exec-badge-trend positive">▲ +8% no mês</span>
@@ -3303,7 +3243,7 @@ p, .card-desc, .doc-summary {
         </div>
 
         <!-- KPI 5: Cotas Convenção Nacional 2027 -->
-        <div class="exec-kpi-card highlight-amber">
+        <div class="exec-kpi-card highlight-amber" data-faixa="C">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Cotas Convenção 2027</span>
             <span class="exec-badge-trend neutral">Meta: 100 cotas</span>
@@ -3316,7 +3256,7 @@ p, .card-desc, .doc-summary {
         </div>
 
         <!-- KPI 6: Pendências Críticas / Kanban Área 01 -->
-        <div class="exec-kpi-card highlight-purple clickable" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
+        <div class="exec-kpi-card highlight-purple clickable" data-faixa="B" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Pendências Críticas (Área 01)</span>
             <span class="exec-badge-link">Ver no Kanban ↗</span>
@@ -3325,6 +3265,30 @@ p, .card-desc, .doc-summary {
           <div class="exec-kpi-sub" id="execKpiPendingSub">Sincronizado em tempo real com o Kanban</div>
         </div>
       </div>
+
+      <!-- Barra de Seleção de Faixas (Segmented Control / Pílulas) -->
+      <div class="faixa-selector">
+        <button type="button" class="faixa-btn active" data-target="TODAS" onclick="filtrarFaixa('TODAS', this)">🌐 Todas as Faixas</button>
+        <button type="button" class="faixa-btn" data-target="A" onclick="filtrarFaixa('A', this)">🏛️ Faixa A · JUNAAB</button>
+        <button type="button" class="faixa-btn" data-target="B" onclick="filtrarFaixa('B', this)">🏢 Faixa B · Área 01 (RJ)</button>
+        <button type="button" class="faixa-btn" data-target="C" onclick="filtrarFaixa('C', this)">🎪 Faixa C · Convenção 2027</button>
+        <button type="button" class="faixa-btn" data-target="D" onclick="filtrarFaixa('D', this)">🔄 Faixa D · Processos JUNAAB</button>
+      </div>
+
+      <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
+      <div class="exec-section-banner" id="banner-faixa-A" data-faixa="A">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</h3>
+            <p>Diagnósticos contábeis, estudos estatutários de déficit e modernização de processos da estrutura nacional.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-gray">JUNAAB Nacional</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('A')">
+              ➕ Adicionar Material
+            </button>
+          </div>
+        </div>
 
         <div class="exec-cards-grid" style="margin-bottom: 16px;">
           <!-- Card 1: Painel da Realidade Financeira -->
@@ -3379,7 +3343,7 @@ p, .card-desc, .doc-summary {
       </div>
 
       <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
-      <div class="exec-section-banner" id="banner-faixa-B">
+      <div class="exec-section-banner" id="banner-faixa-B" data-faixa="B">
         <div class="exec-section-title-row">
           <div>
             <h3>🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
@@ -3423,7 +3387,7 @@ p, .card-desc, .doc-summary {
       </div>
 
       <!-- 4. FAIXA C: CONVENÇÃO NACIONAL 2027 -->
-      <div class="exec-section-banner" id="banner-faixa-C">
+      <div class="exec-section-banner" id="banner-faixa-C" data-faixa="C">
         <div class="exec-section-title-row">
           <div>
             <h3>🎪 Faixa C — Convenção Nacional 2027</h3>
@@ -3490,7 +3454,7 @@ p, .card-desc, .doc-summary {
       </div>
 
             <!-- 5. FAIXA D: PROCESSOS E MELHORIAS (JUNAAB) -->
-      <div class="exec-section-banner" id="banner-faixa-D">
+      <div class="exec-section-banner" id="banner-faixa-D" data-faixa="D">
         <div class="exec-section-title-row">
           <div>
             <h3>🔄 Faixa D — Processos e Melhorias JUNAAB</h3>
@@ -7370,95 +7334,54 @@ function renderizarMateriaisFaixas() {
 
 
 // ==============================================================================
-// FILTRO DE VISIBILIDADE DAS FAIXAS NO PAINEL EXECUTIVO (FAIXA A FIXA)
+
+// ==============================================================================
+// FILTRO DE FAIXAS VIA PÍLULAS (SEGMENTED CONTROL) COM ALINHAMENTO DE KPIS
 // ==============================================================================
 
-let faixasOpcionaisVisiveis = ['B', 'C', 'D'];
-
-function carregarPreferenciaFaixas() {
-  try {
-    const raw = localStorage.getItem('aa_faixas_visiveis_v2');
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        faixasOpcionaisVisiveis = parsed;
-      }
-    }
-  } catch(e) {
-    faixasOpcionaisVisiveis = ['B', 'C', 'D'];
-  }
-  aplicarVisibilidadeFaixas();
-}
-
-function alternarDropdownFaixas() {
-  const menu = document.getElementById('dropdownFaixasMenu');
-  if (menu) {
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-  }
-}
-
-document.addEventListener('click', function(e) {
-  const wrapper = document.querySelector('.dropdown-faixas-wrapper');
-  const menu = document.getElementById('dropdownFaixasMenu');
-  if (wrapper && menu && !wrapper.contains(e.target)) {
-    menu.style.display = 'none';
-  }
-});
-
-function toggleVisibilidadeFaixa(faixa, isChecked) {
-  if (isChecked) {
-    if (!faixasOpcionaisVisiveis.includes(faixa)) faixasOpcionaisVisiveis.push(faixa);
+function filtrarFaixa(faixa, btnClicado) {
+  // 1. Atualizar classe ativa nas pílulas
+  document.querySelectorAll('.faixa-btn').forEach(b => b.classList.remove('active'));
+  if (btnClicado) {
+    btnClicado.classList.add('active');
   } else {
-    faixasOpcionaisVisiveis = faixasOpcionaisVisiveis.filter(f => f !== faixa);
+    const defaultBtn = document.querySelector('.faixa-btn[data-target="' + faixa + '"]') || document.querySelector('.faixa-btn[data-target="TODAS"]');
+    if (defaultBtn) defaultBtn.classList.add('active');
   }
-  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
-  aplicarVisibilidadeFaixas();
-}
 
-function selecionarTodasFaixas(visivel) {
-  faixasOpcionaisVisiveis = visivel ? ['B', 'C', 'D'] : [];
-  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
-  aplicarVisibilidadeFaixas();
-}
+  // 2. Alinhamento inteligente dos cards de KPI
+  document.querySelectorAll('.exec-kpi-card[data-faixa]').forEach(el => {
+    const cardFaixa = el.getAttribute('data-faixa');
+    el.style.display = (faixa === 'TODAS' || cardFaixa === faixa) ? 'flex' : 'none';
+  });
 
-function selecionarApenasArea01() {
-  faixasOpcionaisVisiveis = ['B'];
-  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
-  aplicarVisibilidadeFaixas();
-}
+  // 3. Filtrar os banners das faixas
+  document.querySelectorAll('.exec-section-banner[data-faixa]').forEach(el => {
+    const bannerFaixa = el.getAttribute('data-faixa');
+    el.style.display = (faixa === 'TODAS' || bannerFaixa === faixa) ? 'block' : 'none';
+  });
 
-function selecionarApenasConvencao() {
-  faixasOpcionaisVisiveis = ['C'];
-  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
-  aplicarVisibilidadeFaixas();
-}
-
-function aplicarVisibilidadeFaixas() {
-  // Faixa A e Resumo de Governança são SEMPRE visíveis (Fixos)
-  const bannerA = document.getElementById('banner-faixa-A');
-  if (bannerA) bannerA.style.display = 'block';
-
+  // 4. O Resumo de Governança & Próximos Marcos permanece sempre fixo
   const widgetMilestones = document.querySelector('.governance-milestones-widget');
   if (widgetMilestones) widgetMilestones.style.display = 'block';
 
-  // Faixas B, C, D são controladas pelo filtro
-  ['B', 'C', 'D'].forEach(f => {
-    const banner = document.getElementById('banner-faixa-' + f);
-    const chk = document.getElementById('chk-faixa-' + f);
-    const visivel = faixasOpcionaisVisiveis.includes(f);
+  // 5. Salvar preferência no localStorage
+  localStorage.setItem('aa_faixa_ativa_tab', faixa);
+}
 
-    if (banner) {
-      banner.style.display = visivel ? 'block' : 'none';
-    }
-    if (chk) {
-      chk.checked = visivel;
-    }
-  });
-
-  const countBadge = document.getElementById('badgeFaixasCount');
-  if (countBadge) {
-    countBadge.textContent = faixasOpcionaisVisiveis.length + ' de 3';
+function carregarPreferenciaFaixas() {
+  try {
+    const salva = localStorage.getItem('aa_faixa_ativa_tab') || 'TODAS';
+    filtrarFaixa(salva, null);
+  } catch(e) {
+    filtrarFaixa('TODAS', null);
   }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', carregarPreferenciaFaixas);
+} else {
+  carregarPreferenciaFaixas();
 }
 
 
