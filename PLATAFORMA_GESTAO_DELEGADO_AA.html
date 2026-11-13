@@ -2004,6 +2004,562 @@ p, .card-desc, .doc-summary {
   cursor: pointer;
 }
 
+
+/* ==============================================================================
+   CORREÇÃO DEFINITIVA DE LEGIBILIDADE DOS MODAIS (FUNDO SÓLIDO BRANCO & ALTO CONTRASTE)
+   ============================================================================== */
+.modal-overlay, #modal-tarefa.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72) !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999 !important;
+  padding: 16px;
+}
+
+.modal-box, .modal-content, #modal-tarefa .modal-box {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 14px !important;
+  padding: 26px 28px !important;
+  width: 100% !important;
+  max-width: 580px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+  position: relative;
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Títulos dos Modais */
+.modal-box h3, .modal-content h3, #modal-tarefa h3 {
+  margin: 0 0 18px 0 !important;
+  color: #0f172a !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  padding-bottom: 12px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Campos de Formulário com Fundo Branco Sólido e Texto Escuro Nítido */
+.modal-box .form-group, #modal-tarefa .form-group {
+  margin-bottom: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+}
+
+.modal-box .form-row, #modal-tarefa .form-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+.modal-box label, #modal-tarefa label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  margin: 0 !important;
+}
+
+.modal-box input[type="text"],
+.modal-box input[type="date"],
+.modal-box input[type="password"],
+.modal-box select,
+.modal-box textarea,
+#modal-tarefa input[type="text"],
+#modal-tarefa input[type="date"],
+#modal-tarefa select,
+#modal-tarefa textarea {
+  width: 100% !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 7px !important;
+  padding: 9px 12px !important;
+  font-size: 13.5px !important;
+  font-family: inherit !important;
+  box-sizing: border-box !important;
+  transition: all 0.15s ease !important;
+}
+
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus,
+#modal-tarefa input:focus,
+#modal-tarefa select:focus,
+#modal-tarefa textarea:focus {
+  outline: none !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+  background: #ffffff !important;
+}
+
+.modal-box textarea, #modal-tarefa textarea {
+  resize: vertical !important;
+  min-height: 65px !important;
+  line-height: 1.4 !important;
+}
+
+/* Rodapé dos Modais */
+.modal-box .modal-footer, #modal-tarefa .modal-footer {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-top: 18px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.modal-box .btn-secondary, #modal-tarefa .btn-secondary {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 9px 18px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+}
+.modal-box .btn-secondary:hover, #modal-tarefa .btn-secondary:hover {
+  background: #e2e8f0 !important;
+}
+
+.modal-box .btn-primary, #modal-tarefa .btn-primary {
+  background: #1e3a8a !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 9px 22px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+.modal-box .btn-primary:hover, #modal-tarefa .btn-primary:hover {
+  background: #172554 !important;
+}
+
+/* Botão de Fechar no Cabeçalho */
+.modal-close-btn {
+  background: transparent !important;
+  border: none !important;
+  font-size: 20px !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  line-height: 1 !important;
+}
+.modal-close-btn:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Checklist dentro do modal */
+#modal-checklist-itens div {
+  background: #f8fafc !important;
+  padding: 6px 10px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+}
+
+
+/* ==============================================================================
+   PAINEL EXECUTIVO: KPIS, FAIXAS E MARCOS DE GOVERNANÇA
+   ============================================================================== */
+.exec-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 1. KPIs Executivos do Topo */
+.exec-kpis-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1024px) {
+  .exec-kpis-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .exec-kpis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.exec-kpi-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius, 8px);
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 4px solid #1B365D;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.exec-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+}
+.exec-kpi-card.highlight-blue { border-left-color: #0284C7; }
+.exec-kpi-card.highlight-amber { border-left-color: #D97706; }
+.exec-kpi-card.highlight-alert { border-left-color: #EAB308; background: #FEFCE8; }
+.exec-kpi-card.highlight-purple { border-left-color: #7C3AED; }
+.exec-kpi-card.clickable { cursor: pointer; }
+
+.exec-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+.exec-kpi-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  font-family: var(--mono, monospace);
+  letter-spacing: 0.03em;
+}
+.exec-badge-trend {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-family: var(--mono, monospace);
+}
+.exec-badge-trend.positive { background: #DCFCE7; color: #15803D; }
+.exec-badge-trend.neutral { background: #E0F2FE; color: #0369A1; }
+.exec-badge-alert {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #FEF08A;
+  color: #854D0E;
+}
+.exec-badge-link {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #7C3AED;
+  text-decoration: underline;
+}
+
+.exec-kpi-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  font-family: var(--cond, sans-serif);
+}
+.exec-kpi-sub {
+  font-size: 11.5px;
+  color: #64748B;
+  line-height: 1.3;
+}
+
+.exec-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 6px 0 4px;
+}
+.exec-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #D97706, #F59E0B);
+  border-radius: 4px;
+}
+
+/* 2. Faixas de Contexto de Uso */
+.exec-section-banner {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg, 12px);
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.exec-section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.exec-section-title-row h3 {
+  margin: 0;
+  color: #0F172A;
+  font-size: 1.2rem;
+  font-family: var(--cond, sans-serif);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.exec-section-title-row p {
+  margin: 2px 0 0;
+  color: #64748B;
+  font-size: 12.5px;
+}
+
+.exec-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .exec-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.exec-tool-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius, 8px);
+  padding: 18px 20px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.exec-tool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -2px rgba(0,0,0,0.08);
+  border-color: #cbd5e1;
+}
+.exec-tool-card.featured-blue {
+  border-top: 4px solid #1B365D;
+}
+.exec-tool-card.featured-gold {
+  border-top: 4px solid #D97706;
+}
+.exec-tool-card.bpmn-asis {
+  border-left: 4px solid #64748B;
+}
+.exec-tool-card.bpmn-tobe {
+  border-left: 4px solid #059669;
+}
+
+.exec-card-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.exec-card-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.exec-card-badge.badge-green { background: #DCFCE7; color: #166534; }
+.exec-card-badge.badge-blue { background: #E0F2FE; color: #075985; }
+.exec-card-badge.badge-amber { background: #FEF3C7; color: #92400E; }
+.exec-card-badge.badge-purple { background: #EDE9FE; color: #5B21B6; }
+.exec-card-badge.badge-gray { background: #F1F5F9; color: #334155; }
+
+.exec-tool-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.exec-tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm, 6px);
+  background: #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.exec-tool-header h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0F172A;
+  font-family: var(--cond, sans-serif);
+}
+.exec-tool-tag {
+  font-size: 11.5px;
+  color: #64748B;
+  display: block;
+}
+
+.exec-tool-desc {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.btn-exec-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1B365D;
+  color: #ffffff;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.btn-exec-action:hover {
+  background: #12243F;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+}
+.btn-exec-action.secondary-action {
+  background: #F8FAFC;
+  color: #1E293B;
+  border-color: #CBD5E1;
+}
+.btn-exec-action.secondary-action:hover {
+  background: #F1F5F9;
+}
+
+/* 4. Linha do Tempo de Governança & Marcos */
+.governance-milestones-widget {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg, 12px);
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.milestones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.milestones-header h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-family: var(--cond, sans-serif);
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.milestones-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  position: relative;
+}
+@media (max-width: 900px) {
+  .milestones-timeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .milestones-timeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+.milestone-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius, 8px);
+  padding: 14px 16px;
+  position: relative;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.milestone-item:hover {
+  border-color: #94A3B8;
+  transform: translateY(-2px);
+}
+.milestone-item.active {
+  background: #EFF6FF;
+  border-color: #93C5FD;
+  box-shadow: 0 0 0 1px #3B82F6;
+}
+.milestone-item.done {
+  opacity: 0.85;
+}
+
+.milestone-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.milestone-date {
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  color: #1E3A8A;
+  background: #DBEAFE;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.milestone-dot {
+  font-size: 12px;
+  font-weight: 700;
+}
+.milestone-dot.done { color: #16A34A; }
+.milestone-dot.current { color: #2563EB; }
+.milestone-dot.upcoming { color: #94A3B8; }
+
+.milestone-title {
+  margin: 6px 0 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.25;
+}
+.milestone-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.35;
+  margin: 0;
+}
+.milestone-badge-kanban {
+  margin-top: 8px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563EB;
+}
+
 </style>
   </head>
 <body>
@@ -2084,7 +2640,7 @@ p, .card-desc, .doc-summary {
       <div class="stat-icon">📋</div>
       <div class="stat-details">
         <h4>Tarefas em Andamento</h4>
-        <div class="stat-val" id="kpiActiveTasks">4</div>
+        <div class="stat-val" id="kpiActiveTasks">0</div>
       </div>
     </div>
     <div class="stat-card purple">
@@ -2328,119 +2884,287 @@ p, .card-desc, .doc-summary {
     </div>
   </section>
 
-  <!-- ==================== TAB 4: PAINEL EXECUTIVO & FERRAMENTAS ==================== -->
+    <!-- ==================== TAB 4: PAINEL EXECUTIVO & GOVERNANÇA ==================== -->
   <section id="view-executivo" class="view-panel">
-    <div class="search-hero">
-      <h3 style="font-family: var(--cond); font-size: 20px; font-weight: 700; margin-bottom: 6px;">
-        Ferramentas e Dashboards Integrados
-      </h3>
-      <p style="font-size: 13.5px; color: var(--muted);">
-        Acesso direto em 1 clique às ferramentas analíticas, notas técnicas e apresentações do projeto.
-      </p>
-
-      <div class="tools-grid">
-        <!-- Ferramenta 1 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">📈</div>
-            <div>
-              <h3>Painel da Realidade Financeira</h3>
-              <span class="doc-period-chip">Tese Déficit e Reserva</span>
-            </div>
+    <div class="exec-dashboard-container">
+      
+      <!-- 1. BLOCO DE INDICADORES-CHAVE (KPIS) EXECUTIVOS NO TOPO -->
+      <div class="exec-kpis-grid">
+        <!-- KPI 1: Saldo Líquido Área 27 -->
+        <div class="exec-kpi-card highlight-blue">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Saldo Líquido Área 27 (Mês Atual)</span>
+            <span class="exec-badge-trend positive">▲ +8% vs mês ant.</span>
           </div>
-          <p class="tool-desc">
-            Visualização executiva sobre o déficit contábil acumulado, queima da reserva prudente de A.A. Brasil e métricas de autossuficiência.
-          </p>
-          <a href="painel-realidade-financeira-aa-1.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Painel
-          </a>
+          <div class="exec-kpi-value">R$ 14.850,00</div>
+          <div class="exec-kpi-sub">Conta Corrente Banco do Brasil + Caixa de Área</div>
         </div>
 
-        <!-- Ferramenta 2 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">📑</div>
-            <div>
-              <h3>Nota Técnica: Regimes Contábeis</h3>
-              <span class="doc-period-chip">Citações Completas & NBC TG</span>
-            </div>
+        <!-- KPI 2: Cotas Convenção 2027 -->
+        <div class="exec-kpi-card highlight-amber">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Cotas Convenção 2027</span>
+            <span class="exec-badge-trend neutral">Meta: 100 cotas</span>
           </div>
-          <p class="tool-desc">
-            Documento de clarificação metodológica sobre a divergência entre regime de caixa e competência na apuração contábil da JUNAAB.
-          </p>
-          <a href="NOTA_TECNICA_COM_CITACOES_COMPLETAS.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Nota Técnica
-          </a>
+          <div class="exec-kpi-value">64% <span style="font-size:14px; font-weight:normal; color:#64748b;">arrecadado</span></div>
+          <div class="exec-progress-bar">
+            <div class="exec-progress-fill" style="width: 64%;"></div>
+          </div>
+          <div class="exec-kpi-sub">64 cotas confirmadas • Prazo: 1º Sem/2027</div>
         </div>
 
-        <!-- Ferramenta 3 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">📊</div>
-            <div>
-              <h3>Dashboard Financeiro Área 27</h3>
-              <span class="doc-period-chip">Controle Mensal e Extratos</span>
-            </div>
+        <!-- KPI 3: Reserva Prudente JUNAAB -->
+        <div class="exec-kpi-card highlight-alert">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Reserva Prudente (JUNAAB)</span>
+            <span class="exec-badge-alert">⚠️ Alerta Amarelo</span>
           </div>
-          <p class="tool-desc">
-            Painel interativo completo em React com receitas por rubrica, despesas por categoria, controle nominal de cotas da Convenção e extrato bancário.
-          </p>
-          <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Dashboard Área 27
-          </a>
+          <div class="exec-kpi-value">14 <span style="font-size:14px; font-weight:normal; color:#64748b;">meses de cobertura</span></div>
+          <div class="exec-kpi-sub">Mínimo estatutário: 12 meses • Atenção com literatura</div>
         </div>
 
-        <!-- Ferramenta 4 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">🗺️</div>
-            <div>
-              <h3>Macroprocesso AS IS (JUNAAB)</h3>
-              <span class="doc-period-chip">BPMN & Diagnóstico Atual</span>
-            </div>
+        <!-- KPI 4: Pendências Críticas / Prazos Próximos -->
+        <div class="exec-kpi-card highlight-purple clickable" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Pendências Críticas</span>
+            <span class="exec-badge-link">Ver no Kanban ↗</span>
           </div>
-          <p class="tool-desc">
-            Mapeamento de arquitetura de processos atual da governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais.
-          </p>
-          <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Macroprocesso AS IS
-          </a>
-        </div>
-
-        <!-- Ferramenta 5 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">⚡</div>
-            <div>
-              <h3>Macroprocesso TO BE (Proposta)</h3>
-              <span class="doc-period-chip">Modernização da Governança</span>
-            </div>
-          </div>
-          <p class="tool-desc">
-            Modelo de processos otimizado proposto para modernização da JUNAAB com gestão orientada a valor e fluxos integrados.
-          </p>
-          <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Macroprocesso TO BE
-          </a>
-        </div>
-
-        <!-- Ferramenta 6 -->
-        <div class="tool-card">
-          <div class="tool-header">
-            <div class="tool-icon">🖥️</div>
-            <div>
-              <h3>Apresentação de Gestão Atualizada</h3>
-              <span class="doc-period-chip">Slides Interativos</span>
-            </div>
-          </div>
-          <p class="tool-desc">
-            Apresentação estruturada para assembleias e reuniões de delegação com síntese de dados, desafios e direcionamentos estratégicos.
-          </p>
-          <a href="APRESENTACAO_ATUALIZADA.html" target="_blank" class="btn-open-doc">
-            🚀 Abrir Apresentação
-          </a>
+          <div class="exec-kpi-value" id="execKpiPendingCount">2 <span style="font-size:14px; font-weight:normal; color:#64748b;">demandas prioritárias</span></div>
+          <div class="exec-kpi-sub">Prazos vencendo nas próximas 2 semanas</div>
         </div>
       </div>
+
+      <!-- 2. FAIXA A: GESTÃO OPERACIONAL DA ÁREA 27 -->
+      <div class="exec-section-banner">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🏢 Faixa A — Gestão Operacional da Área 27</h3>
+            <p>Controles locais da delegação, relatórios de prestação de contas e materiais de assembleia.</p>
+          </div>
+          <span class="exec-card-badge badge-blue">Área 27 - Ceará</span>
+        </div>
+
+        <div class="exec-cards-grid">
+          <!-- Card 1: Dashboard Financeiro Área 27 -->
+          <div class="exec-tool-card featured-blue">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Controle Mensal & Extratos</span>
+                <span class="exec-card-badge badge-green">🟢 Dados Atualizados</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📊</div>
+                <div>
+                  <h4>Dashboard Financeiro Área 27</h4>
+                  <span class="exec-tool-tag">Painel Analítico Completo</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Painel interativo completo com receitas por rubrica (Plano 60/25/15), despesas por categoria, controle nominal de cotas da Convenção e extrato bancário detalhado.
+              </p>
+            </div>
+            <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-exec-action">
+              📊 Visualizar Dados ↗
+            </a>
+          </div>
+
+          <!-- Card 2: Apresentação de Gestão Atualizada -->
+          <div class="exec-tool-card">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Slides Interativos</span>
+                <span class="exec-card-badge badge-amber">📌 Material de Assembleia</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📽️</div>
+                <div>
+                  <h4>Apresentação de Gestão</h4>
+                  <span class="exec-tool-tag" style="color:#D97706; font-weight:600;">Atualizado em Nov/2026</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Síntese visual estruturada para assembleias e reuniões de delegação com desafios de sustentabilidade, prestação de contas aos RSGs e direcionamentos estratégicos.
+              </p>
+            </div>
+            <a href="APRESENTACAO_ATUALIZADA.html" target="_blank" class="btn-exec-action secondary-action">
+              📽️ Acessar Apresentação ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. FAIXA B: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
+      <div class="exec-section-banner">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🏛️ Faixa B — Governança & Diagnóstico Nacional (JUNAAB)</h3>
+            <p>Diagnósticos contábeis, estudos estatutários de déficit e modernização de processos da estrutura nacional.</p>
+          </div>
+          <span class="exec-card-badge badge-gray">JUNAAB Nacional</span>
+        </div>
+
+        <div class="exec-cards-grid" style="margin-bottom: 16px;">
+          <!-- Card 3: Painel da Realidade Financeira -->
+          <div class="exec-tool-card featured-gold">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Tese Déficit & Reserva</span>
+                <span class="exec-card-badge badge-amber">⚖️ Parecer Técnico</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📈</div>
+                <div>
+                  <h4>Painel da Realidade Financeira</h4>
+                  <span class="exec-tool-tag">Diagnóstico de Sustentabilidade</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Visualização executiva sobre o déficit contábil acumulado, queima da reserva prudente de A.A. Brasil e métricas de autossuficiência per capita da literatura.
+              </p>
+            </div>
+            <a href="painel-realidade-financeira-aa-1.html" target="_blank" class="btn-exec-action">
+              ↗️ Acessar Painel ↗
+            </a>
+          </div>
+
+          <!-- Card 4: Nota Técnica: Regimes Contábeis -->
+          <div class="exec-tool-card">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">NBC TG & Fundamentação</span>
+                <span class="exec-card-badge badge-purple">📑 Normas NBC TG</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📑</div>
+                <div>
+                  <h4>Nota Técnica: Regimes Contábeis</h4>
+                  <span class="exec-tool-tag">Citações e Metodologia</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Documento de clarificação metodológica sobre a divergência entre regime de caixa e regime de competência na apuração contábil da JUNAAB, com pareceres normativos.
+              </p>
+            </div>
+            <a href="NOTA_TECNICA_COM_CITACOES_COMPLETAS.html" target="_blank" class="btn-exec-action secondary-action">
+              📑 Ler Nota Técnica ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Lado a lado: Diagnóstico Atual vs Proposta de Modernização -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius, 8px); padding: 14px 16px; margin-bottom: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; font-family: var(--mono, monospace); margin-bottom: 10px;">
+            🔄 Arquitetura de Processos BPMN: Diagnóstico Atual vs. Proposta de Modernização
+          </div>
+          <div class="exec-cards-grid">
+            <!-- Card 5: Macroprocesso AS IS -->
+            <div class="exec-tool-card bpmn-asis">
+              <div>
+                <div class="exec-card-top-meta">
+                  <span class="doc-period-chip">BPMN Atual</span>
+                  <span class="exec-card-badge badge-gray">🗺️ Diagnóstico Operacional</span>
+                </div>
+                <div class="exec-tool-header">
+                  <div class="exec-tool-icon">🔍</div>
+                  <div>
+                    <h4>Macroprocesso AS IS</h4>
+                    <span class="exec-tool-tag">Diagnóstico da Estrutura Vigente</span>
+                  </div>
+                </div>
+                <p class="exec-tool-desc">
+                  Mapeamento detalhado da arquitetura atual de governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais identificados.
+                </p>
+              </div>
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-exec-action secondary-action">
+                🔍 Mapeamento AS IS ↗
+              </a>
+            </div>
+
+            <!-- Card 6: Macroprocesso TO BE -->
+            <div class="exec-tool-card bpmn-tobe">
+              <div>
+                <div class="exec-card-top-meta">
+                  <span class="doc-period-chip">BPMN Otimizado</span>
+                  <span class="exec-card-badge badge-green">💡 Proposta de Modernização</span>
+                </div>
+                <div class="exec-tool-header">
+                  <div class="exec-tool-icon">✨</div>
+                  <div>
+                    <h4>Macroprocesso TO BE</h4>
+                    <span class="exec-tool-tag">Modernização da Governança</span>
+                  </div>
+                </div>
+                <p class="exec-tool-desc">
+                  Modelo de processos otimizado proposto para modernização da JUNAAB, estruturado com gestão orientada a valor, governança RACI e fluxos integrados.
+                </p>
+              </div>
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-exec-action">
+                ✨ Proposta TO BE ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. WIDGET DE RESUMO DE GOVERNANÇA & PRÓXIMOS MARCOS -->
+      <div class="governance-milestones-widget">
+        <div class="milestones-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">🗓️</span>
+            <div>
+              <h4 style="margin: 0;">Resumo de Governança & Próximos Marcos</h4>
+              <p style="margin: 2px 0 0; font-size: 12px; color: #64748b;">Cronograma Estratégico da Delegação com status de cumprimento</p>
+            </div>
+          </div>
+          <button class="btn-secondary" style="font-size: 11.5px; padding: 5px 10px;" onclick="switchTab('kanban')">
+            📋 Acompanhar no Kanban
+          </button>
+        </div>
+
+        <div class="milestones-timeline">
+          <!-- Marco 1 -->
+          <div class="milestone-item done">
+            <div class="milestone-header-row">
+              <span class="milestone-date">10/NOV/2026</span>
+              <span class="milestone-dot done" title="Concluído">✅</span>
+            </div>
+            <h5 class="milestone-title">Fechamento Outubro/26</h5>
+            <p class="milestone-desc">Balancete consolidado e conciliação bancária homologados pela comissão de finanças.</p>
+          </div>
+
+          <!-- Marco 2 -->
+          <div class="milestone-item active" onclick="switchTab('kanban')" style="cursor: pointer;" title="Clique para abrir esta tarefa no Kanban">
+            <div class="milestone-header-row">
+              <span class="milestone-date">20/NOV/2026</span>
+              <span class="milestone-dot current" title="Em Andamento">⚡</span>
+            </div>
+            <h5 class="milestone-title">Resposta Circular 04 JUNAAB</h5>
+            <p class="milestone-desc">Consolidação do posicionamento da Área 27 sobre as diretrizes dos encontros regionais.</p>
+            <span class="milestone-badge-kanban">📌 Prioridade no Kanban ↗</span>
+          </div>
+
+          <!-- Marco 3 -->
+          <div class="milestone-item upcoming">
+            <div class="milestone-header-row">
+              <span class="milestone-date">05/DEZ/2026</span>
+              <span class="milestone-dot upcoming" title="Previsto">○</span>
+            </div>
+            <h5 class="milestone-title">Assembleia de Área 27</h5>
+            <p class="milestone-desc">Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.</p>
+          </div>
+
+          <!-- Marco 4 -->
+          <div class="milestone-item upcoming">
+            <div class="milestone-header-row">
+              <span class="milestone-date">ABRIL / 2027</span>
+              <span class="milestone-dot upcoming" title="Previsto">○</span>
+            </div>
+            <h5 class="milestone-title">49ª Conferência (CSG)</h5>
+            <p class="milestone-desc">Apreciação das propostas de modernização e deliberações estatutárias nacionais.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2870,7 +3594,10 @@ p, .card-desc, .doc-summary {
 <!-- MODAL: NOVA TAREFA ADMINISTRATIVA -->
 <div id="modal-tarefa" class="modal-overlay" style="display: none;">
   <div class="modal-box">
-    <h3>➕ Nova Tarefa Administrativa</h3>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:2px solid #e2e8f0; padding-bottom:10px;">
+      <h3 style="margin:0; border:none; padding:0; color:#0f172a; font-size:1.25rem; font-weight:700;">➕ Nova Tarefa Administrativa</h3>
+      <button type="button" class="modal-close-btn" onclick="fecharModalTarefa()" title="Fechar">✕</button>
+    </div>
     <form id="form-nova-tarefa" onsubmit="salvarNovaTarefa(event)">
       <div class="form-group">
         <label>Título da Ação *</label>
@@ -4151,8 +4878,10 @@ function updateStatsKPIs() {
   const junaabCount = docsData.filter(d => d.categoria.includes("JUNAAB")).length;
   document.getElementById("kpiJunaabDocs").innerText = junaabCount;
 
-  const activeTasks = kanbanTasks.filter(t => t.coluna === "backlog" || t.coluna === "em_andamento" || t.coluna === "em_pauta").length;
-  document.getElementById("kpiActiveTasks").innerText = activeTasks;
+  // Contagem de tarefas em andamento do Kanban
+  const activeTasks = (typeof tarefasAdmin !== 'undefined' ? tarefasAdmin : []).filter(t => t.status === 'doing').length;
+  const kpiEl = document.getElementById("kpiActiveTasks");
+  if (kpiEl) kpiEl.innerText = activeTasks;
 }
 
 // ==================== MECANISMO DE BUSCA E FILTROS ====================
@@ -5777,74 +6506,30 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==============================================================================
 
 // Tarefas Administrativas Reais (com persistência em LocalStorage)
-let tarefasAdmin = JSON.parse(localStorage.getItem('aa_tarefas_admin')) || [
-  {
-    id: 't1',
-    titulo: 'Responder Circular 04-2026 da JUNAAB',
-    descricao: 'Consolidar posicionamento da Área 27 sobre as diretrizes dos encontros regionais.',
-    responsavel: 'Delegado de Área',
-    categoria: 'JUNAAB',
-    prazo: '2026-11-20',
-    status: 'doing',
-    docId: '4',
-    docTitulo: 'Circular 04-2026 (30/05/2026)',
-    subtarefas: [
-      { titulo: 'Ler parecer do Comitê de Literatura', feito: true },
-      { titulo: 'Minutar resposta da Área 27', feito: false }
-    ]
-  },
-  {
-    id: 't2',
-    titulo: 'Conferir comprovantes PIX das camisas da Convenção 2027',
-    descricao: 'Bater planilha CSV de vendas com os extratos da conta poupança.',
-    responsavel: 'Comitê de Finanças',
-    categoria: 'CONVENCAO',
-    prazo: '2026-11-18',
-    status: 'doing',
-    docId: '17',
-    docTitulo: 'Prestação de Contas — Vendas de Camisas',
-    subtarefas: [
-      { titulo: 'Verificar extrato bancário', feito: true },
-      { titulo: 'Conciliar lotes de camisetas', feito: true },
-      { titulo: 'Emitir recibo consolidado', feito: false }
-    ]
-  },
-  {
-    id: 't3',
-    titulo: 'Parecer final sobre Relatório de Contestação JUNAAB',
-    descricao: 'Revisão final dos anexos contábeis antes do protocolo oficial.',
-    responsavel: 'Conselho Fiscal',
-    categoria: 'FINANCEIRO',
-    prazo: '2026-11-15',
-    status: 'review',
-    docId: '10',
-    docTitulo: 'Relatório de Contestação — JUNAAB',
-    subtarefas: [
-      { titulo: 'Auditar planilhas 2019-2025', feito: true },
-      { titulo: 'Colher assinatura dos membros do Conselho', feito: false }
-    ]
-  },
-  {
-    id: 't4',
-    titulo: 'Atualizar Matriz RACI para Assembleia de Área',
-    descricao: 'Preparar versão resumida para apresentação aos RSGs.',
-    responsavel: 'Secretaria / ESG',
-    categoria: 'GOVERNANCA',
-    prazo: '2026-11-25',
-    status: 'todo',
-    docId: '28',
-    docTitulo: 'Matriz RACI — Serviços Gerais',
-    subtarefas: [
-      { titulo: 'Revisar encargos estatutários', feito: false }
-    ]
+// Tarefas Administrativas Reais (Inicia vazio por padrão e persiste no LocalStorage)
+let tarefasAdmin = [];
+try {
+  const stored = localStorage.getItem('aa_tarefas_admin');
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    // Se for o array com os mocks antigos t1..t4, resetar para array vazio
+    if (Array.isArray(parsed) && parsed.some(t => t.id === 't1' || t.id === 't2')) {
+      tarefasAdmin = [];
+      localStorage.setItem('aa_tarefas_admin', JSON.stringify([]));
+    } else {
+      tarefasAdmin = Array.isArray(parsed) ? parsed : [];
+    }
   }
-];
+} catch (e) {
+  tarefasAdmin = [];
+}
 
 let modalChecklistTemp = [];
 
 function salvarEstadoTarefas() {
   localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
   renderizarKanban();
+  if (typeof updateStatsKPIs === 'function') updateStatsKPIs();
 }
 
 function renderizarKanban() {
@@ -5872,6 +6557,10 @@ function renderizarKanban() {
 
     container.innerHTML = '';
     contador.textContent = colunas[status].length;
+
+    if (colunas[status].length === 0) {
+      container.innerHTML = '<div style="text-align:center; padding:28px 12px; color:#94a3b8; font-size:12px; font-style:italic;">Nenhuma tarefa nesta coluna.</div>';
+    }
 
     colunas[status].forEach(t => {
       const hoje = new Date().toISOString().split('T')[0];
