@@ -3166,7 +3166,7 @@ p, .card-desc, .doc-summary {
           <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px;">
             📊 Cockpit Executivo de Tomada de Decisão
           </h3>
-          <span style="font-size: 12px; color: #64748b;">Faixa A fixa no topo. Marque abaixo as faixas complementares que deseja exibir:</span>
+          <span style="font-size: 12px; color: #64748b;">Faixa A e Resumo de Governança fixos. Marque abaixo as faixas complementares que deseja exibir:</span>
         </div>
 
         <div class="exec-toolbar-right">
@@ -3195,10 +3195,10 @@ p, .card-desc, .doc-summary {
 
               <div class="dropdown-faixas-list">
                 <!-- Faixa A (Fixa) -->
-                <div class="dropdown-faixa-item" style="opacity: 0.75; cursor: default; background: #f8fafc; border-radius: 6px;">
-                  <input type="checkbox" checked disabled title="Faixa A é a base executiva e permanece fixa">
+                <div class="dropdown-faixa-item" style="opacity: 0.85; cursor: default; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                  <input type="checkbox" checked disabled title="Faixa A é a base executiva e permanece fixa no topo">
                   <div class="faixa-item-desc">
-                    <strong style="color: #475569;">🏛️ Faixa A — Governança Nacional (Fixa)</strong>
+                    <strong style="color: #1e3a8a;">🏛️ Faixa A — Governança Nacional (Fixa)</strong>
                     <small>Sempre visível no topo com os 6 KPIs</small>
                   </div>
                 </div>
@@ -3229,6 +3229,15 @@ p, .card-desc, .doc-summary {
                     <small>Macroprocessos BPMN AS IS e TO BE</small>
                   </div>
                 </label>
+
+                <!-- Resumo de Governança (Fixo) -->
+                <div class="dropdown-faixa-item" style="opacity: 0.85; cursor: default; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                  <input type="checkbox" checked disabled title="Resumo de Governança permanece fixo no rodapé do painel">
+                  <div class="faixa-item-desc">
+                    <strong style="color: #1e3a8a;">🗓️ Resumo de Governança & Marcos (Fixo)</strong>
+                    <small>Sempre visível logo abaixo das faixas</small>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -7425,9 +7434,12 @@ function selecionarApenasConvencao() {
 }
 
 function aplicarVisibilidadeFaixas() {
-  // Faixa A é SEMPRE visível (Fixa)
+  // Faixa A e Resumo de Governança são SEMPRE visíveis (Fixos)
   const bannerA = document.getElementById('banner-faixa-A');
   if (bannerA) bannerA.style.display = 'block';
+
+  const widgetMilestones = document.querySelector('.governance-milestones-widget');
+  if (widgetMilestones) widgetMilestones.style.display = 'block';
 
   // Faixas B, C, D são controladas pelo filtro
   ['B', 'C', 'D'].forEach(f => {
