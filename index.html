@@ -1766,6 +1766,244 @@ p, .card-desc, .doc-summary {
   background: #FFE4E6;
 }
 
+
+/* ==============================================================================
+   ESTILOS KANBAN DE TAREFAS ADMINISTRATIVAS (ÁREA 27)
+   ============================================================================== */
+.kanban-container {
+  padding: 0;
+  font-family: var(--sans, system-ui, -apple-system, sans-serif);
+}
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.kanban-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-family: var(--cond, inherit);
+  font-weight: 700;
+}
+.kanban-header .subtitle {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+.kanban-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.kanban-filters {
+  display: flex;
+  gap: 16px;
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+}
+.filter-group select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #1e293b;
+  font-size: 0.85rem;
+}
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .kanban-board {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kanban-column {
+    flex: 0 0 310px;
+    scroll-snap-align: start;
+    max-height: 80vh;
+  }
+}
+@media (max-width: 640px) {
+  .kanban-column {
+    flex: 0 0 calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    scroll-snap-align: center;
+  }
+}
+
+.kanban-column {
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 0 !important;
+  min-height: 480px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  position: relative;
+  overflow: hidden;
+}
+.column-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10;
+  background: #f1f5f9 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 12px 14px 10px !important;
+  border-bottom: 2px solid #cbd5e1;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+.column-body {
+  padding: 12px 12px 14px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 400px;
+}
+.column-body.drag-over {
+  background: rgba(37, 99, 235, 0.08);
+  border: 2px dashed #2563eb;
+  border-radius: 8px;
+}
+.badge-count {
+  background: #cbd5e1;
+  color: #0f172a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-family: var(--mono, monospace);
+  font-weight: 600;
+}
+
+.task-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border-left: 4px solid #1e3a8a;
+  cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+}
+.task-card:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+.task-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.task-card[data-cat="FINANCEIRO"] { border-left-color: #16a34a; }
+.task-card[data-cat="JUNAAB"] { border-left-color: #2563eb; }
+.task-card[data-cat="CONVENCAO"] { border-left-color: #d97706; }
+.task-card[data-cat="GOVERNANCA"] { border-left-color: #7c3aed; }
+
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.task-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  color: #334155;
+  font-family: var(--mono, monospace);
+}
+.task-deadline {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+}
+.task-deadline.atrasado {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.task-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #0f172a;
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+.task-desc {
+  font-size: 0.8rem;
+  color: #475569;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.task-doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 8px;
+  border: 1px solid #bfdbfe;
+  font-weight: 500;
+}
+.task-doc-link:hover {
+  background: #dbeafe;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.78rem;
+  color: #475569;
+  gap: 8px;
+}
+.task-move-select {
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+}
+
 </style>
   </head>
 <body>
@@ -1970,74 +2208,83 @@ p, .card-desc, .doc-summary {
   </section>
 
   <!-- ==================== TAB 2: KANBAN ADMINISTRATIVO ==================== -->
-  <section id="view-kanban" class="view-panel">
-    <div class="kanban-controls">
-      <div class="kanban-title-area">
-        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-          <h2 style="margin: 0;">Kanban de Gestão Administrativa</h2>
-          <div class="view-mode-toggle" style="background: #fff;">
-            <button id="btnKanbanModeDocs" class="view-mode-btn active" onclick="setKanbanMode('docs')">
-              📑 Documentos do Acervo
-            </button>
-            <button id="btnKanbanModeTasks" class="view-mode-btn" onclick="setKanbanMode('tasks')">
-              📋 Tarefas Administrativas
-            </button>
-            <button id="btnKanbanModeAll" class="view-mode-btn" onclick="setKanbanMode('all')">
-              🌐 Visão Integrada
-            </button>
-          </div>
-        </div>
-        <p style="margin-top: 4px;">Arraste os documentos entre as colunas (A Fazer, Em Andamento, Considerações Finais, Concluído) no estilo Trello.</p>
+<!-- SEÇÃO KANBAN DE TAREFAS ADMINISTRATIVAS -->
+<section id="view-kanban" class="view-panel">
+  <div id="kanban-section" class="kanban-container">
+    <div class="kanban-header">
+      <div>
+        <h2>📌 Kanban de Tarefas Administrativas</h2>
+        <p class="subtitle">Gerencie demandas operacionais, prazos e aprovações da Área 27. Arraste os cards para atualizar o status.</p>
       </div>
-      <div class="kanban-btn-group">
-        <button class="btn-primary" onclick="openNewTaskModal()">
-          <span>➕</span> Nova Tarefa
-        </button>
-        <button class="btn-secondary" onclick="exportKanbanData()">
-          <span>📤</span> Exportar JSON
-        </button>
+      
+      <div class="kanban-actions">
+        <button class="btn-primary" onclick="abrirModalTarefa()">➕ Nova Tarefa</button>
+        <button class="btn-secondary" onclick="exportarTarefasJSON()">📤 Exportar JSON</button>
       </div>
     </div>
 
-    <!-- Kanban Board Columns -->
-    <div class="kanban-board" id="kanbanBoard">
-      <!-- Coluna 1 -->
-      <div class="kanban-col" data-col="backlog">
-        <div class="kanban-col-header">
-          <div class="col-title"><span>📋</span> A Fazer (Backlog)</div>
-          <span class="col-count" id="count-backlog">0</span>
-        </div>
-        <div class="kanban-col-cards" id="cards-backlog" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'backlog')" ondragleave="handleDragLeave(event)"></div>
+    <!-- Barra de Filtros Rápidos -->
+    <div class="kanban-filters">
+      <div class="filter-group">
+        <label for="filtro-responsavel">👤 Responsável:</label>
+        <select id="filtro-responsavel" onchange="renderizarKanban()">
+          <option value="TODOS">Todos os Perfis</option>
+          <option value="Delegado de Área">Carlos S.R. (Delegado de Área)</option>
+          <option value="Comitê de Finanças">Comitê de Finanças</option>
+          <option value="Secretaria / ESG">Secretaria / ESG</option>
+          <option value="Conselho Fiscal">Conselho Fiscal</option>
+          <option value="Analista de Processos">Henrique (Analista)</option>
+        </select>
       </div>
 
-      <!-- Coluna 2 -->
-      <div class="kanban-col" data-col="em_andamento">
-        <div class="kanban-col-header">
-          <div class="col-title"><span>⏳</span> Em Andamento / Análise</div>
-          <span class="col-count" id="count-em_andamento">0</span>
-        </div>
-        <div class="kanban-col-cards" id="cards-em_andamento" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'em_andamento')" ondragleave="handleDragLeave(event)"></div>
-      </div>
-
-      <!-- Coluna 3 -->
-      <div class="kanban-col" data-col="em_pauta">
-        <div class="kanban-col-header">
-          <div class="col-title"><span>📝</span> Considerações Finais</div>
-          <span class="col-count" id="count-em_pauta">0</span>
-        </div>
-        <div class="kanban-col-cards" id="cards-em_pauta" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'em_pauta')" ondragleave="handleDragLeave(event)"></div>
-      </div>
-
-      <!-- Coluna 4 -->
-      <div class="kanban-col" data-col="concluido">
-        <div class="kanban-col-header">
-          <div class="col-title"><span>✅</span> Concluído / Homologado</div>
-          <span class="col-count" id="count-concluido">0</span>
-        </div>
-        <div class="kanban-col-cards" id="cards-concluido" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'concluido')" ondragleave="handleDragLeave(event)"></div>
+      <div class="filter-group">
+        <label for="filtro-categoria">🏷️ Área / Comitê:</label>
+        <select id="filtro-categoria" onchange="renderizarKanban()">
+          <option value="TODAS">Todas as Áreas</option>
+          <option value="FINANCEIRO">Financeiro</option>
+          <option value="JUNAAB">JUNAAB</option>
+          <option value="CONVENCAO">Convenção</option>
+          <option value="GOVERNANCA">Governança & Processos</option>
+        </select>
       </div>
     </div>
-  </section>
+
+    <!-- Quadro de 4 Colunas com Cabeçalhos Estáticos -->
+    <div class="kanban-board">
+      <div class="kanban-column" data-status="todo" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'todo')">
+        <div class="column-header">
+          <span>📋 A Fazer</span>
+          <span class="badge-count" id="count-todo">0</span>
+        </div>
+        <div class="column-body" id="col-todo"></div>
+      </div>
+
+      <div class="kanban-column" data-status="doing" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'doing')">
+        <div class="column-header">
+          <span>⏳ Em Andamento</span>
+          <span class="badge-count" id="count-doing">0</span>
+        </div>
+        <div class="column-body" id="col-doing"></div>
+      </div>
+
+      <div class="kanban-column" data-status="review" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'review')">
+        <div class="column-header">
+          <span>⚖️ Em Revisão / Parecer</span>
+          <span class="badge-count" id="count-review">0</span>
+        </div>
+        <div class="column-body" id="col-review"></div>
+      </div>
+
+      <div class="kanban-column" data-status="done" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'done')">
+        <div class="column-header">
+          <span>✅ Concluído</span>
+          <span class="badge-count" id="count-done">0</span>
+        </div>
+        <div class="column-body" id="col-done"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- ==================== TAB 3: ATORES & PERMISSÕES (RBAC) ==================== -->
   <section id="view-rbac" class="view-panel">
@@ -2619,6 +2866,80 @@ p, .card-desc, .doc-summary {
 
 <!-- Toast Container -->
 <div id="toastContainer" class="toast-container"></div>
+
+<!-- MODAL: NOVA TAREFA ADMINISTRATIVA -->
+<div id="modal-tarefa" class="modal-overlay" style="display: none;">
+  <div class="modal-box">
+    <h3>➕ Nova Tarefa Administrativa</h3>
+    <form id="form-nova-tarefa" onsubmit="salvarNovaTarefa(event)">
+      <div class="form-group">
+        <label>Título da Ação *</label>
+        <input type="text" id="tarefa-titulo" placeholder="Ex: Responder Circular 04-2026 da JUNAAB" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Responsável *</label>
+          <select id="tarefa-responsavel" required>
+            <option value="Delegado de Área">Carlos S.R. (Delegado de Área)</option>
+            <option value="Comitê de Finanças">Comitê de Finanças</option>
+            <option value="Secretaria / ESG">Secretaria / ESG</option>
+            <option value="Conselho Fiscal">Conselho Fiscal</option>
+            <option value="Analista de Processos">Henrique (Analista)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Área / Comitê *</label>
+          <select id="tarefa-categoria" required>
+            <option value="FINANCEIRO">Financeiro</option>
+            <option value="JUNAAB">JUNAAB</option>
+            <option value="CONVENCAO">Convenção</option>
+            <option value="GOVERNANCA">Governança & Processos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prazo</label>
+          <input type="date" id="tarefa-prazo">
+        </div>
+
+        <div class="form-group">
+          <label>Vincular Documento do Acervo (Opcional)</label>
+          <select id="tarefa-doc-vinculado">
+            <option value="">-- Nenhum documento vinculado --</option>
+            <!-- Populado automaticamente via JS com os documentos do seu acervo -->
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Observações / Detalhes</label>
+        <textarea id="tarefa-descricao" rows="2" placeholder="Instruções breves para execução..."></textarea>
+      </div>
+
+      <!-- Checklist no Modal de Criação / Edição -->
+      <div class="form-group" style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label style="margin:0; font-weight:600; color:#1e293b;">📋 Checklist de Etapas</label>
+          <span id="modal-checklist-count" style="font-size:11px; color:#64748b;">(0 itens)</span>
+        </div>
+        <div id="modal-checklist-itens" style="display:flex; flex-direction:column; gap:4px; max-height:130px; overflow-y:auto; margin-bottom:8px;"></div>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="modal-subtask-novo-input" placeholder="Novo item do checklist..." style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();adicionarItemModalChecklist();}">
+          <button type="button" class="btn-secondary" style="font-size:12px; padding:6px 12px;" onclick="adicionarItemModalChecklist()">+ Item</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="fecharModalTarefa()">Cancelar</button>
+        <button type="submit" class="btn-primary">Criar Tarefa</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- Scripts -->
 <script>
@@ -5448,6 +5769,392 @@ function exportarAuditoriaCSV() {
 window.addEventListener('DOMContentLoaded', () => {
   initSupabase();
 });
+
+
+
+// ==============================================================================
+// GESTÃO DO KANBAN DE TAREFAS ADMINISTRATIVAS (ÁREA 27)
+// ==============================================================================
+
+// Tarefas Administrativas Reais (com persistência em LocalStorage)
+let tarefasAdmin = JSON.parse(localStorage.getItem('aa_tarefas_admin')) || [
+  {
+    id: 't1',
+    titulo: 'Responder Circular 04-2026 da JUNAAB',
+    descricao: 'Consolidar posicionamento da Área 27 sobre as diretrizes dos encontros regionais.',
+    responsavel: 'Delegado de Área',
+    categoria: 'JUNAAB',
+    prazo: '2026-11-20',
+    status: 'doing',
+    docId: '4',
+    docTitulo: 'Circular 04-2026 (30/05/2026)',
+    subtarefas: [
+      { titulo: 'Ler parecer do Comitê de Literatura', feito: true },
+      { titulo: 'Minutar resposta da Área 27', feito: false }
+    ]
+  },
+  {
+    id: 't2',
+    titulo: 'Conferir comprovantes PIX das camisas da Convenção 2027',
+    descricao: 'Bater planilha CSV de vendas com os extratos da conta poupança.',
+    responsavel: 'Comitê de Finanças',
+    categoria: 'CONVENCAO',
+    prazo: '2026-11-18',
+    status: 'doing',
+    docId: '17',
+    docTitulo: 'Prestação de Contas — Vendas de Camisas',
+    subtarefas: [
+      { titulo: 'Verificar extrato bancário', feito: true },
+      { titulo: 'Conciliar lotes de camisetas', feito: true },
+      { titulo: 'Emitir recibo consolidado', feito: false }
+    ]
+  },
+  {
+    id: 't3',
+    titulo: 'Parecer final sobre Relatório de Contestação JUNAAB',
+    descricao: 'Revisão final dos anexos contábeis antes do protocolo oficial.',
+    responsavel: 'Conselho Fiscal',
+    categoria: 'FINANCEIRO',
+    prazo: '2026-11-15',
+    status: 'review',
+    docId: '10',
+    docTitulo: 'Relatório de Contestação — JUNAAB',
+    subtarefas: [
+      { titulo: 'Auditar planilhas 2019-2025', feito: true },
+      { titulo: 'Colher assinatura dos membros do Conselho', feito: false }
+    ]
+  },
+  {
+    id: 't4',
+    titulo: 'Atualizar Matriz RACI para Assembleia de Área',
+    descricao: 'Preparar versão resumida para apresentação aos RSGs.',
+    responsavel: 'Secretaria / ESG',
+    categoria: 'GOVERNANCA',
+    prazo: '2026-11-25',
+    status: 'todo',
+    docId: '28',
+    docTitulo: 'Matriz RACI — Serviços Gerais',
+    subtarefas: [
+      { titulo: 'Revisar encargos estatutários', feito: false }
+    ]
+  }
+];
+
+let modalChecklistTemp = [];
+
+function salvarEstadoTarefas() {
+  localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
+  renderizarKanban();
+}
+
+function renderizarKanban() {
+  const elFiltroResp = document.getElementById('filtro-responsavel');
+  const elFiltroCat = document.getElementById('filtro-categoria');
+  if (!elFiltroResp || !elFiltroCat) return;
+
+  const filtroResp = elFiltroResp.value;
+  const filtroCat = elFiltroCat.value;
+
+  const colunas = { todo: [], doing: [], review: [], done: [] };
+
+  tarefasAdmin.forEach(tarefa => {
+    const passaResp = filtroResp === 'TODOS' || tarefa.responsavel === filtroResp;
+    const passaCat = filtroCat === 'TODAS' || tarefa.categoria === filtroCat;
+    if (passaResp && passaCat && colunas[tarefa.status]) {
+      colunas[tarefa.status].push(tarefa);
+    }
+  });
+
+  ['todo', 'doing', 'review', 'done'].forEach(status => {
+    const container = document.getElementById('col-' + status);
+    const contador = document.getElementById('count-' + status);
+    if (!container || !contador) return;
+
+    container.innerHTML = '';
+    contador.textContent = colunas[status].length;
+
+    colunas[status].forEach(t => {
+      const hoje = new Date().toISOString().split('T')[0];
+      const atrasado = t.prazo && t.prazo < hoje && t.status !== 'done';
+      const prazoFormatado = t.prazo ? t.prazo.split('-').reverse().join('/') : 'Sem prazo';
+
+      const docHtml = t.docId 
+        ? '<a href="javascript:void(0)" onclick="abrirDocumentoAcervo(\'' + t.docId + '\')" class="task-doc-link" title="Clique para abrir o arquivo correspondente">📎 ' + (t.docTitulo || 'Documento Vinculado') + '</a>' 
+        : '';
+
+      const totalSub = t.subtarefas ? t.subtarefas.length : 0;
+      const doneSub = t.subtarefas ? t.subtarefas.filter(s => s.feito).length : 0;
+      const pctSub = totalSub > 0 ? Math.round((doneSub / totalSub) * 100) : 0;
+
+      let checklistHtml = '';
+      if (totalSub > 0) {
+        checklistHtml = `
+          <div class="card-checklist-bar" style="margin: 6px 0 8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b; font-family:var(--mono);">
+              <span style="cursor:pointer; font-weight:600;" onclick="toggleCardChecklistVisibility('${t.id}')">📋 Checklist ${doneSub}/${totalSub} (${pctSub}%) ▾</span>
+            </div>
+            <div class="progress-bg" style="height:4px; margin:3px 0 6px;">
+              <div class="progress-fill" style="width:${pctSub}%;"></div>
+            </div>
+            <div class="card-checklist-items" id="card-subtasks-${t.id}">
+              ${t.subtarefas.map((sub, idx) => `
+                <label class="checklist-item-row ${sub.feito ? 'done' : ''}" onclick="event.stopPropagation();">
+                  <input type="checkbox" ${sub.feito ? 'checked' : ''} onchange="toggleAdminSubtask('${t.id}', ${idx}, this.checked)">
+                  <span class="checklist-item-title">${sub.titulo}</span>
+                </label>
+              `).join('')}
+            </div>
+            <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Adicionar Item</button>
+          </div>
+        `;
+      } else {
+        checklistHtml = `
+          <div style="margin: 4px 0 6px;">
+            <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Criar Checklist</button>
+          </div>
+        `;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'task-card';
+      card.draggable = true;
+      card.dataset.cat = t.categoria;
+      card.ondragstart = (e) => e.dataTransfer.setData('text/plain', t.id);
+
+      card.innerHTML = `
+        <div class="task-top">
+          <span class="task-tag">${t.categoria}</span>
+          <span class="task-deadline ${atrasado ? 'atrasado' : ''}">📅 ${prazoFormatado}</span>
+        </div>
+        <h4 class="task-title">${t.titulo}</h4>
+        ${t.descricao ? '<p class="task-desc">' + t.descricao + '</p>' : ''}
+        ${docHtml}
+        ${checklistHtml}
+        <div class="task-footer">
+          <span>👤 ${t.responsavel}</span>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <select class="task-move-select" onchange="moverTarefa('${t.id}', this.value)" title="Mover de coluna">
+              <option value="todo" ${t.status === 'todo' ? 'selected' : ''}>📋 A Fazer</option>
+              <option value="doing" ${t.status === 'doing' ? 'selected' : ''}>⏳ Andamento</option>
+              <option value="review" ${t.status === 'review' ? 'selected' : ''}>⚖️ Revisão</option>
+              <option value="done" ${t.status === 'done' ? 'selected' : ''}>✅ Concluído</option>
+            </select>
+            <button style="background:transparent; border:none; cursor:pointer; font-size:12px;" onclick="excluirTarefaAdmin('${t.id}')" title="Excluir tarefa">🗑️</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+}
+
+// Checklist Interativo do Kanban
+function toggleAdminSubtask(taskId, subIdx, isChecked) {
+  const t = tarefasAdmin.find(item => item.id === taskId);
+  if (t && t.subtarefas && t.subtarefas[subIdx]) {
+    t.subtarefas[subIdx].feito = isChecked;
+    salvarEstadoTarefas();
+  }
+}
+
+function promptAddSubtaskAdmin(taskId) {
+  const t = tarefasAdmin.find(item => item.id === taskId);
+  if (!t) return;
+  const texto = prompt('Digite o novo item para o checklist da tarefa:');
+  if (texto && texto.trim()) {
+    if (!t.subtarefas) t.subtarefas = [];
+    t.subtarefas.push({ titulo: texto.trim(), feito: false });
+    salvarEstadoTarefas();
+    showToast('Item adicionado ao checklist!');
+  }
+}
+
+function excluirTarefaAdmin(id) {
+  if (confirm('Deseja realmente excluir esta tarefa?')) {
+    tarefasAdmin = tarefasAdmin.filter(t => t.id !== id);
+    salvarEstadoTarefas();
+    showToast('Tarefa excluída.');
+  }
+}
+
+// Drag and Drop
+function permitirDrop(e) {
+  e.preventDefault();
+}
+
+function soltarCard(e, novoStatus) {
+  e.preventDefault();
+  const id = e.dataTransfer.getData('text/plain');
+  moverTarefa(id, novoStatus);
+}
+
+function moverTarefa(id, novoStatus) {
+  const tarefa = tarefasAdmin.find(t => t.id === id);
+  if (tarefa) {
+    tarefa.status = novoStatus;
+    salvarEstadoTarefas();
+    showToast('Tarefa "' + tarefa.titulo + '" movida para ' + obterRotuloStatus(novoStatus));
+  }
+}
+
+function obterRotuloStatus(status) {
+  switch(status) {
+    case 'todo': return 'A Fazer';
+    case 'doing': return 'Em Andamento';
+    case 'review': return 'Em Revisão / Parecer';
+    case 'done': return 'Concluído';
+    default: return status;
+  }
+}
+
+// Abrir documento vinculado no acervo de arquivos
+function abrirDocumentoAcervo(docId) {
+  if (!docId) return;
+
+  // Busca no catálogo por id, id numérico, ou aproximação de título
+  let doc = (typeof docsData !== 'undefined' ? docsData : []).find(d => 
+    d.id === docId || 
+    String(d.id).endsWith(docId) ||
+    d.id === 'doc-fin-' + docId ||
+    d.id === 'doc-jun-' + docId
+  );
+
+  if (!doc && !isNaN(parseInt(docId))) {
+    const idx = parseInt(docId) - 1;
+    if (idx >= 0 && idx < docsData.length) {
+      doc = docsData[idx];
+    }
+  }
+
+  if (!doc) {
+    doc = docsData.find(d => d.titulo.toLowerCase().includes(String(docId).toLowerCase()));
+  }
+
+  if (doc) {
+    if (typeof onDocOpenClick === 'function') {
+      onDocOpenClick(null, doc.id);
+    }
+    window.open(encodeURI(doc.caminhoRelativo), '_blank');
+  } else {
+    showToast('Documento vinculado não encontrado no catálogo local.');
+  }
+}
+
+// Modal e Criação de Tarefas
+function abrirModalTarefa() {
+  modalChecklistTemp = [];
+  renderizarModalChecklistItens();
+
+  // Popular select com os documentos do acervo
+  const selectDoc = document.getElementById('tarefa-doc-vinculado');
+  if (selectDoc) {
+    selectDoc.innerHTML = '<option value="">-- Nenhum documento vinculado --</option>';
+    if (typeof docsData !== 'undefined' && docsData.length > 0) {
+      docsData.forEach(d => {
+        const cat = d.categoria.split(' - ')[1] || d.categoria;
+        selectDoc.innerHTML += '<option value="' + d.id + '">' + cat + ' › ' + d.titulo + '</option>';
+      });
+    }
+  }
+
+  document.getElementById('modal-tarefa').style.display = 'flex';
+}
+
+function fecharModalTarefa() {
+  document.getElementById('modal-tarefa').style.display = 'none';
+  const form = document.getElementById('form-nova-tarefa');
+  if (form) form.reset();
+  modalChecklistTemp = [];
+}
+
+function renderizarModalChecklistItens() {
+  const container = document.getElementById('modal-checklist-itens');
+  const countEl = document.getElementById('modal-checklist-count');
+  if (!container || !countEl) return;
+
+  container.innerHTML = '';
+  countEl.innerText = '(' + modalChecklistTemp.length + ' itens)';
+
+  modalChecklistTemp.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.gap = '6px';
+    div.innerHTML = `
+      <span style="font-size:12px;">◻</span>
+      <input type="text" value="${item.titulo.replace(/"/g, '&quot;')}" style="flex:1; font-size:12px; padding:3px 6px; border:1px solid #cbd5e1; border-radius:4px;" oninput="modalChecklistTemp[${idx}].titulo = this.value">
+      <button type="button" style="background:transparent; border:none; color:#dc2626; cursor:pointer;" onclick="removerItemModalChecklist(${idx})">✕</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function adicionarItemModalChecklist() {
+  const inp = document.getElementById('modal-subtask-novo-input');
+  if (!inp) return;
+  const val = inp.value.trim();
+  if (val) {
+    modalChecklistTemp.push({ titulo: val, feito: false });
+    inp.value = '';
+    renderizarModalChecklistItens();
+    inp.focus();
+  }
+}
+
+function removerItemModalChecklist(idx) {
+  modalChecklistTemp.splice(idx, 1);
+  renderizarModalChecklistItens();
+}
+
+function salvarNovaTarefa(e) {
+  e.preventDefault();
+  const selectDoc = document.getElementById('tarefa-doc-vinculado');
+  const docId = selectDoc.value;
+  const docTitulo = docId && selectDoc.selectedIndex >= 0 ? selectDoc.options[selectDoc.selectedIndex].text : '';
+
+  const nova = {
+    id: 't' + Date.now(),
+    titulo: document.getElementById('tarefa-titulo').value.trim(),
+    responsavel: document.getElementById('tarefa-responsavel').value,
+    categoria: document.getElementById('tarefa-categoria').value,
+    prazo: document.getElementById('tarefa-prazo').value,
+    descricao: document.getElementById('tarefa-descricao').value.trim(),
+    status: 'todo',
+    docId: docId,
+    docTitulo: docTitulo,
+    subtarefas: modalChecklistTemp.slice()
+  };
+
+  tarefasAdmin.unshift(nova);
+  salvarEstadoTarefas();
+  fecharModalTarefa();
+  showToast('Nova tarefa criada no Kanban!');
+}
+
+function exportarTarefasJSON() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tarefasAdmin, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", "tarefas_administrativas_area27.json");
+  dlAnchor.click();
+}
+
+// Vincular tarefa a partir de card de documento
+function createTaskFromDoc(docId) {
+  const doc = (typeof docsData !== 'undefined' ? docsData : []).find(d => d.id === docId);
+  if (!doc) return;
+
+  abrirModalTarefa();
+  document.getElementById('tarefa-titulo').value = 'Apreciar / Analisar: ' + doc.titulo;
+  document.getElementById('tarefa-descricao').value = 'Revisão do documento [' + doc.arquivo + '] referente a ' + doc.periodo + '.\nEmenta: ' + (doc.resumo || '');
+  
+  const selectDoc = document.getElementById('tarefa-doc-vinculado');
+  if (selectDoc) selectDoc.value = doc.id;
+  
+  if (typeof switchTab === 'function') {
+    switchTab('kanban');
+  }
+}
 
 </script>
 
