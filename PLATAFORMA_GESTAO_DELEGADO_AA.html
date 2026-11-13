@@ -5113,6 +5113,48 @@ const TAREFAS_DEFAULT = [
 let kanbanTasks = [];
 
 
+
+// ==============================================================================
+// CÁLCULO E SINALIZAÇÃO INTELIGENTE DE PRAZOS DO KANBAN
+// ==============================================================================
+function calcularDiasPrazo(prazoStr) {
+  if (!prazoStr) return null;
+  const partes = prazoStr.split('-');
+  if (partes.length !== 3) return null;
+  const dataPrazo = new Date(parseInt(partes[0], 10), parseInt(partes[1], 10) - 1, parseInt(partes[2], 10));
+  const hoje = new Date();
+  const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const diffMs = dataPrazo.getTime() - hojeZerado.getTime();
+  return Math.round(diffMs / (1000 * 60 * 60 * 24));
+}
+
+function obterBadgePrazoHTML(prazoStr, statusTarefa) {
+  if (!prazoStr) return '';
+  if (statusTarefa === 'done' || statusTarefa === 'concluido') {
+    return '<span style="font-size:10.5px; font-weight:700; color:#15803d; background:#dcfce7; border:1px solid #86efac; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">✅ Concluída</span>';
+  }
+
+  const diffDias = calcularDiasPrazo(prazoStr);
+  if (diffDias === null) return '';
+
+  if (diffDias < 0) {
+    // Vencida: em vermelho, logo abaixo da data com total de dias vencidos
+    const diasVencidos = Math.abs(diffDias);
+    const txtDias = diasVencidos === 1 ? '1 dia' : (diasVencidos + ' dias');
+    return '<span style="font-size:11px; font-weight:700; color:#dc2626; background:#fee2e2; border:1px solid #fca5a5; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;" title="Tarefa vencida há ' + txtDias + '">⚠️ Vencida há ' + txtDias + '</span>';
+  } else if (diffDias === 0) {
+    // Mesmo dia: No Prazo, em verde, negritado
+    return '<span style="font-size:11px; font-weight:800; color:#15803d; background:#dcfce7; border:1px solid #86efac; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;" title="Vence hoje!">🟢 <b>No Prazo</b></span>';
+  } else if (diffDias === 1 || diffDias === 2) {
+    // A 1 ou 2 dias: A vencer, em amarelo limão forte
+    const txtDias = diffDias === 1 ? '1 dia' : '2 dias';
+    return '<span style="font-size:11px; font-weight:800; color:#422006; background:#facc15; border:1px solid #eab308; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; text-transform:uppercase; letter-spacing:0.2px;" title="Prazo próximo: faltam ' + txtDias + '">⚠️ A vencer (' + txtDias + ')</span>';
+  } else {
+    // Prazo superior a 2 dias
+    return '<span style="font-size:10px; font-weight:600; color:#475569; background:#f1f5f9; padding:2px 5px; border-radius:4px;">No Prazo (' + diffDias + ' dias)</span>';
+  }
+}
+
 // ==============================================================================
 // GESTÃO DA ÁREA PROTEGIDA POR SENHA (2026) & AUDITORIA INTEGRADA
 // ==============================================================================
@@ -6600,11 +6642,16 @@ function createKanbanCardElement(task) {
 
   let deadlineHtml = "";
   if (task.dataLimite) {
-    const today = new Date().toISOString().split("T")[0];
-    const isOverdue = task.dataLimite < today && task.coluna !== "concluido";
+    const diffDias = calcularDiasPrazo(task.dataLimite);
+    const isOverdue = diffDias !== null && diffDias < 0 && task.coluna !== "concluido";
+    const badgePrazo = obterBadgePrazoHTML(task.dataLimite, task.coluna);
+
     deadlineHtml = `
-      <div class="card-deadline ${isOverdue ? 'overdue' : ''}">
-        <span>${isOverdue ? '⚠️' : '📅'}</span> ${formatDateBR(task.dataLimite)}
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px; text-align:right;">
+        <div class="card-deadline ${isOverdue ? 'overdue' : ''}">
+          <span>${isOverdue ? '⚠️' : '📅'}</span> ${formatDateBR(task.dataLimite)}
+        </div>
+        ${badgePrazo}
       </div>
     `;
   }
@@ -7830,7 +7877,7 @@ const TAREFAS_ADMIN_PADRAO = [
     descricao: 'Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.',
     responsavel: 'Delegado de Área',
     categoria: 'JUNAAB',
-    prazo: '2026-11-20',
+    prazo: '2026-11-10',
     status: 'doing',
     docId: '4',
     docTitulo: 'Circular 04-2026 (30/05/2026)',
@@ -7841,22 +7888,37 @@ const TAREFAS_ADMIN_PADRAO = [
   },
   {
     id: 't-carlos-2',
-    titulo: 'Apresentação de Gestão — Área 01 RJ',
-    descricao: 'Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.',
+    titulo: 'Prestação de Contas — Assembleia Geral',
+    descricao: 'Apresentação do balanço patrimonial, entradas de literatura e repasses.',
     responsavel: 'Delegado de Área',
-    categoria: 'GOVERNANCA',
-    prazo: '2026-12-05',
+    categoria: 'FINANCEIRO',
+    prazo: '2026-11-14',
     status: 'todo',
-    docId: '32',
-    docTitulo: 'Apresentação de Gestão — Área 01 RJ',
+    docId: '1',
+    docTitulo: 'Relatório Financeiro Consolidado',
     subtarefas: [
-      { titulo: 'Revisar prestação de contas com Comitê de Finanças', feito: true },
-      { titulo: 'Apresentar aos RSGs na Assembleia de Área 01', feito: false }
+      { titulo: 'Validar conciliação do Banco do Brasil', feito: true },
+      { titulo: 'Emitir parecer prévio aos RSGs', feito: false }
     ]
   },
   {
     id: 't-carlos-3',
-    titulo: '49ª Conferência (CSG)',
+    titulo: 'Reunião de Mesa de Área 01 (RJ)',
+    descricao: 'Deliberação de pautas urgentes e calendário de eventos com delegados e RSGs.',
+    responsavel: 'Delegado de Área',
+    categoria: 'GOVERNANCA',
+    prazo: '2026-11-13',
+    status: 'doing',
+    docId: '32',
+    docTitulo: 'Apresentação de Gestão — Área 01 RJ',
+    subtarefas: [
+      { titulo: 'Conferir quórum e pauta estatutária', feito: true },
+      { titulo: 'Registrar ata em conformidade JUNAAB', feito: false }
+    ]
+  },
+  {
+    id: 't-carlos-4',
+    titulo: '49ª Conferência de Serviços Gerais (CSG)',
     descricao: 'Apreciação das propostas de modernização e deliberações estatutárias nacionais.',
     responsavel: 'Delegado de Área',
     categoria: 'JUNAAB',
@@ -7866,8 +7928,7 @@ const TAREFAS_ADMIN_PADRAO = [
     docTitulo: 'Painel da Realidade Financeira',
     subtarefas: [
       { titulo: 'Estudar propostas do Caderno de Temas', feito: false },
-      { titulo: 'Consolidar posicionamento da Área 01 RJ', feito: false },
-      { titulo: 'Apreciação na plenária da Conferência', feito: false }
+      { titulo: 'Consolidar posicionamento da Área 01 RJ', feito: false }
     ]
   }
 ];
@@ -7979,10 +8040,22 @@ function renderizarKanban() {
       card.dataset.cat = t.categoria;
       card.ondragstart = (e) => e.dataTransfer.setData('text/plain', t.id);
 
+      const diffDiasCalc = calcularDiasPrazo(t.prazo);
+      if (diffDiasCalc !== null && diffDiasCalc < 0 && t.status !== 'done') {
+        card.style.borderLeft = '4px solid #dc2626';
+      } else if (diffDiasCalc !== null && (diffDiasCalc === 1 || diffDiasCalc === 2) && t.status !== 'done') {
+        card.style.borderLeft = '4px solid #facc15';
+      } else if (diffDiasCalc === 0 && t.status !== 'done') {
+        card.style.borderLeft = '4px solid #16a34a';
+      }
+
       card.innerHTML = `
-        <div class="task-top">
+        <div class="task-top" style="align-items:flex-start;">
           <span class="task-tag">${t.categoria}</span>
-          <span class="task-deadline ${atrasado ? 'atrasado' : ''}">📅 ${prazoFormatado}</span>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px; text-align:right;">
+            <span class="task-deadline ${atrasado ? 'atrasado' : ''}">📅 ${prazoFormatado}</span>
+            ${obterBadgePrazoHTML(t.prazo, t.status)}
+          </div>
         </div>
         <h4 class="task-title">${t.titulo}</h4>
         ${t.descricao ? '<p class="task-desc">' + t.descricao + '</p>' : ''}
