@@ -2713,6 +2713,126 @@ p, .card-desc, .doc-summary {
   box-shadow: 0 0 0 2px rgba(37,99,235,0.2) !important;
 }
 
+
+/* Toolbar Executiva e Dropdown de Filtro de Faixas */
+.exec-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: var(--radius, 8px);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.dropdown-faixas-wrapper {
+  position: relative;
+}
+.btn-dropdown-faixas {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-dropdown-faixas:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+.badge-faixas-count {
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: var(--mono, monospace);
+  font-weight: 700;
+}
+.dropdown-faixas-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  width: 320px;
+  z-index: 100;
+  padding: 12px;
+}
+.dropdown-faixas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.btn-link-action {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+}
+.btn-link-action:hover {
+  text-decoration: underline;
+}
+.dropdown-faixas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dropdown-faixa-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+.dropdown-faixa-item:hover {
+  background: #f8fafc;
+}
+.dropdown-faixa-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+.faixa-item-desc {
+  display: flex;
+  flex-direction: column;
+}
+.faixa-item-desc strong {
+  font-size: 12.5px;
+  color: #0f172a;
+}
+.faixa-item-desc small {
+  font-size: 11px;
+  color: #64748b;
+}
+
 </style>
   </head>
 <body>
@@ -3040,9 +3160,83 @@ p, .card-desc, .doc-summary {
     <!-- ==================== TAB 4: PAINEL EXECUTIVO & GOVERNANÇA ==================== -->
   <section id="view-executivo" class="view-panel">
     <div class="exec-dashboard-container">
+      <!-- BARRA DE CONTROLE EXECUTIVO & FILTRO DE FAIXAS -->
+      <div class="exec-toolbar">
+        <div class="exec-toolbar-left">
+          <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+            📊 Cockpit Executivo de Tomada de Decisão
+          </h3>
+          <span style="font-size: 12px; color: #64748b;">Faixa A fixa no topo. Marque abaixo as faixas complementares que deseja exibir:</span>
+        </div>
+
+        <div class="exec-toolbar-right">
+          <!-- Dropdown com Caixas de Seleção -->
+          <div class="dropdown-faixas-wrapper">
+            <button type="button" class="btn-dropdown-faixas" id="btnToggleDropdownFaixas" onclick="alternarDropdownFaixas()">
+              <span>👁️ Exibir Faixas Complementares</span>
+              <span class="badge-faixas-count" id="badgeFaixasCount">3 de 3</span>
+              <span style="font-size: 10px;">▾</span>
+            </button>
+
+            <!-- Menu Suspenso -->
+            <div class="dropdown-faixas-menu" id="dropdownFaixasMenu" style="display: none;">
+              <div class="dropdown-faixas-header">
+                <span>Faixas Complementares</span>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn-link-action" onclick="selecionarTodasFaixas(true)">Todas</button>
+                  <span>•</span>
+                  <button type="button" class="btn-link-action" onclick="selecionarApenasArea01()">Área 01</button>
+                  <span>•</span>
+                  <button type="button" class="btn-link-action" onclick="selecionarApenasConvencao()">Conv. 2027</button>
+                  <span>•</span>
+                  <button type="button" class="btn-link-action" onclick="selecionarTodasFaixas(false)">Ocultar</button>
+                </div>
+              </div>
+
+              <div class="dropdown-faixas-list">
+                <!-- Faixa A (Fixa) -->
+                <div class="dropdown-faixa-item" style="opacity: 0.75; cursor: default; background: #f8fafc; border-radius: 6px;">
+                  <input type="checkbox" checked disabled title="Faixa A é a base executiva e permanece fixa">
+                  <div class="faixa-item-desc">
+                    <strong style="color: #475569;">🏛️ Faixa A — Governança Nacional (Fixa)</strong>
+                    <small>Sempre visível no topo com os 6 KPIs</small>
+                  </div>
+                </div>
+
+                <!-- Faixa B -->
+                <label class="dropdown-faixa-item">
+                  <input type="checkbox" id="chk-faixa-B" checked onchange="toggleVisibilidadeFaixa('B', this.checked)">
+                  <div class="faixa-item-desc">
+                    <strong>🏢 Faixa B — Gestão Área 01 (RJ)</strong>
+                    <small>Apresentação e Prestação de Contas</small>
+                  </div>
+                </label>
+
+                <!-- Faixa C -->
+                <label class="dropdown-faixa-item">
+                  <input type="checkbox" id="chk-faixa-C" checked onchange="toggleVisibilidadeFaixa('C', this.checked)">
+                  <div class="faixa-item-desc">
+                    <strong>🎪 Faixa C — Convenção 2027</strong>
+                    <small>Dashboard ESL Área 27 e Camisas PIX</small>
+                  </div>
+                </label>
+
+                <!-- Faixa D -->
+                <label class="dropdown-faixa-item">
+                  <input type="checkbox" id="chk-faixa-D" checked onchange="toggleVisibilidadeFaixa('D', this.checked)">
+                  <div class="faixa-item-desc">
+                    <strong>🔄 Faixa D — Processos & Melhorias</strong>
+                    <small>Macroprocessos BPMN AS IS e TO BE</small>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
             <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
-      <div class="exec-section-banner">
+      <div class="exec-section-banner" id="banner-faixa-A">
         <div class="exec-section-title-row">
           <div>
             <h3>🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</h3>
@@ -3176,7 +3370,7 @@ p, .card-desc, .doc-summary {
       </div>
 
       <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
-      <div class="exec-section-banner">
+      <div class="exec-section-banner" id="banner-faixa-B">
         <div class="exec-section-title-row">
           <div>
             <h3>🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
@@ -3220,7 +3414,7 @@ p, .card-desc, .doc-summary {
       </div>
 
       <!-- 4. FAIXA C: CONVENÇÃO NACIONAL 2027 -->
-      <div class="exec-section-banner">
+      <div class="exec-section-banner" id="banner-faixa-C">
         <div class="exec-section-title-row">
           <div>
             <h3>🎪 Faixa C — Convenção Nacional 2027</h3>
@@ -3287,7 +3481,7 @@ p, .card-desc, .doc-summary {
       </div>
 
             <!-- 5. FAIXA D: PROCESSOS E MELHORIAS (JUNAAB) -->
-      <div class="exec-section-banner">
+      <div class="exec-section-banner" id="banner-faixa-D">
         <div class="exec-section-title-row">
           <div>
             <h3>🔄 Faixa D — Processos e Melhorias JUNAAB</h3>
@@ -7162,6 +7356,97 @@ function renderizarMateriaisFaixas() {
       container.appendChild(card);
     });
   });
+}
+
+
+
+// ==============================================================================
+// FILTRO DE VISIBILIDADE DAS FAIXAS NO PAINEL EXECUTIVO (FAIXA A FIXA)
+// ==============================================================================
+
+let faixasOpcionaisVisiveis = ['B', 'C', 'D'];
+
+function carregarPreferenciaFaixas() {
+  try {
+    const raw = localStorage.getItem('aa_faixas_visiveis_v2');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        faixasOpcionaisVisiveis = parsed;
+      }
+    }
+  } catch(e) {
+    faixasOpcionaisVisiveis = ['B', 'C', 'D'];
+  }
+  aplicarVisibilidadeFaixas();
+}
+
+function alternarDropdownFaixas() {
+  const menu = document.getElementById('dropdownFaixasMenu');
+  if (menu) {
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  const wrapper = document.querySelector('.dropdown-faixas-wrapper');
+  const menu = document.getElementById('dropdownFaixasMenu');
+  if (wrapper && menu && !wrapper.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+
+function toggleVisibilidadeFaixa(faixa, isChecked) {
+  if (isChecked) {
+    if (!faixasOpcionaisVisiveis.includes(faixa)) faixasOpcionaisVisiveis.push(faixa);
+  } else {
+    faixasOpcionaisVisiveis = faixasOpcionaisVisiveis.filter(f => f !== faixa);
+  }
+  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
+  aplicarVisibilidadeFaixas();
+}
+
+function selecionarTodasFaixas(visivel) {
+  faixasOpcionaisVisiveis = visivel ? ['B', 'C', 'D'] : [];
+  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
+  aplicarVisibilidadeFaixas();
+}
+
+function selecionarApenasArea01() {
+  faixasOpcionaisVisiveis = ['B'];
+  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
+  aplicarVisibilidadeFaixas();
+}
+
+function selecionarApenasConvencao() {
+  faixasOpcionaisVisiveis = ['C'];
+  localStorage.setItem('aa_faixas_visiveis_v2', JSON.stringify(faixasOpcionaisVisiveis));
+  aplicarVisibilidadeFaixas();
+}
+
+function aplicarVisibilidadeFaixas() {
+  // Faixa A é SEMPRE visível (Fixa)
+  const bannerA = document.getElementById('banner-faixa-A');
+  if (bannerA) bannerA.style.display = 'block';
+
+  // Faixas B, C, D são controladas pelo filtro
+  ['B', 'C', 'D'].forEach(f => {
+    const banner = document.getElementById('banner-faixa-' + f);
+    const chk = document.getElementById('chk-faixa-' + f);
+    const visivel = faixasOpcionaisVisiveis.includes(f);
+
+    if (banner) {
+      banner.style.display = visivel ? 'block' : 'none';
+    }
+    if (chk) {
+      chk.checked = visivel;
+    }
+  });
+
+  const countBadge = document.getElementById('badgeFaixasCount');
+  if (countBadge) {
+    countBadge.textContent = faixasOpcionaisVisiveis.length + ' de 3';
+  }
 }
 
 
