@@ -2344,14 +2344,23 @@ p, .card-desc, .doc-summary {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  align-items: stretch;
 }
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .exec-cards-grid {
     grid-template-columns: 1fr;
   }
 }
+.container-materiais-dinamicos {
+  display: contents !important;
+}
+.exec-tool-card.card-largura-total {
+  grid-column: 1 / -1 !important;
+}
 
 .exec-tool-card {
+  height: 100%;
+  box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: var(--radius, 8px);
@@ -3336,10 +3345,9 @@ p, .card-desc, .doc-summary {
               📑 Ler Nota Técnica ↗
             </a>
           </div>
+          <!-- Container de Materiais Customizados da Faixa A (Lado a Lado) -->
+          <div id="container-materiais-faixa-A" class="container-materiais-dinamicos" style="display: contents;"></div>
         </div>
-
-        <!-- Container de Materiais Customizados da Faixa A -->
-        <div id="container-materiais-faixa-A" class="exec-cards-grid"></div>
       </div>
 
       <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
@@ -3380,10 +3388,10 @@ p, .card-desc, .doc-summary {
               📽️ Acessar Apresentação ↗
             </a>
           </div>
-        </div>
 
-        <!-- Container de Materiais Customizados da Faixa B -->
-        <div id="container-materiais-faixa-B" class="exec-cards-grid" style="margin-top: 14px;"></div>
+          <!-- Container de Materiais Customizados da Faixa B (Lado a Lado) -->
+          <div id="container-materiais-faixa-B" class="container-materiais-dinamicos" style="display: contents;"></div>
+        </div>
       </div>
 
       <!-- 4. FAIXA C: CONVENÇÃO NACIONAL 2027 -->
@@ -3447,10 +3455,10 @@ p, .card-desc, .doc-summary {
               📑 Abrir Planilha CSV ↗
             </a>
           </div>
-        </div>
 
-        <!-- Container de Materiais Customizados da Faixa C -->
-        <div id="container-materiais-faixa-C" class="exec-cards-grid" style="margin-top: 14px;"></div>
+          <!-- Container de Materiais Customizados da Faixa C (Lado a Lado) -->
+          <div id="container-materiais-faixa-C" class="container-materiais-dinamicos" style="display: contents;"></div>
+        </div>
       </div>
 
             <!-- 5. FAIXA D: PROCESSOS E MELHORIAS (JUNAAB) -->
@@ -3519,11 +3527,11 @@ p, .card-desc, .doc-summary {
                 ✨ Proposta TO BE ↗
               </a>
             </div>
+
+            <!-- Container de Materiais Customizados da Faixa D (Lado a Lado) -->
+            <div id="container-materiais-faixa-D" class="container-materiais-dinamicos" style="display: contents;"></div>
           </div>
         </div>
-
-        <!-- Container de Materiais Customizados da Faixa D -->
-        <div id="container-materiais-faixa-D" class="exec-cards-grid" style="margin-top: 14px;"></div>
       </div>
 
       <!-- 4. WIDGET DE RESUMO DE GOVERNANÇA & PRÓXIMOS MARCOS -->
@@ -7170,6 +7178,8 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
       iconeEl.value = item.icone || '📑';
       btnLabelEl.value = item.btnLabel || 'Acessar Material ↗';
       urlEl.value = item.url || '';
+      const rL = document.querySelector(`input[name="material-layout"][value="${item.layout || 'lado-a-lado'}"]`);
+      if (rL) rL.checked = true;
       modal.style.display = 'flex';
       return;
     }
@@ -7186,6 +7196,8 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
   btnLabelEl.value = '📑 Acessar Documento ↗';
   urlEl.value = '';
   if (acervoSel) acervoSel.value = '';
+  const rDef = document.querySelector('input[name="material-layout"][value="lado-a-lado"]');
+  if (rDef) rDef.checked = true;
 
   modal.style.display = 'flex';
 }
@@ -7256,6 +7268,8 @@ function salvarMaterialFaixa(event) {
   const icone = document.getElementById('material-icone').value || '📑';
   const btnLabel = document.getElementById('material-btn-label').value.trim() || 'Visualizar ↗';
   const url = document.getElementById('material-url').value.trim() || '#';
+  const layoutEl = document.querySelector('input[name="material-layout"]:checked');
+  const layout = layoutEl ? layoutEl.value : 'lado-a-lado';
 
   if (!titulo) return;
 
@@ -7264,7 +7278,7 @@ function salvarMaterialFaixa(event) {
   if (editId) {
     const idx = materiais.findIndex(m => m.id === editId);
     if (idx !== -1) {
-      materiais[idx] = { ...materiais[idx], faixa, titulo, resumo, badge, icone, btnLabel, url };
+      materiais[idx] = { ...materiais[idx], faixa, titulo, resumo, badge, icone, btnLabel, url, layout };
     }
   } else {
     const novo = {
@@ -7276,6 +7290,7 @@ function salvarMaterialFaixa(event) {
       icone,
       btnLabel,
       url,
+      layout,
       criadoEm: new Date().toISOString()
     };
     materiais.push(novo);
@@ -7302,13 +7317,24 @@ function renderizarMateriaisFaixas() {
     const filtrados = materiais.filter(m => m.faixa === f);
     filtrados.forEach(mat => {
       const card = document.createElement('div');
-      card.className = 'exec-tool-card';
+      const isFull = mat.layout === 'largura-total';
+      card.className = 'exec-tool-card' + (isFull ? ' card-largura-total' : '');
+      if (isFull) {
+        card.style.gridColumn = '1 / -1';
+      } else {
+        card.style.gridColumn = '';
+      }
+
+      const iconToggle = isFull ? '⊞' : '▭';
+      const titleToggle = isFull ? 'Mudar para Lado a Lado (Meia Largura)' : 'Mudar para Largura Total';
+
       card.innerHTML = `
         <div>
           <div class="exec-card-top-meta">
             <span class="doc-period-chip">${mat.icone} Material Adicionado</span>
-            <div class="card-header-actions">
+            <div class="card-header-actions" style="display:flex; align-items:center; gap:6px;">
               <span class="exec-card-badge badge-blue">${mat.badge}</span>
+              <button type="button" class="btn-card-ctrl" onclick="alternarLayoutMaterialFaixa('${mat.id}')" title="${titleToggle}">${iconToggle}</button>
               <button type="button" class="btn-card-ctrl" onclick="abrirModalMaterialFaixa('${mat.faixa}', '${mat.id}')" title="Editar Material">✏️</button>
               <button type="button" class="btn-card-ctrl del" onclick="excluirMaterialFaixa('${mat.id}')" title="Excluir Material">🗑️</button>
             </div>
@@ -7317,7 +7343,7 @@ function renderizarMateriaisFaixas() {
             <div class="exec-tool-icon">${mat.icone}</div>
             <div>
               <h4>${mat.titulo}</h4>
-              <span class="exec-tool-tag">Faixa ${mat.faixa}</span>
+              <span class="exec-tool-tag">Faixa ${mat.faixa}${isFull ? ' • Largura Total' : ' • Lado a Lado'}</span>
             </div>
           </div>
           <p class="exec-tool-desc">${mat.resumo}</p>
@@ -7329,6 +7355,15 @@ function renderizarMateriaisFaixas() {
       container.appendChild(card);
     });
   });
+}
+
+function alternarLayoutMaterialFaixa(id) {
+  let materiais = obterMateriaisFaixas();
+  const idx = materiais.findIndex(m => m.id === id);
+  if (idx !== -1) {
+    materiais[idx].layout = (materiais[idx].layout === 'largura-total') ? 'lado-a-lado' : 'largura-total';
+    salvarMateriaisFaixasStorage(materiais);
+  }
 }
 
 
@@ -7895,6 +7930,24 @@ function createTaskFromDoc(docId) {
             <option value="🎪">🎪 Convenção</option>
             <option value="📌">📌 Assembleia</option>
           </select>
+        </div>
+      </div>
+
+      <!-- Disposição no PC (Layout Lado a Lado) -->
+      <div class="form-group" style="margin-bottom:14px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0;">
+        <label style="font-weight:700; margin-bottom:6px; font-size:12.5px; display:block;">Disposição no PC (Layout):</label>
+        <div style="display:flex; gap:18px; align-items:center;">
+          <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:600; font-size:13px; margin:0;">
+            <input type="radio" name="material-layout" value="lado-a-lado" checked>
+            ⊞ Lado a Lado (1 coluna / 50%)
+          </label>
+          <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:600; font-size:13px; margin:0;">
+            <input type="radio" name="material-layout" value="largura-total">
+            ▭ Largura Total (2 colunas / 100%)
+          </label>
+        </div>
+        <div style="font-size:11.5px; color:#64748b; margin-top:4px;">
+          💡 Escolha "Lado a Lado" para melhor aproveitamento no computador, posicionando este material lado a lado com os demais cards.
         </div>
       </div>
 
