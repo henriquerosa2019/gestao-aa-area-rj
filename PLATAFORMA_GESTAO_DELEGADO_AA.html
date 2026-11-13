@@ -4036,8 +4036,8 @@ p, .card-desc, .doc-summary {
         <button class="btn-primary" style="flex:1;" onclick="executeOpenDoc()">
           🚀 Abrir Arquivo no Navegador / App
         </button>
-        <button class="btn-secondary" onclick="executeCopyPath()">
-          📋 Copiar Caminho
+        <button class="btn-secondary" onclick="executeDownloadDoc()">
+          📥 Baixar Arquivo
         </button>
       </div>
     </div>
@@ -5660,9 +5660,9 @@ function renderDocs() {
         <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" onclick="onDocOpenClick(event, '${doc.id}')">
           🚀 Abrir Arquivo
         </a>
-        <button class="btn-icon-secondary" title="Copiar Caminho Windows" onclick="copyDocPath('${doc.caminhoRelativo}')">
-          📋 Copiar
-        </button>
+        <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Baixar Arquivo para o Dispositivo">
+          📥 Baixar
+        </a>
         <button class="btn-icon-secondary" title="Criar Tarefa no Kanban com este Documento" onclick="createTaskFromDoc('${doc.id}')">
           📌 Tarefa
         </button>
@@ -5697,9 +5697,9 @@ function renderDocs() {
         <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="display:inline-flex; padding:5px 10px; font-size:11.5px;" onclick="onDocOpenClick(event, '${doc.id}')">
           🚀 Abrir
         </a>
-        <button class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px;" onclick="copyDocPath('${doc.caminhoRelativo}')">
-          📋
-        </button>
+        <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px; text-decoration:none;" title="Baixar Arquivo">
+          📥 Baixar
+        </a>
         <button class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px;" onclick="createTaskFromDoc('${doc.id}')">
           📌
         </button>
@@ -5745,6 +5745,19 @@ function executeOpenDoc() {
     onDocOpenClick(null, selectedDocForModal.id);
     window.open(encodeURI(selectedDocForModal.caminhoRelativo), '_blank');
     closeDocModal();
+  }
+}
+
+function executeDownloadDoc() {
+  if (selectedDocForModal) {
+    const a = document.createElement('a');
+    a.href = encodeURI(selectedDocForModal.caminhoRelativo);
+    a.download = selectedDocForModal.arquivo || selectedDocForModal.titulo + '.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    closeDocModal();
+    showToast('Download iniciado: ' + (selectedDocForModal.arquivo || selectedDocForModal.titulo));
   }
 }
 
@@ -6104,9 +6117,9 @@ function createDocumentKanbanCard(doc) {
       <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="padding: 5px 10px; font-size: 11.5px;" onclick="onDocOpenClick(event, '${doc.id}')">
         🚀 Abrir Arquivo
       </a>
-      <button class="btn-icon-secondary" style="padding: 5px 8px; font-size: 11.5px;" title="Copiar Caminho" onclick="copyDocPath('${doc.caminhoRelativo}')">
-        📋
-      </button>
+      <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="padding: 5px 8px; font-size: 11.5px; text-decoration:none;" title="Baixar Arquivo">
+        📥
+      </a>
       <select style="font-size: 11px; padding: 2px 6px; border-radius: var(--radius-sm); border: 1px solid var(--rule); background: #fff;" onchange="moveDocToColumn('${doc.id}', this.value)">
         <option value="backlog" ${doc.coluna === 'backlog' ? 'selected' : ''}>📋 A Fazer</option>
         <option value="em_andamento" ${doc.coluna === 'em_andamento' ? 'selected' : ''}>⏳ Em Andamento</option>
@@ -7112,12 +7125,31 @@ function toggleMilestoneKanban(milestoneId, isChecked) {
 // GESTÃO DE MATERIAIS CUSTOMIZADOS DAS FAIXAS (A, B, C)
 // ==============================================================================
 
+const MATERIAIS_FAIXAS_PADRAO = [
+  {
+    id: 'mat_planejamento_estrategico',
+    faixa: 'B',
+    titulo: 'Proposta de Planejamento Estratégico JUNAAB',
+    resumo: 'Documento oficial contendo a proposta de Planejamento Estratégico da JUNAAB. Estabelece metas de autossuficiência, ampliação do alcance da mensagem de A.A., sustentabilidade das publicações e transformação digital.',
+    badge: 'Proposta Estratégica JUNAAB',
+    icone: '📑',
+    btnLabel: '📑 Acessar Documento ↗',
+    url: '03 - PLANEJAMENTO ESTRATEGICO/Proposta Estrategica JUNAAB/PROPOSTA DE PLANEJAMENTO ESTRATÉGICO JUNAAB.pdf',
+    layout: 'lado-a-lado',
+    criadoEm: '2026-11-13T10:00:00.000Z'
+  }
+];
+
 function obterMateriaisFaixas() {
   try {
     const raw = localStorage.getItem('aa_materiais_faixas');
-    return raw ? JSON.parse(raw) : [];
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    return [...MATERIAIS_FAIXAS_PADRAO];
   } catch(e) {
-    return [];
+    return [...MATERIAIS_FAIXAS_PADRAO];
   }
 }
 
@@ -7425,22 +7457,68 @@ if (document.readyState === 'loading') {
 }
 
 
-// Tarefas Administrativas Reais (Inicia vazio por padrão e persiste no LocalStorage)
+// Tarefas Padrão de Carlos S.R. (Delegado de Área) para novos acessos e Vercel
+const TAREFAS_ADMIN_PADRAO = [
+  {
+    id: 't-carlos-1',
+    titulo: 'Resposta Circular 04 JUNAAB',
+    descricao: 'Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.',
+    responsavel: 'Delegado de Área',
+    categoria: 'JUNAAB',
+    prazo: '2026-11-20',
+    status: 'doing',
+    docId: '4',
+    docTitulo: 'Circular 04-2026 (30/05/2026)',
+    subtarefas: [
+      { titulo: 'Ler parecer do Comitê de Literatura', feito: true },
+      { titulo: 'Minutar resposta oficial da Área 01 (RJ)', feito: false }
+    ]
+  },
+  {
+    id: 't-carlos-2',
+    titulo: 'Apresentação de Gestão — Área 01 RJ',
+    descricao: 'Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.',
+    responsavel: 'Delegado de Área',
+    categoria: 'GOVERNANCA',
+    prazo: '2026-12-05',
+    status: 'todo',
+    docId: '32',
+    docTitulo: 'Apresentação de Gestão — Área 01 RJ',
+    subtarefas: [
+      { titulo: 'Revisar prestação de contas com Comitê de Finanças', feito: true },
+      { titulo: 'Apresentar aos RSGs na Assembleia de Área 01', feito: false }
+    ]
+  },
+  {
+    id: 't-carlos-3',
+    titulo: '49ª Conferência (CSG)',
+    descricao: 'Apreciação das propostas de modernização e deliberações estatutárias nacionais.',
+    responsavel: 'Delegado de Área',
+    categoria: 'JUNAAB',
+    prazo: '2027-04-15',
+    status: 'todo',
+    docId: '1',
+    docTitulo: 'Painel da Realidade Financeira',
+    subtarefas: [
+      { titulo: 'Estudar propostas do Caderno de Temas', feito: false },
+      { titulo: 'Consolidar posicionamento da Área 01 RJ', feito: false },
+      { titulo: 'Apreciação na plenária da Conferência', feito: false }
+    ]
+  }
+];
+
 let tarefasAdmin = [];
 try {
   const stored = localStorage.getItem('aa_tarefas_admin');
   if (stored) {
     const parsed = JSON.parse(stored);
-    // Se for o array com os mocks antigos t1..t4, resetar para array vazio
-    if (Array.isArray(parsed) && parsed.some(t => t.id === 't1' || t.id === 't2')) {
-      tarefasAdmin = [];
-      localStorage.setItem('aa_tarefas_admin', JSON.stringify([]));
-    } else {
-      tarefasAdmin = Array.isArray(parsed) ? parsed : [];
-    }
+    tarefasAdmin = (Array.isArray(parsed) && parsed.length > 0) ? parsed : [...TAREFAS_ADMIN_PADRAO];
+  } else {
+    tarefasAdmin = [...TAREFAS_ADMIN_PADRAO];
+    localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
   }
 } catch (e) {
-  tarefasAdmin = [];
+  tarefasAdmin = [...TAREFAS_ADMIN_PADRAO];
 }
 // Sincronizar contadores imediatamente no carregamento
 if (typeof updateStatsKPIs === 'function') {
