@@ -3007,16 +3007,12 @@ p, .card-desc, .doc-summary {
         <span>📊</span> Painel Executivo
       </button>
       <button class="nav-tab-btn" data-tab="gestao" onclick="switchTab('gestao')">
-        <span>🔐</span> Gestão
+        <span>🔐</span> Área de Gestão
       </button>
     </nav>
 
     <!-- Header Actions & Actor Switcher -->
     <div class="header-actions">
-      <!-- Botão Área de Gestão -->
-      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="switchTab('gestao')" title="Acessar Área Restrita de Gestão (Senha 2026)">
-        🔐 Área de Gestão
-      </button>
       <div class="role-box">
         <div class="role-avatar" id="headerRoleAvatar">D</div>
         <div class="role-info">
@@ -5949,10 +5945,10 @@ function renderDocs() {
       </div>
 
       <div class="doc-card-actions">
-        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" onclick="onDocOpenClick(event, '${doc.id}')">
-          🚀 Abrir Arquivo
+        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" onclick="onDocOpenClick(event, '${doc.id}')" title="Visualizar / Abrir Arquivo em Nova Aba">
+          🚀 Visualizar
         </a>
-        <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Baixar Arquivo para o Dispositivo">
+        <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Baixar Arquivo para o Dispositivo" onclick="onDocDownloadClick(event, '${doc.id}')">
           📥 Baixar
         </a>
         <button class="btn-icon-secondary" title="Criar Tarefa no Kanban com este Documento" onclick="createTaskFromDoc('${doc.id}')">
@@ -5970,8 +5966,10 @@ function renderDocs() {
     row.innerHTML = `
       <td><span class="doc-type-badge ${typeClass}">${doc.tipo}</span></td>
       <td>
-        <b style="color:var(--navy); font-size:14px;">${highlightedTitle}</b><br>
-        <span style="font-size:12px; color:var(--muted);">${highlightedResumo.substring(0, 90)}...</span>
+        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" onclick="onDocOpenClick(event, '${doc.id}')" style="color:var(--navy); font-size:14px; font-weight:700; text-decoration:none; display:inline-block; margin-bottom:2px;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" title="Clique para abrir / visualizar este documento">
+          ${highlightedTitle}
+        </a><br>
+        <span style="font-size:12px; color:var(--muted);">${highlightedResumo.substring(0, 95)}...</span>
       </td>
       <td><span class="doc-cat-path">${doc.subcategoria || doc.categoria}</span></td>
       <td><span class="doc-period-chip">${doc.periodo}</span></td>
@@ -5986,15 +5984,20 @@ function renderDocs() {
         </span>
       </td>
       <td style="text-align: right; white-space: nowrap;">
-        <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="display:inline-flex; padding:5px 10px; font-size:11.5px;" onclick="onDocOpenClick(event, '${doc.id}')">
-          🚀 Abrir
-        </a>
-        <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px; text-decoration:none;" title="Baixar Arquivo">
-          📥 Baixar
-        </a>
-        <button class="btn-icon-secondary" style="display:inline-flex; padding:5px 8px; font-size:11.5px;" onclick="createTaskFromDoc('${doc.id}')">
-          📌
-        </button>
+        <div style="display:inline-flex; gap:6px; align-items:center; justify-content:flex-end;">
+          <a href="${encodeURI(doc.caminhoRelativo)}" target="_blank" class="btn-open-doc" style="display:inline-flex; align-items:center; gap:4px; padding:6px 12px; font-size:12px; font-weight:600; text-decoration:none;" onclick="onDocOpenClick(event, '${doc.id}')" title="Visualizar / Abrir Arquivo">
+            🚀 Visualizar
+          </a>
+          <a href="${encodeURI(doc.caminhoRelativo)}" download="${doc.arquivo}" class="btn-icon-secondary" style="display:inline-flex; align-items:center; gap:4px; padding:6px 10px; font-size:12px; font-weight:600; text-decoration:none;" title="Baixar Arquivo PDF para o Dispositivo" onclick="onDocDownloadClick(event, '${doc.id}')">
+            📥 Baixar
+          </a>
+          <button class="btn-icon-secondary" style="display:inline-flex; align-items:center; padding:6px 8px; font-size:12px;" onclick="createTaskFromDoc('${doc.id}')" title="Criar Tarefa no Kanban">
+            📌
+          </button>
+          <button class="btn-icon-secondary" style="display:inline-flex; align-items:center; padding:6px 8px; font-size:12px;" onclick="abrirHistoricoVersoes('${doc.id}')" title="Histórico de Versões">
+            🕒
+          </button>
+        </div>
       </td>
     `;
     tableBody.appendChild(row);
@@ -6011,9 +6014,29 @@ function onDocOpenClick(e, docId) {
   doc.visualizadoPor = currentActor.nome + " (" + currentActor.papel + ")";
   
   saveDocsAndAuditToStorage();
-  if (typeof registrarLogAuditoria === 'function') registrarLogAuditoria('visualizacao', docId, { titulo: doc.titulo });
-  renderDocs();
-  showToast("Visualizando: " + doc.titulo + " · Registrado em auditoria!");
+  if (typeof registrarLogAuditoria === 'function') {
+    registrarLogAuditoria('visualizacao', docId, { titulo: doc.titulo });
+  }
+  showToast("👁️ Visualizando: " + doc.titulo);
+
+  // Re-render suave sem cancelar a abertura nativa do link
+  setTimeout(() => {
+    const activePanel = document.querySelector(".view-panel.active");
+    if (activePanel && activePanel.id === "view-acervo") {
+      renderDocs();
+    }
+  }, 400);
+}
+
+// Rastreamento de Download de Documentos
+function onDocDownloadClick(e, docId) {
+  const doc = docsData.find(d => d.id === docId);
+  if (!doc) return;
+
+  if (typeof registrarLogAuditoria === 'function') {
+    registrarLogAuditoria('download', docId, { titulo: doc.titulo, versao: doc.versao || 'v1.0' });
+  }
+  showToast("📥 Baixando arquivo: " + (doc.arquivo || doc.titulo));
 }
 
 function showDocModal(docId) {
