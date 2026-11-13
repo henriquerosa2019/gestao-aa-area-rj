@@ -2996,6 +2996,45 @@ p, .card-desc, .doc-summary {
   border-style: solid !important;
 }
 
+
+  /* Executive Dashboard Quick Tags */
+  .exec-tags-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    background: var(--surface, #ffffff);
+    padding: 10px 14px;
+    border-radius: var(--radius, 8px);
+    border: 1px solid var(--rule, #cbd5e1);
+  }
+  .exec-tag-pill {
+    background: var(--surface-alt, #f8fafc);
+    border: 1px solid var(--rule, #cbd5e1);
+    color: var(--ink-light, #475569);
+    padding: 5px 11px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .exec-tag-pill:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+    color: #0f172a;
+  }
+  .exec-tag-pill.active {
+    background: #1e3a8a !important;
+    color: #ffffff !important;
+    border-color: #1e3a8a !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 3px rgba(30, 58, 138, 0.25);
+  }
+
 </style>
   </head>
 <body>
@@ -3590,6 +3629,44 @@ p, .card-desc, .doc-summary {
         <button type="button" class="faixa-btn" data-target="C" onclick="filtrarFaixa('C', this)">🏢 Faixa C · Área 01 (RJ)</button>
         <button type="button" class="faixa-btn" data-target="D" onclick="filtrarFaixa('D', this)">🎪 Faixa D · Convenção 2027</button>
         <button type="button" class="faixa-btn" data-target="E" onclick="filtrarFaixa('E', this)">🔄 Faixa E · Processos JUNAAB</button>
+      </div>
+
+      <!-- Tags de Busca e Leitura Rápida no Painel Executivo -->
+      <div class="search-suggestions exec-tags-container" id="execTagsSuggestionsContainer">
+        <span class="sugg-label" style="font-weight: 700; color: #475569;">
+          🏷️ Tags Rápidas:
+        </span>
+        <button type="button" class="sugg-pill exec-tag-pill active" data-tag="" onclick="filtrarMateriaisExecutivoPorTag('', this)">
+          🌐 Todos os Materiais
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="déficit" onclick="filtrarMateriaisExecutivoPorTag('déficit', this)">
+          📉 Déficit & Sustentabilidade
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="reserva" onclick="filtrarMateriaisExecutivoPorTag('reserva', this)">
+          🛡️ Reserva Prudente
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="auditoria" onclick="filtrarMateriaisExecutivoPorTag('auditoria', this)">
+          ⚖️ Auditoria & CSG
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="estratégico" onclick="filtrarMateriaisExecutivoPorTag('estratégico', this)">
+          🎯 Planejamento Estratégico
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="convenção" onclick="filtrarMateriaisExecutivoPorTag('convenção', this)">
+          🎪 Convenção 2027
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="processos" onclick="filtrarMateriaisExecutivoPorTag('processos', this)">
+          🔄 Processos AS IS / TO BE
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="prestação de contas" onclick="filtrarMateriaisExecutivoPorTag('prestação de contas', this)">
+          📑 Prestação de Contas Área 01
+        </button>
+        <button type="button" class="sugg-pill exec-tag-pill" data-tag="literatura" onclick="filtrarMateriaisExecutivoPorTag('literatura', this)">
+          📚 Literatura & Vendas
+        </button>
+        <div id="execCustomTagsList" style="display: contents;"></div>
+        <button type="button" class="sugg-pill btn-add-tag-pill" onclick="abrirPromptNovaTagExecutivo()" title="Criar nova tag para o Painel Executivo" style="background:#f1f5f9; border-color:#94a3b8; font-weight:700; color:#1e293b;">
+          ➕ +tags
+        </button>
       </div>
 
       <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
@@ -4626,6 +4703,30 @@ p, .card-desc, .doc-summary {
         🔄 Confirmar Restauração
       </button>
     </div>
+  </div>
+</div>
+
+
+<!-- MODAL: NOVA TAG NO PAINEL EXECUTIVO -->
+<div id="modal-nova-tag-executivo" class="modal-overlay" style="display: none;">
+  <div class="modal-box" style="max-width: 440px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">
+      <h3 style="margin:0; font-size:1.15rem; font-weight:700; color:#0f172a;">🏷️ Nova Tag no Painel Executivo</h3>
+      <button type="button" class="modal-close-btn" onclick="fecharModalNovaTagExecutivo()">✕</button>
+    </div>
+    <form onsubmit="salvarNovaTagExecutivoForm(event)">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label style="font-weight:600; font-size:13px; color:#334155;">Nome da Tag / Termo de Leitura *</label>
+        <input type="text" id="inputNovaTagExecutivo" placeholder="Ex: NBC TG, Circular 04, BPMN, pix, custódios..." required style="width:100%; box-sizing:border-box;">
+      </div>
+      <div style="font-size:12px; color:#64748b; margin-bottom:16px; line-height:1.4;">
+        💡 Ao clicar nesta tag, o Painel Executivo filtrará instantaneamente os materiais e ferramentas das faixas que contenham este tema.
+      </div>
+      <div class="modal-footer" style="padding-top:10px; border-top:1px solid #e2e8f0;">
+        <button type="button" class="btn-secondary" onclick="fecharModalNovaTagExecutivo()">Cancelar</button>
+        <button type="submit" class="btn-primary">➕ Salvar Tag</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -8542,6 +8643,187 @@ function alternarLayoutMaterialFaixa(id) {
 
 // ==============================================================================
 
+
+// ==============================================================================
+// GESTÃO DINÂMICA DE TAGS DE LEITURA RÁPIDA NO PAINEL EXECUTIVO (+TAGS)
+// ==============================================================================
+let tagExecutivoAtiva = '';
+
+function normalizarTextoBusca(str) {
+  return (str || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function filtrarMateriaisExecutivoPorTag(termo, btnClicado) {
+  tagExecutivoAtiva = (termo || '').trim();
+
+  // Atualizar classe ativa nas pílulas de tags executivas
+  document.querySelectorAll('.exec-tag-pill').forEach(b => b.classList.remove('active'));
+  if (btnClicado) {
+    btnClicado.classList.add('active');
+  } else {
+    const btnMatch = document.querySelector('.exec-tag-pill[data-tag="' + tagExecutivoAtiva + '"]') || document.querySelector('.exec-tag-pill[data-tag=""]');
+    if (btnMatch) btnMatch.classList.add('active');
+  }
+
+  const faixaAtiva = localStorage.getItem('aa_faixa_ativa_tab') || 'TODAS';
+  const termoNorm = normalizarTextoBusca(tagExecutivoAtiva);
+
+  let totalVisiveis = 0;
+
+  // Filtrar todos os cards executivos
+  document.querySelectorAll('.exec-tool-card').forEach(card => {
+    const cardText = card.innerText || '';
+    const cardTextNorm = normalizarTextoBusca(cardText);
+    const match = !termoNorm || cardTextNorm.includes(termoNorm);
+
+    if (match) {
+      card.style.display = '';
+      card.classList.remove('tag-hidden');
+      totalVisiveis++;
+    } else {
+      card.style.display = 'none';
+      card.classList.add('tag-hidden');
+    }
+  });
+
+  // Atualizar visibilidade dos banners de faixas conforme a faixa ativa e as tags
+  document.querySelectorAll('.exec-section-banner[data-faixa]').forEach(banner => {
+    const bannerFaixa = banner.getAttribute('data-faixa');
+    const pertenceFaixa = (faixaAtiva === 'TODAS' || bannerFaixa === faixaAtiva);
+
+    if (!pertenceFaixa) {
+      banner.style.display = 'none';
+    } else {
+      const temCardsVisiveis = banner.querySelectorAll('.exec-tool-card:not(.tag-hidden)').length > 0;
+      banner.style.display = (termoNorm === '' || temCardsVisiveis) ? 'block' : 'none';
+    }
+  });
+
+  if (termoNorm && totalVisiveis === 0 && typeof showToast === 'function') {
+    showToast('Nenhum material encontrado para a tag: "' + tagExecutivoAtiva + '"');
+  }
+}
+
+function obterTagsExecutivoCustomizadas() {
+  try {
+    const raw = localStorage.getItem('aa_executivo_search_tags');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.filter(t => typeof t === 'string' && t.trim().length > 0);
+      }
+    }
+    return [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function salvarTagsExecutivoStorage(tags) {
+  try {
+    localStorage.setItem('aa_executivo_search_tags', JSON.stringify(tags));
+  } catch(e) {}
+  renderizarTagsExecutivoCustomizadas();
+}
+
+function renderizarTagsExecutivoCustomizadas() {
+  const container = document.getElementById('execCustomTagsList');
+  if (!container) return;
+
+  const tags = obterTagsExecutivoCustomizadas();
+  container.innerHTML = '';
+
+  tags.forEach((tag, idx) => {
+    const pillWrapper = document.createElement('div');
+    pillWrapper.style.display = 'inline-flex';
+    pillWrapper.style.alignItems = 'center';
+    pillWrapper.style.gap = '2px';
+
+    const safeTag = tag.replace(/'/g, "\\'");
+    const isAtiva = tagExecutivoAtiva === tag;
+
+    pillWrapper.innerHTML = `
+      <button type="button" class="sugg-pill exec-tag-pill ${isAtiva ? 'active' : ''}" data-tag="${safeTag}" onclick="filtrarMateriaisExecutivoPorTag('${safeTag}', this)" title="Filtrar materiais por '${tag}'">
+        ${tag}
+      </button>
+      <button type="button" onclick="excluirTagExecutivo(${idx})" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-size:11px; padding:2px 4px; margin-left:-6px;" title="Remover tag customizada">✕</button>
+    `;
+    container.appendChild(pillWrapper);
+  });
+}
+
+function abrirPromptNovaTagExecutivo() {
+  const modal = document.getElementById('modal-nova-tag-executivo');
+  const input = document.getElementById('inputNovaTagExecutivo');
+  if (modal) {
+    modal.style.display = 'flex';
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 100);
+    }
+  } else {
+    const termo = prompt("Digite a nova tag para o Painel Executivo:");
+    if (termo && termo.trim()) {
+      salvarNovaTagExecutivo(termo.trim());
+    }
+  }
+}
+
+function fecharModalNovaTagExecutivo() {
+  const modal = document.getElementById('modal-nova-tag-executivo');
+  if (modal) modal.style.display = 'none';
+}
+
+function salvarNovaTagExecutivoForm(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('inputNovaTagExecutivo');
+  if (!input) return;
+  const termo = input.value.trim();
+  if (termo) {
+    salvarNovaTagExecutivo(termo);
+    fecharModalNovaTagExecutivo();
+  }
+}
+
+function salvarNovaTagExecutivo(termo) {
+  const tags = obterTagsExecutivoCustomizadas();
+  if (!tags.includes(termo)) {
+    tags.push(termo);
+    salvarTagsExecutivoStorage(tags);
+    if (typeof showToast === 'function') {
+      showToast('🏷️ Nova tag criada no Painel Executivo: "' + termo + '"');
+    }
+    filtrarMateriaisExecutivoPorTag(termo, null);
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('Esta tag já existe na lista do Painel Executivo.');
+    }
+    filtrarMateriaisExecutivoPorTag(termo, null);
+  }
+}
+
+function excluirTagExecutivo(idx) {
+  const tags = obterTagsExecutivoCustomizadas();
+  const removida = tags.splice(idx, 1);
+  salvarTagsExecutivoStorage(tags);
+  if (removida.length > 0 && typeof showToast === 'function') {
+    showToast('Tag "' + removida[0] + '" removida.');
+    if (tagExecutivoAtiva === removida[0]) {
+      filtrarMateriaisExecutivoPorTag('', null);
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderizarTagsExecutivoCustomizadas);
+} else {
+  renderizarTagsExecutivoCustomizadas();
+}
+
+
 // ==============================================================================
 // FILTRO DE FAIXAS VIA PÍLULAS (SEGMENTED CONTROL) COM ALINHAMENTO DE KPIS
 // ==============================================================================
@@ -8562,10 +8844,17 @@ function filtrarFaixa(faixa, btnClicado) {
     el.style.display = (faixa === 'TODAS' || cardFaixa === faixa) ? 'flex' : 'none';
   });
 
-  // 3. Filtrar os banners das faixas
+  // 3. Filtrar os banners das faixas respeitando a tag ativa
+  const termoNorm = (typeof tagExecutivoAtiva !== 'undefined' && tagExecutivoAtiva) ? normalizarTextoBusca(tagExecutivoAtiva) : '';
   document.querySelectorAll('.exec-section-banner[data-faixa]').forEach(el => {
     const bannerFaixa = el.getAttribute('data-faixa');
-    el.style.display = (faixa === 'TODAS' || bannerFaixa === faixa) ? 'block' : 'none';
+    const pertenceFaixa = (faixa === 'TODAS' || bannerFaixa === faixa);
+    if (!pertenceFaixa) {
+      el.style.display = 'none';
+    } else {
+      const temCardsVisiveis = el.querySelectorAll('.exec-tool-card:not(.tag-hidden)').length > 0;
+      el.style.display = (termoNorm === '' || temCardsVisiveis) ? 'block' : 'none';
+    }
   });
 
   // 4. O Resumo de Governança & Próximos Marcos permanece sempre fixo
