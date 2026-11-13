@@ -3439,8 +3439,18 @@ p, .card-desc, .doc-summary {
           <div class="exec-kpi-sub">Vendas de literatura: −34,6% vs 2018 • Contribuições: −10,5%</div>
         </div>
 
-        <!-- KPI 4: Saldo Líquido Área 01 - RJ (Delegado Carlos) -->
-        <div class="exec-kpi-card highlight-green" data-faixa="B">
+        <!-- KPI 4: Conferências / CSG (Faixa B) -->
+        <div class="exec-kpi-card highlight-purple" data-faixa="B">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">49ª Conferência (CSG)</span>
+            <span class="exec-badge-trend positive">🏛️ Deliberação Nacional</span>
+          </div>
+          <div class="exec-kpi-value" style="color: #6D28D9;">Abril/2027</div>
+          <div class="exec-kpi-sub">Caderno de Temas, auditoria dos delegados e propostas da Área 01 RJ</div>
+        </div>
+
+        <!-- KPI 5: Saldo Líquido Área 01 - RJ (Faixa C) -->
+        <div class="exec-kpi-card highlight-green" data-faixa="C">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Saldo Líquido Área 01 - RJ</span>
             <span class="exec-badge-trend positive">▲ +8% no mês</span>
@@ -3449,8 +3459,8 @@ p, .card-desc, .doc-summary {
           <div class="exec-kpi-sub">Delegação Carlos S.R. • Banco do Brasil + Caixa Operacional Área 01 RJ</div>
         </div>
 
-        <!-- KPI 5: Cotas Convenção Nacional 2027 -->
-        <div class="exec-kpi-card highlight-amber" data-faixa="C">
+        <!-- KPI 6: Cotas Convenção Nacional 2027 (Faixa D) -->
+        <div class="exec-kpi-card highlight-amber" data-faixa="D">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Cotas Convenção 2027</span>
             <span class="exec-badge-trend neutral">Meta: 100 cotas</span>
@@ -3462,8 +3472,8 @@ p, .card-desc, .doc-summary {
           <div class="exec-kpi-sub">64 cotas confirmadas • R$ 38.400 de R$ 60.000</div>
         </div>
 
-        <!-- KPI 6: Pendências Críticas / Kanban Área 01 -->
-        <div class="exec-kpi-card highlight-purple clickable" data-faixa="B" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
+        <!-- KPI 7: Pendências Críticas / Kanban Área 01 (Faixa C) -->
+        <div class="exec-kpi-card highlight-purple clickable" data-faixa="C" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Pendências Críticas (Área 01)</span>
             <span class="exec-badge-link">Ver no Kanban ↗</span>
@@ -3477,9 +3487,10 @@ p, .card-desc, .doc-summary {
       <div class="faixa-selector">
         <button type="button" class="faixa-btn active" data-target="TODAS" onclick="filtrarFaixa('TODAS', this)">🌐 Todas as Faixas</button>
         <button type="button" class="faixa-btn" data-target="A" onclick="filtrarFaixa('A', this)">🏛️ Faixa A · JUNAAB</button>
-        <button type="button" class="faixa-btn" data-target="B" onclick="filtrarFaixa('B', this)">🏢 Faixa B · Área 01 (RJ)</button>
-        <button type="button" class="faixa-btn" data-target="C" onclick="filtrarFaixa('C', this)">🎪 Faixa C · Convenção 2027</button>
-        <button type="button" class="faixa-btn" data-target="D" onclick="filtrarFaixa('D', this)">🔄 Faixa D · Processos JUNAAB</button>
+        <button type="button" class="faixa-btn" data-target="B" onclick="filtrarFaixa('B', this)">🗳️ Faixa B · Conferências</button>
+        <button type="button" class="faixa-btn" data-target="C" onclick="filtrarFaixa('C', this)">🏢 Faixa C · Área 01 (RJ)</button>
+        <button type="button" class="faixa-btn" data-target="D" onclick="filtrarFaixa('D', this)">🎪 Faixa D · Convenção 2027</button>
+        <button type="button" class="faixa-btn" data-target="E" onclick="filtrarFaixa('E', this)">🔄 Faixa E · Processos JUNAAB</button>
       </div>
 
       <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
@@ -3548,16 +3559,83 @@ p, .card-desc, .doc-summary {
         </div>
       </div>
 
-      <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
+      <!-- 3. FAIXA B: CONFERÊNCIAS (CONFERÊNCIA DE SERVIÇOS GERAIS - CSG) -->
       <div class="exec-section-banner" id="banner-faixa-B" data-faixa="B">
         <div class="exec-section-title-row">
           <div>
-            <h3>🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
+            <h3>🗳️ Faixa B — Conferências (Conferência de Serviços Gerais - CSG)</h3>
+            <p>Diretrizes, relatórios de auditoria dos delegados, cadernos de temas, deliberações e posicionamento oficial da Conferência de Serviços Gerais (CSG).</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-purple">Conferência Nacional • CSG</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('B')">
+              ➕ Adicionar Material
+            </button>
+          </div>
+        </div>
+
+        <div class="exec-cards-grid">
+          <!-- Card 1: Auditoria 2026 pós-CSG — Delegados SE -->
+          <div class="exec-tool-card featured-gold">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Auditoria CSG 2026</span>
+                <span class="exec-card-badge badge-amber">⚖️ Parecer dos Delegados</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">🔍</div>
+                <div>
+                  <h4>Auditoria 2026 pós-CSG — Delegados SE</h4>
+                  <span class="exec-tool-tag" style="color:#D97706; font-weight:600;">Comitê de Delegados da Região Sudeste</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Relatório oficial de auditoria pós-CSG elaborado pelos delegados da região Sudeste. Aborda a verificação contábil, controles internos, parecer sobre receitas da literatura e recomendações para a JUNAAB.
+              </p>
+            </div>
+            <a href="01 - FINANCEIRO/Analise e Auditoria/Auditoria_2026 pos_CSG_(29-04-26)_Delegados_SE.pdf" target="_blank" class="btn-exec-action">
+              📑 Acessar Relatório CSG ↗
+            </a>
+          </div>
+
+          <!-- Card 2: Circular 04-2026 — Diretrizes & Temas da 49ª CSG -->
+          <div class="exec-tool-card">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Preparação 49ª CSG</span>
+                <span class="exec-card-badge badge-purple">🏛️ JUNAAB & Delegados</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📑</div>
+                <div>
+                  <h4>Circular 04-2026 — Diretrizes da 49ª CSG</h4>
+                  <span class="exec-tool-tag">Comunicação Oficial da Junta</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Circular oficial nº 04/2026 com diretrizes preparatórias para as delegações estaduais, consolidação de pautas e deliberações estatutárias da próxima Conferência de Serviços Gerais de A.A.
+              </p>
+            </div>
+            <a href="02 - DOCUMENTOS JUNAAB/02.01 - Circulares/Circular_04_2026_Diretrizes.pdf" target="_blank" class="btn-exec-action secondary-action">
+              📑 Ler Circular Oficial ↗
+            </a>
+          </div>
+
+          <!-- Container de Materiais Customizados da Faixa B (Lado a Lado) -->
+          <div id="container-materiais-faixa-B" class="container-materiais-dinamicos" style="display: contents;"></div>
+        </div>
+      </div>
+
+      <!-- 4. FAIXA C: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
+      <div class="exec-section-banner" id="banner-faixa-C" data-faixa="C">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🏢 Faixa C — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
             <p>Controles locais da delegação Carlos S.R., relatórios de prestação de contas e materiais de assembleia da Área 01 RJ.</p>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <span class="exec-card-badge badge-blue">Área 01 - Rio de Janeiro (RJ)</span>
-            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('B')">
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('C')">
               ➕ Adicionar Material
             </button>
           </div>
@@ -3587,21 +3665,21 @@ p, .card-desc, .doc-summary {
             </a>
           </div>
 
-          <!-- Container de Materiais Customizados da Faixa B (Lado a Lado) -->
-          <div id="container-materiais-faixa-B" class="container-materiais-dinamicos" style="display: contents;"></div>
+          <!-- Container de Materiais Customizados da Faixa C (Lado a Lado) -->
+          <div id="container-materiais-faixa-C" class="container-materiais-dinamicos" style="display: contents;"></div>
         </div>
       </div>
 
-      <!-- 4. FAIXA C: CONVENÇÃO NACIONAL 2027 -->
-      <div class="exec-section-banner" id="banner-faixa-C" data-faixa="C">
+      <!-- 5. FAIXA D: CONVENÇÃO NACIONAL 2027 -->
+      <div class="exec-section-banner" id="banner-faixa-D" data-faixa="D">
         <div class="exec-section-title-row">
           <div>
-            <h3>🎪 Faixa C — Convenção Nacional 2027</h3>
+            <h3>🎪 Faixa D — Convenção Nacional 2027</h3>
             <p>Controles de arrecadação da Convenção Nacional realizada no Ceará, vendas de camisas, cotas dos distritos e demonstrativos da ESL (Área 27).</p>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <span class="exec-card-badge badge-amber">Convenção 2027 • Ceará</span>
-            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('C')">
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('D')">
               ➕ Adicionar Material
             </button>
           </div>
@@ -3654,21 +3732,21 @@ p, .card-desc, .doc-summary {
             </a>
           </div>
 
-          <!-- Container de Materiais Customizados da Faixa C (Lado a Lado) -->
-          <div id="container-materiais-faixa-C" class="container-materiais-dinamicos" style="display: contents;"></div>
+          <!-- Container de Materiais Customizados da Faixa D (Lado a Lado) -->
+          <div id="container-materiais-faixa-D" class="container-materiais-dinamicos" style="display: contents;"></div>
         </div>
       </div>
 
-            <!-- 5. FAIXA D: PROCESSOS E MELHORIAS (JUNAAB) -->
-      <div class="exec-section-banner" id="banner-faixa-D" data-faixa="D">
+      <!-- 6. FAIXA E: PROCESSOS E MELHORIAS (JUNAAB) -->
+      <div class="exec-section-banner" id="banner-faixa-E" data-faixa="E">
         <div class="exec-section-title-row">
           <div>
-            <h3>🔄 Faixa D — Processos e Melhorias JUNAAB</h3>
+            <h3>🔄 Faixa E — Processos e Melhorias JUNAAB</h3>
             <p>Mapeamento de macroprocessos da estrutura nacional, arquitetura de governança atual (AS IS) e proposta de modernização (TO BE).</p>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <span class="exec-card-badge badge-gray">BPMN & Governança</span>
-            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('D')">
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('E')">
               ➕ Adicionar Material
             </button>
           </div>
@@ -3688,48 +3766,49 @@ p, .card-desc, .doc-summary {
                   <span class="exec-card-badge badge-gray">🗺️ Diagnóstico Operacional</span>
                 </div>
                 <div class="exec-tool-header">
-                  <div class="exec-tool-icon">🔍</div>
+                  <div class="exec-tool-icon">⚙️</div>
                   <div>
-                    <h4>Macroprocesso AS IS</h4>
-                    <span class="exec-tool-tag">Diagnóstico da Estrutura Vigente</span>
+                    <h4>Macroprocesso Atual (AS IS)</h4>
+                    <span class="exec-tool-tag" style="color: #64748B;">Operação Vigente</span>
                   </div>
                 </div>
                 <p class="exec-tool-desc">
-                  Mapeamento detalhado da arquitetura atual de governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais identificados.
+                  Mapeamento dos 25 macroprocessos atuais e fluxo descentralizado com sobreposição de papéis e dependência operacional.
                 </p>
               </div>
-              <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-exec-action secondary-action">
-                🔍 Mapeamento AS IS ↗
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/04.01 - AS IS (Atual)/macroprocessos_as_is.html" target="_blank" class="btn-exec-action secondary-action">
+                ⚙️ Visualizar AS IS ↗
               </a>
             </div>
 
             <!-- Card 2: Macroprocesso TO BE -->
-            <div class="exec-tool-card bpmn-tobe">
+            <div class="exec-tool-card bpmn-tobe featured-purple">
               <div>
                 <div class="exec-card-top-meta">
-                  <span class="doc-period-chip">BPMN Otimizado</span>
-                  <span class="exec-card-badge badge-green">💡 Proposta de Modernização</span>
+                  <span class="doc-period-chip">BPMN Futuro</span>
+                  <span class="exec-card-badge badge-purple">✨ Modernização 2026+</span>
                 </div>
                 <div class="exec-tool-header">
-                  <div class="exec-tool-icon">✨</div>
+                  <div class="exec-tool-icon">🚀</div>
                   <div>
-                    <h4>Macroprocesso TO BE</h4>
-                    <span class="exec-tool-tag">Modernização da Governança</span>
+                    <h4>Macroprocesso Proposto (TO BE)</h4>
+                    <span class="exec-tool-tag" style="color: #6D28D9; font-weight: 600;">Nova Governança</span>
                   </div>
                 </div>
                 <p class="exec-tool-desc">
-                  Modelo de processos otimizado proposto para modernização da JUNAAB, estruturado com gestão orientada a valor, governança RACI e fluxos integrados.
+                  Fluxo modernizado com integração direta, controles em tempo real, automação e transparência alinhada às deliberações.
                 </p>
               </div>
-              <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-exec-action">
-                ✨ Proposta TO BE ↗
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/04.02 - TO BE (Futuro)/macroprocessos_to_be.html" target="_blank" class="btn-exec-action">
+                🚀 Visualizar TO BE ↗
               </a>
             </div>
-
-            <!-- Container de Materiais Customizados da Faixa D (Lado a Lado) -->
-            <div id="container-materiais-faixa-D" class="container-materiais-dinamicos" style="display: contents;"></div>
           </div>
         </div>
+
+        <!-- Container de Materiais Customizados da Faixa E (Lado a Lado) -->
+        <div id="container-materiais-faixa-E" class="container-materiais-dinamicos" style="display: contents;"></div>
+      </div>
       </div>
 
       <!-- 4. WIDGET DE RESUMO DE GOVERNANÇA & PRÓXIMOS MARCOS -->
@@ -7560,10 +7639,10 @@ const MATERIAIS_FAIXAS_PADRAO = [
     id: 'mat_planejamento_estrategico',
     faixa: 'B',
     titulo: 'Proposta de Planejamento Estratégico JUNAAB',
-    resumo: 'Documento oficial contendo a proposta de Planejamento Estratégico da JUNAAB. Estabelece metas de autossuficiência, ampliação do alcance da mensagem de A.A., sustentabilidade das publicações e transformação digital.',
+    resumo: 'Documento oficial contendo a proposta de Planejamento Estratégico da JUNAAB para a Conferência. Estabelece metas de autossuficiência, sustentabilidade das publicações e transformação digital.',
     badge: 'Proposta Estratégica JUNAAB',
-    icone: '📑',
-    btnLabel: '📑 Acessar Documento ↗',
+    icone: '💡',
+    btnLabel: '📑 Acessar Proposta ↗',
     url: '03 - PLANEJAMENTO ESTRATEGICO/Proposta Estrategica JUNAAB/PROPOSTA DE PLANEJAMENTO ESTRATÉGICO JUNAAB.pdf',
     layout: 'lado-a-lado',
     criadoEm: '2026-11-13T10:00:00.000Z'
@@ -7776,7 +7855,7 @@ function excluirMaterialFaixa(id) {
 
 function renderizarMateriaisFaixas() {
   const materiais = obterMateriaisFaixas();
-  ['A', 'B', 'C', 'D'].forEach(f => {
+  ['A', 'B', 'C', 'D', 'E'].forEach(f => {
     const container = document.getElementById('container-materiais-faixa-' + f);
     if (!container) return;
     container.innerHTML = '';
@@ -8397,9 +8476,10 @@ function createTaskFromDoc(docId) {
         <label>Faixa de Destino *</label>
         <select id="material-faixa-target" required>
           <option value="A">🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</option>
-          <option value="B">🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</option>
-          <option value="C">🎪 Faixa C — Convenção Nacional 2027</option>
-          <option value="D">🔄 Faixa D — Processos e Melhorias JUNAAB</option>
+          <option value="B">🗳️ Faixa B — Conferências (Conferência de Serviços Gerais - CSG)</option>
+          <option value="C">🏢 Faixa C — Gestão Operacional da Área 01 (Rio de Janeiro)</option>
+          <option value="D">🎪 Faixa D — Convenção Nacional 2027</option>
+          <option value="E">🔄 Faixa E — Processos e Melhorias JUNAAB</option>
         </select>
       </div>
 
