@@ -3270,8 +3270,11 @@ p, .card-desc, .doc-summary {
         </p>
         
         <form onsubmit="submeterSenhaGestao(event)" style="margin-top: 22px;">
-          <div style="margin-bottom: 14px;">
-            <input type="password" id="inputSenhaGestao" placeholder="Digite a senha (2026)..." class="lock-input" required autocomplete="current-password">
+          <div style="margin-bottom: 14px; position: relative; display: flex; align-items: center;">
+            <input type="password" id="inputSenhaGestao" placeholder="Digite a senha de acesso..." class="lock-input" required autocomplete="current-password" style="padding-right: 44px;">
+            <button type="button" id="btnToggleSenhaGestao" onclick="toggleVisibilidadeSenhaGestao()" style="position: absolute; right: 10px; background: transparent; border: none; cursor: pointer; font-size: 18px; color: #64748b; padding: 4px; display: flex; align-items: center; justify-content: center;" title="Visualizar / Ocultar Senha" aria-label="Visualizar Senha">
+              👁️
+            </button>
           </div>
           <button type="submit" class="btn-primary" style="width: 100%; padding: 11px; font-size: 14px; font-weight: 600;">
             🔓 Desbloquear Acesso
@@ -3279,7 +3282,7 @@ p, .card-desc, .doc-summary {
         </form>
 
         <div id="erroSenhaGestao" style="display: none; color: #dc2626; font-size: 13px; font-weight: 600; margin-top: 10px;">
-          ⚠️ Senha incorreta. Digite 2026 para acessar.
+          ⚠️ Senha incorreta. Tente novamente.
         </div>
         
         <div style="font-size: 11.5px; color: #94a3b8; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 14px;">
@@ -5181,6 +5184,21 @@ function verificarAutenticacaoGestao() {
   }
 }
 
+
+function toggleVisibilidadeSenhaGestao() {
+  const input = document.getElementById("inputSenhaGestao");
+  const btn = document.getElementById("btnToggleSenhaGestao");
+  if (!input) return;
+  if (input.type === "password") {
+    input.type = "text";
+    if (btn) btn.innerHTML = "🙈";
+  } else {
+    input.type = "password";
+    if (btn) btn.innerHTML = "👁️";
+  }
+  input.focus();
+}
+
 function submeterSenhaGestao(e) {
   if (e) e.preventDefault();
   const input = document.getElementById("inputSenhaGestao");
@@ -5199,7 +5217,7 @@ function submeterSenhaGestao(e) {
   } else {
     if (erro) {
       erro.style.display = "block";
-      erro.textContent = "⚠️ Senha incorreta. Digite 2026 para acessar.";
+      erro.textContent = "⚠️ Senha incorreta. Tente novamente.";
     }
     input.value = "";
     input.focus();
