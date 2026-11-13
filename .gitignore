@@ -23,11 +23,5 @@ venv/
 .env.local
 .env.*.local
 
-# Arquivos binários pesados (PDFs volumosos que devem ser armazenados no Supabase Storage)
-# Isso garante que o repositório Git e o deploy na Vercel fiquem abaixo do limite de 100 MB.
-01 - FINANCEIRO/**/*.pdf
-01 - FINANCEIRO/*.pdf
-!01 - FINANCEIRO/**/.gitkeep
-
 # Builds temporários Vercel
 .vercel/
