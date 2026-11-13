@@ -2980,6 +2980,22 @@ p, .card-desc, .doc-summary {
   font-weight: 700;
 }
 
+
+.btn-add-tag-pill {
+  background: #f0fdf4 !important;
+  border: 1px dashed #22c55e !important;
+  color: #15803d !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+.btn-add-tag-pill:hover {
+  background: #22c55e !important;
+  color: #ffffff !important;
+  border-style: solid !important;
+}
+
 </style>
   </head>
 <body>
@@ -2991,7 +3007,7 @@ p, .card-desc, .doc-summary {
       <div class="brand-logo">AA</div>
       <div class="brand-text">
         <h1>GESTÃO AA - AREA RJ</h1>
-        <p>DELEGADO DE ÁREA RJ · JUNAAB · ÁREA 01 (RIO DE JANEIRO)</p>
+        <p>DELEGADO DE ÁREA RJ - ÁREA 01</p>
       </div>
     </div>
 
@@ -3018,8 +3034,9 @@ p, .card-desc, .doc-summary {
         <div class="role-info">
           <span class="role-label">Perfil Ativo</span>
           <select class="role-select" id="roleSelector" onchange="onRoleChange(this.value)">
-            <option value="delegado">Delegado de Área (Admin)</option>
-            <option value="tesouraria">Tesoureiro / Finanças</option>
+            <option value="carlos">Carlos S.R. (Delegado de Área RJ)</option>
+            <option value="henrique">Henrique (Analista de Processos)</option>
+            <option value="tesouraria">Comitê de Finanças / Tesouraria</option>
             <option value="secretaria">Secretaria / ESG</option>
             <option value="conselho">Conselho Fiscal / Auditoria</option>
             <option value="custodio">Junta de Custódios</option>
@@ -3079,15 +3096,14 @@ p, .card-desc, .doc-summary {
       </div>
 
       <!-- Quick Search Suggestions -->
-      <div class="search-suggestions">
+      <div class="search-suggestions" id="searchSuggestionsContainer">
         <span class="sugg-label">Buscas Rápidas:</span>
-        <button class="sugg-pill" onclick="applySearchQuery('relatorio financeiro jan/26')">relatorio financeiro jan/26</button>
-        <button class="sugg-pill" onclick="applySearchQuery('auditoria csg')">auditoria csg</button>
-        <button class="sugg-pill" onclick="applySearchQuery('ata reuniao extraordinaria')">atas de custódios</button>
-        <button class="sugg-pill" onclick="applySearchQuery('relatorio contestacao junaab')">pareceres junaab</button>
-        <button class="sugg-pill" onclick="applySearchQuery('pix camisas convencao')">camisas convenção 2027</button>
-        <button class="sugg-pill" onclick="applySearchQuery('matriz raci')">matriz raci</button>
-        <button class="sugg-pill" onclick="applySearchQuery('reserva prudente')">reserva prudente</button>
+        <div id="quickSearchTagsList" style="display: contents;">
+          <!-- Renderizado dinamicamente via JS -->
+        </div>
+        <button type="button" class="sugg-pill btn-add-tag-pill" onclick="abrirPromptNovaTagBusca()" title="Criar nova tag de busca rápida">
+          ➕ +tags
+        </button>
       </div>
 
       <!-- Filter Controls Bar -->
@@ -3218,6 +3234,11 @@ p, .card-desc, .doc-summary {
           <option value="CONVENCAO">Convenção</option>
           <option value="GOVERNANCA">Governança & Processos</option>
         </select>
+      </div>
+
+      <div class="filter-group" style="margin-left: auto; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">👁️ Visão Ativa:</span>
+        <b id="kanban-active-profile-name" style="font-size: 12.5px; color: #1e3a8a;">Henrique (Analista)</b>
       </div>
     </div>
 
@@ -4321,6 +4342,30 @@ p, .card-desc, .doc-summary {
   </div>
 </div>
 
+
+<!-- Modal: Adicionar Nova Tag de Busca Rápida -->
+<div id="modal-nova-tag-busca" class="modal-overlay" style="display: none;">
+  <div class="modal-box" style="max-width: 440px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">
+      <h3 style="margin:0; font-size:1.15rem; font-weight:700; color:#0f172a;">🏷️ Nova Tag de Busca Rápida</h3>
+      <button type="button" class="modal-close-btn" onclick="fecharModalNovaTagBusca()">✕</button>
+    </div>
+    <form onsubmit="salvarNovaTagBuscaForm(event)">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label style="font-weight:600; font-size:13px; color:#334155;">Nome da Tag / Termo de Busca *</label>
+        <input type="text" id="inputNovaTagBusca" placeholder="Ex: balancete 2026, comitê de literatura, pix..." required style="width:100%; box-sizing:border-box;">
+      </div>
+      <div style="font-size:12px; color:#64748b; margin-bottom:16px; line-height:1.4;">
+        💡 Ao clicar nesta tag, o acervo filtrará instantaneamente todos os documentos que contenham esta palavra ou termo.
+      </div>
+      <div class="modal-footer" style="padding-top:10px; border-top:1px solid #e2e8f0;">
+        <button type="button" class="btn-secondary" onclick="fecharModalNovaTagBusca()">Cancelar</button>
+        <button type="submit" class="btn-primary">➕ Salvar Tag</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Toast Container -->
 <div id="toastContainer" class="toast-container"></div>
 
@@ -4379,6 +4424,51 @@ p, .card-desc, .doc-summary {
       <div class="form-group">
         <label>Observações / Detalhes</label>
         <textarea id="tarefa-descricao" rows="2" placeholder="Instruções breves para execução..."></textarea>
+      </div>
+
+      <!-- Compartilhamento de Visibilidade com Perfis (RBAC) -->
+      <div class="form-group" style="margin-top: 10px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px;">
+        <label style="margin: 0 0 6px; font-weight: 700; color: #0f172a; display: flex; align-items: center; justify-content: space-between;">
+          <span>👥 Compartilhar com Perfis (Visibilidade Restrita)</span>
+          <span style="font-size: 11px; font-weight: normal; color: #64748b;">Quem pode ver esta tarefa</span>
+        </label>
+        <div style="font-size: 11.5px; color: #64748b; margin-bottom: 8px;">
+          Selecione quem está habilitado para visualizar e acompanhar esta tarefa no Kanban:
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; cursor: pointer; font-weight: 600; grid-column: 1 / -1; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe;">
+            <input type="checkbox" id="tarefa-comp-todos" onchange="toggleCompartilharTodosPerfis(this.checked)">
+            🌐 Todos os Perfis (Acesso Livre para toda a Área)
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="delegado" onchange="onCheckboxPerfilIndividualChange()">
+            Carlos S.R. (Delegado)
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="tesouraria" onchange="onCheckboxPerfilIndividualChange()">
+            Comitê de Finanças
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="secretaria" onchange="onCheckboxPerfilIndividualChange()">
+            Secretaria / ESG
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="conselho" onchange="onCheckboxPerfilIndividualChange()">
+            Conselho Fiscal
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="henrique" onchange="onCheckboxPerfilIndividualChange()">
+            Henrique (Analista)
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="custodio" onchange="onCheckboxPerfilIndividualChange()">
+            Junta de Custódios
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer;">
+            <input type="checkbox" class="tarefa-check-perfil" value="observador" onchange="onCheckboxPerfilIndividualChange()">
+            Membro / Observador
+          </label>
+        </div>
       </div>
 
       <!-- Checklist no Modal de Criação / Edição -->
@@ -5196,6 +5286,178 @@ let kanbanTasks = [];
 
 
 
+
+
+// ==============================================================================
+// GESTÃO DINÂMICA DE TAGS DE BUSCA RÁPIDA (+TAGS)
+// ==============================================================================
+
+const TAGS_BUSCA_PADRAO = [
+  "relatorio financeiro jan/26",
+  "auditoria csg",
+  "ata reuniao extraordinaria",
+  "relatorio contestacao junaab",
+  "pix camisas convencao",
+  "matriz raci",
+  "reserva prudente"
+];
+
+function obterTagsBuscaRapida() {
+  try {
+    const raw = localStorage.getItem('aa_quick_search_tags');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    return [...TAGS_BUSCA_PADRAO];
+  } catch(e) {
+    return [...TAGS_BUSCA_PADRAO];
+  }
+}
+
+function salvarTagsBuscaStorage(tags) {
+  try {
+    localStorage.setItem('aa_quick_search_tags', JSON.stringify(tags));
+  } catch(e) {}
+  renderizarTagsBuscaRapida();
+}
+
+function renderizarTagsBuscaRapida() {
+  const container = document.getElementById('quickSearchTagsList');
+  if (!container) return;
+
+  const tags = obterTagsBuscaRapida();
+  container.innerHTML = '';
+
+  tags.forEach((tag, idx) => {
+    const pillWrapper = document.createElement('div');
+    pillWrapper.style.display = 'inline-flex';
+    pillWrapper.style.alignItems = 'center';
+    pillWrapper.style.gap = '2px';
+
+    const isDefault = TAGS_BUSCA_PADRAO.includes(tag);
+    pillWrapper.innerHTML = `
+      <button type="button" class="sugg-pill" onclick="applySearchQuery('${tag.replace(/'/g, "\\'")}')" title="Filtrar por '${tag}'">
+        ${tag}
+      </button>
+      ${!isDefault ? `<button type="button" onclick="excluirTagBusca(${idx})" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-size:11px; padding:2px 4px; margin-left:-6px;" title="Remover tag customizada">✕</button>` : ''}
+    `;
+    container.appendChild(pillWrapper);
+  });
+}
+
+function abrirPromptNovaTagBusca() {
+  const modal = document.getElementById('modal-nova-tag-busca');
+  const input = document.getElementById('inputNovaTagBusca');
+  if (modal) {
+    modal.style.display = 'flex';
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 100);
+    }
+  } else {
+    const termo = prompt("Digite a nova tag ou termo para busca rápida:");
+    if (termo && termo.trim()) {
+      salvarNovaTagBusca(termo.trim());
+    }
+  }
+}
+
+function fecharModalNovaTagBusca() {
+  const modal = document.getElementById('modal-nova-tag-busca');
+  if (modal) modal.style.display = 'none';
+}
+
+function salvarNovaTagBuscaForm(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('inputNovaTagBusca');
+  if (!input) return;
+  const termo = input.value.trim();
+  if (termo) {
+    salvarNovaTagBusca(termo);
+    fecharModalNovaTagBusca();
+  }
+}
+
+function salvarNovaTagBusca(termo) {
+  const tags = obterTagsBuscaRapida();
+  if (!tags.includes(termo)) {
+    tags.push(termo);
+    salvarTagsBuscaStorage(tags);
+    showToast("🏷️ Nova tag adicionada: \"" + termo + "\"");
+  } else {
+    showToast("Esta tag já existe na lista.");
+  }
+}
+
+function excluirTagBusca(idx) {
+  const tags = obterTagsBuscaRapida();
+  const removida = tags.splice(idx, 1);
+  salvarTagsBuscaStorage(tags);
+  if (removida.length > 0) {
+    showToast("Tag \"" + removida[0] + "\" removida.");
+  }
+}
+
+// ==============================================================================
+// VISIBILIDADE E COMPARTILHAMENTO DE TAREFAS POR PERFIL (RBAC)
+// ==============================================================================
+
+function podePerfilVisualizarTarefa(tarefa, perfilAtivo) {
+  if (!tarefa) return false;
+  // Delegado de Área e Analista de Processos têm acesso de governança ampla
+  if (perfilAtivo === 'delegado' || perfilAtivo === 'carlos' || perfilAtivo === 'henrique') {
+    return true;
+  }
+
+  const comp = tarefa.compartilhadoCom;
+  // Se não foi definido compartilhamento ou se estiver compartilhado com 'todos'
+  if (!comp || !Array.isArray(comp) || comp.length === 0 || comp.includes('todos')) {
+    return true;
+  }
+
+  const actor = (typeof ATORES !== 'undefined') ? ATORES.find(a => a.id === perfilAtivo) : null;
+  // Se o usuário ativo for o responsável pela tarefa
+  if (tarefa.responsavel && actor && (tarefa.responsavel === actor.papel || tarefa.responsavel.includes(actor.nome))) {
+    return true;
+  }
+  if (tarefa.atorId && (tarefa.atorId === perfilAtivo || tarefa.atorId === (actor ? actor.id : ''))) {
+    return true;
+  }
+
+  // Se o perfil ou papel estiver expressamente habilitado no compartilhamento
+  if (comp.includes(perfilAtivo) || (perfilAtivo === 'carlos' && comp.includes('delegado')) || (perfilAtivo === 'delegado' && comp.includes('carlos'))) return true;
+  if (actor && (comp.includes(actor.id) || comp.includes(actor.papel))) return true;
+
+  // Não habilitado
+  return false;
+}
+
+function toggleCompartilharTodosPerfis(checked) {
+  document.querySelectorAll('.tarefa-check-perfil').forEach(cb => {
+    cb.checked = checked;
+  });
+}
+
+function onCheckboxPerfilIndividualChange() {
+  const todosCheck = document.getElementById('tarefa-comp-todos');
+  const checks = document.querySelectorAll('.tarefa-check-perfil');
+  const allChecked = Array.from(checks).every(c => c.checked);
+  if (todosCheck) todosCheck.checked = allChecked;
+}
+
+function obterPerfisCompartilhadosMarcados() {
+  const todosCheck = document.getElementById('tarefa-comp-todos');
+  if (todosCheck && todosCheck.checked) {
+    return ['todos'];
+  }
+  const selecionados = [];
+  document.querySelectorAll('.tarefa-check-perfil:checked').forEach(cb => {
+    selecionados.push(cb.value);
+  });
+  return selecionados.length > 0 ? selecionados : ['todos'];
+}
+
 // ==============================================================================
 // CÁLCULO E SINALIZAÇÃO INTELIGENTE DE PRAZOS DO KANBAN
 // ==============================================================================
@@ -5350,6 +5612,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStatsKPIs();
   renderDocs();
   renderKanban();
+  if (typeof renderizarKanban === "function") renderizarKanban();
+  if (typeof updateStatsKPIs === "function") updateStatsKPIs();
 });
 
 // Gestão de Armazenamento de Atores
@@ -5415,6 +5679,7 @@ function switchTab(tabKey) {
 
 // Troca de Perfil de Ator (RBAC)
 function onRoleChange(roleKey) {
+  if (roleKey === 'delegado') roleKey = 'carlos';
   currentActiveRole = roleKey;
   const actor = ATORES.find(a => a.id === roleKey) || ATORES[0];
   if (actor) {
@@ -7976,6 +8241,7 @@ const TAREFAS_ADMIN_PADRAO = [
     categoria: 'JUNAAB',
     prazo: '2026-11-10',
     status: 'doing',
+    compartilhadoCom: ['delegado', 'secretaria', 'henrique'],
     docId: '4',
     docTitulo: 'Circular 04-2026 (30/05/2026)',
     subtarefas: [
@@ -7991,6 +8257,7 @@ const TAREFAS_ADMIN_PADRAO = [
     categoria: 'FINANCEIRO',
     prazo: '2026-11-14',
     status: 'todo',
+    compartilhadoCom: ['delegado', 'tesouraria', 'conselho', 'henrique'],
     docId: '1',
     docTitulo: 'Relatório Financeiro Consolidado',
     subtarefas: [
@@ -8069,10 +8336,18 @@ function renderizarKanban() {
 
   const colunas = { todo: [], doing: [], review: [], done: [] };
 
+  // Atualizar indicador de perfil no cabeçalho dos filtros
+  const activeLabel = document.getElementById('kanban-active-profile-name');
+  if (activeLabel && typeof ATORES !== 'undefined') {
+    const act = ATORES.find(a => a.id === currentActiveRole);
+    if (act) activeLabel.textContent = act.nome + ' (' + act.papel.split(' ')[0] + ')';
+  }
+
   tarefasAdmin.forEach(tarefa => {
+    const passaVisibilidade = podePerfilVisualizarTarefa(tarefa, currentActiveRole);
     const passaResp = filtroResp === 'TODOS' || tarefa.responsavel === filtroResp;
     const passaCat = filtroCat === 'TODAS' || tarefa.categoria === filtroCat;
-    if (passaResp && passaCat && colunas[tarefa.status]) {
+    if (passaVisibilidade && passaResp && passaCat && colunas[tarefa.status]) {
       colunas[tarefa.status].push(tarefa);
     }
   });
@@ -8158,8 +8433,26 @@ function renderizarKanban() {
         ${t.descricao ? '<p class="task-desc">' + t.descricao + '</p>' : ''}
         ${docHtml}
         ${checklistHtml}
+        const comp = t.compartilhadoCom || ['todos'];
+      let sharingBadge = '';
+      if (!comp.includes('todos') && comp.length > 0) {
+        const nomes = comp.map(p => {
+          const a = (typeof ATORES !== 'undefined') ? ATORES.find(at => at.id === p) : null;
+          return a ? a.nome.split(' ')[0] : p;
+        }).join(', ');
+        sharingBadge = '<span style="font-size:10px; font-weight:700; color:#4338ca; background:#e0e7ff; padding:2px 6px; border-radius:4px;" title="Visível apenas para: ' + nomes + '">🔒 ' + nomes + '</span>';
+      } else {
+        sharingBadge = '<span style="font-size:10px; font-weight:600; color:#059669; background:#dcfce7; padding:2px 5px; border-radius:4px;" title="Acesso livre para todos os perfis">🌐 Livre</span>';
+      }
+
+      card.innerHTML += ''; // no-op
+      // Substituicao na task-footer
+      
         <div class="task-footer">
-          <span>👤 ${t.responsavel}</span>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span>👤 ${t.responsavel}</span>
+            ${sharingBadge}
+          </div>
           <div style="display:flex; align-items:center; gap:4px;">
             <button type="button" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-size:11.5px; padding:2px 5px;" onclick="editarTarefaAdmin('${t.id}')" title="Editar tarefa">✏️</button>
             <select class="task-move-select" onchange="moverTarefa('${t.id}', this.value)" title="Mover de coluna">
@@ -8285,6 +8578,9 @@ function abrirModalTarefa() {
 
   modalChecklistTemp = [];
   renderizarModalChecklistItens();
+  const todosCheck = document.getElementById('tarefa-comp-todos');
+  if (todosCheck) todosCheck.checked = true;
+  document.querySelectorAll('.tarefa-check-perfil').forEach(cb => cb.checked = true);
 
   // Popular select com os documentos do acervo
   const selectDoc = document.getElementById('tarefa-doc-vinculado');
@@ -8375,6 +8671,19 @@ function editarTarefaAdmin(id) {
 
   modalChecklistTemp = t.subtarefas ? JSON.parse(JSON.stringify(t.subtarefas)) : [];
   renderizarModalChecklistItens();
+
+  // Carregar perfis compartilhados
+  const comp = t.compartilhadoCom || ['todos'];
+  const todosCh = document.getElementById('tarefa-comp-todos');
+  if (comp.includes('todos')) {
+    if (todosCh) todosCh.checked = true;
+    document.querySelectorAll('.tarefa-check-perfil').forEach(cb => cb.checked = true);
+  } else {
+    if (todosCh) todosCh.checked = false;
+    document.querySelectorAll('.tarefa-check-perfil').forEach(cb => {
+      cb.checked = comp.includes(cb.value);
+    });
+  }
 }
 
 function salvarNovaTarefa(e) {
@@ -8402,6 +8711,7 @@ function salvarNovaTarefa(e) {
       tarefasAdmin[idx].docId = docId;
       tarefasAdmin[idx].docTitulo = docTitulo;
       tarefasAdmin[idx].subtarefas = modalChecklistTemp.slice();
+      tarefasAdmin[idx].compartilhadoCom = obterPerfisCompartilhadosMarcados();
 
       salvarEstadoTarefas();
       fecharModalTarefa();
@@ -8419,6 +8729,7 @@ function salvarNovaTarefa(e) {
     prazo: prazo,
     descricao: descricao,
     status: 'todo',
+    compartilhadoCom: (typeof obterPerfisCompartilhadosMarcados === 'function') ? obterPerfisCompartilhadosMarcados() : ['todos'],
     docId: docId,
     docTitulo: docTitulo,
     subtarefas: modalChecklistTemp.slice()
