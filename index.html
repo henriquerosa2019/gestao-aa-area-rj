@@ -2882,6 +2882,104 @@ p, .card-desc, .doc-summary {
   font-weight: 700;
 }
 
+
+/* ==============================================================================
+   ÁREA DE GESTÃO PROTEGIDA POR SENHA (2026)
+   ============================================================================== */
+.gestao-lock-box {
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+.lock-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  max-width: 440px;
+  width: 100%;
+  padding: 36px 30px;
+  text-align: center;
+}
+.lock-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 16px;
+  border: 1px solid #cbd5e1;
+}
+.lock-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.lock-sub {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.lock-input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 2px;
+  box-sizing: border-box;
+}
+.lock-input:focus {
+  outline: none;
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+}
+
+.gestao-top-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.gestao-sub-tabs {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+}
+.sub-tab-gestao-btn {
+  padding: 7px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sub-tab-gestao-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-weight: 700;
+}
+
 </style>
   </head>
 <body>
@@ -2899,25 +2997,25 @@ p, .card-desc, .doc-summary {
 
     <!-- Navigation Tabs -->
     <nav class="header-center">
-      <button class="nav-tab-btn active" onclick="switchTab('acervo')">
+      <button class="nav-tab-btn active" data-tab="acervo" onclick="switchTab('acervo')">
         <span>📂</span> Acervo & Busca
       </button>
-      <button class="nav-tab-btn" onclick="switchTab('kanban')">
+      <button class="nav-tab-btn" data-tab="kanban" onclick="switchTab('kanban')">
         <span>📌</span> Kanban Trello
       </button>
-      <button class="nav-tab-btn" onclick="switchTab('rbac')">
-        <span>👥</span> Atores & Permissões
-      </button>
-      <button class="nav-tab-btn" onclick="switchTab('executivo')">
+      <button class="nav-tab-btn" data-tab="executivo" onclick="switchTab('executivo')">
         <span>📊</span> Painel Executivo
+      </button>
+      <button class="nav-tab-btn" data-tab="gestao" onclick="switchTab('gestao')">
+        <span>🔐</span> Gestão
       </button>
     </nav>
 
     <!-- Header Actions & Actor Switcher -->
     <div class="header-actions">
-      <!-- Botão Auditoria & Segurança -->
-      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="abrirModalAuditoria()" title="Ver trilha de auditoria completa e segurança dos documentos">
-        🛡️ Trilha de Auditoria
+      <!-- Botão Área de Gestão -->
+      <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="switchTab('gestao')" title="Acessar Área Restrita de Gestão (Senha 2026)">
+        🔐 Área de Gestão
       </button>
       <div class="role-box">
         <div class="role-avatar" id="headerRoleAvatar">D</div>
@@ -3164,44 +3262,145 @@ p, .card-desc, .doc-summary {
   </div>
 </section>
 
-  <!-- ==================== TAB 3: ATORES & PERMISSÕES (RBAC) ==================== -->
-  <section id="view-rbac" class="view-panel">
-    <div class="rbac-container">
-      <!-- Coluna Esquerda: Lista de Atores -->
-      <div class="actors-list-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 10px; flex-wrap: wrap;">
-          <div>
-            <h3 class="section-heading">Atores Administrativos Cadastrados</h3>
-            <p class="section-sub" style="margin-bottom: 0;">Estrutura estatutária, encargos e Áreas de A.A. Brasil.</p>
+    <!-- ==================== TAB 4: ÁREA DE GESTÃO (PROTEGIDA POR SENHA 2026) ==================== -->
+  <section id="view-gestao" class="view-panel">
+    <!-- 1. Tela de Bloqueio por Senha -->
+    <div id="gestao-lock-container" class="gestao-lock-box" style="display: flex;">
+      <div class="lock-card">
+        <div class="lock-icon-circle">🔐</div>
+        <h2>Área de Gestão Restrita</h2>
+        <p class="lock-sub">
+          Controle de governança, cadastro de atores administrativos, matriz de permissões e trilha geral de auditoria.
+        </p>
+        
+        <form onsubmit="submeterSenhaGestao(event)" style="margin-top: 22px;">
+          <div style="margin-bottom: 14px;">
+            <input type="password" id="inputSenhaGestao" placeholder="Digite a senha (2026)..." class="lock-input" required autocomplete="current-password">
           </div>
-          <button class="btn-primary" style="padding: 7px 14px; font-size: 12.5px; white-space: nowrap;" onclick="openNewActorModal()">
-            <span>➕</span> Incluir Novo Ator
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 11px; font-size: 14px; font-weight: 600;">
+            🔓 Desbloquear Acesso
           </button>
+        </form>
+
+        <div id="erroSenhaGestao" style="display: none; color: #dc2626; font-size: 13px; font-weight: 600; margin-top: 10px;">
+          ⚠️ Senha incorreta. Digite 2026 para acessar.
+        </div>
+        
+        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 14px;">
+          🛡️ Delegação Carlos S.R. · Área 01 (RJ) · Acesso Protegido
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Conteúdo Desbloqueado da Área de Gestão -->
+    <div id="gestao-content-container" style="display: none;">
+      <!-- Barra Superior da Área de Gestão -->
+      <div class="gestao-top-bar">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 26px;">⚙️</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 700; color: #0f172a;">Painel Administrativo & Governança</h3>
+            <span style="font-size: 12px; color: #16a34a; font-weight: 600;">🟢 Acesso Autenticado · Área 01 RJ</span>
+          </div>
         </div>
 
-        <div id="actorsListContainer"></div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <!-- Pílulas de Sub-Navegação interna de Gestão -->
+          <div class="gestao-sub-tabs">
+            <button type="button" class="sub-tab-gestao-btn active" data-sub="rbac" onclick="alternarSubAbaGestao('rbac')">
+              👥 Atores & Permissões
+            </button>
+            <button type="button" class="sub-tab-gestao-btn" data-sub="audit" onclick="alternarSubAbaGestao('audit')">
+              🛡️ Trilha de Auditoria
+            </button>
+          </div>
+
+          <button type="button" class="btn-secondary" style="font-size: 12px; padding: 6px 14px; color: #dc2626; border-color: #fca5a5;" onclick="bloquearAcessoGestao()" title="Encerrar sessão protegida">
+            🔒 Bloquear
+          </button>
+        </div>
       </div>
 
-      <!-- Coluna Direita: Matriz RACI & Permissões -->
-      <div class="matrix-card">
-        <h3 class="section-heading">Matriz de Permissões no Sistema</h3>
-        <p class="section-sub">Privilégios de ação de acordo com o papel administrativo ativo.</p>
+      <!-- SUB-SEÇÃO 1: ATORES & PERMISSÕES -->
+      <div id="gestao-sec-rbac" style="display: block;">
+        <div class="rbac-container">
+          <!-- Coluna Esquerda: Lista de Atores -->
+          <div class="actors-list-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 10px; flex-wrap: wrap;">
+              <div>
+                <h3 class="section-heading">Atores Administrativos Cadastrados</h3>
+                <p class="section-sub" style="margin-bottom: 0;">Estrutura estatutária, encargos e Áreas de A.A. Brasil.</p>
+              </div>
+              <button class="btn-primary" style="padding: 7px 14px; font-size: 12.5px; white-space: nowrap;" onclick="openNewActorModal()">
+                <span>➕</span> Incluir Novo Ator
+              </button>
+            </div>
+            <div id="actorsListContainer"></div>
+          </div>
 
-        <table class="raci-table">
-          <thead>
-            <tr>
-              <th>Ator / Encargo</th>
-              <th>Área de A.A.</th>
-              <th>Ver Docs</th>
-              <th>Abrir 1-Clique</th>
-              <th>Criar Tarefas</th>
-              <th>Mover Kanban</th>
-              <th>Homologar</th>
-              <th>Admin</th>
-            </tr>
-          </thead>
-          <tbody id="dynamicPermissionsTableBody"></tbody>
-        </table>
+          <!-- Coluna Direita: Matriz RACI & Permissões -->
+          <div class="matrix-card">
+            <h3 class="section-heading">Matriz de Permissões no Sistema</h3>
+            <p class="section-sub">Privilégios de ação de acordo com o papel administrativo ativo.</p>
+            <table class="raci-table">
+              <thead>
+                <tr>
+                  <th>Ator / Encargo</th>
+                  <th>Área de A.A.</th>
+                  <th>Ver Docs</th>
+                  <th>Abrir 1-Clique</th>
+                  <th>Criar Tarefas</th>
+                  <th>Mover Kanban</th>
+                  <th>Homologar</th>
+                  <th>Admin</th>
+                </tr>
+              </thead>
+              <tbody id="dynamicPermissionsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-SEÇÃO 2: TRILHA DE AUDITORIA & CONFORMIDADE -->
+      <div id="gestao-sec-audit" style="display: none;">
+        <div class="matrix-card" style="padding: 22px 26px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px; flex-wrap: wrap;">
+            <div>
+              <h3 class="section-heading" style="display: flex; align-items: center; gap: 8px;">
+                🛡️ Trilha Geral de Auditoria & Conformidade
+              </h3>
+              <p class="section-sub">Registro cronológico imutável de visualizações, downloads, novas versões e alterações administrativas.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="exportarAuditoriaCSV()">
+                📥 Exportar CSV
+              </button>
+              <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="carregarTrilhaAuditoria()">
+                🔄 Atualizar
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <input type="text" id="auditGestaoSearchInput" oninput="filtrarLogsAuditoriaGestao(this.value)" placeholder="Filtrar logs por ator, documento ou ação..." style="padding: 8px 14px; border: 1px solid var(--rule, #cbd5e1); border-radius: var(--radius, 8px); font-size: 13px; width: 100%; max-width: 420px; box-sizing: border-box;">
+          </div>
+
+          <div style="max-height: 520px; overflow-y: auto; border: 1px solid var(--rule, #cbd5e1); border-radius: var(--radius, 8px);">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th style="width: 150px;">Data / Hora</th>
+                  <th style="width: 140px;">Ação</th>
+                  <th>Documento / Detalhes</th>
+                  <th style="width: 180px;">Ator Responsável</th>
+                </tr>
+              </thead>
+              <tbody id="auditGestaoTableBody">
+                <!-- Renderizado dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -4917,6 +5116,94 @@ const TAREFAS_DEFAULT = [
 
 let kanbanTasks = [];
 
+
+// ==============================================================================
+// GESTÃO DA ÁREA PROTEGIDA POR SENHA (2026) & AUDITORIA INTEGRADA
+// ==============================================================================
+
+const SENHA_GESTAO_MESTRA = "2026";
+
+function verificarAutenticacaoGestao() {
+  const lock = document.getElementById("gestao-lock-container");
+  const content = document.getElementById("gestao-content-container");
+  if (!lock || !content) return;
+
+  const autenticado = sessionStorage.getItem("aa_gestao_autenticado") === "true";
+  if (autenticado) {
+    lock.style.display = "none";
+    content.style.display = "block";
+    renderizarAuditoriaGestao();
+  } else {
+    lock.style.display = "flex";
+    content.style.display = "none";
+    setTimeout(() => {
+      const inp = document.getElementById("inputSenhaGestao");
+      if (inp) inp.focus();
+    }, 100);
+  }
+}
+
+function submeterSenhaGestao(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById("inputSenhaGestao");
+  const erro = document.getElementById("erroSenhaGestao");
+  if (!input) return;
+
+  if (input.value.trim() === SENHA_GESTAO_MESTRA) {
+    sessionStorage.setItem("aa_gestao_autenticado", "true");
+    if (erro) erro.style.display = "none";
+    input.value = "";
+    verificarAutenticacaoGestao();
+    if (typeof registrarLogAuditoria === 'function') {
+      registrarLogAuditoria('login_gestao', null, { notas: 'Acesso autenticado com senha 2026 à Área de Gestão Restrita' });
+    }
+    showToast("🔓 Acesso à Área de Gestão liberado com sucesso!");
+  } else {
+    if (erro) {
+      erro.style.display = "block";
+      erro.textContent = "⚠️ Senha incorreta. Digite 2026 para acessar.";
+    }
+    input.value = "";
+    input.focus();
+  }
+}
+
+function bloquearAcessoGestao() {
+  sessionStorage.removeItem("aa_gestao_autenticado");
+  verificarAutenticacaoGestao();
+  showToast("🔒 Área de Gestão bloqueada.");
+}
+
+function alternarSubAbaGestao(subAba) {
+  document.querySelectorAll(".sub-tab-gestao-btn").forEach(b => b.classList.remove("active"));
+  const btn = document.querySelector('.sub-tab-gestao-btn[data-sub="' + subAba + '"]');
+  if (btn) btn.classList.add("active");
+
+  const secRbac = document.getElementById("gestao-sec-rbac");
+  const secAudit = document.getElementById("gestao-sec-audit");
+  if (subAba === 'rbac') {
+    if (secRbac) secRbac.style.display = "block";
+    if (secAudit) secAudit.style.display = "none";
+  } else {
+    if (secRbac) secRbac.style.display = "none";
+    if (secAudit) secAudit.style.display = "block";
+    renderizarAuditoriaGestao();
+  }
+}
+
+function renderizarAuditoriaGestao(termoFiltro = '') {
+  if (typeof carregarTrilhaAuditoria === 'function') {
+    carregarTrilhaAuditoria(termoFiltro);
+  }
+}
+
+function filtrarLogsAuditoriaGestao(val) {
+  if (typeof carregarTrilhaAuditoria === 'function') {
+    carregarTrilhaAuditoria(val);
+  }
+}
+
+
 // Inicialização da Aplicação
 document.addEventListener("DOMContentLoaded", () => {
   loadActorsFromStorage();
@@ -4971,6 +5258,8 @@ function onActorRoleSelectChange(val) {
 
 // Alternância de Abas
 function switchTab(tabKey) {
+  if (tabKey === 'rbac') tabKey = 'gestao';
+
   document.querySelectorAll(".nav-tab-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelectorAll(".view-panel").forEach(panel => panel.classList.remove("active"));
 
@@ -4979,11 +5268,14 @@ function switchTab(tabKey) {
     targetPanel.classList.add("active");
   }
 
-  const navBtns = document.querySelectorAll(".nav-tab-btn");
-  if (tabKey === 'acervo') navBtns[0].classList.add("active");
-  if (tabKey === 'kanban') navBtns[1].classList.add("active");
-  if (tabKey === 'rbac') navBtns[2].classList.add("active");
-  if (tabKey === 'executivo') navBtns[3].classList.add("active");
+  const activeBtn = document.querySelector('.nav-tab-btn[data-tab="' + tabKey + '"]');
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
+
+  if (tabKey === 'gestao') {
+    verificarAutenticacaoGestao();
+  }
 }
 
 // Troca de Perfil de Ator (RBAC)
@@ -6638,6 +6930,45 @@ function initSupabase() {
     
     const rawAudit = localStorage.getItem(STORAGE_AUDIT_KEY);
     if (rawAudit) auditTrailStore = JSON.parse(rawAudit);
+    
+    if (!auditTrailStore || auditTrailStore.length === 0) {
+      auditTrailStore = [
+        {
+          id: 'log-seed-1',
+          dataHora: new Date(Date.now() - 3600000 * 2).toISOString(),
+          acao: 'login_gestao',
+          documentoId: null,
+          documentoTitulo: 'Acesso Administrativo ao Portal',
+          atorNome: 'Carlos S.R.',
+          atorCargo: 'Delegado de Área',
+          atorArea: 'Área 01 - RJ',
+          detalhes: { notas: 'Sessão administrativa iniciada na Área 01 - RJ' }
+        },
+        {
+          id: 'log-seed-2',
+          dataHora: new Date(Date.now() - 3600000 * 5).toISOString(),
+          acao: 'visualizacao',
+          documentoId: 'doc-01',
+          documentoTitulo: 'Proposta de Planejamento Estratégico JUNAAB',
+          atorNome: 'Carlos S.R.',
+          atorCargo: 'Delegado de Área',
+          atorArea: 'Área 01 - RJ',
+          detalhes: { versao: 'v1.0', notas: 'Análise de conformidade e prioridades da Conferência' }
+        },
+        {
+          id: 'log-seed-3',
+          dataHora: new Date(Date.now() - 86400000).toISOString(),
+          acao: 'download',
+          documentoId: 'doc-02',
+          documentoTitulo: 'Relatório Financeiro Consolidado',
+          atorNome: 'Henrique R.',
+          atorCargo: 'Desenvolvedor & Analista de Sistemas',
+          atorArea: 'Área 01 - RJ',
+          detalhes: { versao: 'v1.0', notas: 'Homologação e backup do acervo financeiro' }
+        }
+      ];
+      try { localStorage.setItem(STORAGE_AUDIT_KEY, JSON.stringify(auditTrailStore)); } catch(e){}
+    }
   } catch (e) {
     console.warn('Erro ao carregar storage local de versões/auditoria:', e);
   }
@@ -6916,22 +7247,24 @@ function fecharModalAuditoria() {
 }
 
 function carregarTrilhaAuditoria(filtro = '') {
-  const tbody = document.getElementById('auditTableBody');
-  tbody.innerHTML = '';
+  const tbodies = [
+    document.getElementById('auditTableBody'),
+    document.getElementById('auditGestaoTableBody')
+  ].filter(Boolean);
+
+  if (tbodies.length === 0) return;
 
   const termo = (filtro || '').toLowerCase();
 
   const logsFiltrados = auditTrailStore.filter(l => {
     if (!termo) return true;
     return (l.atorNome || '').toLowerCase().includes(termo) ||
+           (l.atorCargo || '').toLowerCase().includes(termo) ||
            (l.acao || '').toLowerCase().includes(termo) ||
-           (l.documentoTitulo || '').toLowerCase().includes(termo);
+           (l.documentoTitulo || '').toLowerCase().includes(termo) ||
+           (l.detalhes && typeof l.detalhes === 'string' && l.detalhes.toLowerCase().includes(termo)) ||
+           (l.detalhes && l.detalhes.notas && l.detalhes.notas.toLowerCase().includes(termo));
   });
-
-  if (logsFiltrados.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 24px; color:var(--muted);">Nenhum log de auditoria encontrado.</td></tr>';
-    return;
-  }
 
   const acaoLabels = {
     'visualizacao': '👁️ Visualização',
@@ -6940,28 +7273,37 @@ function carregarTrilhaAuditoria(filtro = '') {
     'nova_versao': '🏷️ Nova Versão',
     'restauracao_versao': '⏪ Restauração',
     'mover_kanban': '📋 Movido no Kanban',
-    'visualizacao_historico': '🕒 Consulta Versões'
+    'visualizacao_historico': '🕒 Consulta Versões',
+    'login_gestao': '🔐 Login Gestão'
   };
 
-  logsFiltrados.forEach(l => {
-    const tr = document.createElement('tr');
-    const dt = new Date(l.dataHora).toLocaleString('pt-BR');
-    const badgeLabel = acaoLabels[l.acao] || l.acao;
+  tbodies.forEach(tbody => {
+    tbody.innerHTML = '';
+    if (logsFiltrados.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 24px; color:var(--muted);">Nenhum log de auditoria encontrado.</td></tr>';
+      return;
+    }
 
-    tr.innerHTML = `
-      <td style="font-family:var(--mono); font-size:11.5px; color:var(--muted);">${dt}</td>
-      <td><b style="font-size:12px; color:var(--navy);">${badgeLabel}</b></td>
-      <td>
-        <span style="font-weight:500; color:var(--ink);">${l.documentoTitulo}</span>
-        ${l.detalhes && l.detalhes.versao ? '<br><small style="color:#4338CA;">Versão: ' + l.detalhes.versao + '</small>' : ''}
-        ${l.detalhes && l.detalhes.notas ? '<br><small style="color:var(--muted); font-style:italic;">"' + l.detalhes.notas + '"</small>' : ''}
-      </td>
-      <td>
-        <b>${l.atorNome}</b><br>
-        <small style="color:var(--muted);">${l.atorCargo}</small>
-      </td>
-    `;
-    tbody.appendChild(tr);
+    logsFiltrados.forEach(l => {
+      const tr = document.createElement('tr');
+      const dt = l.dataHora ? new Date(l.dataHora).toLocaleString('pt-BR') : '-';
+      const badgeLabel = acaoLabels[l.acao] || l.acao;
+
+      tr.innerHTML = `
+        <td style="font-family:var(--mono, monospace); font-size:11.5px; color:var(--muted); font-weight:600;">${dt}</td>
+        <td><b style="font-size:12px; color:var(--navy); display:inline-block; padding:3px 8px; border-radius:6px; background:#eff6ff;">${badgeLabel}</b></td>
+        <td>
+          <span style="font-weight:600; color:var(--ink); font-size:13px;">${l.documentoTitulo || '-'}</span>
+          ${l.detalhes && l.detalhes.versao ? '<br><small style="color:#4338CA; font-weight:600;">Versão: ' + l.detalhes.versao + '</small>' : ''}
+          ${l.detalhes && l.detalhes.notas ? '<br><small style="color:var(--muted); font-style:italic;">"' + l.detalhes.notas + '"</small>' : ''}
+        </td>
+        <td>
+          <b style="color:#0f172a; font-size:12.5px;">${l.atorNome || 'Sistema'}</b><br>
+          <small style="color:var(--muted); font-size:11px;">${l.atorCargo || ''}</small>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
   });
 }
 
