@@ -3098,9 +3098,14 @@ p, .card-desc, .doc-summary {
       <!-- Quick Search Suggestions -->
       <div class="search-suggestions" id="searchSuggestionsContainer">
         <span class="sugg-label">Buscas Rápidas:</span>
-        <div id="quickSearchTagsList" style="display: contents;">
-          <!-- Renderizado dinamicamente via JS -->
-        </div>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('relatorio financeiro jan/26')">relatorio financeiro jan/26</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('auditoria csg')">auditoria csg</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('ata reuniao extraordinaria')">atas de custódios</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('relatorio contestacao junaab')">pareceres junaab</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('pix camisas convencao')">camisas convenção 2027</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('matriz raci')">matriz raci</button>
+        <button type="button" class="sugg-pill" onclick="applySearchQuery('reserva prudente')">reserva prudente</button>
+        <div id="quickSearchCustomTagsList" style="display: contents;"></div>
         <button type="button" class="sugg-pill btn-add-tag-pill" onclick="abrirPromptNovaTagBusca()" title="Criar nova tag de busca rápida">
           ➕ +tags
         </button>
@@ -5292,41 +5297,31 @@ let kanbanTasks = [];
 // GESTÃO DINÂMICA DE TAGS DE BUSCA RÁPIDA (+TAGS)
 // ==============================================================================
 
-const TAGS_BUSCA_PADRAO = [
-  "relatorio financeiro jan/26",
-  "auditoria csg",
-  "ata reuniao extraordinaria",
-  "relatorio contestacao junaab",
-  "pix camisas convencao",
-  "matriz raci",
-  "reserva prudente"
-];
-
-function obterTagsBuscaRapida() {
+function obterTagsCustomizadas() {
   try {
-    const raw = localStorage.getItem('aa_quick_search_tags');
+    const raw = localStorage.getItem('aa_custom_search_tags');
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed)) return parsed;
     }
-    return [...TAGS_BUSCA_PADRAO];
+    return [];
   } catch(e) {
-    return [...TAGS_BUSCA_PADRAO];
+    return [];
   }
 }
 
-function salvarTagsBuscaStorage(tags) {
+function salvarTagsCustomizadasStorage(tags) {
   try {
-    localStorage.setItem('aa_quick_search_tags', JSON.stringify(tags));
+    localStorage.setItem('aa_custom_search_tags', JSON.stringify(tags));
   } catch(e) {}
-  renderizarTagsBuscaRapida();
+  renderizarTagsCustomizadas();
 }
 
-function renderizarTagsBuscaRapida() {
-  const container = document.getElementById('quickSearchTagsList');
+function renderizarTagsCustomizadas() {
+  const container = document.getElementById('quickSearchCustomTagsList');
   if (!container) return;
 
-  const tags = obterTagsBuscaRapida();
+  const tags = obterTagsCustomizadas();
   container.innerHTML = '';
 
   tags.forEach((tag, idx) => {
@@ -5335,12 +5330,12 @@ function renderizarTagsBuscaRapida() {
     pillWrapper.style.alignItems = 'center';
     pillWrapper.style.gap = '2px';
 
-    const isDefault = TAGS_BUSCA_PADRAO.includes(tag);
+    const safeTag = tag.replace(/'/g, "\\'");
     pillWrapper.innerHTML = `
-      <button type="button" class="sugg-pill" onclick="applySearchQuery('${tag.replace(/'/g, "\\'")}')" title="Filtrar por '${tag}'">
+      <button type="button" class="sugg-pill" onclick="applySearchQuery('${safeTag}')" title="Filtrar por '${tag}'">
         ${tag}
       </button>
-      ${!isDefault ? `<button type="button" onclick="excluirTagBusca(${idx})" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-size:11px; padding:2px 4px; margin-left:-6px;" title="Remover tag customizada">✕</button>` : ''}
+      <button type="button" onclick="excluirTagCustomizada(${idx})" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-size:11px; padding:2px 4px; margin-left:-6px;" title="Remover tag customizada">✕</button>
     `;
     container.appendChild(pillWrapper);
   });
@@ -5358,7 +5353,7 @@ function abrirPromptNovaTagBusca() {
   } else {
     const termo = prompt("Digite a nova tag ou termo para busca rápida:");
     if (termo && termo.trim()) {
-      salvarNovaTagBusca(termo.trim());
+      salvarNovaTagCustomizada(termo.trim());
     }
   }
 }
@@ -5374,29 +5369,39 @@ function salvarNovaTagBuscaForm(e) {
   if (!input) return;
   const termo = input.value.trim();
   if (termo) {
-    salvarNovaTagBusca(termo);
+    salvarNovaTagCustomizada(termo);
     fecharModalNovaTagBusca();
   }
 }
 
-function salvarNovaTagBusca(termo) {
-  const tags = obterTagsBuscaRapida();
+function salvarNovaTagCustomizada(termo) {
+  const tags = obterTagsCustomizadas();
   if (!tags.includes(termo)) {
     tags.push(termo);
-    salvarTagsBuscaStorage(tags);
-    showToast("🏷️ Nova tag adicionada: \"" + termo + "\"");
+    salvarTagsCustomizadasStorage(tags);
+    if (typeof showToast === 'function') {
+      showToast('🏷️ Nova tag adicionada: "' + termo + '"');
+    }
   } else {
-    showToast("Esta tag já existe na lista.");
+    if (typeof showToast === 'function') {
+      showToast('Esta tag já existe na lista.');
+    }
   }
 }
 
-function excluirTagBusca(idx) {
-  const tags = obterTagsBuscaRapida();
+function excluirTagCustomizada(idx) {
+  const tags = obterTagsCustomizadas();
   const removida = tags.splice(idx, 1);
-  salvarTagsBuscaStorage(tags);
-  if (removida.length > 0) {
-    showToast("Tag \"" + removida[0] + "\" removida.");
+  salvarTagsCustomizadasStorage(tags);
+  if (removida.length > 0 && typeof showToast === 'function') {
+    showToast('Tag "' + removida[0] + '" removida.');
   }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderizarTagsCustomizadas);
+} else {
+  renderizarTagsCustomizadas();
 }
 
 // ==============================================================================
