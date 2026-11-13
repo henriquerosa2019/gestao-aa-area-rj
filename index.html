@@ -3171,60 +3171,6 @@ p, .card-desc, .doc-summary {
           </div>
         </div>
 
-        <!-- Lado a lado: Diagnóstico Atual vs Proposta de Modernização -->
-        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius, 8px); padding: 14px 16px; margin-bottom: 14px;">
-          <div style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; font-family: var(--mono, monospace); margin-bottom: 10px;">
-            🔄 Arquitetura de Processos BPMN: Diagnóstico Atual vs. Proposta de Modernização
-          </div>
-          <div class="exec-cards-grid">
-            <!-- Card 3: Macroprocesso AS IS -->
-            <div class="exec-tool-card bpmn-asis">
-              <div>
-                <div class="exec-card-top-meta">
-                  <span class="doc-period-chip">BPMN Atual</span>
-                  <span class="exec-card-badge badge-gray">🗺️ Diagnóstico Operacional</span>
-                </div>
-                <div class="exec-tool-header">
-                  <div class="exec-tool-icon">🔍</div>
-                  <div>
-                    <h4>Macroprocesso AS IS</h4>
-                    <span class="exec-tool-tag">Diagnóstico da Estrutura Vigente</span>
-                  </div>
-                </div>
-                <p class="exec-tool-desc">
-                  Mapeamento detalhado da arquitetura atual de governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais identificados.
-                </p>
-              </div>
-              <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-exec-action secondary-action">
-                🔍 Mapeamento AS IS ↗
-              </a>
-            </div>
-
-            <!-- Card 4: Macroprocesso TO BE -->
-            <div class="exec-tool-card bpmn-tobe">
-              <div>
-                <div class="exec-card-top-meta">
-                  <span class="doc-period-chip">BPMN Otimizado</span>
-                  <span class="exec-card-badge badge-green">💡 Proposta de Modernização</span>
-                </div>
-                <div class="exec-tool-header">
-                  <div class="exec-tool-icon">✨</div>
-                  <div>
-                    <h4>Macroprocesso TO BE</h4>
-                    <span class="exec-tool-tag">Modernização da Governança</span>
-                  </div>
-                </div>
-                <p class="exec-tool-desc">
-                  Modelo de processos otimizado proposto para modernização da JUNAAB, estruturado com gestão orientada a valor, governança RACI e fluxos integrados.
-                </p>
-              </div>
-              <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-exec-action">
-                ✨ Proposta TO BE ↗
-              </a>
-            </div>
-          </div>
-        </div>
-
         <!-- Container de Materiais Customizados da Faixa A -->
         <div id="container-materiais-faixa-A" class="exec-cards-grid"></div>
       </div>
@@ -3338,6 +3284,79 @@ p, .card-desc, .doc-summary {
 
         <!-- Container de Materiais Customizados da Faixa C -->
         <div id="container-materiais-faixa-C" class="exec-cards-grid" style="margin-top: 14px;"></div>
+      </div>
+
+            <!-- 5. FAIXA D: PROCESSOS E MELHORIAS (JUNAAB) -->
+      <div class="exec-section-banner">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🔄 Faixa D — Processos e Melhorias JUNAAB</h3>
+            <p>Mapeamento de macroprocessos da estrutura nacional, arquitetura de governança atual (AS IS) e proposta de modernização (TO BE).</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-gray">BPMN & Governança</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('D')">
+              ➕ Adicionar Material
+            </button>
+          </div>
+        </div>
+
+        <!-- Lado a lado: Diagnóstico Atual vs Proposta de Modernização -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius, 8px); padding: 14px 16px; margin-bottom: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; font-family: var(--mono, monospace); margin-bottom: 10px;">
+            🔄 Arquitetura de Processos BPMN: Diagnóstico Atual vs. Proposta de Modernização
+          </div>
+          <div class="exec-cards-grid">
+            <!-- Card 1: Macroprocesso AS IS -->
+            <div class="exec-tool-card bpmn-asis">
+              <div>
+                <div class="exec-card-top-meta">
+                  <span class="doc-period-chip">BPMN Atual</span>
+                  <span class="exec-card-badge badge-gray">🗺️ Diagnóstico Operacional</span>
+                </div>
+                <div class="exec-tool-header">
+                  <div class="exec-tool-icon">🔍</div>
+                  <div>
+                    <h4>Macroprocesso AS IS</h4>
+                    <span class="exec-tool-tag">Diagnóstico da Estrutura Vigente</span>
+                  </div>
+                </div>
+                <p class="exec-tool-desc">
+                  Mapeamento detalhado da arquitetura atual de governança de A.A. no Brasil, fluxos de prestação de contas e gargalos operacionais identificados.
+                </p>
+              </div>
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/AS IS/MACRO PROCESSO AS IS JUNAAB.html" target="_blank" class="btn-exec-action secondary-action">
+                🔍 Mapeamento AS IS ↗
+              </a>
+            </div>
+
+            <!-- Card 2: Macroprocesso TO BE -->
+            <div class="exec-tool-card bpmn-tobe">
+              <div>
+                <div class="exec-card-top-meta">
+                  <span class="doc-period-chip">BPMN Otimizado</span>
+                  <span class="exec-card-badge badge-green">💡 Proposta de Modernização</span>
+                </div>
+                <div class="exec-tool-header">
+                  <div class="exec-tool-icon">✨</div>
+                  <div>
+                    <h4>Macroprocesso TO BE</h4>
+                    <span class="exec-tool-tag">Modernização da Governança</span>
+                  </div>
+                </div>
+                <p class="exec-tool-desc">
+                  Modelo de processos otimizado proposto para modernização da JUNAAB, estruturado com gestão orientada a valor, governança RACI e fluxos integrados.
+                </p>
+              </div>
+              <a href="04 - MAPEAMENTOS DE PROCESSOS/TO BE/MACRO PROCESSO TO BE JUNAAB.html" target="_blank" class="btn-exec-action">
+                ✨ Proposta TO BE ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Container de Materiais Customizados da Faixa D -->
+        <div id="container-materiais-faixa-D" class="exec-cards-grid" style="margin-top: 14px;"></div>
       </div>
 
       <!-- 4. WIDGET DE RESUMO DE GOVERNANÇA & PRÓXIMOS MARCOS -->
@@ -7108,7 +7127,7 @@ function excluirMaterialFaixa(id) {
 
 function renderizarMateriaisFaixas() {
   const materiais = obterMateriaisFaixas();
-  ['A', 'B', 'C'].forEach(f => {
+  ['A', 'B', 'C', 'D'].forEach(f => {
     const container = document.getElementById('container-materiais-faixa-' + f);
     if (!container) return;
     container.innerHTML = '';
@@ -7586,6 +7605,7 @@ function createTaskFromDoc(docId) {
           <option value="A">🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</option>
           <option value="B">🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</option>
           <option value="C">🎪 Faixa C — Convenção Nacional 2027</option>
+          <option value="D">🔄 Faixa D — Processos e Melhorias JUNAAB</option>
         </select>
       </div>
 
