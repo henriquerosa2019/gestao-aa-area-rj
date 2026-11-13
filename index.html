@@ -5209,7 +5209,7 @@ const ATORES_DEFAULT = [
   }
 ];
 
-let ATORES = [];
+let ATORES = [...ATORES_DEFAULT];
 
 // Tarefas Iniciais do Kanban (Baseadas na Realidade do Acervo)
 const TAREFAS_DEFAULT = [
@@ -5302,7 +5302,9 @@ function obterTagsCustomizadas() {
     const raw = localStorage.getItem('aa_custom_search_tags');
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
+      if (Array.isArray(parsed)) {
+        return parsed.filter(t => typeof t === 'string' && t.trim().length > 0);
+      }
     }
     return [];
   } catch(e) {
@@ -5677,6 +5679,10 @@ function switchTab(tabKey) {
     activeBtn.classList.add("active");
   }
 
+    if (tabKey === 'kanban') {
+    if (typeof renderizarKanban === 'function') renderizarKanban();
+  }
+
   if (tabKey === 'gestao') {
     verificarAutenticacaoGestao();
   }
@@ -5686,14 +5692,20 @@ function switchTab(tabKey) {
 function onRoleChange(roleKey) {
   if (roleKey === 'delegado') roleKey = 'carlos';
   currentActiveRole = roleKey;
-  const actor = ATORES.find(a => a.id === roleKey) || ATORES[0];
+  const actor = (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) ? (ATORES.find(a => a.id === roleKey) || ATORES[0]) : null;
   if (actor) {
-    document.getElementById("headerRoleAvatar").innerText = actor.sigla || actor.nome.substring(0, 2).toUpperCase();
-    document.getElementById("headerRoleAvatar").style.background = actor.avatarBg || "#1B365D";
+    const avatarEl = document.getElementById("headerRoleAvatar");
+    if (avatarEl) {
+      avatarEl.innerText = actor.sigla || (actor.nome ? actor.nome.substring(0, 2).toUpperCase() : 'AA');
+      avatarEl.style.background = actor.avatarBg || "#1B365D";
+    }
+    if (typeof showToast === 'function') {
+      showToast("Perfil ativo: " + actor.nome + " (" + actor.papel + " - " + (actor.area ? actor.area.split(" - ")[0] : "") + ")");
+    }
   }
-  showToast("Perfil ativo: " + actor.nome + " (" + actor.papel + " - " + (actor.area ? actor.area.split(" - ")[0] : "") + ")");
-  highlightActiveActorCard();
-  renderKanban();
+  if (typeof highlightActiveActorCard === 'function') highlightActiveActorCard();
+  if (typeof renderKanban === 'function') renderKanban();
+  if (typeof renderizarKanban === 'function') renderizarKanban();
 }
 
 function selectActorProfile(roleKey) {
@@ -8310,17 +8322,31 @@ try {
     tarefasAdmin = (Array.isArray(parsed) && parsed.length > 0) ? parsed : [...TAREFAS_ADMIN_PADRAO];
   } else {
     tarefasAdmin = [...TAREFAS_ADMIN_PADRAO];
-    localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
   }
 } catch (e) {
   tarefasAdmin = [...TAREFAS_ADMIN_PADRAO];
 }
+
+// GARANTIA DE PRODUÇÃO: Assegurar que as tarefas de Carlos S.R. e essenciais sempre existam no array
+TAREFAS_ADMIN_PADRAO.forEach(padrao => {
+  const exists = tarefasAdmin.some(t => t.id === padrao.id || (t.titulo && t.titulo.trim().toLowerCase() === padrao.titulo.trim().toLowerCase()));
+  if (!exists) {
+    tarefasAdmin.push(padrao);
+  }
+});
+try {
+  localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
+} catch(e) {}
+
 // Sincronizar contadores imediatamente no carregamento
 if (typeof updateStatsKPIs === 'function') {
   updateStatsKPIs();
 }
 if (typeof sincronizarMarcosComKanban === 'function') {
   sincronizarMarcosComKanban();
+}
+if (typeof renderizarKanban === 'function') {
+  renderizarKanban();
 }
 
 let modalChecklistTemp = [];
@@ -8350,7 +8376,7 @@ function renderizarKanban() {
 
   tarefasAdmin.forEach(tarefa => {
     const passaVisibilidade = podePerfilVisualizarTarefa(tarefa, currentActiveRole);
-    const passaResp = filtroResp === 'TODOS' || tarefa.responsavel === filtroResp;
+    const passaResp = filtroResp === 'TODOS' || tarefa.responsavel === filtroResp || (filtroResp === 'Delegado de Área' && (tarefa.responsavel.includes('Delegado') || tarefa.responsavel.includes('Carlos') || tarefa.atorId === 'carlos'));
     const passaCat = filtroCat === 'TODAS' || tarefa.categoria === filtroCat;
     if (passaVisibilidade && passaResp && passaCat && colunas[tarefa.status]) {
       colunas[tarefa.status].push(tarefa);
@@ -8426,6 +8452,18 @@ function renderizarKanban() {
         card.style.borderLeft = '4px solid #16a34a';
       }
 
+      const comp = t.compartilhadoCom || ['todos'];
+      let sharingBadge = '';
+      if (!comp.includes('todos') && comp.length > 0) {
+        const nomes = comp.map(p => {
+          const a = (typeof ATORES !== 'undefined') ? ATORES.find(at => at.id === p) : null;
+          return a ? a.nome.split(' ')[0] : p;
+        }).join(', ');
+        sharingBadge = '<span style="font-size:10px; font-weight:700; color:#4338ca; background:#e0e7ff; padding:2px 6px; border-radius:4px;" title="Visível apenas para: ' + nomes + '">🔒 ' + nomes + '</span>';
+      } else {
+        sharingBadge = '<span style="font-size:10px; font-weight:600; color:#059669; background:#dcfce7; padding:2px 5px; border-radius:4px;" title="Acesso livre para todos os perfis">🌐 Livre</span>';
+      }
+
       card.innerHTML = `
         <div class="task-top" style="align-items:flex-start;">
           <span class="task-tag">${t.categoria}</span>
@@ -8438,21 +8476,6 @@ function renderizarKanban() {
         ${t.descricao ? '<p class="task-desc">' + t.descricao + '</p>' : ''}
         ${docHtml}
         ${checklistHtml}
-        const comp = t.compartilhadoCom || ['todos'];
-      let sharingBadge = '';
-      if (!comp.includes('todos') && comp.length > 0) {
-        const nomes = comp.map(p => {
-          const a = (typeof ATORES !== 'undefined') ? ATORES.find(at => at.id === p) : null;
-          return a ? a.nome.split(' ')[0] : p;
-        }).join(', ');
-        sharingBadge = '<span style="font-size:10px; font-weight:700; color:#4338ca; background:#e0e7ff; padding:2px 6px; border-radius:4px;" title="Visível apenas para: ' + nomes + '">🔒 ' + nomes + '</span>';
-      } else {
-        sharingBadge = '<span style="font-size:10px; font-weight:600; color:#059669; background:#dcfce7; padding:2px 5px; border-radius:4px;" title="Acesso livre para todos os perfis">🌐 Livre</span>';
-      }
-
-      card.innerHTML += ''; // no-op
-      // Substituicao na task-footer
-      
         <div class="task-footer">
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
             <span>👤 ${t.responsavel}</span>
