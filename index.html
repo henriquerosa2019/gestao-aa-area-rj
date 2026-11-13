@@ -2571,6 +2571,48 @@ p, .card-desc, .doc-summary {
   line-height: 1.35;
   margin: 0;
 }
+
+.milestone-footer-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.milestone-kanban-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e3a8a;
+  cursor: pointer;
+  user-select: none;
+  background: #eff6ff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+  transition: all 0.15s ease;
+}
+.milestone-kanban-toggle:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+.milestone-kanban-toggle input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: #2563eb;
+  width: 14px;
+  height: 14px;
+}
+.milestone-kanban-toggle.checked {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
 .milestone-badge-kanban {
   margin-top: 8px;
   display: inline-block;
@@ -3160,7 +3202,7 @@ p, .card-desc, .doc-summary {
           </button>
         </div>
 
-        <div class="milestones-timeline">
+                <div class="milestones-timeline" id="milestones-timeline-container">
           <!-- Marco 1 -->
           <div class="milestone-item done">
             <div class="milestone-header-row">
@@ -3168,18 +3210,29 @@ p, .card-desc, .doc-summary {
               <span class="milestone-dot done" title="Concluído">✅</span>
             </div>
             <h5 class="milestone-title">Fechamento Outubro/26</h5>
-            <p class="milestone-desc">Balancete consolidado e conciliação bancária homologados pela comissão de finanças.</p>
+            <p class="milestone-desc">Balancete consolidado e conciliação bancária homologados pela comissão de finanças da Área 01.</p>
+            <div class="milestone-footer-row">
+              <label class="milestone-kanban-toggle" id="box-milestone-m1" onclick="event.stopPropagation();" title="Enviar para a coluna A Fazer do Kanban">
+                <input type="checkbox" id="chk-milestone-m1" onchange="toggleMilestoneKanban('m1', this.checked)">
+                <span id="lbl-milestone-m1">📋 Acompanhar no Kanban</span>
+              </label>
+            </div>
           </div>
 
           <!-- Marco 2 -->
-          <div class="milestone-item active" onclick="switchTab('kanban')" style="cursor: pointer;" title="Clique para abrir esta tarefa no Kanban">
+          <div class="milestone-item active">
             <div class="milestone-header-row">
               <span class="milestone-date">20/NOV/2026</span>
               <span class="milestone-dot current" title="Em Andamento">⚡</span>
             </div>
             <h5 class="milestone-title">Resposta Circular 04 JUNAAB</h5>
             <p class="milestone-desc">Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.</p>
-            <span class="milestone-badge-kanban">📌 Prioridade no Kanban ↗</span>
+            <div class="milestone-footer-row">
+              <label class="milestone-kanban-toggle" id="box-milestone-m2" onclick="event.stopPropagation();" title="Enviar para a coluna A Fazer do Kanban">
+                <input type="checkbox" id="chk-milestone-m2" onchange="toggleMilestoneKanban('m2', this.checked)">
+                <span id="lbl-milestone-m2">📋 Acompanhar no Kanban</span>
+              </label>
+            </div>
           </div>
 
           <!-- Marco 3 -->
@@ -3190,6 +3243,12 @@ p, .card-desc, .doc-summary {
             </div>
             <h5 class="milestone-title">Assembleia de Área 01 (RJ)</h5>
             <p class="milestone-desc">Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.</p>
+            <div class="milestone-footer-row">
+              <label class="milestone-kanban-toggle" id="box-milestone-m3" onclick="event.stopPropagation();" title="Enviar para a coluna A Fazer do Kanban">
+                <input type="checkbox" id="chk-milestone-m3" onchange="toggleMilestoneKanban('m3', this.checked)">
+                <span id="lbl-milestone-m3">📋 Acompanhar no Kanban</span>
+              </label>
+            </div>
           </div>
 
           <!-- Marco 4 -->
@@ -3200,6 +3259,12 @@ p, .card-desc, .doc-summary {
             </div>
             <h5 class="milestone-title">49ª Conferência (CSG)</h5>
             <p class="milestone-desc">Apreciação das propostas de modernização e deliberações estatutárias nacionais.</p>
+            <div class="milestone-footer-row">
+              <label class="milestone-kanban-toggle" id="box-milestone-m4" onclick="event.stopPropagation();" title="Enviar para a coluna A Fazer do Kanban">
+                <input type="checkbox" id="chk-milestone-m4" onchange="toggleMilestoneKanban('m4', this.checked)">
+                <span id="lbl-milestone-m4">📋 Acompanhar no Kanban</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -6572,6 +6637,123 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==============================================================================
 
 // Tarefas Administrativas Reais (com persistência em LocalStorage)
+
+// ==============================================================================
+// GESTÃO DOS MARCOS ESTRATÉGICOS E ENVIO PARA O KANBAN
+// ==============================================================================
+const marcosEstrategicos = [
+  {
+    id: 'm1',
+    titulo: 'Fechamento Outubro/26',
+    descricao: 'Balancete consolidado e conciliação bancária homologados pela comissão de finanças da Área 01.',
+    prazo: '2026-11-10',
+    responsavel: 'Comitê de Finanças',
+    categoria: 'FINANCEIRO'
+  },
+  {
+    id: 'm2',
+    titulo: 'Resposta Circular 04 JUNAAB',
+    descricao: 'Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.',
+    prazo: '2026-11-20',
+    responsavel: 'Delegado de Área',
+    categoria: 'JUNAAB',
+    subtarefas: [
+      { titulo: 'Ler parecer do Comitê de Literatura', feito: true },
+      { titulo: 'Minutar resposta oficial da Área 01', feito: false }
+    ]
+  },
+  {
+    id: 'm3',
+    titulo: 'Assembleia de Área 01 (RJ)',
+    descricao: 'Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.',
+    prazo: '2026-12-05',
+    responsavel: 'Secretaria / ESG',
+    categoria: 'GOVERNANCA',
+    subtarefas: [
+      { titulo: 'Consolidar balanço do semestre', feito: false },
+      { titulo: 'Apresentar Matriz RACI aos RSGs', feito: false }
+    ]
+  },
+  {
+    id: 'm4',
+    titulo: '49ª Conferência (CSG)',
+    descricao: 'Apreciação das propostas de modernização e deliberações estatutárias nacionais.',
+    prazo: '2027-04-15',
+    responsavel: 'Delegado de Área',
+    categoria: 'JUNAAB',
+    subtarefas: [
+      { titulo: 'Estudar propostas do Caderno de Temas', feito: false },
+      { titulo: 'Consolidar posicionamento da Área 01 RJ', feito: false },
+      { titulo: 'Apreciação na plenária da Conferência', feito: false }
+    ]
+  }
+];
+
+function sincronizarMarcosComKanban() {
+  const container = document.getElementById('milestones-timeline-container');
+  if (!container) return;
+
+  const tarefas = (typeof tarefasAdmin !== 'undefined' && Array.isArray(tarefasAdmin)) ? tarefasAdmin : [];
+
+  marcosEstrategicos.forEach(m => {
+    const tarefaExistente = tarefas.find(t => t.milestoneId === m.id || t.titulo.trim() === m.titulo.trim());
+    const chk = document.getElementById('chk-milestone-' + m.id);
+    const labelSpan = document.getElementById('lbl-milestone-' + m.id);
+    const labelBox = document.getElementById('box-milestone-' + m.id);
+
+    if (chk && labelSpan && labelBox) {
+      if (tarefaExistente) {
+        chk.checked = true;
+        labelBox.classList.add('checked');
+        const statusMap = { todo: 'A Fazer', doing: 'Em Andamento', review: 'Em Revisão', done: 'Concluído' };
+        labelSpan.textContent = '✓ No Kanban (' + (statusMap[tarefaExistente.status] || 'A Fazer') + ')';
+      } else {
+        chk.checked = false;
+        labelBox.classList.remove('checked');
+        labelSpan.textContent = '📋 Acompanhar no Kanban';
+      }
+    }
+  });
+}
+
+function toggleMilestoneKanban(milestoneId, isChecked) {
+  const marco = marcosEstrategicos.find(m => m.id === milestoneId);
+  if (!marco) return;
+
+  if (typeof tarefasAdmin === 'undefined') tarefasAdmin = [];
+
+  const idx = tarefasAdmin.findIndex(t => t.milestoneId === milestoneId || t.titulo.trim() === marco.titulo.trim());
+
+  if (isChecked) {
+    if (idx === -1) {
+      const novaTarefa = {
+        id: 't-ms-' + milestoneId + '-' + Date.now(),
+        milestoneId: milestoneId,
+        titulo: marco.titulo,
+        descricao: marco.descricao,
+        responsavel: marco.responsavel,
+        categoria: marco.categoria,
+        prazo: marco.prazo,
+        status: 'todo', // Leva diretamente para "A Fazer"
+        subtarefas: marco.subtarefas ? JSON.parse(JSON.stringify(marco.subtarefas)) : []
+      };
+      tarefasAdmin.push(novaTarefa);
+      salvarEstadoTarefas();
+    }
+    sincronizarMarcosComKanban();
+    // Leva o usuário diretamente para o Kanban para visualizar a tarefa em "A Fazer"
+    switchTab('kanban');
+  } else {
+    // Se desmarcou, remove a tarefa se ainda estiver em 'todo'
+    if (idx !== -1) {
+      tarefasAdmin.splice(idx, 1);
+      salvarEstadoTarefas();
+    }
+    sincronizarMarcosComKanban();
+  }
+}
+
+
 // Tarefas Administrativas Reais (Inicia vazio por padrão e persiste no LocalStorage)
 let tarefasAdmin = [];
 try {
@@ -6592,6 +6774,9 @@ try {
 // Sincronizar contadores imediatamente no carregamento
 if (typeof updateStatsKPIs === 'function') {
   updateStatsKPIs();
+}
+if (typeof sincronizarMarcosComKanban === 'function') {
+  sincronizarMarcosComKanban();
 }
 
 let modalChecklistTemp = [];
