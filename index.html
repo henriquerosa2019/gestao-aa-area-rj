@@ -8409,6 +8409,8 @@ function renderizarKanban() {
       const pctSub = totalSub > 0 ? Math.round((doneSub / totalSub) * 100) : 0;
 
       let checklistHtml = '';
+      const isDone = (t.status === 'done');
+
       if (totalSub > 0) {
         checklistHtml = `
           <div class="card-checklist-bar" style="margin: 6px 0 8px;">
@@ -8421,27 +8423,33 @@ function renderizarKanban() {
             <div class="card-checklist-items" id="card-subtasks-${t.id}">
               ${t.subtarefas.map((sub, idx) => `
                 <label class="checklist-item-row ${sub.feito ? 'done' : ''}" onclick="event.stopPropagation();">
-                  <input type="checkbox" ${sub.feito ? 'checked' : ''} onchange="toggleAdminSubtask('${t.id}', ${idx}, this.checked)">
+                  <input type="checkbox" ${sub.feito ? 'checked' : ''} ${isDone ? 'disabled style="cursor:not-allowed;"' : `onchange="toggleAdminSubtask('${t.id}', ${idx}, this.checked)"`}>
                   <span class="checklist-item-title">${sub.titulo}</span>
                 </label>
               `).join('')}
             </div>
-            <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Adicionar Item</button>
+            ${!isDone ? `<button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Adicionar Item</button>` : ''}
           </div>
         `;
       } else {
-        checklistHtml = `
-          <div style="margin: 4px 0 6px;">
-            <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Criar Checklist</button>
-          </div>
-        `;
+        if (!isDone) {
+          checklistHtml = `
+            <div style="margin: 4px 0 6px;">
+              <button type="button" class="btn-add-subtask-quick" onclick="event.stopPropagation(); promptAddSubtaskAdmin('${t.id}')">+ Criar Checklist</button>
+            </div>
+          `;
+        }
       }
 
       const card = document.createElement('div');
       card.className = 'task-card';
-      card.draggable = true;
+      card.draggable = !isDone;
       card.dataset.cat = t.categoria;
-      card.ondragstart = (e) => e.dataTransfer.setData('text/plain', t.id);
+      if (!isDone) {
+        card.ondragstart = (e) => e.dataTransfer.setData('text/plain', t.id);
+      } else {
+        card.style.cursor = 'default';
+      }
 
       const diffDiasCalc = calcularDiasPrazo(t.prazo);
       if (diffDiasCalc !== null && diffDiasCalc < 0 && t.status !== 'done') {
@@ -8450,6 +8458,8 @@ function renderizarKanban() {
         card.style.borderLeft = '4px solid #facc15';
       } else if (diffDiasCalc === 0 && t.status !== 'done') {
         card.style.borderLeft = '4px solid #16a34a';
+      } else if (isDone) {
+        card.style.borderLeft = '4px solid #10b981';
       }
 
       const comp = t.compartilhadoCom || ['todos'];
@@ -8463,6 +8473,21 @@ function renderizarKanban() {
       } else {
         sharingBadge = '<span style="font-size:10px; font-weight:600; color:#059669; background:#dcfce7; padding:2px 5px; border-radius:4px;" title="Acesso livre para todos os perfis">🌐 Livre</span>';
       }
+
+      const actionButtonsHtml = isDone 
+        ? `<button type="button" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-size:11.5px; padding:2px 5px;" onclick="editarTarefaAdmin('${t.id}')" title="Tarefa Concluída (Visualizar)">🔒</button>
+           <select class="task-move-select" disabled style="opacity:0.65; cursor:not-allowed;" title="Tarefa concluída bloqueada para alteração">
+             <option value="done" selected>✅ Concluído</option>
+           </select>
+           <button style="background:transparent; border:none; cursor:pointer; font-size:12px;" onclick="excluirTarefaAdmin('${t.id}')" title="Excluir tarefa">🗑️</button>`
+        : `<button type="button" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-size:11.5px; padding:2px 5px;" onclick="editarTarefaAdmin('${t.id}')" title="Editar tarefa">✏️</button>
+           <select class="task-move-select" onchange="moverTarefa('${t.id}', this.value)" title="Mover de coluna">
+             <option value="todo" ${t.status === 'todo' ? 'selected' : ''}>📋 A Fazer</option>
+             <option value="doing" ${t.status === 'doing' ? 'selected' : ''}>⏳ Andamento</option>
+             <option value="review" ${t.status === 'review' ? 'selected' : ''}>⚖️ Revisão</option>
+             <option value="done" ${t.status === 'done' ? 'selected' : ''}>✅ Concluído</option>
+           </select>
+           <button style="background:transparent; border:none; cursor:pointer; font-size:12px;" onclick="excluirTarefaAdmin('${t.id}')" title="Excluir tarefa">🗑️</button>`;
 
       card.innerHTML = `
         <div class="task-top" style="align-items:flex-start;">
@@ -8482,14 +8507,7 @@ function renderizarKanban() {
             ${sharingBadge}
           </div>
           <div style="display:flex; align-items:center; gap:4px;">
-            <button type="button" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-size:11.5px; padding:2px 5px;" onclick="editarTarefaAdmin('${t.id}')" title="Editar tarefa">✏️</button>
-            <select class="task-move-select" onchange="moverTarefa('${t.id}', this.value)" title="Mover de coluna">
-              <option value="todo" ${t.status === 'todo' ? 'selected' : ''}>📋 A Fazer</option>
-              <option value="doing" ${t.status === 'doing' ? 'selected' : ''}>⏳ Andamento</option>
-              <option value="review" ${t.status === 'review' ? 'selected' : ''}>⚖️ Revisão</option>
-              <option value="done" ${t.status === 'done' ? 'selected' : ''}>✅ Concluído</option>
-            </select>
-            <button style="background:transparent; border:none; cursor:pointer; font-size:12px;" onclick="excluirTarefaAdmin('${t.id}')" title="Excluir tarefa">🗑️</button>
+            ${actionButtonsHtml}
           </div>
         </div>
       `;
@@ -8501,6 +8519,11 @@ function renderizarKanban() {
 // Checklist Interativo do Kanban
 function toggleAdminSubtask(taskId, subIdx, isChecked) {
   const t = tarefasAdmin.find(item => item.id === taskId);
+  if (t && t.status === 'done') {
+    showToast('🔒 Tarefa Concluída: checklist bloqueado para alteração.');
+    renderizarKanban();
+    return;
+  }
   if (t && t.subtarefas && t.subtarefas[subIdx]) {
     t.subtarefas[subIdx].feito = isChecked;
     salvarEstadoTarefas();
@@ -8510,6 +8533,10 @@ function toggleAdminSubtask(taskId, subIdx, isChecked) {
 function promptAddSubtaskAdmin(taskId) {
   const t = tarefasAdmin.find(item => item.id === taskId);
   if (!t) return;
+  if (t.status === 'done') {
+    showToast('🔒 Tarefa Concluída: não é permitido adicionar novos itens.');
+    return;
+  }
   const texto = prompt('Digite o novo item para o checklist da tarefa:');
   if (texto && texto.trim()) {
     if (!t.subtarefas) t.subtarefas = [];
@@ -8535,11 +8562,21 @@ function permitirDrop(e) {
 function soltarCard(e, novoStatus) {
   e.preventDefault();
   const id = e.dataTransfer.getData('text/plain');
+  const tDrag = tarefasAdmin.find(t => t.id === id);
+  if (tDrag && tDrag.status === 'done' && novoStatus !== 'done') {
+    showToast('🔒 Tarefa Concluída: não pode ser movida.');
+    return;
+  }
   moverTarefa(id, novoStatus);
 }
 
 function moverTarefa(id, novoStatus) {
   const tarefa = tarefasAdmin.find(t => t.id === id);
+  if (tarefa && tarefa.status === 'done' && novoStatus !== 'done') {
+    showToast('🔒 Tarefa Concluída: status bloqueado para alteração.');
+    renderizarKanban();
+    return;
+  }
   if (tarefa) {
     tarefa.status = novoStatus;
     salvarEstadoTarefas();
@@ -8592,6 +8629,34 @@ function abrirDocumentoAcervo(docId) {
 
 // Modal e Criação de Tarefas
 function abrirModalTarefa() {
+  const avisoBloqueado = document.getElementById('tarefa-bloqueada-aviso');
+  if (avisoBloqueado) avisoBloqueado.style.display = 'none';
+
+  // Reabilitar campos caso tenha sido aberto em modo leitura
+  const idsCampos = ['tarefa-titulo', 'tarefa-responsavel', 'tarefa-categoria', 'tarefa-prazo', 'tarefa-descricao', 'tarefa-doc-vinculado', 'tarefa-comp-todos'];
+  idsCampos.forEach(cid => {
+    const el = document.getElementById(cid);
+    if (el) el.disabled = false;
+  });
+  document.querySelectorAll('.tarefa-check-perfil').forEach(cb => cb.disabled = false);
+
+  const novoSubInput = document.getElementById('modal-subtask-novo-input');
+  if (novoSubInput) {
+    novoSubInput.disabled = false;
+    novoSubInput.style.display = 'block';
+    if (novoSubInput.nextElementSibling) {
+      novoSubInput.nextElementSibling.disabled = false;
+      novoSubInput.nextElementSibling.style.display = 'inline-block';
+    }
+  }
+
+  const btnSalvarPadrao = document.getElementById('btnSalvarTarefaModal');
+  if (btnSalvarPadrao) {
+    btnSalvarPadrao.disabled = false;
+    btnSalvarPadrao.style.display = 'inline-block';
+    btnSalvarPadrao.style.opacity = '1';
+    btnSalvarPadrao.style.cursor = 'pointer';
+  }
   const editIdInp = document.getElementById('tarefa-edit-id');
   if (editIdInp) editIdInp.value = '';
 
@@ -8632,7 +8697,7 @@ function fecharModalTarefa() {
   modalChecklistTemp = [];
 }
 
-function renderizarModalChecklistItens() {
+function renderizarModalChecklistItens(isReadOnly = false) {
   const container = document.getElementById('modal-checklist-itens');
   const countEl = document.getElementById('modal-checklist-count');
   if (!container || !countEl) return;
@@ -8646,9 +8711,9 @@ function renderizarModalChecklistItens() {
     div.style.alignItems = 'center';
     div.style.gap = '6px';
     div.innerHTML = `
-      <span style="font-size:12px;">◻</span>
-      <input type="text" value="${item.titulo.replace(/"/g, '&quot;')}" style="flex:1; font-size:12px; padding:3px 6px; border:1px solid #cbd5e1; border-radius:4px;" oninput="modalChecklistTemp[${idx}].titulo = this.value">
-      <button type="button" style="background:transparent; border:none; color:#dc2626; cursor:pointer;" onclick="removerItemModalChecklist(${idx})">✕</button>
+      <span style="font-size:12px;">${item.feito ? '✅' : '◻'}</span>
+      <input type="text" value="${item.titulo.replace(/"/g, '&quot;')}" ${isReadOnly ? 'disabled style="flex:1; font-size:12px; padding:3px 6px; border:1px solid #e2e8f0; background:#f8fafc; color:#64748b; border-radius:4px;"' : `style="flex:1; font-size:12px; padding:3px 6px; border:1px solid #cbd5e1; border-radius:4px;" oninput="modalChecklistTemp[${idx}].titulo = this.value"`}>
+      ${!isReadOnly ? `<button type="button" style="background:transparent; border:none; color:#dc2626; cursor:pointer;" onclick="removerItemModalChecklist(${idx})">✕</button>` : ''}
     `;
     container.appendChild(div);
   });
@@ -8675,42 +8740,91 @@ function editarTarefaAdmin(id) {
   const t = tarefasAdmin.find(item => item.id === id);
   if (!t) return;
 
+  const isDone = (t.status === 'done');
+
   abrirModalTarefa();
 
   const editIdInp = document.getElementById('tarefa-edit-id');
   if (editIdInp) editIdInp.value = t.id;
 
   const titleEl = document.getElementById('modalTarefaTitle');
-  if (titleEl) titleEl.textContent = '✏️ Editar Tarefa Administrativa';
+  if (titleEl) {
+    titleEl.textContent = isDone ? '🔒 Detalhes da Tarefa Concluída (Somente Leitura)' : '✏️ Editar Tarefa Administrativa';
+  }
 
   const btnSalvar = document.getElementById('btnSalvarTarefaModal');
-  if (btnSalvar) btnSalvar.textContent = '💾 Salvar Alterações';
+  if (btnSalvar) {
+    if (isDone) {
+      btnSalvar.textContent = '🔒 Concluída (Edição Bloqueada)';
+      btnSalvar.disabled = true;
+      btnSalvar.style.opacity = '0.5';
+      btnSalvar.style.cursor = 'not-allowed';
+    } else {
+      btnSalvar.textContent = '💾 Salvar Alterações';
+      btnSalvar.disabled = false;
+      btnSalvar.style.opacity = '1';
+      btnSalvar.style.cursor = 'pointer';
+    }
+  }
 
-  document.getElementById('tarefa-titulo').value = t.titulo || '';
-  document.getElementById('tarefa-responsavel').value = t.responsavel || 'Delegado de Área';
-  document.getElementById('tarefa-categoria').value = t.categoria || 'FINANCEIRO';
-  document.getElementById('tarefa-prazo').value = t.prazo || '';
-  document.getElementById('tarefa-descricao').value = t.descricao || '';
-
+  // Preencher valores e desabilitar inputs se isDone
+  const inTitulo = document.getElementById('tarefa-titulo');
+  const inResp = document.getElementById('tarefa-responsavel');
+  const inCat = document.getElementById('tarefa-categoria');
+  const inPrazo = document.getElementById('tarefa-prazo');
+  const inDesc = document.getElementById('tarefa-descricao');
   const selectDoc = document.getElementById('tarefa-doc-vinculado');
-  if (selectDoc && t.docId) {
-    selectDoc.value = t.docId;
+
+  if (inTitulo) { inTitulo.value = t.titulo || ''; inTitulo.disabled = isDone; }
+  if (inResp) { inResp.value = t.responsavel || 'Delegado de Área'; inResp.disabled = isDone; }
+  if (inCat) { inCat.value = t.categoria || 'FINANCEIRO'; inCat.disabled = isDone; }
+  if (inPrazo) { inPrazo.value = t.prazo || ''; inPrazo.disabled = isDone; }
+  if (inDesc) { inDesc.value = t.descricao || ''; inDesc.disabled = isDone; }
+  if (selectDoc) {
+    if (t.docId) selectDoc.value = t.docId;
+    selectDoc.disabled = isDone;
   }
 
   modalChecklistTemp = t.subtarefas ? JSON.parse(JSON.stringify(t.subtarefas)) : [];
-  renderizarModalChecklistItens();
+  renderizarModalChecklistItens(isDone);
+
+  const novoSubInput = document.getElementById('modal-subtask-novo-input');
+  if (novoSubInput) {
+    novoSubInput.disabled = isDone;
+    novoSubInput.style.display = isDone ? 'none' : 'block';
+    if (novoSubInput.nextElementSibling) {
+      novoSubInput.nextElementSibling.disabled = isDone;
+      novoSubInput.nextElementSibling.style.display = isDone ? 'none' : 'inline-block';
+    }
+  }
 
   // Carregar perfis compartilhados
   const comp = t.compartilhadoCom || ['todos'];
   const todosCh = document.getElementById('tarefa-comp-todos');
-  if (comp.includes('todos')) {
-    if (todosCh) todosCh.checked = true;
-    document.querySelectorAll('.tarefa-check-perfil').forEach(cb => cb.checked = true);
+  if (todosCh) {
+    todosCh.checked = comp.includes('todos');
+    todosCh.disabled = isDone;
+  }
+  document.querySelectorAll('.tarefa-check-perfil').forEach(cb => {
+    cb.checked = comp.includes('todos') || comp.includes(cb.value);
+    cb.disabled = isDone;
+  });
+
+  // Banner informativo quando tarefa está concluída
+  let avisoBloqueado = document.getElementById('tarefa-bloqueada-aviso');
+  if (isDone) {
+    if (!avisoBloqueado) {
+      avisoBloqueado = document.createElement('div');
+      avisoBloqueado.id = 'tarefa-bloqueada-aviso';
+      avisoBloqueado.style.cssText = 'background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:10px 14px; border-radius:8px; font-size:12.5px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px;';
+      avisoBloqueado.innerHTML = '<span>🔒</span> <span>Esta tarefa está marcada como <b>CONCLUÍDA</b>. Nenhuma informação pode ser alterada.</span>';
+      const form = document.getElementById('form-nova-tarefa');
+      if (form) form.insertBefore(avisoBloqueado, form.firstChild);
+    } else {
+      avisoBloqueado.style.display = 'flex';
+    }
   } else {
-    if (todosCh) todosCh.checked = false;
-    document.querySelectorAll('.tarefa-check-perfil').forEach(cb => {
-      cb.checked = comp.includes(cb.value);
-    });
+    if (avisoBloqueado) avisoBloqueado.style.display = 'none';
   }
 }
 
@@ -8730,6 +8844,11 @@ function salvarNovaTarefa(e) {
   if (editId) {
     // Modo de Edição
     const idx = tarefasAdmin.findIndex(t => t.id === editId);
+    if (idx !== -1 && tarefasAdmin[idx].status === 'done') {
+      showToast('🔒 Tarefa Concluída: nenhuma alteração é permitida.');
+      fecharModalTarefa();
+      return;
+    }
     if (idx !== -1) {
       tarefasAdmin[idx].titulo = titulo;
       tarefasAdmin[idx].responsavel = responsavel;
