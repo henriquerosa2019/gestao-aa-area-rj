@@ -2621,6 +2621,98 @@ p, .card-desc, .doc-summary {
   color: #2563EB;
 }
 
+
+/* Botões de Ação no Cabeçalho das Faixas */
+.btn-add-faixa {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #1e3a8a;
+  border: 1px solid #cbd5e1;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.btn-add-faixa:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Card de Material Customizado com Ações */
+.exec-tool-card {
+  position: relative;
+}
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-card-ctrl {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.15s ease;
+}
+.btn-card-ctrl:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+.btn-card-ctrl.del:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* Modal de Material */
+#modal-material-faixa .modal-box {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
+  width: 95%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+#modal-material-faixa label {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 12.5px;
+  margin-bottom: 5px;
+  display: block;
+}
+#modal-material-faixa input, 
+#modal-material-faixa select, 
+#modal-material-faixa textarea {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+#modal-material-faixa input:focus, 
+#modal-material-faixa select:focus, 
+#modal-material-faixa textarea:focus {
+  border-color: #2563eb !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2) !important;
+}
+
 </style>
   </head>
 <body>
@@ -3015,14 +3107,19 @@ p, .card-desc, .doc-summary {
         </div>
       </div>
 
-            <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
+                  <!-- 2. FAIXA A: GOVERNANÇA & DIAGNÓSTICO NACIONAL (JUNAAB) -->
       <div class="exec-section-banner">
         <div class="exec-section-title-row">
           <div>
             <h3>🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</h3>
             <p>Diagnósticos contábeis, estudos estatutários de déficit e modernização de processos da estrutura nacional.</p>
           </div>
-          <span class="exec-card-badge badge-gray">JUNAAB Nacional</span>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-gray">JUNAAB Nacional</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('A')">
+              ➕ Adicionar Material
+            </button>
+          </div>
         </div>
 
         <div class="exec-cards-grid" style="margin-bottom: 16px;">
@@ -3126,44 +3223,29 @@ p, .card-desc, .doc-summary {
             </div>
           </div>
         </div>
+
+        <!-- Container de Materiais Customizados da Faixa A -->
+        <div id="container-materiais-faixa-A" class="exec-cards-grid"></div>
       </div>
 
-            <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
+      <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
       <div class="exec-section-banner">
         <div class="exec-section-title-row">
           <div>
             <h3>🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
             <p>Controles locais da delegação Carlos S.R., relatórios de prestação de contas e materiais de assembleia da Área 01 RJ.</p>
           </div>
-          <span class="exec-card-badge badge-blue">Área 01 - Rio de Janeiro (RJ)</span>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-blue">Área 01 - Rio de Janeiro (RJ)</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('B')">
+              ➕ Adicionar Material
+            </button>
+          </div>
         </div>
 
         <div class="exec-cards-grid">
-          <!-- Card 5: Dashboard Financeiro Área 01 (RJ) -->
+          <!-- Card: Apresentação de Gestão Área 01 RJ -->
           <div class="exec-tool-card featured-blue">
-            <div>
-              <div class="exec-card-top-meta">
-                <span class="doc-period-chip">Controle Mensal & Extratos</span>
-                <span class="exec-card-badge badge-green">🟢 Dados Atualizados</span>
-              </div>
-              <div class="exec-tool-header">
-                <div class="exec-tool-icon">📊</div>
-                <div>
-                  <h4>Dashboard Financeiro Área 01 (RJ)</h4>
-                  <span class="exec-tool-tag">Painel Analítico Regional</span>
-                </div>
-              </div>
-              <p class="exec-tool-desc">
-                Painel interativo da delegação Carlos S.R. com receitas por rubrica (Plano 60/25/15), despesas por categoria, controle nominal de cotas da Convenção e extrato bancário detalhado.
-              </p>
-            </div>
-            <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-exec-action">
-              📊 Visualizar Dados ↗
-            </a>
-          </div>
-
-          <!-- Card 6: Apresentação de Gestão Área 01 RJ -->
-          <div class="exec-tool-card">
             <div>
               <div class="exec-card-top-meta">
                 <span class="doc-period-chip">Slides Interativos</span>
@@ -3185,6 +3267,76 @@ p, .card-desc, .doc-summary {
             </a>
           </div>
         </div>
+
+        <!-- Container de Materiais Customizados da Faixa B -->
+        <div id="container-materiais-faixa-B" class="exec-cards-grid" style="margin-top: 14px;"></div>
+      </div>
+
+      <!-- 4. FAIXA C: CONVENÇÃO NACIONAL 2027 -->
+      <div class="exec-section-banner">
+        <div class="exec-section-title-row">
+          <div>
+            <h3>🎪 Faixa C — Convenção Nacional 2027</h3>
+            <p>Controles de arrecadação da Convenção Nacional realizada no Ceará, vendas de camisas, cotas dos distritos e demonstrativos da ESL (Área 27).</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="exec-card-badge badge-amber">Convenção 2027 • Ceará</span>
+            <button type="button" class="btn-add-faixa" onclick="abrirModalMaterialFaixa('C')">
+              ➕ Adicionar Material
+            </button>
+          </div>
+        </div>
+
+        <div class="exec-cards-grid">
+          <!-- Card: Dashboard Financeiro ESL Área 27 - Ceará -->
+          <div class="exec-tool-card featured-gold">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">ESL & Convenção 2027</span>
+                <span class="exec-card-badge badge-green">🟢 Dados Atualizados</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📊</div>
+                <div>
+                  <h4>Dashboard Financeiro ESL Área 27 - Ceará</h4>
+                  <span class="exec-tool-tag">Controle de Cotas & Camisas</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Painel analítico completo da ESL Ceará com receitas por rubrica (Plano 60/25/15), despesas por categoria, controle nominal de cotas da Convenção e extrato bancário detalhado.
+              </p>
+            </div>
+            <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-exec-action">
+              📊 Visualizar Dados ↗
+            </a>
+          </div>
+
+          <!-- Card: Prestação de Contas Vendas de Camisas -->
+          <div class="exec-tool-card">
+            <div>
+              <div class="exec-card-top-meta">
+                <span class="doc-period-chip">Planilha PIX & Extratos</span>
+                <span class="exec-card-badge badge-amber">👕 Vendas & Arrecadação</span>
+              </div>
+              <div class="exec-tool-header">
+                <div class="exec-tool-icon">📑</div>
+                <div>
+                  <h4>Prestação de Contas — Vendas de Camisas</h4>
+                  <span class="exec-tool-tag" style="color:#D97706; font-weight:600;">Comprovantes CSV & PIX</span>
+                </div>
+              </div>
+              <p class="exec-tool-desc">
+                Controle detalhado de recebimentos via PIX para confecção das camisetas oficiais da Convenção Nacional 2027, conciliado com extratos bancários.
+              </p>
+            </div>
+            <a href="05 - CONVENCAO/Comprovantes de Saques/pix_camisas_convencao.csv" target="_blank" class="btn-exec-action secondary-action">
+              📑 Abrir Planilha CSV ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Container de Materiais Customizados da Faixa C -->
+        <div id="container-materiais-faixa-C" class="exec-cards-grid" style="margin-top: 14px;"></div>
       </div>
 
       <!-- 4. WIDGET DE RESUMO DE GOVERNANÇA & PRÓXIMOS MARCOS -->
@@ -6754,6 +6906,244 @@ function toggleMilestoneKanban(milestoneId, isChecked) {
 }
 
 
+
+// ==============================================================================
+// GESTÃO DE MATERIAIS CUSTOMIZADOS DAS FAIXAS (A, B, C)
+// ==============================================================================
+
+function obterMateriaisFaixas() {
+  try {
+    const raw = localStorage.getItem('aa_materiais_faixas');
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function salvarMateriaisFaixasStorage(lista) {
+  localStorage.setItem('aa_materiais_faixas', JSON.stringify(lista));
+  renderizarMateriaisFaixas();
+}
+
+function popularSelectAcervoModalFaixa() {
+  const sel = document.getElementById('material-acervo-select');
+  if (!sel || typeof docsData === 'undefined') return;
+
+  sel.innerHTML = '<option value="">-- Selecione um material catalogado no acervo --</option>';
+  
+  // Agrupar por categoria
+  const cats = {};
+  docsData.forEach(d => {
+    if (!cats[d.categoria]) cats[d.categoria] = [];
+    cats[d.categoria].push(d);
+  });
+
+  Object.keys(cats).sort().forEach(cat => {
+    const optGroup = document.createElement('optgroup');
+    optGroup.label = cat;
+    cats[cat].forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.titulo + ' (' + (d.subcategoria || d.tipo) + ')';
+      optGroup.appendChild(opt);
+    });
+    sel.appendChild(optGroup);
+  });
+}
+
+function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
+  const modal = document.getElementById('modal-material-faixa');
+  if (!modal) return;
+
+  popularSelectAcervoModalFaixa();
+  alternarOrigemMaterial('acervo');
+
+  const titleEl = document.getElementById('modalMaterialFaixaTitle');
+  const editIdEl = document.getElementById('material-edit-id');
+  const faixaSel = document.getElementById('material-faixa-target');
+  const tituloEl = document.getElementById('material-titulo');
+  const resumoEl = document.getElementById('material-resumo');
+  const badgeEl = document.getElementById('material-badge');
+  const iconeEl = document.getElementById('material-icone');
+  const btnLabelEl = document.getElementById('material-btn-label');
+  const urlEl = document.getElementById('material-url');
+  const acervoSel = document.getElementById('material-acervo-select');
+
+  if (editId) {
+    const materiais = obterMateriaisFaixas();
+    const item = materiais.find(m => m.id === editId);
+    if (item) {
+      titleEl.textContent = '✏️ Editar Material da Faixa';
+      editIdEl.value = item.id;
+      faixaSel.value = item.faixa;
+      tituloEl.value = item.titulo;
+      resumoEl.value = item.resumo;
+      badgeEl.value = item.badge || '📑 Material';
+      iconeEl.value = item.icone || '📑';
+      btnLabelEl.value = item.btnLabel || 'Acessar Material ↗';
+      urlEl.value = item.url || '';
+      modal.style.display = 'flex';
+      return;
+    }
+  }
+
+  // Novo Material
+  titleEl.textContent = '➕ Adicionar Material à Faixa';
+  editIdEl.value = '';
+  faixaSel.value = faixaPreSelecionada || 'A';
+  tituloEl.value = '';
+  resumoEl.value = '';
+  badgeEl.value = '🟢 Documento Homologado';
+  iconeEl.value = '📑';
+  btnLabelEl.value = '📑 Acessar Documento ↗';
+  urlEl.value = '';
+  if (acervoSel) acervoSel.value = '';
+
+  modal.style.display = 'flex';
+}
+
+function fecharModalMaterialFaixa() {
+  const modal = document.getElementById('modal-material-faixa');
+  if (modal) modal.style.display = 'none';
+}
+
+function alternarOrigemMaterial(origem) {
+  const grpAcervo = document.getElementById('grupo-origem-acervo');
+  const grpUpload = document.getElementById('grupo-origem-upload');
+  if (origem === 'acervo') {
+    if (grpAcervo) grpAcervo.style.display = 'block';
+    if (grpUpload) grpUpload.style.display = 'none';
+  } else {
+    if (grpAcervo) grpAcervo.style.display = 'none';
+    if (grpUpload) grpUpload.style.display = 'block';
+  }
+}
+
+function aoSelecionarDocAcervoParaFaixa() {
+  const sel = document.getElementById('material-acervo-select');
+  if (!sel || !sel.value) return;
+  const doc = docsData.find(d => d.id === sel.value);
+  if (!doc) return;
+
+  document.getElementById('material-titulo').value = doc.titulo;
+  document.getElementById('material-resumo').value = doc.resumo || '';
+  document.getElementById('material-badge').value = '📑 ' + (doc.subcategoria || doc.categoria);
+  document.getElementById('material-url').value = doc.caminhoRelativo;
+  document.getElementById('material-btn-label').value = '📑 Acessar Documento ↗';
+
+  if (doc.tipo === 'PDF') document.getElementById('material-icone').value = '📑';
+  else if (doc.tipo === 'CSV' || doc.tipo === 'XLSX') document.getElementById('material-icone').value = '📊';
+  else if (doc.tipo === 'HTML') document.getElementById('material-icone').value = '📈';
+  else if (doc.tipo === 'PNG' || doc.tipo === 'JPG') document.getElementById('material-icone').value = '🔍';
+}
+
+function aoCarregarArquivoUploadFaixa(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  let nomeLimpo = file.name.replace(/\.[^/.]+$/, "");
+  nomeLimpo = nomeLimpo.replace(/[-_]/g, " ").replace(/\s+/g, " ").trim();
+  nomeLimpo = nomeLimpo.charAt(0).toUpperCase() + nomeLimpo.slice(1);
+
+  document.getElementById('material-titulo').value = nomeLimpo;
+  document.getElementById('material-resumo').value = 'Material anexado (' + file.name + ', ' + (file.size / 1024).toFixed(1) + ' KB) para acompanhamento da delegação.';
+  document.getElementById('material-badge').value = '📤 Material Anexado';
+  document.getElementById('material-btn-label').value = '📄 Abrir Arquivo ↗';
+  document.getElementById('material-icone').value = '📑';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('material-url').value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function salvarMaterialFaixa(event) {
+  event.preventDefault();
+  const editId = document.getElementById('material-edit-id').value;
+  const faixa = document.getElementById('material-faixa-target').value;
+  const titulo = document.getElementById('material-titulo').value.trim();
+  const resumo = document.getElementById('material-resumo').value.trim();
+  const badge = document.getElementById('material-badge').value.trim() || '📑 Material';
+  const icone = document.getElementById('material-icone').value || '📑';
+  const btnLabel = document.getElementById('material-btn-label').value.trim() || 'Visualizar ↗';
+  const url = document.getElementById('material-url').value.trim() || '#';
+
+  if (!titulo) return;
+
+  let materiais = obterMateriaisFaixas();
+
+  if (editId) {
+    const idx = materiais.findIndex(m => m.id === editId);
+    if (idx !== -1) {
+      materiais[idx] = { ...materiais[idx], faixa, titulo, resumo, badge, icone, btnLabel, url };
+    }
+  } else {
+    const novo = {
+      id: 'mat_' + Date.now(),
+      faixa,
+      titulo,
+      resumo,
+      badge,
+      icone,
+      btnLabel,
+      url,
+      criadoEm: new Date().toISOString()
+    };
+    materiais.push(novo);
+  }
+
+  salvarMateriaisFaixasStorage(materiais);
+  fecharModalMaterialFaixa();
+}
+
+function excluirMaterialFaixa(id) {
+  if (!confirm('Deseja realmente remover este material da faixa?')) return;
+  let materiais = obterMateriaisFaixas();
+  materiais = materiais.filter(m => m.id !== id);
+  salvarMateriaisFaixasStorage(materiais);
+}
+
+function renderizarMateriaisFaixas() {
+  const materiais = obterMateriaisFaixas();
+  ['A', 'B', 'C'].forEach(f => {
+    const container = document.getElementById('container-materiais-faixa-' + f);
+    if (!container) return;
+    container.innerHTML = '';
+
+    const filtrados = materiais.filter(m => m.faixa === f);
+    filtrados.forEach(mat => {
+      const card = document.createElement('div');
+      card.className = 'exec-tool-card';
+      card.innerHTML = `
+        <div>
+          <div class="exec-card-top-meta">
+            <span class="doc-period-chip">${mat.icone} Material Adicionado</span>
+            <div class="card-header-actions">
+              <span class="exec-card-badge badge-blue">${mat.badge}</span>
+              <button type="button" class="btn-card-ctrl" onclick="abrirModalMaterialFaixa('${mat.faixa}', '${mat.id}')" title="Editar Material">✏️</button>
+              <button type="button" class="btn-card-ctrl del" onclick="excluirMaterialFaixa('${mat.id}')" title="Excluir Material">🗑️</button>
+            </div>
+          </div>
+          <div class="exec-tool-header">
+            <div class="exec-tool-icon">${mat.icone}</div>
+            <div>
+              <h4>${mat.titulo}</h4>
+              <span class="exec-tool-tag">Faixa ${mat.faixa}</span>
+            </div>
+          </div>
+          <p class="exec-tool-desc">${mat.resumo}</p>
+        </div>
+        <a href="${mat.url}" target="_blank" class="btn-exec-action secondary-action">
+          ${mat.btnLabel}
+        </a>
+      `;
+      container.appendChild(card);
+    });
+  });
+}
+
+
 // Tarefas Administrativas Reais (Inicia vazio por padrão e persiste no LocalStorage)
 let tarefasAdmin = [];
 try {
@@ -7101,6 +7491,119 @@ function createTaskFromDoc(docId) {
 }
 
 </script>
+
+
+<!-- ============================================================== -->
+<!-- MODAL: ADICIONAR / EDITAR MATERIAL DA FAIXA                    -->
+<!-- ============================================================== -->
+<div id="modal-material-faixa" class="modal-overlay" style="display: none;">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:2px solid #e2e8f0; padding-bottom:10px;">
+      <h3 style="margin:0; color:#0f172a; font-size:1.25rem; font-weight:700;" id="modalMaterialFaixaTitle">➕ Adicionar Material à Faixa</h3>
+      <button type="button" class="modal-close-btn" onclick="fecharModalMaterialFaixa()" title="Fechar">✕</button>
+    </div>
+    
+    <form id="form-material-faixa" onsubmit="salvarMaterialFaixa(event)">
+      <input type="hidden" id="material-edit-id">
+
+      <!-- 1. Faixa de Destino -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Faixa de Destino *</label>
+        <select id="material-faixa-target" required>
+          <option value="A">🏛️ Faixa A — Governança & Diagnóstico Nacional (JUNAAB)</option>
+          <option value="B">🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</option>
+          <option value="C">🎪 Faixa C — Convenção Nacional 2027</option>
+        </select>
+      </div>
+
+      <!-- 2. Escolha da Origem: Acervo ou Upload -->
+      <div class="form-group" style="margin-bottom:14px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
+        <label style="margin-bottom:8px; font-weight:700;">Origem do Material *</label>
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+          <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:600; margin:0;">
+            <input type="radio" name="material-origem" value="acervo" checked onchange="alternarOrigemMaterial('acervo')">
+            📂 Buscar do Acervo Existente
+          </label>
+          <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:600; margin:0;">
+            <input type="radio" name="material-origem" value="upload" onchange="alternarOrigemMaterial('upload')">
+            📤 Fazer Upload de Novo Arquivo
+          </label>
+        </div>
+
+        <!-- Seletor do Acervo -->
+        <div id="grupo-origem-acervo" style="margin-top:12px;">
+          <label style="font-size:12px; color:#475569;">Selecione o documento da lista suspensa:</label>
+          <select id="material-acervo-select" onchange="aoSelecionarDocAcervoParaFaixa()">
+            <option value="">-- Selecione um material catalogado no acervo --</option>
+          </select>
+          <div style="font-size:11.5px; color:#64748b; margin-top:4px;">
+            💡 O título, resumo e link sobem automaticamente abaixo para que você possa editá-los.
+          </div>
+        </div>
+
+        <!-- Seletor de Upload -->
+        <div id="grupo-origem-upload" style="margin-top:12px; display:none;">
+          <label style="font-size:12px; color:#475569;">Escolha o arquivo do computador (PDF, Imagem, Planilha):</label>
+          <input type="file" id="material-upload-file" onchange="aoCarregarArquivoUploadFaixa(event)">
+          <div style="font-size:11.5px; color:#64748b; margin-top:4px;">
+            💡 O nome do arquivo e resumo prévio sobem automaticamente para edição.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Título do Material -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Título do Card *</label>
+        <input type="text" id="material-titulo" required placeholder="Ex: Relatório de Prestação de Contas...">
+      </div>
+
+      <!-- 4. Resumo Executivo -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Resumo / Descrição do Material *</label>
+        <textarea id="material-resumo" rows="3" required placeholder="Breve resumo informativo sobre o documento..."></textarea>
+      </div>
+
+      <!-- 5. Linha Dupla: Badge e Ícone -->
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px; margin-bottom:14px;">
+        <div class="form-group">
+          <label>Etiqueta / Badge</label>
+          <input type="text" id="material-badge" placeholder="Ex: 🟢 Dados Atualizados / ⚖️ Parecer">
+        </div>
+        <div class="form-group">
+          <label>Ícone Visual</label>
+          <select id="material-icone">
+            <option value="📑">📑 Documento</option>
+            <option value="📊">📊 Dashboard</option>
+            <option value="📈">📈 Finanças</option>
+            <option value="📽️">📽️ Apresentação</option>
+            <option value="🔍">🔍 Auditoria</option>
+            <option value="⚖️">⚖️ Parecer</option>
+            <option value="💡">💡 Proposta</option>
+            <option value="🎪">🎪 Convenção</option>
+            <option value="📌">📌 Assembleia</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 6. Linha Dupla: Texto do Botão e Link/URL -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:18px;">
+        <div class="form-group">
+          <label>Texto do Botão de Ação</label>
+          <input type="text" id="material-btn-label" placeholder="Ex: 📑 Acessar Material ↗">
+        </div>
+        <div class="form-group">
+          <label>Link / Caminho do Arquivo *</label>
+          <input type="text" id="material-url" required placeholder="Caminho relativo ou link">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #e2e8f0; padding-top:12px;">
+        <button type="button" class="btn-secondary" onclick="fecharModalMaterialFaixa()">Cancelar</button>
+        <button type="submit" class="btn-primary">💾 Salvar Material na Faixa</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 </body>
 </html>
