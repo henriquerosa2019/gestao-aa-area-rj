@@ -2184,9 +2184,28 @@ p, .card-desc, .doc-summary {
 /* 1. KPIs Executivos do Topo */
 .exec-kpis-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
+@media (min-width: 1440px) {
+  .exec-kpis-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+@media (max-width: 1024px) {
+  .exec-kpis-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .exec-kpis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.exec-kpi-card.highlight-red { border-left-color: #DC2626; background: #FFF5F5; }
+.exec-kpi-card.highlight-green { border-left-color: #16A34A; background: #F0FDF4; }
+.exec-badge-trend.negative { background: #FEE2E2; color: #B91C1C; }
 @media (max-width: 1024px) {
   .exec-kpis-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2571,7 +2590,7 @@ p, .card-desc, .doc-summary {
       <div class="brand-logo">AA</div>
       <div class="brand-text">
         <h1>GESTÃO ADMINISTRATIVA & DOCUMENTAL</h1>
-        <p>DELEGADO DE ÁREA · JUNAAB · ÁREA 27</p>
+        <p>DELEGADO DE ÁREA RJ · JUNAAB · ÁREA 01 (RIO DE JANEIRO)</p>
       </div>
     </div>
 
@@ -2770,7 +2789,7 @@ p, .card-desc, .doc-summary {
     <div class="kanban-header">
       <div>
         <h2>📌 Kanban de Tarefas Administrativas</h2>
-        <p class="subtitle">Gerencie demandas operacionais, prazos e aprovações da Área 27. Arraste os cards para atualizar o status.</p>
+        <p class="subtitle">Gerencie demandas operacionais, prazos e aprovações da Área 01 (RJ). Arraste os cards para atualizar o status.</p>
       </div>
       
       <div class="kanban-actions">
@@ -2888,49 +2907,69 @@ p, .card-desc, .doc-summary {
   <section id="view-executivo" class="view-panel">
     <div class="exec-dashboard-container">
       
-      <!-- 1. BLOCO DE INDICADORES-CHAVE (KPIS) EXECUTIVOS NO TOPO -->
+            <!-- 1. BLOCO DE INDICADORES-CHAVE (KPIS) EXECUTIVOS NO TOPO (REALIDADE JUNAAB & ÁREA 01 RJ) -->
       <div class="exec-kpis-grid">
-        <!-- KPI 1: Saldo Líquido Área 27 -->
-        <div class="exec-kpi-card highlight-blue">
+        <!-- KPI 1: Déficit Consolidado JUNAAB -->
+        <div class="exec-kpi-card highlight-red">
           <div class="exec-kpi-header">
-            <span class="exec-kpi-label">Saldo Líquido Área 27 (Mês Atual)</span>
-            <span class="exec-badge-trend positive">▲ +8% vs mês ant.</span>
+            <span class="exec-kpi-label">Déficit JUNAAB (Consolidado)</span>
+            <span class="exec-badge-trend negative">−US$ 4,77 mi</span>
           </div>
-          <div class="exec-kpi-value">R$ 14.850,00</div>
-          <div class="exec-kpi-sub">Conta Corrente Banco do Brasil + Caixa de Área</div>
+          <div class="exec-kpi-value" style="color: #B91C1C;">−US$ 4,77 mi</div>
+          <div class="exec-kpi-sub">Prejuízo acumulado em 3 anos (2022: −1,8m | 2023: −1,2m | 2024: −1,7m) • CSG</div>
         </div>
 
-        <!-- KPI 2: Cotas Convenção 2027 -->
+        <!-- KPI 2: Fundo de Reserva Prudente JUNAAB -->
+        <div class="exec-kpi-card highlight-alert">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Reserva Prudente (JUNAAB)</span>
+            <span class="exec-badge-alert">⚠️ Alerta Crítico</span>
+          </div>
+          <div class="exec-kpi-value" style="color: #854D0E;">5,1 <span style="font-size:13px; font-weight:normal; color:#64748b;">meses</span></div>
+          <div class="exec-kpi-sub">Teto CSG: 12 meses • Média: 9,7 meses (−47% da média histórica)</div>
+        </div>
+
+        <!-- KPI 3: Receitas da Literatura e 7ª Tradição -->
+        <div class="exec-kpi-card highlight-blue">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Receitas JUNAAB (Tendência)</span>
+            <span class="exec-badge-trend negative">−34,6% Lit.</span>
+          </div>
+          <div class="exec-kpi-value" style="color: #0369A1;">−US$ 4,1 mi <span style="font-size:13px; font-weight:normal; color:#64748b;">combinado</span></div>
+          <div class="exec-kpi-sub">Vendas de literatura: −34,6% vs 2018 • Contribuições: −10,5%</div>
+        </div>
+
+        <!-- KPI 4: Saldo Líquido Área 01 - RJ (Delegado Carlos) -->
+        <div class="exec-kpi-card highlight-green">
+          <div class="exec-kpi-header">
+            <span class="exec-kpi-label">Saldo Líquido Área 01 - RJ</span>
+            <span class="exec-badge-trend positive">▲ +8% no mês</span>
+          </div>
+          <div class="exec-kpi-value" style="color: #15803D;">R$ 14.850,00</div>
+          <div class="exec-kpi-sub">Delegação Carlos S.R. • Banco do Brasil + Caixa Operacional Área 01 RJ</div>
+        </div>
+
+        <!-- KPI 5: Cotas Convenção Nacional 2027 -->
         <div class="exec-kpi-card highlight-amber">
           <div class="exec-kpi-header">
             <span class="exec-kpi-label">Cotas Convenção 2027</span>
             <span class="exec-badge-trend neutral">Meta: 100 cotas</span>
           </div>
-          <div class="exec-kpi-value">64% <span style="font-size:14px; font-weight:normal; color:#64748b;">arrecadado</span></div>
+          <div class="exec-kpi-value" style="color: #B45309;">64% <span style="font-size:13px; font-weight:normal; color:#64748b;">arrecadado</span></div>
           <div class="exec-progress-bar">
             <div class="exec-progress-fill" style="width: 64%;"></div>
           </div>
-          <div class="exec-kpi-sub">64 cotas confirmadas • Prazo: 1º Sem/2027</div>
+          <div class="exec-kpi-sub">64 cotas confirmadas • R$ 38.400 de R$ 60.000</div>
         </div>
 
-        <!-- KPI 3: Reserva Prudente JUNAAB -->
-        <div class="exec-kpi-card highlight-alert">
-          <div class="exec-kpi-header">
-            <span class="exec-kpi-label">Reserva Prudente (JUNAAB)</span>
-            <span class="exec-badge-alert">⚠️ Alerta Amarelo</span>
-          </div>
-          <div class="exec-kpi-value">14 <span style="font-size:14px; font-weight:normal; color:#64748b;">meses de cobertura</span></div>
-          <div class="exec-kpi-sub">Mínimo estatutário: 12 meses • Atenção com literatura</div>
-        </div>
-
-        <!-- KPI 4: Pendências Críticas / Prazos Próximos -->
+        <!-- KPI 6: Pendências Críticas / Kanban Área 01 -->
         <div class="exec-kpi-card highlight-purple clickable" onclick="switchTab('kanban')" title="Clique para abrir o Kanban de Tarefas">
           <div class="exec-kpi-header">
-            <span class="exec-kpi-label">Pendências Críticas</span>
+            <span class="exec-kpi-label">Pendências Críticas (Área 01)</span>
             <span class="exec-badge-link">Ver no Kanban ↗</span>
           </div>
-          <div class="exec-kpi-value" id="execKpiPendingCount">2 <span style="font-size:14px; font-weight:normal; color:#64748b;">demandas prioritárias</span></div>
-          <div class="exec-kpi-sub">Prazos vencendo nas próximas 2 semanas</div>
+          <div class="exec-kpi-value" style="color: #6D28D9;" id="execKpiPendingCount">0 <span style="font-size:13px; font-weight:normal; color:#64748b;">demandas</span></div>
+          <div class="exec-kpi-sub" id="execKpiPendingSub">Sincronizado em tempo real com o Kanban</div>
         </div>
       </div>
 
@@ -3047,18 +3086,18 @@ p, .card-desc, .doc-summary {
         </div>
       </div>
 
-      <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 27 -->
+            <!-- 3. FAIXA B: GESTÃO OPERACIONAL DA ÁREA 01 (RIO DE JANEIRO) -->
       <div class="exec-section-banner">
         <div class="exec-section-title-row">
           <div>
-            <h3>🏢 Faixa B — Gestão Operacional da Área 27</h3>
-            <p>Controles locais da delegação, relatórios de prestação de contas e materiais de assembleia.</p>
+            <h3>🏢 Faixa B — Gestão Operacional da Área 01 (Rio de Janeiro)</h3>
+            <p>Controles locais da delegação Carlos S.R., relatórios de prestação de contas e materiais de assembleia da Área 01 RJ.</p>
           </div>
-          <span class="exec-card-badge badge-blue">Área 27 - Ceará</span>
+          <span class="exec-card-badge badge-blue">Área 01 - Rio de Janeiro (RJ)</span>
         </div>
 
         <div class="exec-cards-grid">
-          <!-- Card 5: Dashboard Financeiro Área 27 -->
+          <!-- Card 5: Dashboard Financeiro Área 01 (RJ) -->
           <div class="exec-tool-card featured-blue">
             <div>
               <div class="exec-card-top-meta">
@@ -3068,12 +3107,12 @@ p, .card-desc, .doc-summary {
               <div class="exec-tool-header">
                 <div class="exec-tool-icon">📊</div>
                 <div>
-                  <h4>Dashboard Financeiro Área 27</h4>
-                  <span class="exec-tool-tag">Painel Analítico Completo</span>
+                  <h4>Dashboard Financeiro Área 01 (RJ)</h4>
+                  <span class="exec-tool-tag">Painel Analítico Regional</span>
                 </div>
               </div>
               <p class="exec-tool-desc">
-                Painel interativo completo com receitas por rubrica (Plano 60/25/15), despesas por categoria, controle nominal de cotas da Convenção e extrato bancário detalhado.
+                Painel interativo da delegação Carlos S.R. com receitas por rubrica (Plano 60/25/15), despesas por categoria, controle nominal de cotas da Convenção e extrato bancário detalhado.
               </p>
             </div>
             <a href="06 - DASHBOARDS E FERRAMENTAS/Dashboard Area 27/dashboard_aa_area27.html" target="_blank" class="btn-exec-action">
@@ -3081,7 +3120,7 @@ p, .card-desc, .doc-summary {
             </a>
           </div>
 
-          <!-- Card 6: Apresentação de Gestão Atualizada -->
+          <!-- Card 6: Apresentação de Gestão Área 01 RJ -->
           <div class="exec-tool-card">
             <div>
               <div class="exec-card-top-meta">
@@ -3091,12 +3130,12 @@ p, .card-desc, .doc-summary {
               <div class="exec-tool-header">
                 <div class="exec-tool-icon">📽️</div>
                 <div>
-                  <h4>Apresentação de Gestão</h4>
+                  <h4>Apresentação de Gestão — Área 01 RJ</h4>
                   <span class="exec-tool-tag" style="color:#D97706; font-weight:600;">Atualizado em Nov/2026</span>
                 </div>
               </div>
               <p class="exec-tool-desc">
-                Síntese visual estruturada para assembleias e reuniões de delegação com desafios de sustentabilidade, prestação de contas aos RSGs e direcionamentos estratégicos.
+                Síntese visual estruturada para assembleias e reuniões de delegação da Área 01 com desafios de sustentabilidade, prestação de contas aos RSGs e direcionamentos estratégicos.
               </p>
             </div>
             <a href="APRESENTACAO_ATUALIZADA.html" target="_blank" class="btn-exec-action secondary-action">
@@ -3139,7 +3178,7 @@ p, .card-desc, .doc-summary {
               <span class="milestone-dot current" title="Em Andamento">⚡</span>
             </div>
             <h5 class="milestone-title">Resposta Circular 04 JUNAAB</h5>
-            <p class="milestone-desc">Consolidação do posicionamento da Área 27 sobre as diretrizes dos encontros regionais.</p>
+            <p class="milestone-desc">Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.</p>
             <span class="milestone-badge-kanban">📌 Prioridade no Kanban ↗</span>
           </div>
 
@@ -3149,7 +3188,7 @@ p, .card-desc, .doc-summary {
               <span class="milestone-date">05/DEZ/2026</span>
               <span class="milestone-dot upcoming" title="Previsto">○</span>
             </div>
-            <h5 class="milestone-title">Assembleia de Área 27</h5>
+            <h5 class="milestone-title">Assembleia de Área 01 (RJ)</h5>
             <p class="milestone-desc">Apresentação da Matriz RACI, balanço do semestre e prestação de contas aos RSGs.</p>
           </div>
 
@@ -4878,10 +4917,37 @@ function updateStatsKPIs() {
   const junaabCount = docsData.filter(d => d.categoria.includes("JUNAAB")).length;
   document.getElementById("kpiJunaabDocs").innerText = junaabCount;
 
-  // Contagem de tarefas em andamento do Kanban
-  const activeTasks = (typeof tarefasAdmin !== 'undefined' ? tarefasAdmin : []).filter(t => t.status === 'doing').length;
+  // Sincronização em tempo real de tarefas (Kanban Área 01 RJ)
+  let tarefas = [];
+  if (typeof tarefasAdmin !== 'undefined' && Array.isArray(tarefasAdmin)) {
+    tarefas = tarefasAdmin;
+  } else {
+    try {
+      const stored = localStorage.getItem('aa_tarefas_admin');
+      tarefas = stored ? JSON.parse(stored) : [];
+    } catch(e) {
+      tarefas = [];
+    }
+  }
+
+  const doingTasks = tarefas.filter(t => t.status === 'doing').length;
+  const pendingTasks = tarefas.filter(t => t.status !== 'done').length;
+  const reviewTasks = tarefas.filter(t => t.status === 'review').length;
+  const todoTasks = tarefas.filter(t => t.status === 'todo').length;
+
+  // KPI no topo do Acervo
   const kpiEl = document.getElementById("kpiActiveTasks");
-  if (kpiEl) kpiEl.innerText = activeTasks;
+  if (kpiEl) kpiEl.innerText = doingTasks;
+
+  // KPI no topo do Painel Executivo (Pendências Críticas)
+  const execPendingEl = document.getElementById("execKpiPendingCount");
+  if (execPendingEl) {
+    execPendingEl.innerHTML = `${pendingTasks} <span style="font-size:13px; font-weight:normal; color:#64748b;">${pendingTasks === 1 ? 'demanda prioritária' : 'demandas prioritárias'}</span>`;
+  }
+  const execPendingSubEl = document.getElementById("execKpiPendingSub");
+  if (execPendingSubEl) {
+    execPendingSubEl.textContent = `${doingTasks} em andamento • ${reviewTasks} em revisão • ${todoTasks} a fazer`;
+  }
 }
 
 // ==================== MECANISMO DE BUSCA E FILTROS ====================
@@ -6522,6 +6588,10 @@ try {
   }
 } catch (e) {
   tarefasAdmin = [];
+}
+// Sincronizar contadores imediatamente no carregamento
+if (typeof updateStatsKPIs === 'function') {
+  updateStatsKPIs();
 }
 
 let modalChecklistTemp = [];
