@@ -3526,14 +3526,14 @@ p, .card-desc, .doc-summary {
       <button class="nav-tab-btn active" data-tab="acervo" onclick="switchTab('acervo')">
         <span>📂</span> Acervo & Busca
       </button>
-      <button class="nav-tab-btn" data-tab="agenda" onclick="switchTab('agenda')">
-        <span>🗓️</span> Agenda
-      </button>
       <button class="nav-tab-btn" data-tab="kanban" onclick="switchTab('kanban')">
         <span>📌</span> Kanban Trello
       </button>
       <button class="nav-tab-btn" data-tab="executivo" onclick="switchTab('executivo')">
         <span>📊</span> Painel Executivo
+      </button>
+      <button class="nav-tab-btn" data-tab="agenda" onclick="switchTab('agenda')">
+        <span>🗓️</span> Agenda
       </button>
       <button class="nav-tab-btn" data-tab="gestao" onclick="switchTab('gestao')">
         <span>🔐</span> Área de Gestão
@@ -3594,6 +3594,91 @@ p, .card-desc, .doc-summary {
       </div>
     </div>
   </section>
+
+<section id="view-kanban" class="view-panel">
+  <div id="kanban-section" class="kanban-container">
+    <div class="kanban-header">
+      <div>
+        <h2>📌 Kanban de Tarefas Administrativas</h2>
+        <p class="subtitle">Gerencie demandas operacionais, prazos e aprovações da Área 01 (RJ). Arraste os cards para atualizar o status.</p>
+      </div>
+      
+      <div class="kanban-actions">
+        <button class="btn-primary" onclick="abrirModalTarefa()">➕ Nova Tarefa</button>
+        <button class="btn-secondary" onclick="exportarTarefasJSON()">📤 Exportar JSON</button>
+      </div>
+    </div>
+
+    <!-- Barra de Filtros Rápidos -->
+    <div class="kanban-filters">
+      <div class="filter-group">
+        <label for="filtro-responsavel">👤 Responsável:</label>
+        <select id="filtro-responsavel" onchange="renderizarKanban()">
+          <option value="TODOS">Todos os Perfis</option>
+          <option value="Delegado de Área">Carlos S.R. (Delegado de Área)</option>
+          <option value="Comitê de Finanças">Comitê de Finanças</option>
+          <option value="Secretaria / ESG">Secretaria / ESG</option>
+          <option value="Conselho Fiscal">Conselho Fiscal</option>
+          <option value="Analista de Processos">Henrique (Analista)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filtro-categoria">🏷️ Área / Comitê:</label>
+        <select id="filtro-categoria" onchange="renderizarKanban()">
+          <option value="TODAS">Todas as Áreas</option>
+          <option value="FINANCEIRO">Financeiro</option>
+          <option value="JUNAAB">JUNAAB</option>
+          <option value="CONVENCAO">Convenção</option>
+          <option value="GOVERNANCA">Governança & Processos</option>
+        </select>
+      </div>
+
+      <div class="filter-group" style="margin-left: auto; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">👁️ Visão Ativa:</span>
+        <b id="kanban-active-profile-name" style="font-size: 12.5px; color: #1e3a8a;">Henrique (Analista)</b>
+      </div>
+    </div>
+
+    <!-- Quadro de 4 Colunas com Cabeçalhos Estáticos -->
+    <div class="kanban-board">
+      <div class="kanban-column" data-status="todo" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'todo')">
+        <div class="column-header">
+          <span>📋 A Fazer</span>
+          <span class="badge-count" id="count-todo">0</span>
+        </div>
+        <div class="column-body" id="col-todo"></div>
+      </div>
+
+      <div class="kanban-column" data-status="doing" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'doing')">
+        <div class="column-header">
+          <span>⏳ Em Andamento</span>
+          <span class="badge-count" id="count-doing">0</span>
+        </div>
+        <div class="column-body" id="col-doing"></div>
+      </div>
+
+      <div class="kanban-column" data-status="review" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'review')">
+        <div class="column-header">
+          <span>⚖️ Em Revisão / Parecer</span>
+          <span class="badge-count" id="count-review">0</span>
+        </div>
+        <div class="column-body" id="col-review"></div>
+      </div>
+
+      <div class="kanban-column" data-status="done" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'done')">
+        <div class="column-header">
+          <span>✅ Concluído</span>
+          <span class="badge-count" id="count-done">0</span>
+        </div>
+        <div class="column-body" id="col-done"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ==================== TAB 4: ÁREA DE GESTÃO (PROTEGIDA POR SENHA 2026) ==================== -->
+  
 
   <!-- ==================== TAB 1: ACERVO & BUSCA AVANÇADA ==================== -->
   <section id="view-acervo" class="view-panel active">
@@ -3773,89 +3858,6 @@ p, .card-desc, .doc-summary {
     </div>
   </section>
 
-<section id="view-kanban" class="view-panel">
-  <div id="kanban-section" class="kanban-container">
-    <div class="kanban-header">
-      <div>
-        <h2>📌 Kanban de Tarefas Administrativas</h2>
-        <p class="subtitle">Gerencie demandas operacionais, prazos e aprovações da Área 01 (RJ). Arraste os cards para atualizar o status.</p>
-      </div>
-      
-      <div class="kanban-actions">
-        <button class="btn-primary" onclick="abrirModalTarefa()">➕ Nova Tarefa</button>
-        <button class="btn-secondary" onclick="exportarTarefasJSON()">📤 Exportar JSON</button>
-      </div>
-    </div>
-
-    <!-- Barra de Filtros Rápidos -->
-    <div class="kanban-filters">
-      <div class="filter-group">
-        <label for="filtro-responsavel">👤 Responsável:</label>
-        <select id="filtro-responsavel" onchange="renderizarKanban()">
-          <option value="TODOS">Todos os Perfis</option>
-          <option value="Delegado de Área">Carlos S.R. (Delegado de Área)</option>
-          <option value="Comitê de Finanças">Comitê de Finanças</option>
-          <option value="Secretaria / ESG">Secretaria / ESG</option>
-          <option value="Conselho Fiscal">Conselho Fiscal</option>
-          <option value="Analista de Processos">Henrique (Analista)</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="filtro-categoria">🏷️ Área / Comitê:</label>
-        <select id="filtro-categoria" onchange="renderizarKanban()">
-          <option value="TODAS">Todas as Áreas</option>
-          <option value="FINANCEIRO">Financeiro</option>
-          <option value="JUNAAB">JUNAAB</option>
-          <option value="CONVENCAO">Convenção</option>
-          <option value="GOVERNANCA">Governança & Processos</option>
-        </select>
-      </div>
-
-      <div class="filter-group" style="margin-left: auto; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
-        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">👁️ Visão Ativa:</span>
-        <b id="kanban-active-profile-name" style="font-size: 12.5px; color: #1e3a8a;">Henrique (Analista)</b>
-      </div>
-    </div>
-
-    <!-- Quadro de 4 Colunas com Cabeçalhos Estáticos -->
-    <div class="kanban-board">
-      <div class="kanban-column" data-status="todo" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'todo')">
-        <div class="column-header">
-          <span>📋 A Fazer</span>
-          <span class="badge-count" id="count-todo">0</span>
-        </div>
-        <div class="column-body" id="col-todo"></div>
-      </div>
-
-      <div class="kanban-column" data-status="doing" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'doing')">
-        <div class="column-header">
-          <span>⏳ Em Andamento</span>
-          <span class="badge-count" id="count-doing">0</span>
-        </div>
-        <div class="column-body" id="col-doing"></div>
-      </div>
-
-      <div class="kanban-column" data-status="review" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'review')">
-        <div class="column-header">
-          <span>⚖️ Em Revisão / Parecer</span>
-          <span class="badge-count" id="count-review">0</span>
-        </div>
-        <div class="column-body" id="col-review"></div>
-      </div>
-
-      <div class="kanban-column" data-status="done" ondragover="permitirDrop(event)" ondrop="soltarCard(event, 'done')">
-        <div class="column-header">
-          <span>✅ Concluído</span>
-          <span class="badge-count" id="count-done">0</span>
-        </div>
-        <div class="column-body" id="col-done"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <!-- ==================== TAB 4: ÁREA DE GESTÃO (PROTEGIDA POR SENHA 2026) ==================== -->
   <section id="view-gestao" class="view-panel">
     <!-- 1. Tela de Bloqueio por Senha -->
     <div id="gestao-lock-container" class="gestao-lock-box" style="display: flex;">
@@ -7356,33 +7358,56 @@ if (document.readyState === 'loading') {
 // VISIBILIDADE E COMPARTILHAMENTO DE TAREFAS POR PERFIL (RBAC)
 // ==============================================================================
 
+function normalizarPerfilId(id) {
+  if (!id) return '';
+  id = String(id).toLowerCase().trim();
+  if (id === 'delegado') return 'carlos';
+  return id;
+}
+
 function podePerfilVisualizarTarefa(tarefa, perfilAtivo) {
-  if (!tarefa) return false;
-  // Delegado de Área e Analista de Processos têm acesso de governança ampla
-  if (perfilAtivo === 'delegado' || perfilAtivo === 'carlos' || perfilAtivo === 'henrique') {
+  if (!tarefa || !perfilAtivo) return false;
+
+  const perfilNorm = normalizarPerfilId(perfilAtivo);
+  const actor = (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) 
+    ? ATORES.find(a => normalizarPerfilId(a.id) === perfilNorm) 
+    : null;
+
+  // 1. REGRA INVIOLÁVEL: Quem criou a tarefa (perfil logado no momento da criação) pode ver SEMPRE
+  const criadorNorm = normalizarPerfilId(tarefa.criadoPor || tarefa.criadorId);
+  if (criadorNorm && criadorNorm === perfilNorm) {
     return true;
   }
 
+  // 2. Se o perfil ativo for o responsável direto atribuído à tarefa
+  const atorIdNorm = normalizarPerfilId(tarefa.atorId);
+  if (atorIdNorm && atorIdNorm === perfilNorm) {
+    return true;
+  }
+  if (tarefa.responsavel && actor) {
+    const respStr = String(tarefa.responsavel).toLowerCase();
+    if (respStr.includes(actor.nome.toLowerCase()) || respStr.includes(actor.papel.toLowerCase())) {
+      return true;
+    }
+  }
+
+  // 3. Se foi expressamente permitido no compartilhamento (compartilhadoCom)
   const comp = tarefa.compartilhadoCom;
-  // Se não foi definido compartilhamento ou se estiver compartilhado com 'todos'
-  if (!comp || !Array.isArray(comp) || comp.length === 0 || comp.includes('todos')) {
-    return true;
+  if (Array.isArray(comp)) {
+    // Se o criador optou por compartilhar com 'todos'
+    if (comp.includes('todos')) {
+      return true;
+    }
+    const compNorm = comp.map(normalizarPerfilId);
+    if (compNorm.includes(perfilNorm)) {
+      return true;
+    }
+    if (actor && (comp.includes(actor.id) || comp.includes(actor.papel))) {
+      return true;
+    }
   }
 
-  const actor = (typeof ATORES !== 'undefined') ? ATORES.find(a => a.id === perfilAtivo) : null;
-  // Se o usuário ativo for o responsável pela tarefa
-  if (tarefa.responsavel && actor && (tarefa.responsavel === actor.papel || tarefa.responsavel.includes(actor.nome))) {
-    return true;
-  }
-  if (tarefa.atorId && (tarefa.atorId === perfilAtivo || tarefa.atorId === (actor ? actor.id : ''))) {
-    return true;
-  }
-
-  // Se o perfil ou papel estiver expressamente habilitado no compartilhamento
-  if (comp.includes(perfilAtivo) || (perfilAtivo === 'carlos' && comp.includes('delegado')) || (perfilAtivo === 'delegado' && comp.includes('carlos'))) return true;
-  if (actor && (comp.includes(actor.id) || comp.includes(actor.papel))) return true;
-
-  // Não habilitado
+  // Se não criou e não foi permitido: NÃO pode visualizar
   return false;
 }
 
@@ -11467,11 +11492,13 @@ function salvarNovaTarefa(e) {
     id: 't' + Date.now(),
     titulo: titulo,
     responsavel: responsavel,
+    atorId: currentActiveRole,
+    criadoPor: currentActiveRole, // Quem criou (perfil logado) é quem sempre pode ver
     categoria: categoria,
     prazo: prazo,
     descricao: descricao,
     status: 'todo',
-    compartilhadoCom: (typeof obterPerfisCompartilhadosMarcados === 'function') ? obterPerfisCompartilhadosMarcados() : ['todos'],
+    compartilhadoCom: (typeof obterPerfisCompartilhadosMarcados === 'function') ? obterPerfisCompartilhadosMarcados() : [currentActiveRole],
     docId: docId,
     docTitulo: docTitulo,
     subtarefas: modalChecklistTemp.slice()
