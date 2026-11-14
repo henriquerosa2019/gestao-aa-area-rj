@@ -3113,6 +3113,399 @@ p, .card-desc, .doc-summary {
     box-shadow: 0 1px 3px rgba(30, 58, 138, 0.25);
   }
 
+
+
+/* ==============================================================================
+   ESTILOS DA ÁREA AGENDA DE GESTÃO PESSOAL
+   ============================================================================== */
+.agenda-header-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.agenda-profile-active-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.agenda-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.agenda-profile-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.agenda-profile-details h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+.agenda-profile-details p {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  color: #cbd5e1;
+}
+
+/* Barra de Controles e Alertas */
+.agenda-controls-bar {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-xs);
+}
+.agenda-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agenda-alert-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.agenda-pill {
+  background: var(--surface-alt);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.agenda-pill:hover {
+  background: #e2e8f0;
+}
+.agenda-pill.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.agenda-pill.pill-hoje.active {
+  background: #dc2626;
+  border-color: #b91c1c;
+  color: #fff;
+}
+.agenda-pill.pill-avencer.active {
+  background: #d97706;
+  border-color: #b45309;
+  color: #fff;
+}
+.agenda-pill.pill-atrasado.active {
+  background: #7f1d1d;
+  border-color: #991b1b;
+  color: #fff;
+}
+.agenda-pill.pill-concluido.active {
+  background: #059669;
+  border-color: #047857;
+  color: #fff;
+}
+
+/* Grid de Compromissos */
+.agenda-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+.agenda-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+.agenda-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.agenda-card.alerta-hoje {
+  border-left: 5px solid #dc2626;
+  background: #fffafa;
+}
+.agenda-card.alerta-avencer {
+  border-left: 5px solid #f59e0b;
+}
+.agenda-card.alerta-atrasado {
+  border-left: 5px solid #ef4444;
+  opacity: 0.95;
+}
+.agenda-card.alerta-concluido {
+  border-left: 5px solid #10b981;
+  background: #f8fafc;
+  opacity: 0.85;
+}
+
+.agenda-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.agenda-status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.badge-hoje {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  animation: pulseHoje 2s infinite;
+}
+@keyframes pulseHoje {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+.badge-avencer {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+.badge-atrasado {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+.badge-concluido {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.agenda-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.agenda-card-datetime {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #334155;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.agenda-card-location {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.agenda-card-desc {
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 12px;
+  background: var(--surface-alt);
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--rule-light);
+}
+
+.agenda-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule-light);
+  padding-top: 10px;
+  margin-top: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Lançar no Kanban */
+.lancar-kanban-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.btn-lancar-kanban {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: var(--navy);
+  padding: 6px 11px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+.btn-lancar-kanban:hover {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.lancar-kanban-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  z-index: 100;
+  min-width: 175px;
+  padding: 6px 0;
+}
+.lancar-menu-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748b;
+  padding: 4px 12px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.lancar-menu-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.12s;
+}
+.lancar-menu-item:hover {
+  background: #eff6ff;
+  color: var(--navy);
+}
+
+/* ==============================================================================
+   RESPONSIVIDADE: AGENDA OCUPANDO TODA A TELA NO CELULAR (MAX-WIDTH: 768px)
+   ============================================================================== */
+@media (max-width: 768px) {
+  #view-agenda {
+    position: relative;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    padding: 10px 12px 90px !important;
+    min-height: calc(100vh - 60px) !important;
+    background: #f8fafc;
+    box-sizing: border-box;
+  }
+  .agenda-header-banner {
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .agenda-profile-details h3 {
+    font-size: 16px;
+  }
+  .agenda-top-actions {
+    width: 100%;
+  }
+  .agenda-top-actions .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 16px !important;
+  }
+  .agenda-controls-bar {
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+  .agenda-filter-group {
+    width: 100%;
+  }
+  .agenda-filter-group select {
+    flex: 1;
+    max-width: 100% !important;
+  }
+  .agenda-alert-pills {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .agenda-search-box {
+    width: 100%;
+  }
+  .agenda-search-box input {
+    width: 100%;
+  }
+  .agenda-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .agenda-card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+  .btn-lancar-kanban {
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
+}
+
 </style>
   </head>
 <body>
@@ -3132,6 +3525,9 @@ p, .card-desc, .doc-summary {
     <nav class="header-center">
       <button class="nav-tab-btn active" data-tab="acervo" onclick="switchTab('acervo')">
         <span>📂</span> Acervo & Busca
+      </button>
+      <button class="nav-tab-btn" data-tab="agenda" onclick="switchTab('agenda')">
+        <span>🗓️</span> Agenda
       </button>
       <button class="nav-tab-btn" data-tab="kanban" onclick="switchTab('kanban')">
         <span>📌</span> Kanban Trello
@@ -3316,6 +3712,67 @@ p, .card-desc, .doc-summary {
 
   <!-- ==================== TAB 2: KANBAN ADMINISTRATIVO ==================== -->
 <!-- SEÇÃO KANBAN DE TAREFAS ADMINISTRATIVAS -->
+
+  <!-- ==============================================================================
+       ÁREA AGENDA DE GESTÃO PESSOAL (ISOLAMENTO POR PERFIL, ALERTAS & KANBAN)
+       ============================================================================== -->
+  <section id="view-agenda" class="view-panel">
+    <!-- Top Banner / Perfil Logado Ativo -->
+    <div class="agenda-header-banner">
+      <div class="agenda-profile-active-box">
+        <div class="agenda-profile-avatar" id="agendaActiveAvatar">AA</div>
+        <div class="agenda-profile-details">
+          <div class="agenda-profile-badge">👤 Gestão Pessoal • Perfil Ativo</div>
+          <h3 id="agendaActiveProfileName">Carregando Perfil...</h3>
+          <p id="agendaActiveProfileRole">Enxergando apenas seus compromissos pessoais</p>
+        </div>
+      </div>
+      <div class="agenda-top-actions">
+        <button type="button" class="btn-primary" onclick="abrirModalCompromisso()" style="display:inline-flex; align-items:center; gap:6px; padding:10px 18px; font-weight:600; font-size:14px; border-radius:8px;">
+          <span>➕</span> Novo Compromisso
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra de Controles, Filtro por Perfil e Alertas -->
+    <div class="agenda-controls-bar">
+      <div class="agenda-filter-group">
+        <label for="agendaFiltroPerfil"><b>Filtrar por Perfil:</b></label>
+        <select id="agendaFiltroPerfil" class="form-control" style="max-width: 280px; font-weight:600;" onchange="aoMudarFiltroPerfilAgenda(this.value)">
+          <!-- Opções preenchidas dinamicamente -->
+        </select>
+      </div>
+
+      <!-- Pílulas de Alertas & Status -->
+      <div class="agenda-alert-pills">
+        <button type="button" class="agenda-pill active" data-filtro="todos" onclick="filtrarStatusAgenda('todos')">
+          📅 Todos (<span id="count-agenda-todos">0</span>)
+        </button>
+        <button type="button" class="agenda-pill pill-hoje" data-filtro="hoje" onclick="filtrarStatusAgenda('hoje')">
+          🔥 Vencendo Hoje (<span id="count-agenda-hoje">0</span>)
+        </button>
+        <button type="button" class="agenda-pill pill-avencer" data-filtro="avencer" onclick="filtrarStatusAgenda('avencer')">
+          ⏳ A Vencer (<span id="count-agenda-avencer">0</span>)
+        </button>
+        <button type="button" class="agenda-pill pill-atrasado" data-filtro="atrasados" onclick="filtrarStatusAgenda('atrasados')">
+          ⚠️ Atrasados (<span id="count-agenda-atrasados">0</span>)
+        </button>
+        <button type="button" class="agenda-pill pill-concluido" data-filtro="concluidos" onclick="filtrarStatusAgenda('concluidos')">
+          ✅ Concluídos (<span id="count-agenda-concluidos">0</span>)
+        </button>
+      </div>
+
+      <div class="agenda-search-box" style="flex:1; min-width:200px; max-width:320px;">
+        <input type="text" id="agendaSearchInput" placeholder="🔍 Buscar compromisso..." oninput="filtrarBuscaAgenda(this.value)" class="form-control" style="font-size:13px; padding:8px 12px;">
+      </div>
+    </div>
+
+    <!-- Grid / Lista de Compromissos -->
+    <div id="agenda-cards-container" class="agenda-cards-grid">
+      <!-- Cards gerados dinamicamente via renderizarAgenda() -->
+    </div>
+  </section>
+
 <section id="view-kanban" class="view-panel">
   <div id="kanban-section" class="kanban-container">
     <div class="kanban-header">
@@ -4594,6 +5051,73 @@ p, .card-desc, .doc-summary {
   </div>
 </div>
 
+
+
+<!-- Modal: Novo / Editar Compromisso da Agenda -->
+<div id="modal-compromisso-agenda" class="modal-overlay" onclick="onModalCompromissoOverlayClick(event)">
+  <div class="modal-content" style="max-width: 560px; padding: 24px 28px; border-radius: 12px; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);">
+    <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--rule-light); display: flex; justify-content: space-between; align-items: center;">
+      <h3 id="modalCompromissoTitle" style="color:var(--navy); margin: 0; font-size: 19px; font-weight: 700;">🗓️ Novo Compromisso</h3>
+      <button class="modal-close-btn" onclick="fecharModalCompromisso()" style="font-size: 20px; cursor: pointer; border: none; background: transparent; color: var(--muted);">✕</button>
+    </div>
+    <form id="formCompromissoAgenda" onsubmit="salvarCompromisso(event)">
+      <input type="hidden" id="compromisso-id">
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label for="compromisso-titulo" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Título do Compromisso *</label>
+        <input type="text" id="compromisso-titulo" class="form-control" required placeholder="Ex: Reunião do Distrito 04, Reunião de Custódios, Assembleia...">
+      </div>
+
+      <div class="form-row" style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+        <div class="form-group">
+          <label for="compromisso-data" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Data *</label>
+          <input type="date" id="compromisso-data" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="compromisso-hora" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Horário</label>
+          <input type="time" id="compromisso-hora" class="form-control" value="19:30">
+        </div>
+      </div>
+
+      <div class="form-row" style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+        <div class="form-group">
+          <label for="compromisso-categoria" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Categoria / Tipo</label>
+          <select id="compromisso-categoria" class="form-control">
+            <option value="Reunião de Distrito">🏛️ Reunião de Distrito</option>
+            <option value="Assembleia de Área">👥 Assembleia de Área</option>
+            <option value="JUNAAB / Custódios">🏛️ JUNAAB / Custódios</option>
+            <option value="Finanças / Tesouraria">💰 Finanças / Tesouraria</option>
+            <option value="Visita a Grupo">🤝 Visita a Grupo</option>
+            <option value="Conferência (CSG)">🗳️ Conferência (CSG)</option>
+            <option value="Comitê de Processos">⚙️ Comitê de Processos</option>
+            <option value="Outro">📌 Outro Compromisso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="compromisso-perfil" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Perfil Responsável *</label>
+          <select id="compromisso-perfil" class="form-control" required>
+            <!-- Preenchido via popularSelectPerfisModalCompromisso() -->
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label for="compromisso-local" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Local ou Link Virtual</label>
+        <input type="text" id="compromisso-local" class="form-control" placeholder="Ex: Sede do ESL, Sala Zoom: https://zoom.us/..., Grupo Esperança">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label for="compromisso-descricao" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Pauta / Observações</label>
+        <textarea id="compromisso-descricao" class="form-control" rows="3" placeholder="Pontos centrais da pauta, materiais a levar ou preparar..."></textarea>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule-light); display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn-secondary" onclick="fecharModalCompromisso()" style="padding: 8px 16px;">Cancelar</button>
+        <button type="submit" class="btn-primary" style="background:var(--navy); padding: 9px 22px; font-weight:600;">💾 Salvar Compromisso</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- Modal: Resumo Executivo do Material (Máx. 1 Página) -->
 <div id="modal-resumo-material" class="modal-overlay" onclick="onResumoOverlayClick(event)">
@@ -7102,7 +7626,11 @@ function switchTab(tabKey) {
     activeBtn.classList.add("active");
   }
 
-    if (tabKey === 'kanban') {
+    if (tabKey === 'agenda') {
+    if (typeof renderizarAgenda === 'function') renderizarAgenda();
+  }
+
+  if (tabKey === 'kanban') {
     if (typeof renderizarKanban === 'function') renderizarKanban();
   }
 
@@ -7128,6 +7656,7 @@ function onRoleChange(roleKey) {
   }
   if (typeof highlightActiveActorCard === 'function') highlightActiveActorCard();
   if (typeof renderKanban === 'function') renderKanban();
+  if (typeof renderizarAgenda === 'function') renderizarAgenda();
   if (typeof renderizarKanban === 'function') renderizarKanban();
 }
 
@@ -10978,6 +11507,572 @@ function createTaskFromDoc(docId) {
     switchTab('kanban');
   }
 }
+
+
+
+// ==============================================================================
+// LÓGICA COMPLETA DA ÁREA AGENDA DE GESTÃO PESSOAL
+// ==============================================================================
+
+const STORAGE_AGENDA_KEY = 'delegado_aa_agenda_v1';
+let filtroStatusAgendaAtivo = 'todos'; // 'todos' | 'hoje' | 'avencer' | 'atrasados' | 'concluidos'
+let buscaTextoAgenda = '';
+let filtroPerfilAgendaAtivo = 'MEUS'; // 'MEUS' | 'TODOS' | id_do_ator
+
+// Compromissos padrão realistas de A.A. para demonstração e uso imediato
+const COMPROMISSOS_AGENDA_DEFAULT = [
+  {
+    id: 'comp_1',
+    titulo: 'Reunião Mensal com Coordenadores de Distrito da Área 01 RJ',
+    data: new Date().toISOString().split('T')[0], // HOJE!
+    hora: '19:30',
+    categoria: 'Reunião de Distrito',
+    local: 'Sede da Área 01 RJ / Híbrida (Zoom)',
+    descricao: 'Alinhamento sobre repasses do Plano 60/25/15, calendário de visitas aos grupos e preparativos para a Assembleia.',
+    perfilId: 'carlos',
+    concluido: false,
+    lancadoKanban: false,
+    criadoEm: '2026-11-14T09:00:00.000Z'
+  },
+  {
+    id: 'comp_2',
+    titulo: 'Revisão dos Macroprocessos TO BE JUNAAB com Comitê Técnico',
+    data: new Date().toISOString().split('T')[0], // HOJE!
+    hora: '15:00',
+    categoria: 'Comitê de Processos',
+    local: 'Sala Google Meet (Virtual)',
+    descricao: 'Confrontar fluxos desenhados com os achados da auditoria e fechar proposta para a próxima CSG.',
+    perfilId: 'henrique',
+    concluido: false,
+    lancadoKanban: false,
+    criadoEm: '2026-11-14T09:30:00.000Z'
+  },
+  {
+    id: 'comp_3',
+    titulo: 'Plenária Preparatória da 49ª Conferência de Serviços Gerais (CSG)',
+    data: new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0], // Em 5 dias (A Vencer)
+    hora: '14:00',
+    categoria: 'Conferência (CSG)',
+    local: 'Auditório Central / Transmissão Nacional',
+    descricao: 'Apresentação formal da tese de déficit financeiro estrutural e votação das recomendações da região Sudeste.',
+    perfilId: 'carlos',
+    concluido: false,
+    lancadoKanban: false,
+    criadoEm: '2026-11-14T10:00:00.000Z'
+  },
+  {
+    id: 'comp_4',
+    titulo: 'Fechamento do Balancete Mensal e Conciliação do Banco do Brasil',
+    data: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0], // Em 2 dias (A Vencer)
+    hora: '18:00',
+    categoria: 'Finanças / Tesouraria',
+    local: 'Escritório de Serviços Locais (ESL)',
+    descricao: 'Auditar lançamentos bancários, recibos PIX das camisetas da Convenção e emissão do demonstrativo.',
+    perfilId: 'tesouraria',
+    concluido: false,
+    lancadoKanban: false,
+    criadoEm: '2026-11-14T10:30:00.000Z'
+  },
+  {
+    id: 'comp_5',
+    titulo: 'Visita Institucional e Apresentação no Grupo Esperança de Nilópolis',
+    data: new Date(Date.now() + 8 * 86400000).toISOString().split('T')[0], // Em 8 dias
+    hora: '20:00',
+    categoria: 'Visita a Grupo',
+    local: 'Rua Pedro Álvares Cabral, 120 - Nilópolis/RJ',
+    descricao: 'Levar a mensagem da importância da 7ª Tradição e prestar contas das ações da delegação estadual.',
+    perfilId: 'carlos',
+    concluido: false,
+    lancadoKanban: false,
+    criadoEm: '2026-11-14T11:00:00.000Z'
+  }
+];
+
+function obterCompromissosAgenda() {
+  try {
+    const raw = localStorage.getItem(STORAGE_AGENDA_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    return [...COMPROMISSOS_AGENDA_DEFAULT];
+  } catch(e) {
+    return [...COMPROMISSOS_AGENDA_DEFAULT];
+  }
+}
+
+function salvarCompromissosAgenda(lista) {
+  localStorage.setItem(STORAGE_AGENDA_KEY, JSON.stringify(lista));
+  renderizarAgenda();
+}
+
+function popularSelectPerfisAgenda() {
+  const selFiltro = document.getElementById('agendaFiltroPerfil');
+  const selModal = document.getElementById('compromisso-perfil');
+  if (!selFiltro || typeof ATORES === 'undefined') return;
+
+  const perfilAtual = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+
+  // Popular Select de Filtro
+  selFiltro.innerHTML = `
+    <option value="MEUS">👤 Meus Compromissos (${perfilAtual.nome.split(' ')[0]})</option>
+    <option value="TODOS">🌐 Todos os Perfis (Visão Global)</option>
+    <optgroup label="Filtrar por Perfil Específico:">
+      ${ATORES.map(a => `<option value="${a.id}">${a.nome} (${a.papel.split(' ')[0]})</option>`).join('')}
+    </optgroup>
+  `;
+  selFiltro.value = filtroPerfilAgendaAtivo;
+
+  // Popular Select do Modal
+  if (selModal) {
+    selModal.innerHTML = ATORES.map(a => `<option value="${a.id}">${a.nome} — ${a.papel}</option>`).join('');
+  }
+}
+
+function atualizarHeaderPerfilAgenda() {
+  const avatarEl = document.getElementById('agendaActiveAvatar');
+  const nameEl = document.getElementById('agendaActiveProfileName');
+  const roleEl = document.getElementById('agendaActiveProfileRole');
+  if (!nameEl || typeof ATORES === 'undefined') return;
+
+  const actor = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  if (actor) {
+    if (avatarEl) {
+      avatarEl.textContent = actor.sigla || actor.nome.substring(0, 2).toUpperCase();
+      avatarEl.style.background = actor.avatarBg || '#1e3a8a';
+    }
+    nameEl.textContent = actor.nome + ' (' + actor.papel + ')';
+    roleEl.textContent = (actor.area || 'Estrutura A.A.') + ' • Enxergando apenas seus compromissos pessoais';
+  }
+}
+
+function calcularStatusVencimento(dataStr, concluido) {
+  if (concluido) return 'concluido';
+  if (!dataStr) return 'sem_prazo';
+
+  const hoje = new Date().toISOString().split('T')[0];
+  if (dataStr === hoje) return 'hoje';
+  if (dataStr < hoje) return 'atrasado';
+  return 'avencer';
+}
+
+function renderizarAgenda() {
+  const container = document.getElementById('agenda-cards-container');
+  if (!container) return;
+
+  atualizarHeaderPerfilAgenda();
+  popularSelectPerfisAgenda();
+
+  const todos = obterCompromissosAgenda();
+  const hoje = new Date().toISOString().split('T')[0];
+
+  // Contadores
+  let cTodos = 0, cHoje = 0, cAVencer = 0, cAtrasados = 0, cConcluidos = 0;
+
+  // Filtragem por Perfil
+  const filtradosPorPerfil = todos.filter(comp => {
+    if (filtroPerfilAgendaAtivo === 'MEUS') {
+      return comp.perfilId === currentActiveRole;
+    }
+    if (filtroPerfilAgendaAtivo === 'TODOS') {
+      return true;
+    }
+    return comp.perfilId === filtroPerfilAgendaAtivo;
+  });
+
+  // Calcular contadores da visão ativa
+  filtradosPorPerfil.forEach(comp => {
+    cTodos++;
+    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    if (st === 'concluido') cConcluidos++;
+    else if (st === 'hoje') cHoje++;
+    else if (st === 'atrasado') cAtrasados++;
+    else if (st === 'avencer') cAVencer++;
+  });
+
+  document.getElementById('count-agenda-todos').textContent = cTodos;
+  document.getElementById('count-agenda-hoje').textContent = cHoje;
+  document.getElementById('count-agenda-avencer').textContent = cAVencer;
+  document.getElementById('count-agenda-atrasados').textContent = cAtrasados;
+  document.getElementById('count-agenda-concluidos').textContent = cConcluidos;
+
+  // Filtrar por status selecionado
+  let listaExibicao = filtradosPorPerfil.filter(comp => {
+    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    if (filtroStatusAgendaAtivo === 'todos') return true;
+    if (filtroStatusAgendaAtivo === 'hoje') return st === 'hoje';
+    if (filtroStatusAgendaAtivo === 'avencer') return st === 'avencer';
+    if (filtroStatusAgendaAtivo === 'atrasados') return st === 'atrasado';
+    if (filtroStatusAgendaAtivo === 'concluidos') return comp.concluido === true;
+    return true;
+  });
+
+  // Filtrar por texto
+  if (buscaTextoAgenda.trim()) {
+    const q = buscaTextoAgenda.toLowerCase().trim();
+    listaExibicao = listaExibicao.filter(c => 
+      (c.titulo && c.titulo.toLowerCase().includes(q)) ||
+      (c.descricao && c.descricao.toLowerCase().includes(q)) ||
+      (c.categoria && c.categoria.toLowerCase().includes(q)) ||
+      (c.local && c.local.toLowerCase().includes(q))
+    );
+  }
+
+  // Ordenar: Primeiro os de Hoje, depois os mais próximos, atrasados e concluídos por último
+  listaExibicao.sort((a, b) => {
+    if (a.concluido !== b.concluido) return a.concluido ? 1 : -1;
+    return (a.data || '').localeCompare(b.data || '');
+  });
+
+  container.innerHTML = '';
+
+  if (listaExibicao.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #fff; border-radius: 12px; border: 1px dashed #cbd5e1;">
+        <span style="font-size: 40px; display: block; margin-bottom: 10px;">📅</span>
+        <h4 style="color: var(--navy); margin: 0 0 6px;">Nenhum compromisso encontrado</h4>
+        <p style="color: #64748b; font-size: 13.5px; margin: 0 0 16px;">Não há compromissos para o filtro ou perfil selecionado no momento.</p>
+        <button type="button" class="btn-primary" onclick="abrirModalCompromisso()">➕ Adicionar Primeiro Compromisso</button>
+      </div>
+    `;
+    return;
+  }
+
+  listaExibicao.forEach(comp => {
+    const card = document.createElement('div');
+    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    
+    let classeCard = 'agenda-card';
+    let badgeHtml = '';
+    if (comp.concluido) {
+      classeCard += ' alerta-concluido';
+      badgeHtml = '<span class="agenda-status-badge badge-concluido">✅ Realizado</span>';
+    } else if (st === 'hoje') {
+      classeCard += ' alerta-hoje';
+      badgeHtml = '<span class="agenda-status-badge badge-hoje">🔥 Vencendo Hoje</span>';
+    } else if (st === 'atrasado') {
+      classeCard += ' alerta-atrasado';
+      badgeHtml = '<span class="agenda-status-badge badge-atrasado">⚠️ Atrasado</span>';
+    } else {
+      classeCard += ' alerta-avencer';
+      badgeHtml = '<span class="agenda-status-badge badge-avencer">⏳ A Vencer</span>';
+    }
+
+    card.className = classeCard;
+
+    const dataFormatada = comp.data ? comp.data.split('-').reverse().join('/') : 'Sem data';
+    const horaFormatada = comp.hora ? ' às ' + comp.hora : '';
+    const atorDono = (typeof ATORES !== 'undefined') ? (ATORES.find(a => a.id === comp.perfilId) || { nome: comp.perfilId }) : { nome: comp.perfilId };
+
+    const kanbanBadge = comp.lancadoKanban 
+      ? `<span style="background:#e0e7ff; color:#3730a3; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:600; display:inline-flex; align-items:center; gap:3px;">📌 No Kanban (${comp.colunaKanban || 'A Fazer'})</span>` 
+      : '';
+
+    card.innerHTML = `
+      <div>
+        <div class="agenda-card-top">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            ${badgeHtml}
+            <span class="doc-period-chip" style="font-size:11px;">${comp.categoria || 'Geral'}</span>
+            ${kanbanBadge}
+          </div>
+          <label style="cursor:pointer; display:flex; align-items:center; gap:4px; font-size:11.5px; color:#475569;" title="Marcar como Concluído / Realizado">
+            <input type="checkbox" ${comp.concluido ? 'checked' : ''} onchange="toggleConcluirCompromisso('${comp.id}')" style="cursor:pointer; width:16px; height:16px;">
+            <span>${comp.concluido ? 'Feito' : 'Concluir'}</span>
+          </label>
+        </div>
+
+        <h4 class="agenda-card-title">${comp.titulo}</h4>
+
+        <div class="agenda-card-datetime">
+          <span>📅 <b>${dataFormatada}</b>${horaFormatada}</span>
+        </div>
+
+        ${comp.local ? `<div class="agenda-card-location"><span>📍 ${comp.local}</span></div>` : ''}
+
+        ${comp.descricao ? `<div class="agenda-card-desc">${comp.descricao}</div>` : ''}
+
+        <div style="font-size:11px; color:#64748b; margin-top:4px;">
+          👤 Responsável: <b>${atorDono.nome}</b>
+        </div>
+      </div>
+
+      <div class="agenda-card-footer">
+        <!-- Lançar no Kanban Rápido -->
+        <div class="lancar-kanban-dropdown-wrapper">
+          <button type="button" class="btn-lancar-kanban" onclick="toggleMenuLancarKanban(event, '${comp.id}')" title="Lançar tarefa rapidamente no Kanban">
+            📌 Lançar no Kanban ▾
+          </button>
+          <div id="menu-lancar-kanban-${comp.id}" class="lancar-kanban-menu" style="display:none;">
+            <div class="lancar-menu-title">Lançar para a Coluna:</div>
+            <button type="button" class="lancar-menu-item" onclick="lancarCompromissoNoKanban('${comp.id}', 'todo')">
+              📋 A Fazer
+            </button>
+            <button type="button" class="lancar-menu-item" onclick="lancarCompromissoNoKanban('${comp.id}', 'doing')">
+              ⏳ Em Andamento
+            </button>
+            <button type="button" class="lancar-menu-item" onclick="lancarCompromissoNoKanban('${comp.id}', 'review')">
+              📝 Em Revisão
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn-icon-secondary" style="padding:6px 9px;" onclick="abrirModalCompromisso('${comp.id}')" title="Editar Compromisso">
+            ✏️
+          </button>
+          <button type="button" class="btn-icon-secondary" style="padding:6px 9px; color:#ef4444;" onclick="excluirCompromisso('${comp.id}')" title="Excluir Compromisso">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function filtrarStatusAgenda(statusKey) {
+  filtroStatusAgendaAtivo = statusKey;
+  document.querySelectorAll('.agenda-pill').forEach(btn => {
+    if (btn.dataset.filtro === statusKey) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+  renderizarAgenda();
+}
+
+function filtrarBuscaAgenda(texto) {
+  buscaTextoAgenda = texto || '';
+  renderizarAgenda();
+}
+
+function aoMudarFiltroPerfilAgenda(val) {
+  filtroPerfilAgendaAtivo = val;
+  renderizarAgenda();
+}
+
+function toggleMenuLancarKanban(event, compId) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('menu-lancar-kanban-' + compId);
+  if (!menu) return;
+
+  const estaAberto = menu.style.display === 'block';
+  // Fechar outros menus
+  document.querySelectorAll('.lancar-kanban-menu').forEach(m => m.style.display = 'none');
+
+  if (!estaAberto) {
+    menu.style.display = 'block';
+  }
+}
+
+// Fechar menus ao clicar fora
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lancar-kanban-dropdown-wrapper')) {
+    document.querySelectorAll('.lancar-kanban-menu').forEach(m => m.style.display = 'none');
+  }
+});
+
+function lancarCompromissoNoKanban(compId, colunaDestino) {
+  const lista = obterCompromissosAgenda();
+  const comp = lista.find(c => c.id === compId);
+  if (!comp) return;
+
+  // Fechar menu
+  const menu = document.getElementById('menu-lancar-kanban-' + compId);
+  if (menu) menu.style.display = 'none';
+
+  // Obter ou inicializar tarefasAdmin
+  if (typeof tarefasAdmin === 'undefined' || !Array.isArray(tarefasAdmin)) {
+    tarefasAdmin = [];
+  }
+
+  const rotuloColuna = (colunaDestino === 'doing') ? 'Em Andamento' : ((colunaDestino === 'review') ? 'Em Revisão' : 'A Fazer');
+  const atorDono = (typeof ATORES !== 'undefined') ? (ATORES.find(a => a.id === comp.perfilId) || { nome: comp.perfilId }) : { nome: comp.perfilId };
+
+  let desc = (comp.descricao || '').trim();
+  if (comp.local) desc += '\n📍 Local: ' + comp.local;
+  if (comp.hora) desc += '\n🕒 Horário: ' + comp.hora;
+
+  const novaTarefa = {
+    id: 'task_agenda_' + Date.now(),
+    titulo: comp.titulo,
+    responsavel: atorDono.nome,
+    atorId: comp.perfilId,
+    categoria: comp.categoria || 'Geral',
+    prazo: comp.data || new Date().toISOString().split('T')[0],
+    descricao: desc,
+    status: colunaDestino, // 'todo', 'doing', 'review'
+    origemAgenda: true,
+    subtarefas: [
+      { titulo: 'Preparar material e pauta para ' + comp.titulo, feito: false },
+      { titulo: 'Comparecer / Conectar na data agendada (' + (comp.data ? comp.data.split('-').reverse().join('/') : '') + ')', feito: false }
+    ],
+    compartilhadoCom: [comp.perfilId]
+  };
+
+  tarefasAdmin.unshift(novaTarefa);
+  if (typeof salvarEstadoTarefas === 'function') {
+    salvarEstadoTarefas();
+  } else {
+    localStorage.setItem('aa_tarefas_admin', JSON.stringify(tarefasAdmin));
+  }
+
+  // Atualizar status do compromisso
+  comp.lancadoKanban = true;
+  comp.colunaKanban = rotuloColuna;
+  salvarCompromissosAgenda(lista);
+
+  showToast('📌 Compromisso lançado com sucesso na coluna [' + rotuloColuna + '] do Kanban!');
+
+  if (typeof renderizarKanban === 'function') {
+    renderizarKanban();
+  }
+}
+
+function toggleConcluirCompromisso(id) {
+  const lista = obterCompromissosAgenda();
+  const comp = lista.find(c => c.id === id);
+  if (comp) {
+    comp.concluido = !comp.concluido;
+    salvarCompromissosAgenda(lista);
+    showToast(comp.concluido ? '✅ Compromisso marcado como realizado!' : '🔄 Compromisso reaberto!');
+  }
+}
+
+function excluirCompromisso(id) {
+  if (!confirm('Deseja realmente excluir este compromisso da sua agenda?')) return;
+  let lista = obterCompromissosAgenda();
+  lista = lista.filter(c => c.id !== id);
+  salvarCompromissosAgenda(lista);
+  showToast('🗑️ Compromisso removido com sucesso!');
+}
+
+function abrirModalCompromisso(id = null) {
+  const modal = document.getElementById('modal-compromisso-agenda');
+  if (!modal) return;
+
+  popularSelectPerfisAgenda();
+
+  const titleEl = document.getElementById('modalCompromissoTitle');
+  const idEl = document.getElementById('compromisso-id');
+  const tituloEl = document.getElementById('compromisso-titulo');
+  const dataEl = document.getElementById('compromisso-data');
+  const horaEl = document.getElementById('compromisso-hora');
+  const catEl = document.getElementById('compromisso-categoria');
+  const perfilEl = document.getElementById('compromisso-perfil');
+  const localEl = document.getElementById('compromisso-local');
+  const descEl = document.getElementById('compromisso-descricao');
+
+  if (id) {
+    const lista = obterCompromissosAgenda();
+    const c = lista.find(item => item.id === id);
+    if (c) {
+      titleEl.textContent = '✏️ Editar Compromisso';
+      idEl.value = c.id;
+      tituloEl.value = c.titulo;
+      dataEl.value = c.data;
+      horaEl.value = c.hora || '19:30';
+      catEl.value = c.categoria || 'Reunião de Distrito';
+      perfilEl.value = c.perfilId || currentActiveRole;
+      localEl.value = c.local || '';
+      descEl.value = c.descricao || '';
+      modal.classList.add('open');
+      modal.style.display = 'flex';
+      return;
+    }
+  }
+
+  // Novo Compromisso
+  titleEl.textContent = '🗓️ Novo Compromisso';
+  idEl.value = '';
+  tituloEl.value = '';
+  dataEl.value = new Date().toISOString().split('T')[0]; // Hoje por padrão
+  horaEl.value = '19:30';
+  catEl.value = 'Reunião de Distrito';
+  perfilEl.value = currentActiveRole; // Pré-seleciona perfil ativo logado
+  localEl.value = '';
+  descEl.value = '';
+
+  modal.classList.add('open');
+  modal.style.display = 'flex';
+}
+
+function fecharModalCompromisso() {
+  const modal = document.getElementById('modal-compromisso-agenda');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+  }
+}
+
+function onModalCompromissoOverlayClick(e) {
+  if (e.target.id === 'modal-compromisso-agenda') {
+    fecharModalCompromisso();
+  }
+}
+
+function salvarCompromisso(e) {
+  e.preventDefault();
+  const id = document.getElementById('compromisso-id').value;
+  const titulo = document.getElementById('compromisso-titulo').value.trim();
+  const data = document.getElementById('compromisso-data').value;
+  const hora = document.getElementById('compromisso-hora').value;
+  const categoria = document.getElementById('compromisso-categoria').value;
+  const perfilId = document.getElementById('compromisso-perfil').value;
+  const local = document.getElementById('compromisso-local').value.trim();
+  const descricao = document.getElementById('compromisso-descricao').value.trim();
+
+  if (!titulo || !data) return;
+
+  let lista = obterCompromissosAgenda();
+
+  if (id) {
+    const idx = lista.findIndex(c => c.id === id);
+    if (idx !== -1) {
+      lista[idx] = {
+        ...lista[idx],
+        titulo,
+        data,
+        hora,
+        categoria,
+        perfilId,
+        local,
+        descricao,
+        atualizadoEm: new Date().toISOString()
+      };
+      showToast('Compromisso atualizado com sucesso!');
+    }
+  } else {
+    const novo = {
+      id: 'comp_' + Date.now(),
+      titulo,
+      data,
+      hora,
+      categoria,
+      perfilId,
+      local,
+      descricao,
+      concluido: false,
+      lancadoKanban: false,
+      criadoEm: new Date().toISOString()
+    };
+    lista.unshift(novo);
+    showToast('🗓️ Novo compromisso agendado com sucesso!');
+  }
+
+  salvarCompromissosAgenda(lista);
+  fecharModalCompromisso();
+}
+
+// Fechar modal de compromisso com tecla ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('modal-compromisso-agenda');
+    if (modal && modal.classList.contains('open')) {
+      fecharModalCompromisso();
+    }
+  }
+});
 
 </script>
 
