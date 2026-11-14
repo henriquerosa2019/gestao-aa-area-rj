@@ -3847,8 +3847,14 @@ p, .card-desc, .doc-summary {
         </button>
       </div>
 
-      <div class="agenda-search-box" style="flex:1; min-width:200px; max-width:320px;">
-        <input type="text" id="agendaSearchInput" placeholder="🔍 Buscar compromisso..." oninput="filtrarBuscaAgenda(this.value)" class="form-control" style="font-size:13px; padding:8px 12px;">
+      <div class="agenda-search-box" style="flex:1; min-width:220px; max-width:360px; display:flex; gap:6px; align-items:center;">
+        <div style="position:relative; flex:1;">
+          <input type="text" id="agendaSearchInput" placeholder="🔍 Buscar compromisso..." oninput="filtrarBuscaAgenda(this.value)" class="form-control" style="font-size:13px; padding:8px 28px 8px 12px; width:100%;">
+          <button type="button" id="agendaBtnClearSearch" onclick="limparBuscaAgenda()" title="Limpar busca" style="display:none; position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; color:#94a3b8; font-size:14px; cursor:pointer; padding:2px; line-height:1;">✕</button>
+        </div>
+        <button type="button" class="btn-secondary" onclick="resetarFiltrosAgenda(true)" title="Limpar todos os filtros da agenda" style="padding:8px 11px; font-size:12px; font-weight:600; white-space:nowrap; border-radius:6px; background:#f1f5f9; border:1px solid #cbd5e1; color:#475569; display:inline-flex; align-items:center; gap:4px; cursor:pointer;">
+          🧹 Limpar
+        </button>
       </div>
     </div>
 
@@ -7652,7 +7658,8 @@ function switchTab(tabKey) {
   }
 
     if (tabKey === 'agenda') {
-    if (typeof renderizarAgenda === 'function') renderizarAgenda();
+    if (typeof resetarFiltrosAgenda === 'function') resetarFiltrosAgenda(true);
+    else if (typeof renderizarAgenda === 'function') renderizarAgenda();
   }
 
   if (tabKey === 'kanban') {
@@ -7681,6 +7688,7 @@ function onRoleChange(roleKey) {
   }
   if (typeof highlightActiveActorCard === 'function') highlightActiveActorCard();
   if (typeof renderKanban === 'function') renderKanban();
+  if (typeof resetarFiltrosAgenda === 'function') resetarFiltrosAgenda(false);
   if (typeof renderizarAgenda === 'function') renderizarAgenda();
   if (typeof renderizarKanban === 'function') renderizarKanban();
 }
@@ -11759,7 +11767,10 @@ function renderizarAgenda() {
         <span style="font-size: 40px; display: block; margin-bottom: 10px;">📅</span>
         <h4 style="color: var(--navy); margin: 0 0 6px;">Nenhum compromisso encontrado</h4>
         <p style="color: #64748b; font-size: 13.5px; margin: 0 0 16px;">Não há compromissos para o filtro ou perfil selecionado no momento.</p>
-        <button type="button" class="btn-primary" onclick="abrirModalCompromisso()">➕ Adicionar Primeiro Compromisso</button>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+          <button type="button" class="btn-secondary" onclick="resetarFiltrosAgenda(true)" style="display:inline-flex; align-items:center; gap:5px;">🧹 Limpar Filtros</button>
+          <button type="button" class="btn-primary" onclick="abrirModalCompromisso()">➕ Adicionar Primeiro Compromisso</button>
+        </div>
       </div>
     `;
     return;
@@ -11859,6 +11870,33 @@ function renderizarAgenda() {
   });
 }
 
+function resetarFiltrosAgenda(render = true) {
+  filtroPerfilAgendaAtivo = 'MEUS';
+  filtroStatusAgendaAtivo = 'todos';
+  buscaTextoAgenda = '';
+
+  const inputBusca = document.getElementById('agendaSearchInput');
+  if (inputBusca) inputBusca.value = '';
+
+  const btnClear = document.getElementById('agendaBtnClearSearch');
+  if (btnClear) btnClear.style.display = 'none';
+
+  const selFiltro = document.getElementById('agendaFiltroPerfil');
+  if (selFiltro) selFiltro.value = 'MEUS';
+
+  document.querySelectorAll('.agenda-pill').forEach(btn => {
+    if (btn.dataset.filtro === 'todos') {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  if (render && typeof renderizarAgenda === 'function') {
+    renderizarAgenda();
+  }
+}
+
 function filtrarStatusAgenda(statusKey) {
   filtroStatusAgendaAtivo = statusKey;
   document.querySelectorAll('.agenda-pill').forEach(btn => {
@@ -11870,7 +11908,17 @@ function filtrarStatusAgenda(statusKey) {
 
 function filtrarBuscaAgenda(texto) {
   buscaTextoAgenda = texto || '';
+  const btnClear = document.getElementById('agendaBtnClearSearch');
+  if (btnClear) {
+    btnClear.style.display = buscaTextoAgenda.trim() ? 'block' : 'none';
+  }
   renderizarAgenda();
+}
+
+function limparBuscaAgenda() {
+  const inp = document.getElementById('agendaSearchInput');
+  if (inp) inp.value = '';
+  filtrarBuscaAgenda('');
 }
 
 function aoMudarFiltroPerfilAgenda(val) {
