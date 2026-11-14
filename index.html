@@ -5102,10 +5102,33 @@ p, .card-desc, .doc-summary {
           </select>
         </div>
         <div class="form-group">
-          <label for="compromisso-perfil" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Perfil Responsável *</label>
-          <select id="compromisso-perfil" class="form-control" required>
-            <!-- Preenchido via popularSelectPerfisModalCompromisso() -->
+          <label for="compromisso-perfil" style="display:block; font-size:13px; font-weight:600; margin-bottom:5px;">Perfil Responsável / Criador *</label>
+          <select id="compromisso-perfil" class="form-control" required onchange="renderizarOpcoesCompartilhamentoModal()">
+            <!-- Preenchido via popularSelectPerfisAgenda() -->
           </select>
+        </div>
+      </div>
+
+      <!-- Compartilhamento de Compromisso com Perfis / Novos Membros -->
+      <div class="form-group" style="margin-bottom: 14px; background: #f8fafc; padding: 12px 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <label style="display:block; font-size:13px; font-weight:700; margin-bottom:4px; color:var(--navy);">
+          👥 Quem pode visualizar este compromisso (Compartilhar na Agenda):
+        </label>
+        <div style="font-size:11.5px; color:#64748b; margin-bottom:8px;">
+          Selecione quem visualizará em seu próprio perfil quando abrir sua agenda, ou cadastre um novo membro:
+        </div>
+
+        <!-- Lista suspensa com checkboxes de membros -->
+        <div id="compromisso-compartilhar-container" style="display:flex; flex-direction:column; gap:5px; max-height:130px; overflow-y:auto; padding:8px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:8px;">
+          <!-- Preenchido dinamicamente via renderizarOpcoesCompartilhamentoModal() -->
+        </div>
+
+        <!-- Adicionar Novo Membro -->
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="compromisso-novo-membro-input" class="form-control" placeholder="Cadastrar novo membro (Ex: Roberto - RSG Tijuca)..." style="font-size:12px; padding:6px 10px; flex:1;" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); adicionarNovoMembroCompartilhamento(); }">
+          <button type="button" class="btn-secondary" onclick="adicionarNovoMembroCompartilhamento()" style="padding:6px 12px; font-size:12px; font-weight:600; white-space:nowrap; border-radius:6px; background:#e2e8f0; border:1px solid #cbd5e1; cursor:pointer;">
+            ➕ Novo Membro
+          </button>
         </div>
       </div>
 
@@ -11550,9 +11573,119 @@ function createTaskFromDoc(docId) {
 // ==============================================================================
 
 const STORAGE_AGENDA_KEY = 'delegado_aa_agenda_v1';
+const STORAGE_MEMBROS_AGENDA_KEY = 'delegado_aa_membros_agenda_v1';
 let filtroStatusAgendaAtivo = 'todos'; // 'todos' | 'hoje' | 'avencer' | 'atrasados' | 'concluidos'
 let buscaTextoAgenda = '';
 let filtroPerfilAgendaAtivo = 'MEUS'; // 'MEUS' | 'TODOS' | id_do_ator
+
+function obterMembrosExtrasAgenda() {
+  try {
+    const raw = localStorage.getItem(STORAGE_MEMBROS_AGENDA_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+    return [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function salvarMembrosExtrasAgenda(lista) {
+  try {
+    localStorage.setItem(STORAGE_MEMBROS_AGENDA_KEY, JSON.stringify(lista));
+  } catch(e) {}
+}
+
+function obterNomeExibicaoPerfil(perfilId) {
+  if (!perfilId) return 'Membro';
+  if (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) {
+    const a = ATORES.find(item => normalizarPerfilId(item.id) === normalizarPerfilId(perfilId));
+    if (a) return a.nome;
+  }
+  const extras = obterMembrosExtrasAgenda();
+  const m = extras.find(item => item.id === perfilId || item.nome.toLowerCase() === perfilId.toLowerCase());
+  if (m) return m.nome;
+  return perfilId;
+}
+
+function podePerfilVisualizarCompromisso(comp, perfilAtivo) {
+  if (!comp || !perfilAtivo) return false;
+  if (perfilAtivo === 'TODOS') return true;
+
+  const perfilNorm = normalizarPerfilId(perfilAtivo);
+  const donoNorm = normalizarPerfilId(comp.perfilId || comp.criadoPor);
+  if (donoNorm && donoNorm === perfilNorm) {
+    return true;
+  }
+
+  // Verificar se o ator tem correspondência por ID, papel ou nome
+  const actor = (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) 
+    ? ATORES.find(a => normalizarPerfilId(a.id) === perfilNorm) 
+    : null;
+
+  if (actor && donoNorm === normalizarPerfilId(actor.id)) {
+    return true;
+  }
+
+  const compLista = comp.compartilhadoCom;
+  if (Array.isArray(compLista) && compLista.length > 0) {
+    if (compLista.includes('todos') || compLista.includes('TODOS')) return true;
+    for (const item of compLista) {
+      const itemNorm = normalizarPerfilId(item);
+      if (itemNorm === perfilNorm) return true;
+      if (actor) {
+        if (itemNorm === normalizarPerfilId(actor.id)) return true;
+        if (item.toLowerCase() === actor.nome.toLowerCase()) return true;
+        if (item.toLowerCase() === actor.papel.toLowerCase()) return true;
+      }
+      if (typeof perfilAtivo === 'string' && (item.toLowerCase() === perfilAtivo.toLowerCase() || itemNorm === perfilNorm)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function verificarCompromissoNoKanban(comp) {
+  if (!comp) return { estaNoKanban: false, coluna: '' };
+
+  // 1. Se a flag do compromisso já indicar
+  if (comp.lancadoKanban) {
+    return { 
+      estaNoKanban: true, 
+      coluna: comp.colunaKanban || 'A Fazer' 
+    };
+  }
+
+  // 2. Se existe tarefa vinculada no array tarefasAdmin (ou localStorage)
+  let listaTarefas = [];
+  if (typeof tarefasAdmin !== 'undefined' && Array.isArray(tarefasAdmin) && tarefasAdmin.length > 0) {
+    listaTarefas = tarefasAdmin;
+  } else {
+    try {
+      const raw = localStorage.getItem('aa_tarefas_admin');
+      if (raw) listaTarefas = JSON.parse(raw);
+    } catch(e) {}
+  }
+
+  if (Array.isArray(listaTarefas)) {
+    const t = listaTarefas.find(task => 
+      task.origemAgendaId === comp.id || 
+      task.id === ('task_agenda_' + comp.id) ||
+      (task.titulo && comp.titulo && task.titulo.trim().toLowerCase() === comp.titulo.trim().toLowerCase())
+    );
+    if (t) {
+      const rotulo = (t.status === 'doing') ? 'Em Andamento' : ((t.status === 'review') ? 'Em Revisão' : 'A Fazer');
+      comp.lancadoKanban = true;
+      comp.colunaKanban = rotulo;
+      return { estaNoKanban: true, coluna: rotulo, tarefaId: t.id };
+    }
+  }
+
+  return { estaNoKanban: false, coluna: '' };
+}
 
 // Compromissos padrão realistas de A.A. para demonstração e uso imediato
 const COMPROMISSOS_AGENDA_DEFAULT = [
@@ -11565,6 +11698,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Sede da Área 01 RJ / Híbrida (Zoom)',
     descricao: 'Alinhamento sobre repasses do Plano 60/25/15, calendário de visitas aos grupos e preparativos para a Assembleia.',
     perfilId: 'carlos',
+    compartilhadoCom: ['henrique', 'secretaria'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T09:00:00.000Z'
@@ -11578,8 +11712,10 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Sala Google Meet (Virtual)',
     descricao: 'Confrontar fluxos desenhados com os achados da auditoria e fechar proposta para a próxima CSG.',
     perfilId: 'henrique',
+    compartilhadoCom: ['carlos'],
     concluido: false,
-    lancadoKanban: false,
+    lancadoKanban: true,
+    colunaKanban: 'Em Andamento',
     criadoEm: '2026-11-14T09:30:00.000Z'
   },
   {
@@ -11591,6 +11727,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Auditório Central / Transmissão Nacional',
     descricao: 'Apresentação formal da tese de déficit financeiro estrutural e votação das recomendações da região Sudeste.',
     perfilId: 'carlos',
+    compartilhadoCom: ['henrique', 'custodio'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T10:00:00.000Z'
@@ -11604,6 +11741,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Escritório de Serviços Locais (ESL)',
     descricao: 'Auditar lançamentos bancários, recibos PIX das camisetas da Convenção e emissão do demonstrativo.',
     perfilId: 'tesouraria',
+    compartilhadoCom: ['carlos', 'henrique', 'conselho'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T10:30:00.000Z'
@@ -11617,6 +11755,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Rua Pedro Álvares Cabral, 120 - Nilópolis/RJ',
     descricao: 'Levar a mensagem da importância da 7ª Tradição e prestar contas das ações da delegação estadual.',
     perfilId: 'carlos',
+    compartilhadoCom: ['observador'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T11:00:00.000Z'
@@ -11647,6 +11786,7 @@ function popularSelectPerfisAgenda() {
   if (!selFiltro || typeof ATORES === 'undefined') return;
 
   const perfilAtual = ATORES.find(a => a.id === currentActiveRole) || ATORES[0];
+  const membrosExtras = obterMembrosExtrasAgenda();
 
   // Popular Select de Filtro
   selFiltro.innerHTML = `
@@ -11654,13 +11794,99 @@ function popularSelectPerfisAgenda() {
     <option value="TODOS">🌐 Todos os Perfis (Visão Global)</option>
     <optgroup label="Filtrar por Perfil Específico:">
       ${ATORES.map(a => `<option value="${a.id}">${a.nome} (${a.papel.split(' ')[0]})</option>`).join('')}
+      ${membrosExtras.map(m => `<option value="${m.id}">👤 ${m.nome} (${m.papel || 'Novo Membro'})</option>`).join('')}
     </optgroup>
   `;
   selFiltro.value = filtroPerfilAgendaAtivo;
 
-  // Popular Select do Modal
+  // Popular Select do Modal (Dono / Responsável do Compromisso)
   if (selModal) {
-    selModal.innerHTML = ATORES.map(a => `<option value="${a.id}">${a.nome} — ${a.papel}</option>`).join('');
+    const valAtual = selModal.value;
+    selModal.innerHTML = `
+      ${ATORES.map(a => `<option value="${a.id}">${a.nome} — ${a.papel}</option>`).join('')}
+      ${membrosExtras.map(m => `<option value="${m.id}">👤 ${m.nome} — ${m.papel || 'Novo Membro'}</option>`).join('')}
+    `;
+    if (valAtual) selModal.value = valAtual;
+  }
+}
+
+function renderizarOpcoesCompartilhamentoModal(compartilhados = []) {
+  const container = document.getElementById('compromisso-compartilhar-container');
+  if (!container) return;
+
+  const perfilDono = document.getElementById('compromisso-perfil') ? document.getElementById('compromisso-perfil').value : currentActiveRole;
+  const extras = obterMembrosExtrasAgenda();
+  const todosAtores = (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) ? ATORES : [];
+
+  const normalizadosComp = (Array.isArray(compartilhados) ? compartilhados : []).map(normalizarPerfilId);
+
+  let html = '';
+
+  todosAtores.forEach(a => {
+    const isDono = normalizarPerfilId(a.id) === normalizarPerfilId(perfilDono);
+    const checked = normalizadosComp.includes(normalizarPerfilId(a.id)) || normalizadosComp.includes(a.id.toLowerCase());
+    html += `
+      <label style="display:flex; align-items:center; gap:8px; font-size:12px; padding:4px 6px; cursor:pointer; border-radius:4px; ${isDono ? 'opacity:0.6;' : ''}">
+        <input type="checkbox" class="chk-compartilhar-perfil" value="${a.id}" ${checked ? 'checked' : ''} ${isDono ? 'disabled title="Perfil criador / responsável"' : ''} style="cursor:pointer; width:15px; height:15px;">
+        <span style="display:inline-block; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; background:${a.avatarBg || '#1e3a8a'}; color:#fff; font-size:10px; font-weight:700;">${a.sigla || a.nome.substring(0,2)}</span>
+        <span><b>${a.nome}</b> <span style="color:#64748b; font-size:11px;">(${a.papel})</span></span>
+        ${isDono ? '<span style="font-size:10px; color:#64748b; margin-left:auto;">(Responsável)</span>' : ''}
+      </label>
+    `;
+  });
+
+  if (extras.length > 0) {
+    html += `<div style="font-size:11px; font-weight:700; color:#475569; margin:6px 0 2px; padding-top:4px; border-top:1px dashed #e2e8f0;">Novos Membros Adicionados:</div>`;
+    extras.forEach(m => {
+      const checked = normalizadosComp.includes(normalizarPerfilId(m.id)) || normalizadosComp.includes(m.id.toLowerCase()) || normalizadosComp.includes(m.nome.toLowerCase());
+      html += `
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; padding:4px 6px; cursor:pointer; border-radius:4px;">
+          <input type="checkbox" class="chk-compartilhar-perfil" value="${m.id}" ${checked ? 'checked' : ''} style="cursor:pointer; width:15px; height:15px;">
+          <span style="display:inline-block; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; background:#475569; color:#fff; font-size:10px; font-weight:700;">${m.nome.substring(0,2).toUpperCase()}</span>
+          <span><b>${m.nome}</b> <span style="color:#64748b; font-size:11px;">(${m.papel || 'Novo Membro'})</span></span>
+        </label>
+      `;
+    });
+  }
+
+  container.innerHTML = html;
+}
+
+function adicionarNovoMembroCompartilhamento() {
+  const input = document.getElementById('compromisso-novo-membro-input');
+  if (!input) return;
+  const nome = (input.value || '').trim();
+  if (!nome) {
+    alert('Digite o nome ou papel do novo membro a adicionar.');
+    return;
+  }
+
+  const extras = obterMembrosExtrasAgenda();
+  const finalId = 'membro_' + nome.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 20) + '_' + Date.now().toString().slice(-4);
+  const existente = extras.find(m => m.nome.toLowerCase() === nome.toLowerCase());
+
+  if (!existente) {
+    extras.push({
+      id: finalId,
+      nome: nome,
+      papel: 'Membro Convidado',
+      avatarBg: '#0284c7'
+    });
+    salvarMembrosExtrasAgenda(extras);
+  }
+
+  input.value = '';
+
+  let jaSelecionados = Array.from(document.querySelectorAll('.chk-compartilhar-perfil:checked')).map(c => c.value);
+  const idToAdd = existente ? existente.id : finalId;
+  if (!jaSelecionados.includes(idToAdd)) {
+    jaSelecionados.push(idToAdd);
+  }
+
+  renderizarOpcoesCompartilhamentoModal(jaSelecionados);
+  popularSelectPerfisAgenda();
+  if (typeof showToast === 'function') {
+    showToast('👤 Membro "' + nome + '" adicionado e selecionado para compartilhamento!');
   }
 }
 
@@ -11704,15 +11930,15 @@ function renderizarAgenda() {
   // Contadores
   let cTodos = 0, cHoje = 0, cAVencer = 0, cAtrasados = 0, cConcluidos = 0;
 
-  // Filtragem por Perfil
+  // Filtragem por Perfil (Respeitando Dono + Compartilhados)
   const filtradosPorPerfil = todos.filter(comp => {
     if (filtroPerfilAgendaAtivo === 'MEUS') {
-      return comp.perfilId === currentActiveRole;
+      return podePerfilVisualizarCompromisso(comp, currentActiveRole);
     }
     if (filtroPerfilAgendaAtivo === 'TODOS') {
       return true;
     }
-    return comp.perfilId === filtroPerfilAgendaAtivo;
+    return podePerfilVisualizarCompromisso(comp, filtroPerfilAgendaAtivo);
   });
 
   // Calcular contadores da visão ativa
@@ -11802,9 +12028,45 @@ function renderizarAgenda() {
     const horaFormatada = comp.hora ? ' às ' + comp.hora : '';
     const atorDono = (typeof ATORES !== 'undefined') ? (ATORES.find(a => a.id === comp.perfilId) || { nome: comp.perfilId }) : { nome: comp.perfilId };
 
-    const kanbanBadge = comp.lancadoKanban 
-      ? `<span style="background:#e0e7ff; color:#3730a3; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:600; display:inline-flex; align-items:center; gap:3px;">📌 No Kanban (${comp.colunaKanban || 'A Fazer'})</span>` 
+    const infoKanban = verificarCompromissoNoKanban(comp);
+
+    const kanbanBadge = infoKanban.estaNoKanban 
+      ? `<span class="agenda-status-badge badge-kanban" style="background:#e0e7ff; color:#3730a3; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:700; display:inline-flex; align-items:center; gap:4px; border:1px solid #c7d2fe;" title="Este compromisso já está lançado no Kanban">📌 (Já no Kanban - ${infoKanban.coluna})</span>` 
       : '';
+
+    // Renderizar indicador de compartilhamento
+    let compartilhamentoHtml = '';
+    const compartilhados = Array.isArray(comp.compartilhadoCom) ? comp.compartilhadoCom : [];
+    if (compartilhados.length > 0) {
+      const nomesComp = compartilhados.map(obterNomeExibicaoPerfil);
+      const souDono = normalizarPerfilId(comp.perfilId) === normalizarPerfilId(currentActiveRole);
+      if (souDono) {
+        compartilhamentoHtml = `
+          <div style="font-size:11px; color:#1e40af; background:#eff6ff; border:1px solid #bfdbfe; padding:3px 8px; border-radius:6px; margin-top:6px; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
+            <span>👥</span> <span>Compartilhado com: <b>${nomesComp.join(', ')}</b></span>
+          </div>
+        `;
+      } else {
+        const nomeDono = obterNomeExibicaoPerfil(comp.perfilId);
+        compartilhamentoHtml = `
+          <div style="font-size:11px; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; padding:3px 8px; border-radius:6px; margin-top:6px; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
+            <span>👤</span> <span>Compartilhado por: <b>${nomeDono}</b></span>
+          </div>
+        `;
+      }
+    }
+
+    const btnKanbanHtml = infoKanban.estaNoKanban
+      ? `
+        <button type="button" class="btn-lancar-kanban" onclick="toggleMenuLancarKanban(event, '${comp.id}')" title="Compromisso já está no Kanban. Clique para mover de coluna" style="background:#f0fdf4; border:1px solid #86efac; color:#166534; font-weight:700;">
+          ✓ Já no Kanban (${infoKanban.coluna}) ▾
+        </button>
+      `
+      : `
+        <button type="button" class="btn-lancar-kanban" onclick="toggleMenuLancarKanban(event, '${comp.id}')" title="Lançar tarefa rapidamente no Kanban">
+          📌 Lançar no Kanban ▾
+        </button>
+      `;
 
     card.innerHTML = `
       <div>
@@ -11833,16 +12095,16 @@ function renderizarAgenda() {
         <div style="font-size:11px; color:#64748b; margin-top:4px;">
           👤 Responsável: <b>${atorDono.nome}</b>
         </div>
+
+        ${compartilhamentoHtml}
       </div>
 
       <div class="agenda-card-footer">
-        <!-- Lançar no Kanban Rápido -->
+        <!-- Lançar / Mover no Kanban -->
         <div class="lancar-kanban-dropdown-wrapper">
-          <button type="button" class="btn-lancar-kanban" onclick="toggleMenuLancarKanban(event, '${comp.id}')" title="Lançar tarefa rapidamente no Kanban">
-            📌 Lançar no Kanban ▾
-          </button>
+          ${btnKanbanHtml}
           <div id="menu-lancar-kanban-${comp.id}" class="lancar-kanban-menu" style="display:none;">
-            <div class="lancar-menu-title">Lançar para a Coluna:</div>
+            <div class="lancar-menu-title">${infoKanban.estaNoKanban ? 'Mover / Re-lançar no Kanban:' : 'Lançar para a Coluna:'}</div>
             <button type="button" class="lancar-menu-item" onclick="lancarCompromissoNoKanban('${comp.id}', 'todo')">
               📋 A Fazer
             </button>
@@ -11964,28 +12226,48 @@ function lancarCompromissoNoKanban(compId, colunaDestino) {
   const rotuloColuna = (colunaDestino === 'doing') ? 'Em Andamento' : ((colunaDestino === 'review') ? 'Em Revisão' : 'A Fazer');
   const atorDono = (typeof ATORES !== 'undefined') ? (ATORES.find(a => a.id === comp.perfilId) || { nome: comp.perfilId }) : { nome: comp.perfilId };
 
-  let desc = (comp.descricao || '').trim();
-  if (comp.local) desc += '\n📍 Local: ' + comp.local;
-  if (comp.hora) desc += '\n🕒 Horário: ' + comp.hora;
+  // Verificar se tarefa já existe para mover ou criar
+  const tarefaExistente = tarefasAdmin.find(t => 
+    t.origemAgendaId === comp.id || 
+    t.id === ('task_agenda_' + comp.id) ||
+    (t.titulo && comp.titulo && t.titulo.trim().toLowerCase() === comp.titulo.trim().toLowerCase())
+  );
 
-  const novaTarefa = {
-    id: 'task_agenda_' + Date.now(),
-    titulo: comp.titulo,
-    responsavel: atorDono.nome,
-    atorId: comp.perfilId,
-    categoria: comp.categoria || 'Geral',
-    prazo: comp.data || new Date().toISOString().split('T')[0],
-    descricao: desc,
-    status: colunaDestino, // 'todo', 'doing', 'review'
-    origemAgenda: true,
-    subtarefas: [
-      { titulo: 'Preparar material e pauta para ' + comp.titulo, feito: false },
-      { titulo: 'Comparecer / Conectar na data agendada (' + (comp.data ? comp.data.split('-').reverse().join('/') : '') + ')', feito: false }
-    ],
-    compartilhadoCom: [comp.perfilId]
-  };
+  const listaCompartilhadosKanban = Array.isArray(comp.compartilhadoCom) && comp.compartilhadoCom.length > 0
+    ? [...new Set([...comp.compartilhadoCom, comp.perfilId, currentActiveRole])]
+    : [comp.perfilId, currentActiveRole];
 
-  tarefasAdmin.unshift(novaTarefa);
+  if (tarefaExistente) {
+    tarefaExistente.status = colunaDestino;
+    tarefaExistente.compartilhadoCom = listaCompartilhadosKanban;
+    showToast('📌 Tarefa movida para [' + rotuloColuna + '] no Kanban!');
+  } else {
+    let desc = (comp.descricao || '').trim();
+    if (comp.local) desc += '\n📍 Local: ' + comp.local;
+    if (comp.hora) desc += '\n🕒 Horário: ' + comp.hora;
+
+    const novaTarefa = {
+      id: 'task_agenda_' + comp.id,
+      origemAgendaId: comp.id,
+      titulo: comp.titulo,
+      responsavel: atorDono.nome,
+      atorId: comp.perfilId,
+      criadoPor: currentActiveRole,
+      categoria: comp.categoria || 'Geral',
+      prazo: comp.data || new Date().toISOString().split('T')[0],
+      descricao: desc,
+      status: colunaDestino, // 'todo', 'doing', 'review'
+      origemAgenda: true,
+      subtarefas: [
+        { titulo: 'Preparar material e pauta para ' + comp.titulo, feito: false },
+        { titulo: 'Comparecer / Conectar na data agendada (' + (comp.data ? comp.data.split('-').reverse().join('/') : '') + ')', feito: false }
+      ],
+      compartilhadoCom: listaCompartilhadosKanban
+    };
+    tarefasAdmin.unshift(novaTarefa);
+    showToast('📌 Compromisso lançado com sucesso na coluna [' + rotuloColuna + '] do Kanban!');
+  }
+
   if (typeof salvarEstadoTarefas === 'function') {
     salvarEstadoTarefas();
   } else {
@@ -11996,8 +12278,6 @@ function lancarCompromissoNoKanban(compId, colunaDestino) {
   comp.lancadoKanban = true;
   comp.colunaKanban = rotuloColuna;
   salvarCompromissosAgenda(lista);
-
-  showToast('📌 Compromisso lançado com sucesso na coluna [' + rotuloColuna + '] do Kanban!');
 
   if (typeof renderizarKanban === 'function') {
     renderizarKanban();
@@ -12051,6 +12331,7 @@ function abrirModalCompromisso(id = null) {
       perfilEl.value = c.perfilId || currentActiveRole;
       localEl.value = c.local || '';
       descEl.value = c.descricao || '';
+      renderizarOpcoesCompartilhamentoModal(c.compartilhadoCom || []);
       modal.classList.add('open');
       modal.style.display = 'flex';
       return;
@@ -12067,6 +12348,7 @@ function abrirModalCompromisso(id = null) {
   perfilEl.value = currentActiveRole; // Pré-seleciona perfil ativo logado
   localEl.value = '';
   descEl.value = '';
+  renderizarOpcoesCompartilhamentoModal([]);
 
   modal.classList.add('open');
   modal.style.display = 'flex';
@@ -12101,6 +12383,8 @@ function salvarCompromisso(e) {
 
   let lista = obterCompromissosAgenda();
 
+  const compartilhados = Array.from(document.querySelectorAll('.chk-compartilhar-perfil:checked')).map(chk => chk.value);
+
   if (id) {
     const idx = lista.findIndex(c => c.id === id);
     if (idx !== -1) {
@@ -12111,6 +12395,7 @@ function salvarCompromisso(e) {
         hora,
         categoria,
         perfilId,
+        compartilhadoCom: compartilhados,
         local,
         descricao,
         atualizadoEm: new Date().toISOString()
@@ -12125,6 +12410,7 @@ function salvarCompromisso(e) {
       hora,
       categoria,
       perfilId,
+      compartilhadoCom: compartilhados,
       local,
       descricao,
       concluido: false,
