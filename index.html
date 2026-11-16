@@ -3614,12 +3614,13 @@ p, .card-desc, .doc-summary {
       <div class="filter-group">
         <label for="filtro-responsavel">👤 Responsável:</label>
         <select id="filtro-responsavel" onchange="renderizarKanban()">
-          <option value="TODOS">Todos os Perfis</option>
-          <option value="Delegado de Área">Carlos S.R. (Delegado de Área)</option>
-          <option value="Comitê de Finanças">Comitê de Finanças</option>
-          <option value="Secretaria / ESG">Secretaria / ESG</option>
-          <option value="Conselho Fiscal">Conselho Fiscal</option>
-          <option value="Analista de Processos">Henrique (Analista)</option>
+          <option value="MEUS" selected>👤 Minhas Tarefas (Perfil Ativo)</option>
+          <option value="TODOS">🌐 Todas as Tarefas Permitidas</option>
+          <option value="carlos">Carlos S.R. (Delegado de Área)</option>
+          <option value="henrique">Henrique (Analista de Processos)</option>
+          <option value="tesouraria">Comitê de Finanças</option>
+          <option value="secretaria">Secretaria / ESG</option>
+          <option value="conselho">Conselho Fiscal</option>
         </select>
       </div>
 
@@ -7686,7 +7687,8 @@ function switchTab(tabKey) {
   }
 
   if (tabKey === 'kanban') {
-    if (typeof renderizarKanban === 'function') renderizarKanban();
+    if (typeof resetarFiltrosKanban === 'function') resetarFiltrosKanban(true);
+    else if (typeof renderizarKanban === 'function') renderizarKanban();
   }
 
   if (tabKey === 'gestao') {
@@ -7710,6 +7712,7 @@ function onRoleChange(roleKey) {
     }
   }
   if (typeof highlightActiveActorCard === 'function') highlightActiveActorCard();
+  if (typeof resetarFiltrosKanban === 'function') resetarFiltrosKanban(false);
   if (typeof renderKanban === 'function') renderKanban();
   if (typeof resetarFiltrosAgenda === 'function') resetarFiltrosAgenda(false);
   if (typeof renderizarAgenda === 'function') renderizarAgenda();
@@ -10899,17 +10902,55 @@ if (document.readyState === 'loading') {
 }
 
 
-// Tarefas Padrão de Carlos S.R. (Delegado de Área) para novos acessos e Vercel
+// Tarefas Padrão isoladas por perfil para visualização imediata no Kanban
 const TAREFAS_ADMIN_PADRAO = [
+  {
+    id: 't-henrique-1',
+    titulo: 'Mapeamento de Macroprocessos TO BE JUNAAB',
+    descricao: 'Estruturação dos fluxos operacionais, governança RACI e conformidade estatutária para a 49ª CSG.',
+    responsavel: 'Henrique (Analista)',
+    atorId: 'henrique',
+    criadoPor: 'henrique',
+    categoria: 'GOVERNANCA',
+    prazo: '2026-11-20',
+    status: 'doing',
+    compartilhadoCom: ['carlos'],
+    docId: '32',
+    docTitulo: 'Apresentação de Gestão — Área 01 RJ',
+    subtarefas: [
+      { titulo: 'Mapear fluxo de prestação de contas dos Distritos', feito: true },
+      { titulo: 'Apresentar matriz RACI à Mesa de Área', feito: false }
+    ]
+  },
+  {
+    id: 't-henrique-2',
+    titulo: 'Auditoria de Processos e Relatório Técnico da Região Sudeste',
+    descricao: 'Cruzar achados da auditoria financeira com os pareceres do Conselho Fiscal e recomendações da CSG.',
+    responsavel: 'Henrique (Analista)',
+    atorId: 'henrique',
+    criadoPor: 'henrique',
+    categoria: 'FINANCEIRO',
+    prazo: '2026-11-25',
+    status: 'todo',
+    compartilhadoCom: [],
+    docId: '1',
+    docTitulo: 'Relatório Financeiro Consolidado',
+    subtarefas: [
+      { titulo: 'Analisar modelo contábil e regimes de apuração', feito: true },
+      { titulo: 'Consolidar minuta do relatório final', feito: false }
+    ]
+  },
   {
     id: 't-carlos-1',
     titulo: 'Resposta Circular 04 JUNAAB',
     descricao: 'Consolidação do posicionamento da Área 01 (RJ) sobre as diretrizes dos encontros regionais.',
-    responsavel: 'Delegado de Área',
+    responsavel: 'Carlos S.R. (Delegado de Área)',
+    atorId: 'carlos',
+    criadoPor: 'carlos',
     categoria: 'JUNAAB',
     prazo: '2026-11-10',
     status: 'doing',
-    compartilhadoCom: ['delegado', 'secretaria', 'henrique'],
+    compartilhadoCom: ['secretaria'],
     docId: '4',
     docTitulo: 'Circular 04-2026 (30/05/2026)',
     subtarefas: [
@@ -10921,11 +10962,13 @@ const TAREFAS_ADMIN_PADRAO = [
     id: 't-carlos-2',
     titulo: 'Prestação de Contas — Assembleia Geral',
     descricao: 'Apresentação do balanço patrimonial, entradas de literatura e repasses.',
-    responsavel: 'Delegado de Área',
+    responsavel: 'Carlos S.R. (Delegado de Área)',
+    atorId: 'carlos',
+    criadoPor: 'carlos',
     categoria: 'FINANCEIRO',
     prazo: '2026-11-14',
     status: 'todo',
-    compartilhadoCom: ['delegado', 'tesouraria', 'conselho', 'henrique'],
+    compartilhadoCom: ['tesouraria', 'conselho'],
     docId: '1',
     docTitulo: 'Relatório Financeiro Consolidado',
     subtarefas: [
@@ -10937,10 +10980,13 @@ const TAREFAS_ADMIN_PADRAO = [
     id: 't-carlos-3',
     titulo: 'Reunião de Mesa de Área 01 (RJ)',
     descricao: 'Deliberação de pautas urgentes e calendário de eventos com delegados e RSGs.',
-    responsavel: 'Delegado de Área',
+    responsavel: 'Carlos S.R. (Delegado de Área)',
+    atorId: 'carlos',
+    criadoPor: 'carlos',
     categoria: 'GOVERNANCA',
     prazo: '2026-11-13',
     status: 'doing',
+    compartilhadoCom: [],
     docId: '32',
     docTitulo: 'Apresentação de Gestão — Área 01 RJ',
     subtarefas: [
@@ -10952,10 +10998,13 @@ const TAREFAS_ADMIN_PADRAO = [
     id: 't-carlos-4',
     titulo: '49ª Conferência de Serviços Gerais (CSG)',
     descricao: 'Apreciação das propostas de modernização e deliberações estatutárias nacionais.',
-    responsavel: 'Delegado de Área',
+    responsavel: 'Carlos S.R. (Delegado de Área)',
+    atorId: 'carlos',
+    criadoPor: 'carlos',
     categoria: 'JUNAAB',
     prazo: '2027-04-15',
     status: 'todo',
+    compartilhadoCom: [],
     docId: '1',
     docTitulo: 'Painel da Realidade Financeira',
     subtarefas: [
@@ -11008,28 +11057,130 @@ function salvarEstadoTarefas() {
   if (typeof updateStatsKPIs === 'function') updateStatsKPIs();
 }
 
+function tarefaPertenceAoPerfilAtivo(tarefa, perfilAtivo) {
+  if (!tarefa || !perfilAtivo) return false;
+  const perfilNorm = normalizarPerfilId(perfilAtivo);
+  
+  // Criador da tarefa
+  const criadorNorm = normalizarPerfilId(tarefa.criadoPor || tarefa.criadorId);
+  if (criadorNorm && criadorNorm === perfilNorm) return true;
+
+  // Responsável direto por atorId
+  const atorIdNorm = normalizarPerfilId(tarefa.atorId);
+  if (atorIdNorm && atorIdNorm === perfilNorm) return true;
+
+  // Responsável direto por nome ou papel
+  const actor = (typeof ATORES !== 'undefined' && Array.isArray(ATORES))
+    ? ATORES.find(a => normalizarPerfilId(a.id) === perfilNorm)
+    : null;
+
+  if (actor && tarefa.responsavel) {
+    const respStr = String(tarefa.responsavel).toLowerCase();
+    if (respStr.includes(actor.nome.toLowerCase()) || respStr.includes(actor.papel.toLowerCase())) {
+      return true;
+    }
+  }
+
+  // Equivalências conhecidas
+  if (perfilNorm === 'carlos' && tarefa.responsavel) {
+    const r = String(tarefa.responsavel).toLowerCase();
+    if (r.includes('delegado') || r.includes('carlos')) return true;
+  }
+  if (perfilNorm === 'henrique' && tarefa.responsavel) {
+    const r = String(tarefa.responsavel).toLowerCase();
+    if (r.includes('henrique') || r.includes('analista') || r.includes('processo')) return true;
+  }
+  if (perfilNorm === 'tesouraria' && tarefa.responsavel) {
+    const r = String(tarefa.responsavel).toLowerCase();
+    if (r.includes('finan') || r.includes('tesour')) return true;
+  }
+  if (perfilNorm === 'secretaria' && tarefa.responsavel) {
+    const r = String(tarefa.responsavel).toLowerCase();
+    if (r.includes('secretar') || r.includes('esg')) return true;
+  }
+  if (perfilNorm === 'conselho' && tarefa.responsavel) {
+    const r = String(tarefa.responsavel).toLowerCase();
+    if (r.includes('conselho') || r.includes('fiscal') || r.includes('auditor')) return true;
+  }
+
+  return false;
+}
+
+function popularSelectFiltroKanban() {
+  const elFiltroResp = document.getElementById('filtro-responsavel');
+  if (!elFiltroResp || typeof ATORES === 'undefined') return;
+
+  const perfilAtual = ATORES.find(a => normalizarPerfilId(a.id) === normalizarPerfilId(currentActiveRole)) || ATORES[0];
+  const valorAtual = elFiltroResp.value;
+
+  elFiltroResp.innerHTML = `
+    <option value="MEUS">👤 Minhas Tarefas (${perfilAtual.nome.split(' ')[0]})</option>
+    <option value="TODOS">🌐 Todas as Tarefas Permitidas</option>
+    <optgroup label="Filtrar por Responsável:">
+      ${ATORES.map(a => `<option value="${a.id}">${a.nome} (${a.papel.split(' ')[0]})</option>`).join('')}
+    </optgroup>
+  `;
+
+  // Preservar valor selecionado se for válido, senão MEUS
+  if (valorAtual && (valorAtual === 'TODOS' || ATORES.some(a => a.id === valorAtual))) {
+    elFiltroResp.value = valorAtual;
+  } else {
+    elFiltroResp.value = 'MEUS';
+  }
+}
+
+function resetarFiltrosKanban(render = true) {
+  popularSelectFiltroKanban();
+
+  const elFiltroResp = document.getElementById('filtro-responsavel');
+  const elFiltroCat = document.getElementById('filtro-categoria');
+  if (elFiltroResp) elFiltroResp.value = 'MEUS';
+  if (elFiltroCat) elFiltroCat.value = 'TODAS';
+
+  if (render && typeof renderizarKanban === 'function') {
+    renderizarKanban();
+  }
+}
+
 function renderizarKanban() {
   const elFiltroResp = document.getElementById('filtro-responsavel');
   const elFiltroCat = document.getElementById('filtro-categoria');
   if (!elFiltroResp || !elFiltroCat) return;
 
-  const filtroResp = elFiltroResp.value;
-  const filtroCat = elFiltroCat.value;
+  const filtroResp = elFiltroResp.value || 'MEUS';
+  const filtroCat = elFiltroCat.value || 'TODAS';
 
   const colunas = { todo: [], doing: [], review: [], done: [] };
 
   // Atualizar indicador de perfil no cabeçalho dos filtros
   const activeLabel = document.getElementById('kanban-active-profile-name');
   if (activeLabel && typeof ATORES !== 'undefined') {
-    const act = ATORES.find(a => a.id === currentActiveRole);
+    const act = ATORES.find(a => normalizarPerfilId(a.id) === normalizarPerfilId(currentActiveRole));
     if (act) activeLabel.textContent = act.nome + ' (' + act.papel.split(' ')[0] + ')';
   }
 
   tarefasAdmin.forEach(tarefa => {
     const passaVisibilidade = podePerfilVisualizarTarefa(tarefa, currentActiveRole);
-    const passaResp = filtroResp === 'TODOS' || tarefa.responsavel === filtroResp || (filtroResp === 'Delegado de Área' && (tarefa.responsavel.includes('Delegado') || tarefa.responsavel.includes('Carlos') || tarefa.atorId === 'carlos'));
+    if (!passaVisibilidade) return;
+
+    let passaResp = false;
+    if (filtroResp === 'MEUS') {
+      passaResp = tarefaPertenceAoPerfilAtivo(tarefa, currentActiveRole);
+    } else if (filtroResp === 'TODOS') {
+      passaResp = true;
+    } else {
+      const atorFiltro = (typeof ATORES !== 'undefined' && Array.isArray(ATORES)) 
+        ? ATORES.find(a => a.id === filtroResp || a.nome === filtroResp) 
+        : null;
+      if (atorFiltro) {
+        passaResp = tarefaPertenceAoPerfilAtivo(tarefa, atorFiltro.id);
+      } else {
+        passaResp = tarefa.responsavel === filtroResp || (tarefa.atorId && normalizarPerfilId(tarefa.atorId) === normalizarPerfilId(filtroResp));
+      }
+    }
+
     const passaCat = filtroCat === 'TODAS' || tarefa.categoria === filtroCat;
-    if (passaVisibilidade && passaResp && passaCat && colunas[tarefa.status]) {
+    if (passaResp && passaCat && colunas[tarefa.status]) {
       colunas[tarefa.status].push(tarefa);
     }
   });
@@ -11687,7 +11838,7 @@ function verificarCompromissoNoKanban(comp) {
   return { estaNoKanban: false, coluna: '' };
 }
 
-// Compromissos padrão realistas de A.A. para demonstração e uso imediato
+// Compromissos padrão realistas de A.A. para demonstração e uso imediato (estritamente isolados por perfil ativo)
 const COMPROMISSOS_AGENDA_DEFAULT = [
   {
     id: 'comp_1',
@@ -11698,7 +11849,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Sede da Área 01 RJ / Híbrida (Zoom)',
     descricao: 'Alinhamento sobre repasses do Plano 60/25/15, calendário de visitas aos grupos e preparativos para a Assembleia.',
     perfilId: 'carlos',
-    compartilhadoCom: ['henrique', 'secretaria'],
+    compartilhadoCom: ['secretaria'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T09:00:00.000Z'
@@ -11712,7 +11863,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Sala Google Meet (Virtual)',
     descricao: 'Confrontar fluxos desenhados com os achados da auditoria e fechar proposta para a próxima CSG.',
     perfilId: 'henrique',
-    compartilhadoCom: ['carlos'],
+    compartilhadoCom: [],
     concluido: false,
     lancadoKanban: true,
     colunaKanban: 'Em Andamento',
@@ -11727,7 +11878,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Auditório Central / Transmissão Nacional',
     descricao: 'Apresentação formal da tese de déficit financeiro estrutural e votação das recomendações da região Sudeste.',
     perfilId: 'carlos',
-    compartilhadoCom: ['henrique', 'custodio'],
+    compartilhadoCom: ['custodio'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T10:00:00.000Z'
@@ -11741,7 +11892,7 @@ const COMPROMISSOS_AGENDA_DEFAULT = [
     local: 'Escritório de Serviços Locais (ESL)',
     descricao: 'Auditar lançamentos bancários, recibos PIX das camisetas da Convenção e emissão do demonstrativo.',
     perfilId: 'tesouraria',
-    compartilhadoCom: ['carlos', 'henrique', 'conselho'],
+    compartilhadoCom: ['conselho'],
     concluido: false,
     lancadoKanban: false,
     criadoEm: '2026-11-14T10:30:00.000Z'
@@ -11767,7 +11918,28 @@ function obterCompromissosAgenda() {
     const raw = localStorage.getItem(STORAGE_AGENDA_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Sanitização de legados para manter o isolamento por perfil solicitado
+        let modificado = false;
+        parsed.forEach(c => {
+          if (c.id === 'comp_1' && c.perfilId === 'carlos' && c.compartilhadoCom && c.compartilhadoCom.includes('henrique')) {
+            c.compartilhadoCom = ['secretaria'];
+            modificado = true;
+          }
+          if (c.id === 'comp_3' && c.perfilId === 'carlos' && c.compartilhadoCom && c.compartilhadoCom.includes('henrique')) {
+            c.compartilhadoCom = ['custodio'];
+            modificado = true;
+          }
+          if (c.id === 'comp_4' && c.perfilId === 'tesouraria' && c.compartilhadoCom && c.compartilhadoCom.includes('henrique')) {
+            c.compartilhadoCom = ['conselho'];
+            modificado = true;
+          }
+        });
+        if (modificado) {
+          try { localStorage.setItem(STORAGE_AGENDA_KEY, JSON.stringify(parsed)); } catch(e) {}
+        }
+        return parsed;
+      }
     }
     return [...COMPROMISSOS_AGENDA_DEFAULT];
   } catch(e) {
