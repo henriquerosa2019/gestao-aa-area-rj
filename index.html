@@ -8672,7 +8672,16 @@ function abrirResumoMaterialExecutivo(matId) {
   document.getElementById("resumoModalCorpo").innerHTML = html;
 
   const btnIntegra = document.getElementById("btnResumoModalIntegra");
-  btnIntegra.href = encodeURI(mat.url);
+  if (mat.fileId || (mat.url && mat.url.startsWith('idb://'))) {
+    btnIntegra.removeAttribute("href");
+    btnIntegra.onclick = function(e) {
+      e.preventDefault();
+      abrirLinkMaterialExecutivo(mat.id);
+    };
+  } else {
+    btnIntegra.href = encodeURI(mat.url || '#');
+    btnIntegra.onclick = null;
+  }
 
   const modal = document.getElementById("modal-resumo-material");
   modal.classList.add("open");
@@ -10438,6 +10447,71 @@ const MATERIAIS_FAIXAS_PADRAO = [
   }
 ];
 
+const DB_MATERIAIS_NAME = 'DelegadoAA_Materiais_DB';
+const DB_MATERIAIS_VERSION = 1;
+const DB_MATERIAIS_STORE = 'arquivos_faixas';
+let arquivoUploadFaixaPendente = null;
+
+function abrirDBMateriais() {
+  return new Promise((resolve) => {
+    if (!window.indexedDB) {
+      resolve(null);
+      return;
+    }
+    const request = indexedDB.open(DB_MATERIAIS_NAME, DB_MATERIAIS_VERSION);
+    request.onupgradeneeded = function(e) {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(DB_MATERIAIS_STORE)) {
+        db.createObjectStore(DB_MATERIAIS_STORE, { keyPath: 'id' });
+      }
+    };
+    request.onsuccess = function(e) {
+      resolve(e.target.result);
+    };
+    request.onerror = function() {
+      resolve(null);
+    };
+  });
+}
+
+async function salvarArquivoNoDB(fileId, fileBlob, fileName, fileType) {
+  try {
+    const db = await abrirDBMateriais();
+    if (!db) return false;
+    return new Promise((resolve) => {
+      const tx = db.transaction(DB_MATERIAIS_STORE, 'readwrite');
+      const store = tx.objectStore(DB_MATERIAIS_STORE);
+      store.put({
+        id: fileId,
+        blob: fileBlob,
+        nome: fileName,
+        tipo: fileType,
+        salvoEm: new Date().toISOString()
+      });
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  } catch(e) {
+    return false;
+  }
+}
+
+async function obterArquivoDoDB(fileId) {
+  try {
+    const db = await abrirDBMateriais();
+    if (!db) return null;
+    return new Promise((resolve) => {
+      const tx = db.transaction(DB_MATERIAIS_STORE, 'readonly');
+      const store = tx.objectStore(DB_MATERIAIS_STORE);
+      const req = store.get(fileId);
+      req.onsuccess = () => resolve(req.result ? req.result.blob : null);
+      req.onerror = () => resolve(null);
+    });
+  } catch(e) {
+    return null;
+  }
+}
+
 function obterMateriaisFaixas() {
   try {
     const raw = localStorage.getItem('aa_materiais_faixas');
@@ -10452,7 +10526,22 @@ function obterMateriaisFaixas() {
 }
 
 function salvarMateriaisFaixasStorage(lista) {
-  localStorage.setItem('aa_materiais_faixas', JSON.stringify(lista));
+  try {
+    localStorage.setItem('aa_materiais_faixas', JSON.stringify(lista));
+  } catch(e) {
+    console.warn('Erro ao salvar no localStorage (possível cota excedida). Sanitizando...', e);
+    const listaLimpa = lista.map(m => {
+      if (m.url && m.url.startsWith('data:')) {
+        return { ...m, url: '#' };
+      }
+      return m;
+    });
+    try {
+      localStorage.setItem('aa_materiais_faixas', JSON.stringify(listaLimpa));
+    } catch(e2) {
+      console.error('Falha crítica ao salvar materiais:', e2);
+    }
+  }
   renderizarMateriaisFaixas();
 }
 
@@ -10488,6 +10577,7 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
 
   popularSelectAcervoModalFaixa();
   alternarOrigemMaterial('acervo');
+  arquivoUploadFaixaPendente = null;
 
   const titleEl = document.getElementById('modalMaterialFaixaTitle');
   const editIdEl = document.getElementById('material-edit-id');
@@ -10499,6 +10589,11 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
   const btnLabelEl = document.getElementById('material-btn-label');
   const urlEl = document.getElementById('material-url');
   const acervoSel = document.getElementById('material-acervo-select');
+  const fileInp = document.getElementById('material-upload-file');
+  if (fileInp) fileInp.value = '';
+
+  const rAcervo = document.querySelector('input[name="material-origem"][value="acervo"]');
+  if (rAcervo) rAcervo.checked = true;
 
   if (editId) {
     const materiais = obterMateriaisFaixas();
@@ -10540,6 +10635,9 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
 function fecharModalMaterialFaixa() {
   const modal = document.getElementById('modal-material-faixa');
   if (modal) modal.style.display = 'none';
+  arquivoUploadFaixaPendente = null;
+  const fileInp = document.getElementById('material-upload-file');
+  if (fileInp) fileInp.value = '';
 }
 
 function alternarOrigemMaterial(origem) {
@@ -10573,28 +10671,40 @@ function aoSelecionarDocAcervoParaFaixa() {
 }
 
 function aoCarregarArquivoUploadFaixa(event) {
-  const file = event.target.files[0];
+  const file = event.target.files && event.target.files[0];
   if (!file) return;
+
+  arquivoUploadFaixaPendente = file;
 
   let nomeLimpo = file.name.replace(/\.[^/.]+$/, "");
   nomeLimpo = nomeLimpo.replace(/[-_]/g, " ").replace(/\s+/g, " ").trim();
   nomeLimpo = nomeLimpo.charAt(0).toUpperCase() + nomeLimpo.slice(1);
 
-  document.getElementById('material-titulo').value = nomeLimpo;
-  document.getElementById('material-resumo').value = 'Material anexado (' + file.name + ', ' + (file.size / 1024).toFixed(1) + ' KB) para acompanhamento da delegação.';
-  document.getElementById('material-badge').value = '📤 Material Anexado';
-  document.getElementById('material-btn-label').value = '📄 Abrir Arquivo ↗';
-  document.getElementById('material-icone').value = '📑';
+  const titEl = document.getElementById('material-titulo');
+  if (titEl) titEl.value = nomeLimpo;
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById('material-url').value = e.target.result;
-  };
-  reader.readAsDataURL(file);
+  const resEl = document.getElementById('material-resumo');
+  if (resEl) {
+    resEl.value = 'Material anexado (' + file.name + ', ' + (file.size / 1024).toFixed(1) + ' KB) para acompanhamento da delegação.';
+  }
+
+  const badgeEl = document.getElementById('material-badge');
+  if (badgeEl) badgeEl.value = '📤 Material Anexado';
+
+  const btnLabelEl = document.getElementById('material-btn-label');
+  if (btnLabelEl) btnLabelEl.value = '📄 Abrir Arquivo ↗';
+
+  const urlEl = document.getElementById('material-url');
+  if (urlEl) urlEl.value = 'arquivo://' + file.name;
+
+  if (typeof showToast === 'function') {
+    showToast('📎 Arquivo "' + file.name + '" carregado!');
+  }
 }
 
-function salvarMaterialFaixa(event) {
-  event.preventDefault();
+async function salvarMaterialFaixa(event) {
+  if (event) event.preventDefault();
+
   const editId = document.getElementById('material-edit-id').value;
   const faixa = document.getElementById('material-faixa-target').value;
   const titulo = document.getElementById('material-titulo').value.trim();
@@ -10602,18 +10712,57 @@ function salvarMaterialFaixa(event) {
   const badge = document.getElementById('material-badge').value.trim() || '📑 Material';
   const icone = document.getElementById('material-icone').value || '📑';
   const btnLabel = document.getElementById('material-btn-label').value.trim() || 'Visualizar ↗';
-  const url = document.getElementById('material-url').value.trim() || '#';
+  let url = document.getElementById('material-url').value.trim();
   const layoutEl = document.querySelector('input[name="material-layout"]:checked');
   const layout = layoutEl ? layoutEl.value : 'lado-a-lado';
 
-  if (!titulo) return;
+  if (!titulo) {
+    if (typeof showToast === 'function') showToast('⚠️ Por favor, preencha o Título do Card.');
+    document.getElementById('material-titulo').focus();
+    return;
+  }
+
+  const origemEl = document.querySelector('input[name="material-origem"]:checked');
+  const origem = origemEl ? origemEl.value : 'acervo';
+
+  let fileId = null;
+  let nomeArquivo = null;
+
+  if (origem === 'upload') {
+    if (arquivoUploadFaixaPendente) {
+      fileId = 'file_mat_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+      nomeArquivo = arquivoUploadFaixaPendente.name;
+      url = 'idb://' + fileId;
+      try {
+        await salvarArquivoNoDB(fileId, arquivoUploadFaixaPendente, nomeArquivo, arquivoUploadFaixaPendente.type);
+      } catch(errIdb) {
+        console.warn('Erro ao salvar no IndexedDB:', errIdb);
+      }
+    } else if (!url || url === '#' || url.startsWith('arquivo://')) {
+      if (typeof showToast === 'function') showToast('⚠️ Por favor, escolha um arquivo do seu computador para fazer o upload.');
+      return;
+    }
+  } else {
+    if (!url) url = '#';
+  }
 
   let materiais = obterMateriaisFaixas();
 
   if (editId) {
     const idx = materiais.findIndex(m => m.id === editId);
     if (idx !== -1) {
-      materiais[idx] = { ...materiais[idx], faixa, titulo, resumo, badge, icone, btnLabel, url, layout };
+      materiais[idx] = { 
+        ...materiais[idx], 
+        faixa, 
+        titulo, 
+        resumo, 
+        badge, 
+        icone, 
+        btnLabel, 
+        url, 
+        layout,
+        ...(fileId ? { fileId, nomeArquivo } : {})
+      };
     }
   } else {
     const matchedDoc = (typeof docsData !== 'undefined') ? docsData.find(d => (url && d.caminhoRelativo && url.includes(d.arquivo)) || d.titulo === titulo) : null;
@@ -10624,7 +10773,7 @@ function salvarMaterialFaixa(event) {
       subcategoria: badge,
       periodo: 'Vigente',
       status: 'Homologado',
-      arquivo: url,
+      arquivo: nomeArquivo || url,
       tags: [badge, 'faixa ' + faixa]
     });
 
@@ -10639,13 +10788,18 @@ function salvarMaterialFaixa(event) {
       url,
       layout,
       resumoTopicos: resTop,
+      ...(fileId ? { fileId, nomeArquivo } : {}),
       criadoEm: new Date().toISOString()
     };
     materiais.push(novo);
   }
 
   salvarMateriaisFaixasStorage(materiais);
+  arquivoUploadFaixaPendente = null;
   fecharModalMaterialFaixa();
+  if (typeof showToast === 'function') {
+    showToast('💾 Material salvo com sucesso na Faixa ' + faixa + '!');
+  }
 }
 
 function excluirMaterialFaixa(id) {
@@ -10700,9 +10854,9 @@ function renderizarMateriaisFaixas() {
           <button type="button" class="btn-resumo-doc" style="padding:9px 14px; font-size:13px; font-weight:600;" onclick="abrirResumoMaterialExecutivo('${mat.id}')" title="Ver Resumo por Tópicos (Máx. 1 Página)">
             📑 Resumo
           </button>
-          <a href="${mat.url}" target="_blank" class="btn-exec-action secondary-action" style="flex:1; margin-top:0;">
+          <button type="button" class="btn-exec-action secondary-action" style="flex:1; margin-top:0; cursor:pointer;" onclick="abrirLinkMaterialExecutivo('${mat.id}')">
             ${mat.btnLabel}
-          </a>
+          </button>
         </div>
       `;
       container.appendChild(card);
@@ -10716,6 +10870,32 @@ function alternarLayoutMaterialFaixa(id) {
   if (idx !== -1) {
     materiais[idx].layout = (materiais[idx].layout === 'largura-total') ? 'lado-a-lado' : 'largura-total';
     salvarMateriaisFaixasStorage(materiais);
+  }
+}
+
+async function abrirLinkMaterialExecutivo(matId) {
+  const materiais = obterMateriaisFaixas();
+  const mat = materiais.find(m => m.id === matId);
+  if (!mat) return;
+
+  // Se o arquivo estiver armazenado no IndexedDB
+  if (mat.fileId || (mat.url && mat.url.startsWith('idb://'))) {
+    const fId = mat.fileId || mat.url.replace('idb://', '');
+    const blob = await obterArquivoDoDB(fId);
+    if (blob) {
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
+      return;
+    }
+  }
+
+  // URL padrão, relativa ou externa
+  if (mat.url && mat.url !== '#' && !mat.url.startsWith('arquivo://')) {
+    window.open(encodeURI(mat.url), '_blank');
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('Visualização do arquivo: ' + (mat.nomeArquivo || mat.titulo));
+    }
   }
 }
 
@@ -12809,7 +12989,7 @@ document.addEventListener('keydown', function(e) {
         </div>
         <div class="form-group">
           <label>Link / Caminho do Arquivo *</label>
-          <input type="text" id="material-url" required placeholder="Caminho relativo ou link">
+          <input type="text" id="material-url" placeholder="Caminho relativo ou link (automático no upload)">
         </div>
       </div>
 
