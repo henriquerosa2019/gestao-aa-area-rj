@@ -10443,6 +10443,8 @@ const MATERIAIS_FAIXAS_PADRAO = [
     btnLabel: '📑 Acessar Proposta ↗',
     url: '03 - PLANEJAMENTO ESTRATEGICO/Proposta Estrategica JUNAAB/PROPOSTA DE PLANEJAMENTO ESTRATÉGICO JUNAAB.pdf',
     layout: 'lado-a-lado',
+    bordaDestaque: 'featured-blue',
+    dataAtualizacao: '16/11/2026',
     criadoEm: '2026-11-13T10:00:00.000Z'
   }
 ];
@@ -10571,6 +10573,29 @@ function popularSelectAcervoModalFaixa() {
   });
 }
 
+function formatarDataEstrategica(dataStr) {
+  if (!dataStr) {
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  }
+  if (typeof dataStr === 'string' && (dataStr.includes('/') || dataStr.toLowerCase().includes('nov') || dataStr.toLowerCase().includes('dez') || dataStr.toLowerCase().includes('jan') || dataStr.toLowerCase().includes('fev') || dataStr.toLowerCase().includes('mar') || dataStr.toLowerCase().includes('abr') || dataStr.toLowerCase().includes('mai') || dataStr.toLowerCase().includes('jun') || dataStr.toLowerCase().includes('jul') || dataStr.toLowerCase().includes('ago') || dataStr.toLowerCase().includes('set') || dataStr.toLowerCase().includes('out'))) {
+    return dataStr;
+  }
+  try {
+    const d = new Date(dataStr);
+    if (isNaN(d.getTime())) return String(dataStr);
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const ano = d.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  } catch(e) {
+    return String(dataStr);
+  }
+}
+
 function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
   const modal = document.getElementById('modal-material-faixa');
   if (!modal) return;
@@ -10589,6 +10614,8 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
   const btnLabelEl = document.getElementById('material-btn-label');
   const urlEl = document.getElementById('material-url');
   const acervoSel = document.getElementById('material-acervo-select');
+  const dtEl = document.getElementById('material-data-atualizacao');
+  const bordaEl = document.getElementById('material-borda');
   const fileInp = document.getElementById('material-upload-file');
   if (fileInp) fileInp.value = '';
 
@@ -10608,6 +10635,8 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
       iconeEl.value = item.icone || '📑';
       btnLabelEl.value = item.btnLabel || 'Acessar Material ↗';
       urlEl.value = item.url || '';
+      if (dtEl) dtEl.value = item.dataAtualizacao || formatarDataEstrategica(item.criadoEm);
+      if (bordaEl) bordaEl.value = item.bordaDestaque || 'featured-blue';
       const rL = document.querySelector(`input[name="material-layout"][value="${item.layout || 'lado-a-lado'}"]`);
       if (rL) rL.checked = true;
       modal.style.display = 'flex';
@@ -10625,6 +10654,8 @@ function abrirModalMaterialFaixa(faixaPreSelecionada, editId = null) {
   iconeEl.value = '📑';
   btnLabelEl.value = '📑 Acessar Documento ↗';
   urlEl.value = '';
+  if (dtEl) dtEl.value = formatarDataEstrategica(new Date());
+  if (bordaEl) bordaEl.value = 'featured-blue';
   if (acervoSel) acervoSel.value = '';
   const rDef = document.querySelector('input[name="material-layout"][value="lado-a-lado"]');
   if (rDef) rDef.checked = true;
@@ -10697,6 +10728,11 @@ function aoCarregarArquivoUploadFaixa(event) {
   const urlEl = document.getElementById('material-url');
   if (urlEl) urlEl.value = 'arquivo://' + file.name;
 
+  const dtEl = document.getElementById('material-data-atualizacao');
+  if (dtEl && !dtEl.value) {
+    dtEl.value = formatarDataEstrategica(new Date());
+  }
+
   if (typeof showToast === 'function') {
     showToast('📎 Arquivo "' + file.name + '" carregado!');
   }
@@ -10715,6 +10751,8 @@ async function salvarMaterialFaixa(event) {
   let url = document.getElementById('material-url').value.trim();
   const layoutEl = document.querySelector('input[name="material-layout"]:checked');
   const layout = layoutEl ? layoutEl.value : 'lado-a-lado';
+  const bordaDestaque = (document.getElementById('material-borda') && document.getElementById('material-borda').value) || 'featured-blue';
+  const dataAtualizacao = (document.getElementById('material-data-atualizacao') && document.getElementById('material-data-atualizacao').value.trim()) || formatarDataEstrategica(new Date());
 
   if (!titulo) {
     if (typeof showToast === 'function') showToast('⚠️ Por favor, preencha o Título do Card.');
@@ -10761,6 +10799,8 @@ async function salvarMaterialFaixa(event) {
         btnLabel, 
         url, 
         layout,
+        bordaDestaque,
+        dataAtualizacao,
         ...(fileId ? { fileId, nomeArquivo } : {})
       };
     }
@@ -10787,6 +10827,8 @@ async function salvarMaterialFaixa(event) {
       btnLabel,
       url,
       layout,
+      bordaDestaque,
+      dataAtualizacao,
       resumoTopicos: resTop,
       ...(fileId ? { fileId, nomeArquivo } : {}),
       criadoEm: new Date().toISOString()
@@ -10820,7 +10862,8 @@ function renderizarMateriaisFaixas() {
     filtrados.forEach(mat => {
       const card = document.createElement('div');
       const isFull = mat.layout === 'largura-total';
-      card.className = 'exec-tool-card' + (isFull ? ' card-largura-total' : '');
+      const bordaClass = (mat.bordaDestaque && mat.bordaDestaque !== 'none') ? mat.bordaDestaque : 'featured-blue';
+      card.className = 'exec-tool-card ' + bordaClass + (isFull ? ' card-largura-total' : '');
       if (isFull) {
         card.style.gridColumn = '1 / -1';
       } else {
@@ -10829,6 +10872,11 @@ function renderizarMateriaisFaixas() {
 
       const iconToggle = isFull ? '⊞' : '▭';
       const titleToggle = isFull ? 'Mudar para Lado a Lado (Meia Largura)' : 'Mudar para Largura Total';
+
+      const dataExibicao = mat.dataAtualizacao || formatarDataEstrategica(mat.criadoEm);
+      const textoAtualizacao = (dataExibicao && dataExibicao.toLowerCase().startsWith('atualizado')) 
+        ? dataExibicao 
+        : `Atualizado em ${dataExibicao}`;
 
       card.innerHTML = `
         <div>
@@ -10845,7 +10893,7 @@ function renderizarMateriaisFaixas() {
             <div class="exec-tool-icon">${mat.icone}</div>
             <div>
               <h4>${mat.titulo}</h4>
-              <span class="exec-tool-tag">Faixa ${mat.faixa}${isFull ? ' • Largura Total' : ' • Lado a Lado'}</span>
+              <span class="exec-tool-tag" style="color:#D97706; font-weight:600;">${textoAtualizacao}</span>
             </div>
           </div>
           <p class="exec-tool-desc">${mat.resumo}</p>
@@ -12959,6 +13007,22 @@ document.addEventListener('keydown', function(e) {
             <option value="💡">💡 Proposta</option>
             <option value="🎪">🎪 Convenção</option>
             <option value="📌">📌 Assembleia</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Informação Estratégica: Atualização e Faixa do Topo -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px;">
+        <div class="form-group">
+          <label>Data de Atualização (Estratégico)</label>
+          <input type="text" id="material-data-atualizacao" placeholder="Ex: 16/11/2026 ou Nov/2026">
+        </div>
+        <div class="form-group">
+          <label>Faixa no Topo do Quadro</label>
+          <select id="material-borda">
+            <option value="featured-blue" selected>🔵 Faixa Azul Superior (Padrão Apresentação)</option>
+            <option value="featured-gold">🟡 Faixa Dourada Superior (Destaque CSG)</option>
+            <option value="none">⚪ Sem Faixa Superior</option>
           </select>
         </div>
       </div>
