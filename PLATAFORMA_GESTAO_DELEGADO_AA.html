@@ -7480,7 +7480,53 @@ function calcularDiasPrazo(prazoStr) {
   return Math.round(diffMs / (1000 * 60 * 60 * 24));
 }
 
-function obterBadgePrazoHTML(prazoStr, statusTarefa) {
+function obterTextoTempoAtraso(prazoStr, horaStr = null) {
+  if (!prazoStr) return '1 dia';
+
+  const agora = new Date();
+
+  // Se tiver horário (ex: "14:00" ou "09:30")
+  if (horaStr && typeof horaStr === 'string' && horaStr.includes(':')) {
+    const partesHora = horaStr.trim().split(':');
+    const partesData = prazoStr.split('-');
+    if (partesData.length === 3) {
+      const dataHoraLimite = new Date(
+        parseInt(partesData[0], 10),
+        parseInt(partesData[1], 10) - 1,
+        parseInt(partesData[2], 10),
+        parseInt(partesHora[0], 10),
+        parseInt(partesHora[1], 10),
+        0
+      );
+
+      const diffMs = agora.getTime() - dataHoraLimite.getTime();
+      if (diffMs > 0) {
+        const diffHorasTotal = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffDias >= 1) {
+          return diffDias === 1 ? '1 dia' : (diffDias + ' dias');
+        } else if (diffHorasTotal >= 1) {
+          return diffHorasTotal === 1 ? '1 hora' : (diffHorasTotal + ' horas');
+        } else {
+          const diffMin = Math.max(1, Math.floor(diffMs / (1000 * 60)));
+          return diffMin === 1 ? '1 min' : (diffMin + ' mins');
+        }
+      }
+    }
+  }
+
+  // Caso geral por dias de calendário
+  const diffDias = calcularDiasPrazo(prazoStr);
+  if (diffDias !== null && diffDias < 0) {
+    const diasVencidos = Math.abs(diffDias);
+    return diasVencidos === 1 ? '1 dia' : (diasVencidos + ' dias');
+  }
+
+  return '1 dia';
+}
+
+function obterBadgePrazoHTML(prazoStr, statusTarefa, horaStr = null) {
   if (!prazoStr) return '';
   if (statusTarefa === 'done' || statusTarefa === 'concluido') {
     return '<span style="font-size:10.5px; font-weight:700; color:#15803d; background:#dcfce7; border:1px solid #86efac; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">✅ Concluída</span>';
@@ -7489,20 +7535,33 @@ function obterBadgePrazoHTML(prazoStr, statusTarefa) {
   const diffDias = calcularDiasPrazo(prazoStr);
   if (diffDias === null) return '';
 
-  if (diffDias < 0) {
-    // Vencida: em vermelho, logo abaixo da data com total de dias vencidos
-    const diasVencidos = Math.abs(diffDias);
-    const txtDias = diasVencidos === 1 ? '1 dia' : (diasVencidos + ' dias');
-    return '<span style="font-size:11px; font-weight:700; color:#dc2626; background:#fee2e2; border:1px solid #fca5a5; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;" title="Tarefa vencida há ' + txtDias + '">⚠️ Vencida há ' + txtDias + '</span>';
+  const agora = new Date();
+  let estaAtrasado = diffDias < 0;
+  if (diffDias === 0 && horaStr && typeof horaStr === 'string' && horaStr.includes(':')) {
+    const [h, m] = horaStr.split(':').map(Number);
+    const minAgora = agora.getHours() * 60 + agora.getMinutes();
+    const minPrazo = h * 60 + m;
+    if (minAgora > minPrazo) estaAtrasado = true;
+  }
+
+  if (estaAtrasado) {
+    const txtTempo = obterTextoTempoAtraso(prazoStr, horaStr);
+    return `
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px; margin-top:2px;">
+        <span style="font-size:11px; font-weight:800; color:#dc2626; background:#fee2e2; border:1px solid #fca5a5; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; text-transform:uppercase; letter-spacing:0.3px;">
+          ⚠️ Atrasado
+        </span>
+        <span style="font-size:11px; font-weight:800; color:#ffffff; background:#dc2626; border:1px solid #b91c1c; padding:2px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 3px rgba(220,38,38,0.3); letter-spacing:0.2px;" title="Tempo total de atraso desta tarefa">
+          ⏱️ Há ${txtTempo}
+        </span>
+      </div>
+    `;
   } else if (diffDias === 0) {
-    // Mesmo dia: No Prazo, em verde, negritado
     return '<span style="font-size:11px; font-weight:800; color:#15803d; background:#dcfce7; border:1px solid #86efac; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;" title="Vence hoje!">🟢 <b>No Prazo</b></span>';
   } else if (diffDias === 1 || diffDias === 2) {
-    // A 1 ou 2 dias: A vencer, em amarelo limão forte
     const txtDias = diffDias === 1 ? '1 dia' : '2 dias';
     return '<span style="font-size:11px; font-weight:800; color:#422006; background:#facc15; border:1px solid #eab308; padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; text-transform:uppercase; letter-spacing:0.2px;" title="Prazo próximo: faltam ' + txtDias + '">⚠️ A vencer (' + txtDias + ')</span>';
   } else {
-    // Prazo superior a 2 dias
     return '<span style="font-size:10px; font-weight:600; color:#475569; background:#f1f5f9; padding:2px 5px; border-radius:4px;">No Prazo (' + diffDias + ' dias)</span>';
   }
 }
@@ -11296,7 +11355,7 @@ function renderizarKanban() {
           <span class="task-tag">${t.categoria}</span>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px; text-align:right;">
             <span class="task-deadline ${atrasado ? 'atrasado' : ''}">📅 ${prazoFormatado}</span>
-            ${obterBadgePrazoHTML(t.prazo, t.status)}
+            ${obterBadgePrazoHTML(t.prazo, t.status, t.hora)}
           </div>
         </div>
         <h4 class="task-title">${t.titulo}</h4>
@@ -12079,13 +12138,23 @@ function atualizarHeaderPerfilAgenda() {
   }
 }
 
-function calcularStatusVencimento(dataStr, concluido) {
+function calcularStatusVencimento(dataStr, concluido, horaStr = null) {
   if (concluido) return 'concluido';
   if (!dataStr) return 'sem_prazo';
 
-  const hoje = new Date().toISOString().split('T')[0];
-  if (dataStr === hoje) return 'hoje';
+  const agora = new Date();
+  const hoje = agora.toISOString().split('T')[0];
+
   if (dataStr < hoje) return 'atrasado';
+  if (dataStr === hoje) {
+    if (horaStr && typeof horaStr === 'string' && horaStr.includes(':')) {
+      const [h, m] = horaStr.split(':').map(Number);
+      const minAgora = agora.getHours() * 60 + agora.getMinutes();
+      const minComp = h * 60 + m;
+      if (minAgora > minComp) return 'atrasado';
+    }
+    return 'hoje';
+  }
   return 'avencer';
 }
 
@@ -12116,7 +12185,7 @@ function renderizarAgenda() {
   // Calcular contadores da visão ativa
   filtradosPorPerfil.forEach(comp => {
     cTodos++;
-    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    const st = calcularStatusVencimento(comp.data, comp.concluido, comp.hora);
     if (st === 'concluido') cConcluidos++;
     else if (st === 'hoje') cHoje++;
     else if (st === 'atrasado') cAtrasados++;
@@ -12131,7 +12200,7 @@ function renderizarAgenda() {
 
   // Filtrar por status selecionado
   let listaExibicao = filtradosPorPerfil.filter(comp => {
-    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    const st = calcularStatusVencimento(comp.data, comp.concluido, comp.hora);
     if (filtroStatusAgendaAtivo === 'todos') return true;
     if (filtroStatusAgendaAtivo === 'hoje') return st === 'hoje';
     if (filtroStatusAgendaAtivo === 'avencer') return st === 'avencer';
@@ -12176,7 +12245,7 @@ function renderizarAgenda() {
 
   listaExibicao.forEach(comp => {
     const card = document.createElement('div');
-    const st = calcularStatusVencimento(comp.data, comp.concluido);
+    const st = calcularStatusVencimento(comp.data, comp.concluido, comp.hora);
     
     let classeCard = 'agenda-card';
     let badgeHtml = '';
@@ -12188,7 +12257,17 @@ function renderizarAgenda() {
       badgeHtml = '<span class="agenda-status-badge badge-hoje">🔥 Vencendo Hoje</span>';
     } else if (st === 'atrasado') {
       classeCard += ' alerta-atrasado';
-      badgeHtml = '<span class="agenda-status-badge badge-atrasado">⚠️ Atrasado</span>';
+      const txtAtraso = obterTextoTempoAtraso(comp.data, comp.hora);
+      badgeHtml = `
+        <div style="display:inline-flex; flex-direction:column; align-items:flex-start; gap:3px;">
+          <span class="agenda-status-badge badge-atrasado" style="display:inline-flex; align-items:center; gap:4px;">
+            ⚠️ Atrasado
+          </span>
+          <span style="font-size:10.5px; font-weight:800; color:#ffffff; background:#dc2626; border:1px solid #b91c1c; padding:2px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 3px rgba(220,38,38,0.25); letter-spacing:0.2px;" title="Tempo de atraso">
+            ⏱️ Há ${txtAtraso}
+          </span>
+        </div>
+      `;
     } else {
       classeCard += ' alerta-avencer';
       badgeHtml = '<span class="agenda-status-badge badge-avencer">⏳ A Vencer</span>';
